@@ -2,3 +2,17 @@
 /parsetab.py
 /sejits.pyc
 /parsetab.pyc
+/asp/__init__.pyc
+/asp/ply/__init__.pyc
+/asp/ply/lex.pyc
+/asp/ply/yacc.pyc
+/asp/tree_grammar.pyc
+/specializer/__init__.pyc
+/specializer/cpu_specializer.pyc
+/specializer/dsl/__init__.pyc
+/specializer/dsl/dsl_specification.pyc
+/specializer/fpga_specializer.pyc
+/specializer/gpu_specializer.pyc
+/specializer/utils/__init__.pyc
+/specializer/utils/ast_visualizer.pyc
+/specializer/utils/dsl_ast_transformer.pyc
