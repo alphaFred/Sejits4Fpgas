@@ -49,5 +49,6 @@ class Specialize(object):
                 ret_func = fpga_dummy
         #
         def wrappee(*args,**kwargs):
+            """ docstring for wrapped """
             ret_func(*args,**kwargs)
         return wrappee
