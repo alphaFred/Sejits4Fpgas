@@ -46,24 +46,3 @@ out_image2 = Image.new("RGB", (512, 512), "white")
 
 print "first line"
 dec_kernel(in_image,out_image,25)
-
-
-"""
-class FIA_Example(FIA_Kernel_Core):
-    def kernel(self):
-        out_image = in_images.point(lambda i: i + 25)
-
-in_image = Image.open("./images/Lena.png")
-out_image = Image.new("RGB", (512, 512), "white")
-
-# in_image.show()
-
-fia_example = FIA_Example(in_images=[in_image], out_image=[out_image])
-
-# available targets: python, fpga
-img = fia_example.run(target="fpga")
-if img is not None:
-    # img.show() uses ImageMagic
-    # install under ubuntu via: sudo apt-get install imagemagick --fix-missing 
-    img.show()
-"""
