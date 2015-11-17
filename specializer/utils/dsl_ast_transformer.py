@@ -13,7 +13,9 @@ DslAstData = namedtuple("DslAstData",['ast','args'])
 
 
 class DslAstTransformer(ast.NodeTransformer):
+    """ docstring for DslAstTransformer """
     def __init__(self, ast_data=DslAstData):
+        """ docstring for __init__"""
         # parse dsl specification
         # initialize super classes
         tree_grammar.parse(dsl, globals(), checker=None)
@@ -27,6 +29,7 @@ class DslAstTransformer(ast.NodeTransformer):
     #   HELPER METHODS                                                        #
     # ======================================================================= #
     def check_args(self, args):
+        """ docstring for check_args """
         arg_dict = dict()
         for arg_name, arg_value in args:
             try:
@@ -52,16 +55,19 @@ class DslAstTransformer(ast.NodeTransformer):
         return arg_dict
 
     def run(self):
+        """ docstring for run """
         return self.visit(self.ast)
 
     # ======================================================================= #
     #   VISITOR METHODS                                                       #
     # ======================================================================= #
     def visit_Module(self, node):
+        """ docstring for visit_Module """
         assert len(node.body) == 1, "Too many items in body module"
         return self.visit(node.body[0])
 
     def visit_FunctionDef(self, node):
+        """ docstring for visit_FunctionDef """
         kernel_return = self.visit(node.body[-1])
         assert type(kernel_return) is ReturnAssign,\
             "Kernel Function has no return statement; line{0}".format(node.lineno)
@@ -73,6 +79,7 @@ class DslAstTransformer(ast.NodeTransformer):
                             body=kernel_body)
 
     def visit_Return(self, node):
+        """ docstring for visit_Return """
         try:
             assert type(self.argVars[node.value.id]) is InImageObj,\
                 "Illegal return object of type '{0}'; line {1}".format(type(self.argVars[node.value.id]), node.lineno)
@@ -87,6 +94,7 @@ class DslAstTransformer(ast.NodeTransformer):
             return ReturnAssign(value=self.argVars[node.value.id])
 
     def visit_Subscript(self, node):
+        """ docstring for visit_Subscript """
         try:
             ret = self.argVars[node.value.id][self.visit(node.slice)]
         except TypeError:
@@ -95,9 +103,11 @@ class DslAstTransformer(ast.NodeTransformer):
             return ret
 
     def visit_Index(self, node):
+        """ docstring for visit_Index """
         return self.visit(node.value)
 
     def visit_Assign(self, node):
+        """ docstring for visit_Assign """
         node_targets = map(self.visit, node.targets)
         node_value = self.visit(node.value)
         #
@@ -116,6 +126,7 @@ class DslAstTransformer(ast.NodeTransformer):
             assert False, "Illegal assignment to identifier of type {0}; line {1}".format(type(node_target).__name__, node.lineno)
 
     def visit_Name(self, node):
+        """ docstring for visit_Name """
         if node.id in self.argVars:
             return self.argVars[node.id]
         if node.id in self.localVars:
@@ -125,12 +136,14 @@ class DslAstTransformer(ast.NodeTransformer):
             # assert False, "NAME ERROR {0}; line {1}".format(node.id,node.lineno)
 
     def visit_Call(self, node):
+        """ docstring for visit_Call """
         # dispatch call
         call_method = "visit_call_" + node.func.attr
         call_visitor = getattr(self, call_method, self.generic_visit)
         return call_visitor(node.args, node.func.value)
 
     def visit_call_filter(self, args, value):
+        """ docstring for visit_call_filter """
         assert len(args) == 1, "Filter takes at least 1 argument ({0} given)".format(len(args))
         # dynamically create filter object
         try:
@@ -148,20 +161,24 @@ class DslAstTransformer(ast.NodeTransformer):
             return ImageFilter(target=self.visit(value), filter=filter_func)
 
     def visit_call_point(self, args, value):
+        """ docstring for visit_call_point """
         assert len(args) == 1, "PointOperator takes at least 1 argument ({0} given)".format(len(args))
         # TODO: implement BinOp in DSL
         return ImagePointOp(target=self.visit(value), op=self.visit(args[0]))
 
     def visit_Lambda(self, node):
+        """ docstring for visit_Lambda """
         assert len(node.args.args)==1, "Lambda Expression takes at leas 1 argument ({0} given);".format(len(node.args.args))
         arg = self.visit(node.args.args[0])
         body = self.visit(node.body)
         return body
 
     def visit_Num(self, node):
+        """ docstring for visit_Num """
         return node.n
 
     def visit_BinOp(self, node):
+        """ docstring for visit_BinOp """
         return BinOp(left=self.visit(node.left),
                      op=node.op,
                      right=self.visit(node.right))
