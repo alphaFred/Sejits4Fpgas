@@ -23,10 +23,13 @@ dsl = '''
 
     KernelModule(id=types.StringType, body)
 
-    Constant(id=types.StringType, value=types.IntType|types.FloatType, args)
+    Int(id=types.StringType|types.NoneType,n=types.IntType, args)
+    Float(id=types.StringType|types.NoneType,n=types.FloatType, args)
+    Constant(id=types.StringType, value=Int|Float, args)
+
     Identifier(name=types.StringType)
 
-    BinOp(left=Constant|Identifier, op, right=Constant|Identifier)
+    BinOp(left=Int|Float|Identifier, op, right=Int|Float|Identifier)
 
     DataOp = ImageFilter
            | ImagePointOp
@@ -36,7 +39,7 @@ dsl = '''
 
     ReturnAssign(value=OutImageObj)
     TempAssign(var=Identifier, value=Expr|DataOp)
-    OutAssign(var, value)
+    OutAssign(var=OutImageObj, value=Expr|DataOp)
 
     # -------------------------------------------------------------------------
     # Image Filter
@@ -45,9 +48,9 @@ dsl = '''
            | MaxFilter
            | DummyFilter
 
-    MinFilter(size=types.IntType|Constant)
-    MaxFilter(size=types.IntType|Constant)
-    DummyFilter(size=types.IntType|Constant, bla=types.FloatType|Constant, blub)
+    MinFilter(size=Int)
+    MaxFilter(size=Int)
+    DummyFilter(size=Int, bla=Float, blub=Int|Float)
 
     ImageFilter(target=(InImageObj|Identifier|DataOp), filter=Filter)
     ImagePointOp(target=(InImageObj|Identifier|DataOp), op=Expr|ast.BinOp)

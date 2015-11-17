@@ -2,19 +2,14 @@ __author__ = 'philipp ebensberger'
 
 import ast
 import PIL
-import types
-
-from asp import tree_grammar
-from specializer.dsl.dsl_specification import dsl
 
 
 class DslAstTransformer(ast.NodeTransformer):
     """ docstring for DslAstTransformer """
-    def __init__(self, ast, args):
+    def __init__(self, ast, args, dsl_classes):
         """ docstring for __init__"""
-        # parse dsl specification
-        # initialize super classes
-        tree_grammar.parse(dsl, globals(), checker=None)
+        # add dsl classes to global scope
+        globals().update(dsl_classes)
         super(DslAstTransformer, self).__init__()
         #
         self.ast = ast
@@ -36,7 +31,10 @@ class DslAstTransformer(ast.NodeTransformer):
                         trans_arg_value.append(InImageObj(id=arg_name,mode=sub_arg_value.mode,size=sub_arg_value.size,args=Index(n=index)))
                     else:
                         if type(sub_arg_value) is int:
-                            trans_arg_value.append(Constant(id=arg_name, value=sub_arg_value,args=Index(n=index)))
+                            #trans_arg_value.append(Constant(id=arg_name, value=sub_arg_value,args=Index(n=index)))
+                            trans_arg_value.append(Int(id=arg_name, n=sub_arg_value, args=Index(n=index)))
+                        elif type(sub_arg_value) is float:
+                            trans_arg_value.append(Float(id=arg_name, n=sub_arg_value, args=Index(n=index)))
                         else:
                             raise Exception, "Illegal argument type in iterable"
                 arg_dict[arg_name] = trans_arg_value
@@ -45,7 +43,10 @@ class DslAstTransformer(ast.NodeTransformer):
                     arg_dict[arg_name] = InImageObj(id=arg_name,mode=arg_value.mode,size=arg_value.size,args=None)
                 else:
                     if type(arg_value) is int:
-                        arg_dict[arg_name] = Constant(id=arg_name, value=arg_value,args=None)
+                        #arg_dict[arg_name] = Constant(id=arg_name, value=arg_value,args=None)
+                        arg_dict[arg_name] = Int(id=arg_name, n=arg_value, args=None)
+                    elif type(arg_value) is float:
+                        arg_dict[arg_name] = Float(id=arg_name, n=arg_value, args=None)
                     else:
                         raise Exception, "Illegal argument type {0}".format(arg_name)
         return arg_dict
@@ -92,7 +93,7 @@ class DslAstTransformer(ast.NodeTransformer):
     def visit_Subscript(self, node):
         """ docstring for visit_Subscript """
         try:
-            ret = self.argVars[node.value.id][self.visit(node.slice)]
+            ret = self.argVars[node.value.id][self.visit(node.slice).n]
         except TypeError:
             raise Exception, "{0} is not iterable!".format(node.value.id)
         else:
@@ -169,12 +170,17 @@ class DslAstTransformer(ast.NodeTransformer):
         body = self.visit(node.body)
         return body
 
-    def visit_Num(self, node):
-        """ docstring for visit_Num """
-        return node.n
-
     def visit_BinOp(self, node):
         """ docstring for visit_BinOp """
         return BinOp(left=self.visit(node.left),
                      op=node.op,
                      right=self.visit(node.right))
+
+    def visit_Num(self, node):
+        """ docstring for visit_Num """
+        if type(node.n) is int:
+            return Int(id=None, n=node.n, args=None)
+        elif type(node.n) is float:
+            return Float(id=None, n=node.n, args=None)
+        else:
+            assert False, "Illegal numeric type!"
