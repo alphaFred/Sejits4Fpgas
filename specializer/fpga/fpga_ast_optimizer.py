@@ -1,5 +1,14 @@
 __author__ = 'philipp'
 
+import ast
+
+class FpgaAstOptimizer(ast.NodeTransformer):
+    """ docstring for FpgaAstOptimizer """
+    def __init__(self, arg):
+        """ docstring for __init__ """
+        super(FpgaAstOptimizer, self).__init__()
+        self.arg = arg
+
 
 class FIA_Kernel_Optimizer(ast.NodeTransformer):
     def __init__(self):
