@@ -1,28 +1,24 @@
 __author__ = 'philipp ebensberger'
 
 import ast
-import types
 import PIL
+import types
 
 from asp import tree_grammar
-from collections import namedtuple
 from specializer.dsl.dsl_specification import dsl
-
-
-DslAstData = namedtuple("DslAstData",['ast','args'])
 
 
 class DslAstTransformer(ast.NodeTransformer):
     """ docstring for DslAstTransformer """
-    def __init__(self, ast_data=DslAstData):
+    def __init__(self, ast, args):
         """ docstring for __init__"""
         # parse dsl specification
         # initialize super classes
         tree_grammar.parse(dsl, globals(), checker=None)
         super(DslAstTransformer, self).__init__()
         #
-        self.ast = ast_data.ast
-        self.argVars = self.check_args(ast_data.args)
+        self.ast = ast
+        self.argVars = self.check_args(args)
         self.localVars = {}
 
     # ======================================================================= #
