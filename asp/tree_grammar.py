@@ -255,6 +255,7 @@ class FieldRule:
         field_names = map(lambda x: x[0], self.fields_list)
         return('''
 class %s(%s):
+    %s
     def __init__(self, %s, lineno=None, col_offset=None):
         self._fields = (%s,)
         self._attributes = ('lineno', 'col_offset',)
@@ -271,6 +272,7 @@ class %s(%s):
         '''
         %
         (self.name, parent_map[self.name],
+         str.join('\n    ', [str(field_name)+"=None" for field_name in field_names]),
          str.join(',', field_names),
          str.join(',', map(lambda x: "'%s'" % x, field_names)),
          self.name,
@@ -376,7 +378,7 @@ def parse(tree_grammar, global_dict, checker=None):
         assert len(set(parent_map.keys()) & set(rule_map.keys())) == 0, 'Same class occured in two alternative rules, but can only have one base class'
         parent_map.update(rule_map)
 
-    program = "import copy\n"
+    program = "import copy\nimport types\n"
 
     classes_with_rules = []
     all_classes = []
@@ -400,6 +402,11 @@ class %s(%s):
     if checker != None:
         program = "import ast\n" + program + "\n" + generate_checker_class(checker, classes_with_rules) + "\n"
 
-    program = program + "\n"
+    program = "import ast\n" + program + "\n"
 
     exec(program, global_dict)
+
+"""
+    def to_dot(self):
+        return self.__class__.__name__
+"""
