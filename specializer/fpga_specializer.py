@@ -1,13 +1,9 @@
 __author__ = 'philipp ebensberger'
 
-import inspect
 import ast
-import types
+import inspect
 
-import asp.tree_grammar as tree_grammar
 from specializer.utils.ast_visualizer import pformat_ast
-from specializer.dsl.dsl_specification import dsl
-from specializer.utils.dsl_ast_transformer import DslAstData
 from specializer.utils.dsl_ast_transformer import DslAstTransformer
 
 
@@ -17,17 +13,15 @@ class ZYNQ_Specializer(object):
         """ docstring for __init__ """
         # TODO: remove ALL decorators! -> multiple decorators etc.
         func_src = "\n".join(inspect.getsource(func).splitlines()[1:])
-        func_ast = ast.parse(func_src.lstrip())
-        # pack ast-data
-        self.func_ast_data = DslAstData(ast = func_ast,
-                                        args = args)
+        self.func_ast = ast.parse(func_src.lstrip())
+        self.func_args = args
 
     # ======================================================================= #
     #   HELPER METHODS                                                        #
     # ======================================================================= #
     def run(self):
         """ docstring for run """
-        ast_transformer = DslAstTransformer(self.func_ast_data)
+        ast_transformer = DslAstTransformer(self.func_ast, self.func_args)
         # DEBUG
         print "\nKERNEL TRANSFORMED\n"
         ret = ast_transformer.run()
