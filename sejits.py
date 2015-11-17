@@ -4,13 +4,13 @@
 import sys
 import traceback
 
-from specializer.fpga_specializer import Zynq_Specializer
+from specializer.fpga_specializer import ZYNQ_Specializer
 from specializer.cpu_specializer import X86_Specializer, ARM_Specializer
 from specializer.gpu_specializer import CUDA_Specializer
 
 
 # TODO: add auto initialize
-core_dispatch = {"fpga" :Zynq_Specializer,
+core_dispatch = {"fpga" :ZYNQ_Specializer,
                  "x86"  :X86_Specializer,
                  "arm"  :ARM_Specializer,
                  "cuda" :CUDA_Specializer}
