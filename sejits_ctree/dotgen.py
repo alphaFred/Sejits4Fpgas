@@ -55,10 +55,21 @@ class DotGenVisitor(NodeVisitor):
         """
         return r"%s\n%s" % (type(node).__name__, node.label())
 
+    # TODO: change formation to visitor pattern
+    def format(self, node):
+        formats = {"ImageFilter": ', style=filled, fillcolor="#FF6633"',
+                   "ImagePointOp":', style=filled, fillcolor="#33CCFF"',
+                   "TempAssign":  ', style=filled, fillcolor="#FFCC33"',
+                   "OutAssign":   ', style=filled, fillcolor="#33FF66"',
+                   "InImageObj":  ', style=bold',
+                   "OutImageObj": ', style=bold'
+                   }
+        return formats.get(type(node).__name__, "")
+
     def generic_visit(self, node):
 
         # label this node
-        out_string = 'n%s [label="%s"];\n' % (id(node), self.label(node))
+        out_string = 'n%s [label="%s" %s];\n' % (id(node), self.label(node), self.format(node))
 
         # edges to children
         for fieldname, fieldvalue in ast.iter_fields(node):
