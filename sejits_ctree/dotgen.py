@@ -57,12 +57,12 @@ class DotGenVisitor(NodeVisitor):
 
     # TODO: change formation to visitor pattern
     def format(self, node):
-        formats = {"ImageFilter": ', style=filled, fillcolor="#FF6633"',
-                   "ImagePointOp":', style=filled, fillcolor="#33CCFF"',
-                   "TempAssign":  ', style=filled, fillcolor="#FFCC33"',
-                   "OutAssign":   ', style=filled, fillcolor="#33FF66"',
-                   "InImageObj":  ', style=bold',
-                   "OutImageObj": ', style=bold'
+        formats = {"ImageFilter": ', style=filled, fillcolor="#00EB5E"',
+                   "ImagePointOp":', style=filled, fillcolor="#C2FF66"',
+                   "TempAssign":  ', style=filled, fillcolor="#66C2FF"',
+                   "OutAssign":   ', style=filled, fillcolor="#6675FF"',
+                   "InImageObj":  ', style=filled, fillcolor="#FFF066"',
+                   "OutImageObj": ', style=filled, fillcolor="#FFA366"'
                    }
         return formats.get(type(node).__name__, "")
 
