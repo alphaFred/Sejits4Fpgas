@@ -34,11 +34,9 @@ class ZYNQ_Specializer(object):
         new_Ast = ast_transformer.run()
         ast.__dict__.update(self.dsl_classes)
         sejits_ctree.browser_show_ast(new_Ast, file_name="transformed_dsl_ast.png")
-        """
         # DEBUG
         print "\nKERNEL TRANSFORMED\n"
-        ret = ast_transformer.run()
-        pformat_ast(ret)
+        pformat_ast(new_Ast)
         print "#"*80,"\n\n"
         # !DEBUG
-        """
+        return new_Ast

@@ -44,5 +44,6 @@ out_image = Image.new("RGB", (512, 512), "white")
 in_image2 = Image.open("./images/Lena.png")
 out_image2 = Image.new("RGB", (512, 512), "white")
 
-print "first line"
+print "-"*80
+print "first line\n"
 dec_kernel(in_image,out_image,25)

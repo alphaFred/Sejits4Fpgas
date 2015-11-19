@@ -52,3 +52,6 @@ class Specialize(object):
             """ docstring for wrapped """
             ret_func(*args,**kwargs)
         return wrappee
+
+def fpga_dummy(*args, **kwargs):
+    print "FPGA-Dummy Function"
