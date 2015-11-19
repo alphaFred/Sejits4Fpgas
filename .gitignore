@@ -24,3 +24,9 @@
 /.idea/workspace.xml
 /images/transformed_dsl_ast.png
 /sejits_ctree/dotgen.pyc
+/specializer/fpga/__init__.py
+/specializer/fpga/__init__.pyc
+/specializer/fpga/fpga_ast_optimizer.pyc
+/images/data_flow_graph.png
+/images/optimized_dataFlow.png
+/ebensberger_ma.sublime-workspace
