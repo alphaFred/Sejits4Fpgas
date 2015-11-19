@@ -1,8 +1,8 @@
+""" docstring for module fpga_ast_optimizer. """
 __author__ = 'philipp'
 
 
 import ast
-import os
 
 from subprocess import Popen, PIPE
 from collections import namedtuple
@@ -15,12 +15,13 @@ PipelineObj = namedtuple(
     'PipelineObj', ['id', 'consumer', 'producer', 'next_id', 'next'])
 
 
-def pprinter(flow_data, data_flow_graph):
+def prittyprinter(flow_data, data_flow_graph):
+    """ docstring for pprinter. """
     formats = {"ImageFilter": ', style=filled, fillcolor="#00EB5E"',
                "ImagePointOp": ', style=filled, fillcolor="#C2FF66"',
-               "TempAssign":  ', style=filled, fillcolor="#66C2FF"',
-               "OutAssign":   ', style=filled, fillcolor="#6675FF"',
-               "InImageObj":  ', style=filled, fillcolor="#FFF066"',
+               "TempAssign": ', style=filled, fillcolor="#66C2FF"',
+               "OutAssign": ', style=filled, fillcolor="#6675FF"',
+               "InImageObj": ', style=filled, fillcolor="#FFF066"',
                "OutImageObj": ', style=filled, fillcolor="#FFA366"'
                }
     # generate dot
@@ -33,8 +34,11 @@ def pprinter(flow_data, data_flow_graph):
         dot_text += '%s ["label"="%s"%s];\n' % (
             flow_obj.next_id, flow_obj.id, formats.get(flow_obj.id, ""))
         for next_obj in flow_obj.next:
-            dot_text += '%s -> %s ["label"="%s"];\n' % (flow_obj.next_id, next_obj.next_id, str(
-                flow_obj.producer.__class__.__name__ + "->" + next_obj.consumer.__class__.__name__))
+            dot_text += '%s -> %s ["label"="%s"];\n' % \
+                (flow_obj.next_id,
+                    next_obj.next_id,
+                    str(flow_obj.producer.__class__.__name__
+                        + "->" + next_obj.consumer.__class__.__name__))
     dot_text += "}"
     #
     print dot_text
@@ -50,10 +54,11 @@ def pprinter(flow_data, data_flow_graph):
 
 
 class FpgaAstOptimizer(ast.NodeTransformer):
-    """ docstring for FpgaAstOptimizer """
+
+    """ docstring for FpgaAstOptimizer. """
 
     def __init__(self, ast, dsl_classes):
-        """ docstring for __init__ """
+        """ docstring for __init__. """
         globals().update(dsl_classes)
         super(FpgaAstOptimizer, self).__init__()
         self.ast = ast
@@ -63,6 +68,7 @@ class FpgaAstOptimizer(ast.NodeTransformer):
         self.data_flow_graph = []
 
     def run(self):
+        """ docstring for run. """
         bla = FIA_Kernel_Linearizer()
         return bla.run(self.ast)
         self.visit(self.ast)
@@ -71,6 +77,7 @@ class FpgaAstOptimizer(ast.NodeTransformer):
         pprinter(self.data_flow, self.data_flow_graph)
 
     def visit_OutAssign(self, node):
+        """ docstring for visit_OutAssign. """
         prev = self.visit(node.value)
         if prev is not None:
             prev.next.append(self.visit(node.var))
@@ -80,15 +87,14 @@ class FpgaAstOptimizer(ast.NodeTransformer):
             next = self.visit(node.var)
             self.data_flow[next.next_id] = next
             self.data_flow_graph.append(next.next_id)
-            """
-            #
-            self.data_flow_graph.append(prev)
-            next = self.visit(node.var)
-            if next is not None:
-                self.data_flow_graph.append(next)
-            """
 
     def visit_TempAssign(self, node):
+        """
+        Visitor-Method for TempAssign node.
+
+        Adds TempAssigns target as key to the local_vars dict
+        with the visited node.value as dict value
+        """
         prev = self.visit(node.value)
         if prev is not None:
             self.data_flow_graph.append(prev)
@@ -98,6 +104,13 @@ class FpgaAstOptimizer(ast.NodeTransformer):
             self.identifiers[node.var.name] = next
 
     def visit_ImagePointOp(self, node):
+        """
+        Visitor-Method for ImagePointOp.
+
+        Creates PipelineObj for ImagePointOp and adds it to
+        previous objects next list.
+        Updates data_flow and data_flow_graph with previous object.
+        """
         prev = self.visit(node.value)
         if prev is not None:
             this = PipelineObj(id='ImagePointOp',
@@ -109,20 +122,15 @@ class FpgaAstOptimizer(ast.NodeTransformer):
             self.data_flow[prev.next_id] = prev
             self.data_flow_graph.append(prev.next_id)
             return this
-            #
-        """
-        prev = self.visit(node.target)
-        if prev is not None:
-            self.data_flow_graph.append(prev)
-            pipeObj = PipelineObj(id='ImagePointOp',
-                                  consumer=Pixel(mode='RGB', byte_size=3),
-                                  producer=Pixel(mode='RGB', byte_size=3))
-            return pipeObj
-        else:
-            return None
-        """
 
     def visit_ImageFilter(self, node):
+        """
+        Visitor-Method for ImageFilter.
+
+        Creates PipelineObj based on node.filter and adds it to
+        previous objects next list.
+        Updates data_flow and data_flow_graph with previous object.
+        """
         prev = self.visit(node.target)
         if prev is not None:
             this = PipelineObj(id='ImagePointOp',
@@ -130,7 +138,8 @@ class FpgaAstOptimizer(ast.NodeTransformer):
                                                   width=node.filter.size.n,
                                                   pattern=[1, 1, 1, 1,
                                                            0, 1, 1, 1, 1],
-                                                  pixel=Pixel(mode='RGB', byte_size=3)),
+                                                  pixel=Pixel(mode='RGB',
+                                                              byte_size=3)),
                                producer=Pixel(mode='RGB', byte_size=3),
                                next_id=hash(node),
                                next=[])
@@ -138,28 +147,15 @@ class FpgaAstOptimizer(ast.NodeTransformer):
             self.data_flow[prev.next_id] = prev
             self.data_flow_graph.append(prev.next_id)
             return this
-        """
-        prev = self.visit(node.target)
-        if prev is not None:
-            self.data_flow_graph.append(prev)
-            # PixelMask = namedtuple('PixelMask',['height','width','pattern','pixel'])
-            cons = PixelMask(height=node.filter.size.n,
-                             width=node.filter.size.n,
-                             pattern=[1,1,1,1,0,1,1,1,1],
-                             pixel=Pixel(mode='RGB', byte_size=3))
-            prod = Pixel(mode='RGB', byte_size=3)
-            #
-            pipeObj = PipelineObj(id='ImageFilter',
-                                  consumer=cons,
-                                  producer=prod)
-            self.data_flow_graph.append(pipeObj)
-            #
-            return pipeObj
-        else:
-            return None
-        """
 
     def visit_InImageObj(self, node):
+        """
+        Visitor-Method for InImageObj.
+
+        Creates PipelineObj based on node.
+        An InImageObj is always the first element in a data_flow description
+        therefore it has no previous object.
+        """
         prod = Pixel(mode=node.mode, byte_size=3)
         ret = PipelineObj(id="InImageObj",
                           consumer=None,
@@ -170,6 +166,14 @@ class FpgaAstOptimizer(ast.NodeTransformer):
         return ret
 
     def visit_OutImageObj(self, node):
+        """
+        Visitor-Method for OutImageObj.
+
+        Creates PipelineObj based on node
+        An OutImageObj is always the last element in a data_flow description
+        therefore handling the previous object is performed in the OutAssign
+        visitor method.
+        """
         cons = Pixel(mode=node.mode, byte_size=3)
         ret = PipelineObj(id="OutImageObj",
                           consumer=cons,
@@ -180,10 +184,11 @@ class FpgaAstOptimizer(ast.NodeTransformer):
         return ret
 
     def visit_Identifier(self, node):
+        """ docstring for visit_Identifier. """
         return self.identifiers[node.name]
 
 
-class FIA_Kernel_Optimizer(ast.NodeTransformer):
+class FiaKernelOptimizer(ast.NodeTransformer):
 
     def __init__(self):
         # parse dsl specification
@@ -281,7 +286,8 @@ class FIA_Kernel_Linearizer(ast.NodeTransformer):
         return DFImageFilter(filter=None, target=node.target)
 
     def visit_BinOp(self, node):
-        return DFBinOp(left=self.visit(node.left), right=self.visit(node.right))
+        return DFBinOp(left=self.visit(node.left),
+                       right=self.visit(node.right))
 
     def visit_OutAssign(self, node):
         node_value = self.visit(node.value)
@@ -407,19 +413,19 @@ class FIA_Kernel_DomainConverter(ast.NodeTransformer):
         self.DataFlowGraph = []
 
     def pprinter(self, item):
-        if type(item) is Data_Get:
+        if isinstance(item, Data_Get):
             print "Data_Get"
             for attr in item._fields:
                 print "\t", attr, getattr(item, attr)
-        elif type(item) is Data_Set:
+        elif isinstance(item, Data_Set):
             print "Data_Set"
             for attr in item._fields:
                 print "\t", attr, getattr(item, attr)
-        elif type(item) is Data_Op:
+        elif isinstance(item, Data_Op):
             print "Data_Op"
             for attr in item._fields:
                 n_attr = getattr(item, attr)
-                if type(n_attr) is list:
+                if isinstance(n_attr, list):
                     for i in n_attr:
                         self.pprinter(i)
                 else:
@@ -534,7 +540,8 @@ class VHDL_CodeGen(ast.NodeTransformer):
     def visit_Data_Op(self, node):
         op_sig_out = []
         if len(self.prev_interface) % node.data_in.depth == 0:
-            for new_block in range(0, len(self.prev_interface) / node.data_in.depth):
+            for new_block in range(0, len(
+                    self.prev_interface) / node.data_in.depth):
                 inpt_sig = []
                 print "OP-Block", new_block
                 for i in range(0, node.data_in.depth):
