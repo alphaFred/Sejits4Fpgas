@@ -29,11 +29,13 @@ out_image = temp1.point(lambda i: i * 2.2)
 
 # DummyFilter(size=types.IntType, bla=types.FloatType, blub)
 
+
 @Specialize("fpga")
 def dec_kernel(in_image=Image.new("RGB", (512, 512), "white"),
                out_image=Image.new("RGB", (512, 512), "white"),
-               in_arg=(3,12,4)):
-    temp1 = in_image.filter(DummyFilter(in_arg[0], blub=in_arg[1], bla=3.4)).point(lambda i: i + in_arg[2])
+               in_arg=(3, 12, 4)):
+    temp1 = in_image.filter(DummyFilter(in_arg[0], blub=in_arg[
+                            1], bla=3.4)).point(lambda i: i + in_arg[2])
     temp2 = temp1.filter(MinFilter(3))
     out_image = temp2
     return out_image
@@ -44,6 +46,6 @@ out_image = Image.new("RGB", (512, 512), "white")
 in_image2 = Image.open("./images/Lena.png")
 out_image2 = Image.new("RGB", (512, 512), "white")
 
-print "-"*80
+print "-" * 80
 print "first line\n"
-dec_kernel(in_image,out_image,25)
+dec_kernel(in_image, out_image, 25)
