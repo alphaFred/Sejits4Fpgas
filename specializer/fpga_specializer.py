@@ -11,8 +11,10 @@ from specializer.dsl.dsl_specification import dsl
 
 from specializer.utils.ast_visualizer import pformat_ast
 from specializer.utils.dsl_ast_transformer import DslAstTransformer
+from specializer.fpga.fpga_ast_optimizer import FpgaAstOptimizer
+from specializer.dsl.dsl_specification import dsl
 
-
+ 
 class ZYNQ_Specializer(object):
     """ docstring for ZYNQ_Specializer """
     def __init__(self, args, func):
@@ -31,12 +33,17 @@ class ZYNQ_Specializer(object):
     def run(self):
         """ docstring for run """
         ast_transformer = DslAstTransformer(self.func_ast, self.func_args, self.dsl_classes)
-        new_Ast = ast_transformer.run()
+        trans_ast = ast_transformer.run()
         ast.__dict__.update(self.dsl_classes)
-        sejits_ctree.browser_show_ast(new_Ast, file_name="transformed_dsl_ast.png")
+        sejits_ctree.browser_show_ast(trans_ast, file_name="transformed_dsl_ast.png")
         # DEBUG
         print "\nKERNEL TRANSFORMED\n"
-        pformat_ast(new_Ast)
+        #pformat_ast(trans_ast)
         print "#"*80,"\n\n"
         # !DEBUG
-        return new_Ast
+        
+        ast_optimizer = FpgaAstOptimizer(trans_ast, self.dsl_classes)
+        opt_ast = ast_optimizer.run()
+        sejits_ctree.browser_show_ast(opt_ast, file_name="optimized_dataFlow.png")
+
+        return None
