@@ -69,12 +69,12 @@ class FpgaAstOptimizer(ast.NodeTransformer):
 
     def run(self):
         """ docstring for run. """
-        bla = FIA_Kernel_Linearizer()
+        bla = FiaKernelLinearizer()
         return bla.run(self.ast)
         self.visit(self.ast)
         print self.data_flow
         print self.data_flow_graph
-        pprinter(self.data_flow, self.data_flow_graph)
+        prittyprinter(self.data_flow, self.data_flow_graph)
 
     def visit_OutAssign(self, node):
         """ docstring for visit_OutAssign. """
@@ -195,7 +195,7 @@ class FiaKernelOptimizer(ast.NodeTransformer):
         # initialize super classes
         super(FIA_Kernel_Optimizer, self).__init__()
         #
-        self.kernel_linearizer = FIA_Kernel_Linearizer()
+        self.kernel_linearizer = FiaKernelLinearizer()
         self.kernel_converter = FIA_Kernel_DomainConverter()
         self.localVars = {}
 
@@ -215,7 +215,9 @@ class FiaKernelOptimizer(ast.NodeTransformer):
 
 
 class DFImageFilter(ast.AST):
-    """docstring for Data_Buffer"""
+
+    """ docstring for DFImageFilter. """
+
     _attributes = ('lineno', 'col_offset')
     _fields = ['target']
     # _attributes
@@ -225,11 +227,14 @@ class DFImageFilter(ast.AST):
     target = None
 
     def label(self):
+        """ return label for graphviz node. """
         return ""
 
 
 class DFBinOp(ast.AST):
-    """docstring for Data_Buffer"""
+
+    """ docstring for DFBinOp. """
+
     _attributes = ('lineno', 'col_offset')
     _fields = ['left', 'right']
     # _attributes
@@ -240,11 +245,14 @@ class DFBinOp(ast.AST):
     right = None
 
     def label(self):
+        """ return label for graphviz node. """
         return ""
 
 
 class DFOutAssign(ast.AST):
-    """docstring for Data_Buffer"""
+
+    """ docstring for DFOutAssign. """
+
     _attributes = ('lineno', 'col_offset')
     _fields = ['var', 'value']
     # _attributes
@@ -255,20 +263,26 @@ class DFOutAssign(ast.AST):
     value = None
 
     def label(self):
+        """ return label for graphviz node. """
         return ""
 
 
-class FIA_Kernel_Linearizer(ast.NodeTransformer):
+class FiaKernelLinearizer(ast.NodeTransformer):
+
+    """ docstring for FiaKernelLinearizer. """
 
     def __init__(self):
-        super(FIA_Kernel_Linearizer, self).__init__()
+        """ docstring for __init__. """
+        super(FiaKernelLinearizer, self).__init__()
         #
         self.local_vars = dict()
 
     def run(self, ast):
+        """ docstring run. """
         return self.visit(ast)
 
     def visit_TempAssign(self, node):
+        """ docstring visit_TempAssign. """
         if node.var.name not in self.local_vars:
             node_value = self.visit(node.value)
             self.local_vars[node.var.name] = node_value
@@ -277,23 +291,27 @@ class FIA_Kernel_Linearizer(ast.NodeTransformer):
                 node.target.name)
 
     def visit_Identifier(self, node):
+        """ docstring visit_Identifier. """
         if node.name in self.local_vars:
             return self.local_vars[node.name]
         else:
             return node
 
     def visit_ImageFilter(self, node):
+        """ docstring visit ImageFilter. """
         return DFImageFilter(filter=None, target=node.target)
 
     def visit_BinOp(self, node):
+        """ docstring visit_BinOp. """
         return DFBinOp(left=self.visit(node.left),
                        right=self.visit(node.right))
 
     def visit_OutAssign(self, node):
+        """ docstring visit_OutAssign. """
         node_value = self.visit(node.value)
         return DFOutAssign(var=node.var, value=node_value,)
 
-
+'''
 class Data_Widening(ast.AST):
     """docstring for Data_Widening"""
     _attributes = ('lineno', 'col_offset')
@@ -557,3 +575,4 @@ class VHDL_CodeGen(ast.NodeTransformer):
             print "Data_Set"
             for sig in self.prev_interface:
                 print "\t input:", sig
+'''
