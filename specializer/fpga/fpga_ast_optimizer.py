@@ -6,6 +6,8 @@ import ast
 
 from subprocess import Popen, PIPE
 from collections import namedtuple
+from asp import tree_grammar
+from specializer.dsl.fpga_dag_specification import dag_spec
 
 
 Pixel = namedtuple('Pixel', ['mode', 'byte_size'])
@@ -13,7 +15,6 @@ PixelMask = namedtuple('PixelMask', ['height', 'width', 'pattern', 'pixel'])
 
 PipelineObj = namedtuple(
     'PipelineObj', ['id', 'consumer', 'producer', 'next_id', 'next'])
-
 
 def prittyprinter(flow_data, data_flow_graph):
     """ docstring for pprinter. """
@@ -57,148 +58,173 @@ class FpgaAstOptimizer(ast.NodeTransformer):
 
     """ docstring for FpgaAstOptimizer. """
 
-    def __init__(self, ast, dsl_classes):
-        """ docstring for __init__. """
-        globals().update(dsl_classes)
+    class FpgaDag(object):
+
+        """ docstring for FpgaDag. """
+
+        def __init__(self):
+            self.dag_objects = []
+            self.dag_obj_dict = dict()
+
+        def add(self, node, dag_node):
+            if hash(node) not in self.dag_obj_dict:
+                self.dag_objects.append(dag_node)
+                self.dag_obj_dict[hash(node)] = len(self.dag_objects) - 1
+
+        def update_next(self, prev_hash, next_node):
+            obj_idx = self.dag_obj_dict[prev_hash]
+            self.dag_objects[obj_idx].next.append(next_node)
+
+    def __init__(self, ast, dsl_ast_classes):
+        """
+        docstring for __init__.
+
+        Update globals() with:
+            - DSL object classes
+            - DAG object classes
+        """
         super(FpgaAstOptimizer, self).__init__()
+        # add dsl ast object classes
+        globals().update(dsl_ast_classes)
+        # add dag object classes
+        # tree_grammar.parse(dag_spec, globals(), checker=None)
+        #
+        self.FpgaDAG = self.FpgaDag()
+        # self.FpgaDAG = namedtuple('FpgaDAG', ['objects', 'objs_dict'])
+        # self.FpgaDAG(objects=[], objs_dict=dict())
+        #
         self.ast = ast
         self.identifiers = dict()
         self.data_flow = dict()
         self.flow_id = 0
         self.data_flow_graph = []
+        #
+        self.dag_obj = []
+        self.dag_dict = dict()
 
     def run(self):
         """ docstring for run. """
-        bla = FiaKernelLinearizer()
-        return bla.run(self.ast)
-        self.visit(self.ast)
-        print self.data_flow
-        print self.data_flow_graph
-        prittyprinter(self.data_flow, self.data_flow_graph)
+        linearizer = FpgaAstLinearizer()
+        lin_ast = linearizer.run(self.ast)
+        self.visit(lin_ast)
+        return(self.FpgaDAG.dag_objects[0])
 
-    def visit_OutAssign(self, node):
-        """ docstring for visit_OutAssign. """
-        prev = self.visit(node.value)
-        if prev is not None:
-            prev.next.append(self.visit(node.var))
-            self.data_flow[prev.next_id] = prev
-            self.data_flow_graph.append(prev.next_id)
-            #
-            next = self.visit(node.var)
-            self.data_flow[next.next_id] = next
-            self.data_flow_graph.append(next.next_id)
+    def getAstNodes(self):
+        """ return dict of all special DataFlow nodes. """
+        ret = {"DFImageFilter": DFImageFilter,
+               "DFBinOp": DFBinOp,
+               "DFOutImage": DFOutImage,
+               "DFInImage": DFInImage,
+               "DagOutImage": DagOutImage,
+               "DagImageFilter": DagImageFilter,
+               "DagInImage": DagInImage,
+               "DagImagePointOp": DagImagePointOp}
+        return ret
 
-    def visit_TempAssign(self, node):
-        """
-        Visitor-Method for TempAssign node.
+    def visit_KernelModule(self, node):
+        self.visit(node.body[0])
 
-        Adds TempAssigns target as key to the local_vars dict
-        with the visited node.value as dict value
-        """
-        prev = self.visit(node.value)
-        if prev is not None:
-            self.data_flow_graph.append(prev)
-            next = PipelineObj(id=node.var.name,
-                               consumer=None,
-                               producer=prev.producer)
-            self.identifiers[node.var.name] = next
+    def visit_DFOutImage(self, node):
+        """ Visitor-Method for DFOutImage. """
+        prev = self.visit(node.prev)
+        #
+        dag_node = DagOutImage()
+        self.FpgaDAG.add(node, dag_node)
+        self.FpgaDAG.update_next(prev, dag_node)
+        #
+        return hash(node)
 
     def visit_ImagePointOp(self, node):
-        """
-        Visitor-Method for ImagePointOp.
-
-        Creates PipelineObj for ImagePointOp and adds it to
-        previous objects next list.
-        Updates data_flow and data_flow_graph with previous object.
-        """
-        prev = self.visit(node.value)
-        if prev is not None:
-            this = PipelineObj(id='ImagePointOp',
-                               consumer=Pixel(mode='RGB', byte_size=3),
-                               producer=Pixel(mode='RGB', byte_size=3),
-                               next_id=hash(node),
-                               next=[])
-            prev.next.append(this)
-            self.data_flow[prev.next_id] = prev
-            self.data_flow_graph.append(prev.next_id)
-            return this
+        """ Visitor-Method for ImagePointOp. """
+        prev = self.visit(node.target)
+        #
+        dag_node = DagImagePointOp(next=[])
+        self.FpgaDAG.add(node, dag_node)
+        self.FpgaDAG.update_next(prev, dag_node)
+        #
+        return hash(node)
 
     def visit_ImageFilter(self, node):
-        """
-        Visitor-Method for ImageFilter.
-
-        Creates PipelineObj based on node.filter and adds it to
-        previous objects next list.
-        Updates data_flow and data_flow_graph with previous object.
-        """
+        """ Visitor-Method for ImageFilter. """
         prev = self.visit(node.target)
-        if prev is not None:
-            this = PipelineObj(id='ImagePointOp',
-                               consumer=PixelMask(height=node.filter.size.n,
-                                                  width=node.filter.size.n,
-                                                  pattern=[1, 1, 1, 1,
-                                                           0, 1, 1, 1, 1],
-                                                  pixel=Pixel(mode='RGB',
-                                                              byte_size=3)),
-                               producer=Pixel(mode='RGB', byte_size=3),
-                               next_id=hash(node),
-                               next=[])
-            prev.next.append(this)
-            self.data_flow[prev.next_id] = prev
-            self.data_flow_graph.append(prev.next_id)
-            return this
+        #
+        dag_node = DagImageFilter(next=[])
+        self.FpgaDAG.add(node, dag_node)
+        self.FpgaDAG.update_next(prev, dag_node)
+        #
+        return hash(node)
+
+    def visit_BinOp(self, node):
+        """ Visitor-Method for BinOp. """
+        prev_left = self.visit(node.left)
+        prev_right = self.visit(node.right)
+        #
+        dag_node = DagBinOp(next=[])
+        #
+        for prev in (prev_left, prev_right):
+            self.FpgaDAG.add(node, dag_node)
+            self.FpgaDAG.update_next(prev, dag_node)
+        return hash(node)
 
     def visit_InImageObj(self, node):
-        """
-        Visitor-Method for InImageObj.
+        """ Visitor-Method for InImageObj. """
+        dag_node = DagInImage(next=[])
+        self.FpgaDAG.add(node, dag_node)
+        #
+        return hash(node)
 
-        Creates PipelineObj based on node.
-        An InImageObj is always the first element in a data_flow description
-        therefore it has no previous object.
-        """
-        prod = Pixel(mode=node.mode, byte_size=3)
-        ret = PipelineObj(id="InImageObj",
-                          consumer=None,
-                          producer=prod,
-                          next_id=hash(node),
-                          next=[])
-        self.flow_id += 1
-        return ret
 
-    def visit_OutImageObj(self, node):
-        """
-        Visitor-Method for OutImageObj.
+class DagOutImage(ast.AST):
+    _attributes = ('lineno', 'col_offset')
+    _fields = []
+    def label(self):
+        """ return label for graphviz node. """
+        return ""
 
-        Creates PipelineObj based on node
-        An OutImageObj is always the last element in a data_flow description
-        therefore handling the previous object is performed in the OutAssign
-        visitor method.
-        """
-        cons = Pixel(mode=node.mode, byte_size=3)
-        ret = PipelineObj(id="OutImageObj",
-                          consumer=cons,
-                          producer=None,
-                          next_id=hash(node),
-                          next=[])
-        self.flow_id += 1
-        return ret
+class DagInImage(ast.AST):
+    _attributes = ('lineno', 'col_offset')
+    _fields = ['next']
+    next = None
+    def label(self):
+        """ return label for graphviz node. """
+        return ""
 
-    def visit_Identifier(self, node):
-        """ docstring for visit_Identifier. """
-        return self.identifiers[node.name]
+class DagImageFilter(ast.AST):
+    _attributes = ('lineno', 'col_offset')
+    _fields = ['next']
+    next = None
+    def label(self):
+        """ return label for graphviz node. """
+        return ""
 
+class DagImagePointOp(ast.AST):
+    _attributes = ('lineno', 'col_offset')
+    _fields = ['next']
+    next = None
+    def label(self):
+        """ return label for graphviz node. """
+        return ""
+
+class DagBinOp(ast.AST):
+    _attributes = ('lineno', 'col_offset')
+    _fields = ['next']
+    next = None
+    def label(self):
+        """ return label for graphviz node. """
+        return ""
 
 class DFImageFilter(ast.AST):
 
     """ docstring for DFImageFilter. """
 
     _attributes = ('lineno', 'col_offset')
-    _fields = ['target']
+    _fields = ['filter', 'next']
     # _attributes
     col_offset = None
     lineno = None
     # _fields
-    target = None
+    filter = None
+    next = None
 
     def label(self):
         """ return label for graphviz node. """
@@ -223,31 +249,53 @@ class DFBinOp(ast.AST):
         return ""
 
 
-class DFOutAssign(ast.AST):
+class DFInImage(ast.AST):
 
     """ docstring for DFOutAssign. """
 
     _attributes = ('lineno', 'col_offset')
-    _fields = ['var', 'value']
+    _fields = ['id', 'mode', 'size', 'next']
     # _attributes
     col_offset = None
     lineno = None
     # _fields
-    var = None
-    value = None
+    id = None
+    mode = None
+    size = None
+    next = None
 
     def label(self):
         """ return label for graphviz node. """
         return ""
 
 
-class FiaKernelLinearizer(ast.NodeTransformer):
+class DFOutImage(ast.AST):
 
-    """ docstring for FiaKernelLinearizer. """
+    """ docstring for DFOutAssign. """
+
+    _attributes = ('lineno', 'col_offset')
+    _fields = ['id', 'mode', 'size', 'prev']
+    # _attributes
+    col_offset = None
+    lineno = None
+    # _fields
+    id = None
+    mode = None
+    size = None
+    prev = None
+
+    def label(self):
+        """ return label for graphviz node. """
+        return ""
+
+
+class FpgaAstLinearizer(ast.NodeTransformer):
+
+    """ docstring for FpgaAstLinearizer. """
 
     def __init__(self):
         """ docstring for __init__. """
-        super(FiaKernelLinearizer, self).__init__()
+        super(FpgaAstLinearizer, self).__init__()
         #
         self.local_vars = dict()
 
@@ -261,8 +309,8 @@ class FiaKernelLinearizer(ast.NodeTransformer):
             node_value = self.visit(node.value)
             self.local_vars[node.var.name] = node_value
         else:
-            assert False, "{0} has been already used as assignment target!".format(
-                node.target.name)
+            assert False, "{0} has been already used as assignment target!"\
+                .format(node.target.name)
 
     def visit_Identifier(self, node):
         """ docstring visit_Identifier. """
@@ -273,17 +321,22 @@ class FiaKernelLinearizer(ast.NodeTransformer):
 
     def visit_ImageFilter(self, node):
         """ docstring visit ImageFilter. """
-        return DFImageFilter(filter=None, target=node.target)
+        return ImageFilter(filter=node.filter,
+                           target=self.visit(node.target))
 
     def visit_BinOp(self, node):
         """ docstring visit_BinOp. """
-        return DFBinOp(left=self.visit(node.left),
-                       right=self.visit(node.right))
+        return BinOp(left=self.visit(node.left),
+                     op=node.op,
+                     right=self.visit(node.right))
 
     def visit_OutAssign(self, node):
         """ docstring visit_OutAssign. """
         node_value = self.visit(node.value)
-        return DFOutAssign(var=node.var, value=node_value,)
+        return DFOutImage(id=node.var.id,
+                          mode=node.var.mode,
+                          size=node.var.size,
+                          prev=node_value)
 
 '''
 class FiaKernelOptimizer(ast.NodeTransformer):
