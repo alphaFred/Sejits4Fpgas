@@ -1,3 +1,4 @@
+""" docstring for dsl_example module. """
 __author__ = 'philipp ebensberger'
 
 import Image
