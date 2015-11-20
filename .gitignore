@@ -30,3 +30,5 @@
 /images/data_flow_graph.png
 /images/optimized_dataFlow.png
 /ebensberger_ma.sublime-workspace
+/sejits_ctree/dotgen_dag.pyc
+/specializer/dsl/fpga_dag_specification.pyc
