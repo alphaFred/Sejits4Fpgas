@@ -188,32 +188,6 @@ class FpgaAstOptimizer(ast.NodeTransformer):
         return self.identifiers[node.name]
 
 
-class FiaKernelOptimizer(ast.NodeTransformer):
-
-    def __init__(self):
-        # parse dsl specification
-        # initialize super classes
-        super(FIA_Kernel_Optimizer, self).__init__()
-        #
-        self.kernel_linearizer = FiaKernelLinearizer()
-        self.kernel_converter = FIA_Kernel_DomainConverter()
-        self.localVars = {}
-
-    def run(self, ast_data):
-        return self.visit(ast_data)
-
-    def visit_Module(self, node):
-        # perform ast linearization
-        kernel_linearized = self.kernel_linearizer.run(node)
-        # DEBUG
-        print "\nKERNEL LINEARIZED\n"
-        pformat_ast(kernel_linearized)
-        print "#" * 80, "\n\n"
-        # !DEBUG
-        kernel_unrolled = self.kernel_converter.run(kernel_linearized)
-        return kernel_unrolled
-
-
 class DFImageFilter(ast.AST):
 
     """ docstring for DFImageFilter. """
@@ -312,6 +286,34 @@ class FiaKernelLinearizer(ast.NodeTransformer):
         return DFOutAssign(var=node.var, value=node_value,)
 
 '''
+class FiaKernelOptimizer(ast.NodeTransformer):
+
+    def __init__(self):
+        # parse dsl specification
+        # initialize super classes
+        super(FIA_Kernel_Optimizer, self).__init__()
+        #
+        self.kernel_linearizer = FiaKernelLinearizer()
+        self.kernel_converter = FIA_Kernel_DomainConverter()
+        self.localVars = {}
+
+    def run(self, ast_data):
+        """ docstring for run. """
+        return self.visit(ast_data)
+
+    def visit_Module(self, node):
+        """ docstring for visit_Module. """
+        # perform ast linearization
+        kernel_linearized = self.kernel_linearizer.run(node)
+        # DEBUG
+        print "\nKERNEL LINEARIZED\n"
+        pformat_ast(kernel_linearized)
+        print "#" * 80, "\n\n"
+        # !DEBUG
+        kernel_unrolled = self.kernel_converter.run(kernel_linearized)
+        return kernel_unrolled
+
+
 class Data_Widening(ast.AST):
     """docstring for Data_Widening"""
     _attributes = ('lineno', 'col_offset')
