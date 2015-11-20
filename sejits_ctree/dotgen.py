@@ -14,7 +14,6 @@ def to_dot_outer_for_py_ast_nodes(self):
 
 def to_dot_inner_for_py_ast_nodes(self):
     from sejits_ctree.dotgen import DotGenVisitor
-
     return DotGenVisitor().visit(self)
 
 """
