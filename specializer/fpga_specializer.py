@@ -1,25 +1,22 @@
+""" docstring for module fpga_specializer. """
 __author__ = 'philipp ebensberger'
 
 import ast
 import inspect
-import Image
-
 import sejits_ctree
 
 from asp import tree_grammar
 from specializer.dsl.dsl_specification import dsl
-
-from specializer.utils.ast_visualizer import pformat_ast
 from specializer.utils.dsl_ast_transformer import DslAstTransformer
 from specializer.fpga.fpga_ast_optimizer import FpgaAstOptimizer
-from specializer.dsl.dsl_specification import dsl
 
 
-class ZYNQ_Specializer(object):
-    """ docstring for ZYNQ_Specializer """
+class ZynqSpecializer(object):
+
+    """ docstring for ZYNQ_Specializer. """
 
     def __init__(self, args, func):
-        """ docstring for __init__ """
+        """ docstring for __init__. """
         # parse dsl and add dsl classes to dsl_classes dictionary
         self.dsl_classes = dict()
         tree_grammar.parse(dsl, self.dsl_classes, checker=None)
@@ -32,8 +29,10 @@ class ZYNQ_Specializer(object):
     #   HELPER METHODS                                                        #
     # ======================================================================= #
     def run(self):
-        """ docstring for run """
-        ast_transformer = DslAstTransformer(self.func_ast, self.func_args, self.dsl_classes)
+        """ docstring for run. """
+        ast_transformer = DslAstTransformer(self.func_ast,
+                                            self.func_args,
+                                            self.dsl_classes)
         trans_ast = ast_transformer.run()
         ast.__dict__.update(self.dsl_classes)
         sejits_ctree.browser_show_ast(

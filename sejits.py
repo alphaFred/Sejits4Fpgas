@@ -1,24 +1,26 @@
-"""
-    sejits_fia Module provides the specialize decorator
-"""
-import sys
+""" sejits_fia Module provides the specialize decorator. """
+__author__ = 'philipp ebensberger'
+
 import traceback
 
-from specializer.fpga_specializer import ZYNQ_Specializer
+from specializer.fpga_specializer import ZynqSpecializer
 from specializer.cpu_specializer import X86_Specializer, ARM_Specializer
 from specializer.gpu_specializer import CUDA_Specializer
 
 
 # TODO: add auto initialize
-core_dispatch = {"fpga" :ZYNQ_Specializer,
-                 "x86"  :X86_Specializer,
-                 "arm"  :ARM_Specializer,
-                 "cuda" :CUDA_Specializer}
+core_dispatch = {"fpga": ZynqSpecializer,
+                 "x86": X86_Specializer,
+                 "arm": ARM_Specializer,
+                 "cuda": CUDA_Specializer}
 
 
 class Specialize(object):
-    """docstring for Specialize"""
+
+    """ docstring for Specialize. """
+
     def __init__(self, target="python"):
+        """ docstring for __init__. """
         super(Specialize, self).__init__()
         self.sejits_active = False
         if target in core_dispatch:
@@ -28,9 +30,9 @@ class Specialize(object):
             self.sejits_active = False
 
     def __call__(self, wrapped_func):
-        """ docstring for __call__ """
+        """ docstring for __call__. """
         ret_func = None
-        if self.sejits_active == False:
+        if self.sejits_active is False:
             ret_func = wrapped_func
         else:
             try:
@@ -47,11 +49,17 @@ class Specialize(object):
             else:
                 print "return fpga dummy"
                 ret_func = fpga_dummy
-        #
-        def wrappee(*args,**kwargs):
-            """ docstring for wrapped """
-            ret_func(*args,**kwargs)
+
+        def wrappee(*args, **kwargs):
+            """ docstring for wrapped. """
+            ret_func(*args, **kwargs)
         return wrappee
 
+
 def fpga_dummy(*args, **kwargs):
+    """
+    fpga dummy method.
+
+    returned in case of successfull specalization.
+    """
     print "FPGA-Dummy Function"
