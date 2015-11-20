@@ -29,13 +29,19 @@ dsl = '''
 
     Identifier(name=types.StringType)
 
-    BinOp(left=Int|Float|Identifier, op, right=Int|Float|Identifier)
-
     DataOp = ImageFilter
            | ImagePointOp
 
-    InImageObj(id=types.StringType, mode=types.StringType, size=types.TupleType, args)
-    OutImageObj(id=types.StringType, mode=types.StringType, size=types.TupleType)
+    BinOp(left=Int|Float|Identifier|InImageObj|DataOp, op,
+          right=Int|Float|Identifier|InImageObj|DataOp)
+
+    InImageObj(id=types.StringType,
+               mode=types.StringType,
+               size=types.TupleType,
+               args)
+    OutImageObj(id=types.StringType,
+                mode=types.StringType,
+                size=types.TupleType)
 
     ReturnAssign(value=OutImageObj)
     TempAssign(var=Identifier, value=Expr|DataOp)
