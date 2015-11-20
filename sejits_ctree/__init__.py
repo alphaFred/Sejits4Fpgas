@@ -157,3 +157,12 @@ def browser_show_ast(tree, file_name=None):
     """
     import sejits_ctree.dotgen
     return DotManager.dot_ast_to_browser(tree, file_name)
+
+def browser_show_dag(tree, file_name=None):
+    """
+    convenience method to display an DAG in ipython
+    converts tree in place to a dot format
+    then renders that into a png file
+    """
+    import sejits_ctree.dotgen_dag
+    return DotManager.dot_ast_to_browser(tree, file_name)
