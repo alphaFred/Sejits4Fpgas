@@ -4,6 +4,7 @@ __author__ = 'philipp ebensberger'
 import ast
 import inspect
 import sejits_ctree
+import copy
 
 from asp import tree_grammar
 from specializer.dsl.dsl_specification import dsl
@@ -30,22 +31,22 @@ class ZynqSpecializer(object):
     # ======================================================================= #
     def run(self):
         """ docstring for run. """
+        ast.__dict__.update(self.dsl_classes)
+        #
         ast_transformer = DslAstTransformer(self.func_ast,
                                             self.func_args,
                                             self.dsl_classes)
         trans_ast = ast_transformer.run()
-        ast.__dict__.update(self.dsl_classes)
-        sejits_ctree.browser_show_ast(
-            trans_ast, file_name="transformed_dsl_ast.png")
-        # DEBUG
-        print "\nKERNEL TRANSFORMED\n"
-        # pformat_ast(trans_ast)
-        print "#" * 80, "\n\n"
-        # !DEBUG
-
+        pprint_ast = copy.deepcopy(trans_ast)
+        #
         ast_optimizer = FpgaAstOptimizer(trans_ast, self.dsl_classes)
+        #
+        ast.__dict__.update(ast_optimizer.getAstNodes())
+        #
         opt_ast = ast_optimizer.run()
+        #
         sejits_ctree.browser_show_ast(
+            pprint_ast, file_name="transformed_dsl_ast.png")
+        sejits_ctree.browser_show_dag(
             opt_ast, file_name="optimized_dataFlow.png")
-
         return None
