@@ -19,32 +19,18 @@ dag_spec = '''
                    mode=types.StringType,
                    size=types.TupleType,
                    cons=Buffer,
-                   next=types.NoneType,
                    args)
 
-    DagBinOp(left=Int|Float|Identifier|InImageObj|DataOp,
-             op,
-             right=Int|Float|Identifier|InImageObj|DataOp,
+    DagBinOp(op,
              cons=Buffer,
              prod=Buffer,
              next=types.ListType)
 
-    Filter = DagMinFilter
-           | DagMaxFilter
-           | DagDummyFilter
-
-    DagMinFilter(cons=Buffer, prod=Buffer)
-    DagMaxFilter(cons=Buffer, prod=Buffer)
-    DagDummyFilter(cons=Buffer, prod=Buffer)
-
-    DagImageFilter(target=(InImageObj|Identifier|DataOp),
-                   filter=Filter,
-                   cons=Buffer,
+    DagImageFilter(cons=Buffer,
                    prod=Buffer,
                    next=types.ListType)
 
-    DagImagePointOp(target=(InImageObj|Identifier|DataOp),
-                    op=Expr|ast.BinOp,
+    DagImagePointOp(op,
                     cons=Buffer,
                     prod=Buffer,
                     next=types.ListType)
