@@ -4,6 +4,7 @@ __author__ = 'philipp ebensberger'
 import Image
 
 from sejits import Specialize
+from ImageFilter import MinFilter, MaxFilter
 
 
 # Example 1: Apply Minimum-Filter
@@ -35,10 +36,9 @@ out_image = temp1.point(lambda i: i * 2.2)
 def dec_kernel(in_image=Image.new("RGB", (512, 512), "white"),
                out_image=Image.new("RGB", (512, 512), "white"),
                in_arg=(3, 12, 4)):
-    temp1 = in_image.filter(DummyFilter(in_arg[0], blub=in_arg[
-                            1], bla=3.4)).point(lambda i: i + in_arg[2])
-    temp2 = temp1.filter(MinFilter(3))
-    out_image = temp2
+    temp1 = in_image.filter(MaxFilter(size=5))
+    out_image = temp1 + in_image.filter(MinFilter(size=3))\
+        .point(lambda i: i + 25)
     return out_image
 
 in_image = Image.open("./images/Lena.png")
