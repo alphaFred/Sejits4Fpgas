@@ -9,7 +9,12 @@ def dag_label_for_py_ast_nodes(self):
     return PyDotLabeller().visit(self)
 
 def dag_to_dot_outer_for_py_ast_nodes(self):
-    return "digraph mytree {\n%s\n%s}" % ('rankdir="LR"',self._to_dot())
+    return "digraph mytree {\n%s\n%s}" % (str.join("\n",
+                                                   ['rankdir="LR"',
+                                                    'splines=line',
+                                                    'splines=true',
+                                                    'node []']),
+                                          self._to_dot())
 
 def dag_to_dot_inner_for_py_ast_nodes(self):
     from sejits_ctree.dotgen_dag import DagDotGenVisitor
@@ -23,8 +28,8 @@ can't.
 for entry in ast.__dict__.values():
     try:
         if issubclass(entry, ast.AST):
-            entry.label   = dag_label_for_py_ast_nodes
-            entry.to_dot  = dag_to_dot_outer_for_py_ast_nodes
+            entry.label = dag_label_for_py_ast_nodes
+            entry.to_dot = dag_to_dot_outer_for_py_ast_nodes
             entry._to_dot = dag_to_dot_inner_for_py_ast_nodes
     except TypeError:
         pass
@@ -36,28 +41,29 @@ class DotGenLabeller(NodeVisitor):
 
 
 class DagDotGenVisitor(NodeVisitor):
+
     """
     Generates a representation of the AST in the DOT graph language.
+
     See http://en.wikipedia.org/wiki/DOT_(graph_description_language)
     """
+
     def __init__(self):
+        """ docstring for __init__. """
         self.dag_objs = set()
 
     @staticmethod
     def _qualified_name(obj):
-        """
-        return object name with leading module
-        """
+        """ Return object name with leading module. """
         return "%s.%s" % (obj.__module__, obj.__name__)
 
     def label(self, node):
-        """
-        A string to provide useful information for visualization, debugging, etc.
-        """
+        """ Return string for visualization, debugging, etc. """
         return r"%s\n%s" % (type(node).__name__[3:], node.label())
 
     # TODO: change formation to visitor pattern
     def format(self, node):
+        """ docstring for format. """
         formats = {"DagImageFilter": ', style=filled, fillcolor="#00EB5E"',
                    "DagImagePointOp": ', style=filled, fillcolor="#C2FF66"',
                    "DagInImage": ', style=filled, fillcolor="#FFF066"',
@@ -66,18 +72,22 @@ class DagDotGenVisitor(NodeVisitor):
         return formats.get(type(node).__name__, "")
 
     def generic_visit(self, node):
-
+        """ docstring for generic_visit. """
         # label this node
-        out_string = 'n%s [label="%s" %s];\n' % (id(node), self.label(node), self.format(node))
-
+        out_string = 'n%s [label="%s" %s];\n' % (id(node),
+                                                 self.label(node),
+                                                 self.format(node))
         # edges to children
-        for fieldname, fieldvalue in ast.iter_fields(node):
-            for index, child in enumerate_flatten(fieldvalue):
-                if isinstance(child, ast.AST):
-                    suffix = "".join(["[%d]" % i for i in index])
-                    if hash((id(node), id(child))) not in self.dag_objs:
-                        out_string += 'n{} -> n{} [label="{}{}"];\n'.format(
-                            id(node), id(child), fieldname, suffix)
-                        self.dag_objs.add(hash((id(node), id(child))))
-                    out_string += self.visit(child)
+        try:
+            for next_node in node.next:
+                if hash((id(node), id(next_node))) not in self.dag_objs:
+                    out_string += 'n{} -> n{} [label="{} -> {}"];\n'.format(
+                        id(node), id(next_node),
+                        getattr(node, "prod", "").__class__.__name__,
+                        getattr(next_node, "cons", "").__class__.__name__)
+                    #
+                    self.dag_objs.add(hash((id(node), id(next_node))))
+                out_string += self.visit(next_node)
+        except AttributeError:
+            pass
         return out_string
