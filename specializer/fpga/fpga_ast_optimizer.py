@@ -87,7 +87,9 @@ class FpgaAstOptimizer(ast.NodeTransformer):
         # add dsl ast object classes
         globals().update(dsl_ast_classes)
         # add dag object classes
-        # tree_grammar.parse(dag_spec, globals(), checker=None)
+        self.dag_classes = dict()
+        tree_grammar.parse(dag_spec, self.dag_classes, checker=None)
+        globals().update(self.dag_classes)
         #
         self.FpgaDAG = self.FpgaDag()
         # self.FpgaDAG = namedtuple('FpgaDAG', ['objects', 'objs_dict'])
@@ -111,15 +113,7 @@ class FpgaAstOptimizer(ast.NodeTransformer):
 
     def getAstNodes(self):
         """ return dict of all special DataFlow nodes. """
-        ret = {"DFImageFilter": DFImageFilter,
-               "DFBinOp": DFBinOp,
-               "DFOutImage": DFOutImage,
-               "DFInImage": DFInImage,
-               "DagOutImage": DagOutImage,
-               "DagImageFilter": DagImageFilter,
-               "DagInImage": DagInImage,
-               "DagImagePointOp": DagImagePointOp}
-        return ret
+        return self.dag_classes
 
     def visit_KernelModule(self, node):
         self.visit(node.body[0])
@@ -128,7 +122,11 @@ class FpgaAstOptimizer(ast.NodeTransformer):
         """ Visitor-Method for DFOutImage. """
         prev = self.visit(node.prev)
         #
-        dag_node = DagOutImage()
+        dag_node = DagOutImageObj(id=node.id,
+                                  mode=node.mode,
+                                  size=node.size,
+                                  cons=Datum(bit_size=24),
+                                  args=None)
         self.FpgaDAG.add(node, dag_node)
         self.FpgaDAG.update_next(prev, dag_node)
         #
@@ -138,7 +136,10 @@ class FpgaAstOptimizer(ast.NodeTransformer):
         """ Visitor-Method for ImagePointOp. """
         prev = self.visit(node.target)
         #
-        dag_node = DagImagePointOp(next=[])
+        dag_node = DagImagePointOp(op=node.op.op,
+                                   cons=Data(width=3, bit_size=24),
+                                   prod=Datum(bit_size=24),
+                                   next=[])
         self.FpgaDAG.add(node, dag_node)
         self.FpgaDAG.update_next(prev, dag_node)
         #
@@ -148,7 +149,9 @@ class FpgaAstOptimizer(ast.NodeTransformer):
         """ Visitor-Method for ImageFilter. """
         prev = self.visit(node.target)
         #
-        dag_node = DagImageFilter(next=[])
+        dag_node = DagImageFilter(cons=Data(width=3, bit_size=24),
+                                  prod=Datum(bit_size=24),
+                                  next=[])
         self.FpgaDAG.add(node, dag_node)
         self.FpgaDAG.update_next(prev, dag_node)
         #
@@ -159,7 +162,10 @@ class FpgaAstOptimizer(ast.NodeTransformer):
         prev_left = self.visit(node.left)
         prev_right = self.visit(node.right)
         #
-        dag_node = DagBinOp(next=[])
+        dag_node = DagBinOp(op=node.op,
+                            cons=Data(width=3, bit_size=24),
+                            prod=Datum(bit_size=24),
+                            next=[])
         #
         for prev in (prev_left, prev_right):
             self.FpgaDAG.add(node, dag_node)
@@ -168,105 +174,15 @@ class FpgaAstOptimizer(ast.NodeTransformer):
 
     def visit_InImageObj(self, node):
         """ Visitor-Method for InImageObj. """
-        dag_node = DagInImage(next=[])
+        dag_node = DagInImageObj(id=node.id,
+                                 mode=node.mode,
+                                 size=node.size,
+                                 prod=Datum(bit_size=24),
+                                 next=[],
+                                 args=None)
         self.FpgaDAG.add(node, dag_node)
         #
         return hash(node)
-
-
-class DagOutImage(ast.AST):
-    _attributes = ('lineno', 'col_offset')
-    _fields = []
-    def label(self):
-        """ return label for graphviz node. """
-        return ""
-
-class DagInImage(ast.AST):
-    _attributes = ('lineno', 'col_offset')
-    _fields = ['next']
-    next = None
-    def label(self):
-        """ return label for graphviz node. """
-        return ""
-
-class DagImageFilter(ast.AST):
-    _attributes = ('lineno', 'col_offset')
-    _fields = ['next']
-    next = None
-    def label(self):
-        """ return label for graphviz node. """
-        return ""
-
-class DagImagePointOp(ast.AST):
-    _attributes = ('lineno', 'col_offset')
-    _fields = ['next']
-    next = None
-    def label(self):
-        """ return label for graphviz node. """
-        return ""
-
-class DagBinOp(ast.AST):
-    _attributes = ('lineno', 'col_offset')
-    _fields = ['next']
-    next = None
-    def label(self):
-        """ return label for graphviz node. """
-        return ""
-
-class DFImageFilter(ast.AST):
-
-    """ docstring for DFImageFilter. """
-
-    _attributes = ('lineno', 'col_offset')
-    _fields = ['filter', 'next']
-    # _attributes
-    col_offset = None
-    lineno = None
-    # _fields
-    filter = None
-    next = None
-
-    def label(self):
-        """ return label for graphviz node. """
-        return ""
-
-
-class DFBinOp(ast.AST):
-
-    """ docstring for DFBinOp. """
-
-    _attributes = ('lineno', 'col_offset')
-    _fields = ['left', 'right']
-    # _attributes
-    col_offset = None
-    lineno = None
-    # _fields
-    left = None
-    right = None
-
-    def label(self):
-        """ return label for graphviz node. """
-        return ""
-
-
-class DFInImage(ast.AST):
-
-    """ docstring for DFOutAssign. """
-
-    _attributes = ('lineno', 'col_offset')
-    _fields = ['id', 'mode', 'size', 'next']
-    # _attributes
-    col_offset = None
-    lineno = None
-    # _fields
-    id = None
-    mode = None
-    size = None
-    next = None
-
-    def label(self):
-        """ return label for graphviz node. """
-        return ""
 
 
 class DFOutImage(ast.AST):
