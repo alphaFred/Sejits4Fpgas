@@ -36,13 +36,15 @@ class Specialize(object):
             ret_func = wrapped_func
         else:
             try:
-                assert wrapped_func.func_defaults is not None, "ERROR NO FUNC_DEFAULTS!"
+                assert wrapped_func.func_defaults is not None,\
+                    "ERROR NO FUNC_DEFAULTS!"
+                # zip function arguments
                 func_args = tuple(zip(wrapped_func.func_code.co_varnames,
                                       wrapped_func.func_defaults))
                 # TODO: copy target execution here
                 self.kernel_core = self.target_core(func_args, wrapped_func)
                 self.kernel_core.run()
-            except Exception, e:
+            except Exception:
                 print traceback.print_exc()
                 print "return wrapped func\n"
                 ret_func = wrapped_func
