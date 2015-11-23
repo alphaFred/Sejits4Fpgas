@@ -51,6 +51,17 @@ class DagDotGenVisitor(NodeVisitor):
     def __init__(self):
         """ docstring for __init__. """
         self.dag_objs = set()
+        self.formats = {"DagImageFilter":
+                        ', style=filled, fillcolor="#00EB5E"',
+                        "DagImagePointOp":
+                        ', style=filled, fillcolor="#C2FF66"',
+                        "DagInImageObj":
+                        ', style=filled, fillcolor="#FFF066"',
+                        "DagOutImageObj":
+                        ', style=filled, fillcolor="#FFA366"',
+                        "DagBinOp":
+                        ', style=filled, fillcolor="#FFFFFF"'
+                        }
 
     @staticmethod
     def _qualified_name(obj):
@@ -64,30 +75,22 @@ class DagDotGenVisitor(NodeVisitor):
     # TODO: change formation to visitor pattern
     def format(self, node):
         """ docstring for format. """
-        formats = {"DagImageFilter": ', style=filled, fillcolor="#00EB5E"',
-                   "DagImagePointOp": ', style=filled, fillcolor="#C2FF66"',
-                   "DagInImage": ', style=filled, fillcolor="#FFF066"',
-                   "DagOutImage": ', style=filled, fillcolor="#FFA366"'
-                   }
-        return formats.get(type(node).__name__, "")
+        return self.formats.get(type(node).__name__, "")
 
     def generic_visit(self, node):
         """ docstring for generic_visit. """
+
         # label this node
-        out_string = 'n%s [label="%s" %s];\n' % (id(node),
-                                                 self.label(node),
-                                                 self.format(node))
+        out_string = 'n%s [label="%s" %s];\n' % (node.node_hash, self.label(node), self.format(node))
+
         # edges to children
-        try:
-            for next_node in node.next:
-                if hash((id(node), id(next_node))) not in self.dag_objs:
+        for fieldname, fieldvalue in ast.iter_fields(node):
+            for index, child in enumerate_flatten(fieldvalue):
+                if isinstance(child, ast.AST) and child.__class__.__name__ in self.formats:
                     out_string += 'n{} -> n{} [label="{} -> {}"];\n'.format(
-                        id(node), id(next_node),
-                        getattr(node, "prod", "").__class__.__name__,
-                        getattr(next_node, "cons", "").__class__.__name__)
-                    #
-                    self.dag_objs.add(hash((id(node), id(next_node))))
-                out_string += self.visit(next_node)
-        except AttributeError:
-            pass
+                        child.node_hash,
+                        node.node_hash,
+                        getattr(child, "prod", "").__class__.__name__,
+                        getattr(node, "cons", "").__class__.__name__)
+                    out_string += self.visit(child)
         return out_string
