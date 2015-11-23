@@ -108,81 +108,65 @@ class FpgaAstOptimizer(ast.NodeTransformer):
         """ docstring for run. """
         linearizer = FpgaAstLinearizer()
         lin_ast = linearizer.run(self.ast)
-        self.visit(lin_ast)
-        return(self.FpgaDAG.dag_objects[0])
+        return self.visit(lin_ast)
+        #return(self.FpgaDAG.dag_objects[0])
 
     def getAstNodes(self):
         """ return dict of all special DataFlow nodes. """
         return self.dag_classes
 
     def visit_KernelModule(self, node):
-        self.visit(node.body[0])
+        return self.visit(node.body[0])
 
     def visit_DFOutImage(self, node):
         """ Visitor-Method for DFOutImage. """
-        prev = self.visit(node.prev)
-        #
-        dag_node = DagOutImageObj(id=node.id,
-                                  mode=node.mode,
-                                  size=node.size,
-                                  cons=Datum(bit_size=24),
-                                  args=None)
-        self.FpgaDAG.add(node, dag_node)
-        self.FpgaDAG.update_next(prev, dag_node)
-        #
-        return hash(node)
+        return DagOutImageObj(id=node.id,
+                              mode=node.mode,
+                              size=node.size,
+                              cons=Datum(bit_size=32),
+                              prod=Datum(bit_size=24),
+                              prev=self.visit(node.prev),
+                              args=None,
+                              node_hash=hash(node),)
 
     def visit_ImagePointOp(self, node):
         """ Visitor-Method for ImagePointOp. """
-        prev = self.visit(node.target)
-        #
-        dag_node = DagImagePointOp(op=node.op.op,
-                                   cons=Data(width=3, bit_size=24),
-                                   prod=Datum(bit_size=24),
-                                   next=[])
-        self.FpgaDAG.add(node, dag_node)
-        self.FpgaDAG.update_next(prev, dag_node)
-        #
-        return hash(node)
+        return DagImagePointOp(op=node.op,
+                               cons=Data(width=3, bit_size=24),
+                               prod=Datum(bit_size=32),
+                               prev=self.visit(node.target),
+                               node_hash=hash(node),)
 
     def visit_ImageFilter(self, node):
         """ Visitor-Method for ImageFilter. """
-        prev = self.visit(node.target)
-        #
-        dag_node = DagImageFilter(cons=Data(width=3, bit_size=24),
-                                  prod=Datum(bit_size=24),
-                                  next=[])
-        self.FpgaDAG.add(node, dag_node)
-        self.FpgaDAG.update_next(prev, dag_node)
-        #
-        return hash(node)
+        return DagImageFilter(cons=Data(width=3, bit_size=24),
+                              prod=Datum(bit_size=24),
+                              prev=self.visit(node.target),
+                              node_hash=hash(node),)
 
     def visit_BinOp(self, node):
         """ Visitor-Method for BinOp. """
-        prev_left = self.visit(node.left)
-        prev_right = self.visit(node.right)
-        #
-        dag_node = DagBinOp(op=node.op,
-                            cons=Data(width=3, bit_size=24),
-                            prod=Datum(bit_size=24),
-                            next=[])
-        #
-        for prev in (prev_left, prev_right):
-            self.FpgaDAG.add(node, dag_node)
-            self.FpgaDAG.update_next(prev, dag_node)
-        return hash(node)
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+
+        assert type(left.prod) is type(right.prod)
+
+        return DagBinOp(op=node.op,
+                        left=left,
+                        right=right,
+                        cons=left.prod,
+                        prod=left.prod,
+                        node_hash=hash(node),)
 
     def visit_InImageObj(self, node):
         """ Visitor-Method for InImageObj. """
-        dag_node = DagInImageObj(id=node.id,
-                                 mode=node.mode,
-                                 size=node.size,
-                                 prod=Datum(bit_size=24),
-                                 next=[],
-                                 args=None)
-        self.FpgaDAG.add(node, dag_node)
-        #
-        return hash(node)
+        return DagInImageObj(id=node.id,
+                             node_hash=hash(node),
+                             mode=node.mode,
+                             size=node.size,
+                             cons=Datum(bit_size=24),
+                             prod=Datum(bit_size=32),
+                             args=node.args)
 
 
 class DFOutImage(ast.AST):
