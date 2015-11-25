@@ -405,8 +405,3 @@ class %s(%s):
     program = "import ast\n" + program + "\n"
 
     exec(program, global_dict)
-
-"""
-    def to_dot(self):
-        return self.__class__.__name__
-"""
