@@ -50,16 +50,16 @@ class DagDotGenVisitor(NodeVisitor):
 
     def __init__(self):
         """ docstring for __init__. """
-        self.dag_objs = set()
-        self.formats = {"DagImageFilter":
+        self.edges_visited = set()
+        self.formats = {"DagNodeImgFilter":
                         ', style=filled, fillcolor="#00EB5E"',
-                        "DagImagePointOp":
+                        "DagNodeImgPointOp":
                         ', style=filled, fillcolor="#C2FF66"',
-                        "DagInImageObj":
+                        "DagNodeInImage":
                         ', style=filled, fillcolor="#FFF066"',
-                        "DagOutImageObj":
+                        "DagNodeOutImage":
                         ', style=filled, fillcolor="#FFA366"',
-                        "DagBinOp":
+                        "DagNodeBinOp":
                         ', style=filled, fillcolor="#FFFFFF"'
                         }
 
@@ -70,7 +70,7 @@ class DagDotGenVisitor(NodeVisitor):
 
     def label(self, node):
         """ Return string for visualization, debugging, etc. """
-        return r"%s\n%s" % (type(node).__name__[3:], node.label())
+        return r"%s\n%s" % (type(node).__name__[7:], node.d)
 
     # TODO: change formation to visitor pattern
     def format(self, node):
@@ -81,16 +81,36 @@ class DagDotGenVisitor(NodeVisitor):
         """ docstring for generic_visit. """
 
         # label this node
-        out_string = 'n%s [label="%s" %s];\n' % (node.node_hash, self.label(node), self.format(node))
+        out_string = 'n%s [label="%s" %s];\n' % (id(node),
+                                                 self.label(node),
+                                                 self.format(node))
 
         # edges to children
         for fieldname, fieldvalue in ast.iter_fields(node):
+            if fieldname == "prev":
+                for index, child in enumerate_flatten(fieldvalue):
+                    if hash((node, child)) not in self.edges_visited:
+                        out_string += 'n{} -> n{} [label="{}"];\n'.format(
+                            id(child),
+                            id(node),
+                            node.d_prev)
+                        self.edges_visited.add(hash((node, child)))
+                        out_string += self.visit(child)
+                    else:
+                        pass
+        return out_string
+
+"""
             for index, child in enumerate_flatten(fieldvalue):
                 if isinstance(child, ast.AST) and child.__class__.__name__ in self.formats:
-                    out_string += 'n{} -> n{} [label="{} -> {}"];\n'.format(
-                        child.node_hash,
-                        node.node_hash,
-                        getattr(child, "prod", "").__class__.__name__,
-                        getattr(node, "cons", "").__class__.__name__)
-                    out_string += self.visit(child)
-        return out_string
+                    if (hash((node.node_hash, child.node_hash))) not in self.dag_objs:
+                        out_string += 'n{} -> n{} [label="{} -> {}"];\n'.format(
+                            child.node_hash,
+                            node.node_hash,
+                            getattr(child, "prod", "").__class__.__name__,
+                            getattr(node, "cons", "").__class__.__name__)
+                        out_string += self.visit(child)
+                        self.dag_objs.add(hash((node.node_hash, child.node_hash)))
+                    else:
+                        pass
+"""
