@@ -317,12 +317,12 @@ class FpgaDagCreator(ast.NodeTransformer):
         # get previous nodes
         prev_node = self. visit(node.value)
         #
-        dag_node = dag.DagNodeOutImage(iput_intf=None,
-                                       oput_intf=None,
-                                       prev=[prev_node],
-                                       next=[],
-                                       d=1,
-                                       d_prev=prev_node.d + prev_node.d_prev)
+        dag_node = dag.DagNodeOutput(iput_intf=None,
+                                     oput_intf=None,
+                                     prev=[prev_node],
+                                     next=[],
+                                     d=1,
+                                     d_prev=prev_node.d + prev_node.d_prev)
         self.visited_nodes[node_hash] = dag_node
         return dag_node
 
@@ -429,13 +429,13 @@ class FpgaDagCreator(ast.NodeTransformer):
         prev_node = self.visit(node.target)
         #
         if node_hash not in self.visited_nodes:
-            dag_node = dag.DagNodeImgPointOp(iput_intf=None,
-                                             oput_intf=None,
-                                             prev=[prev_node],
-                                             next=[],
-                                             d=1,
-                                             d_prev=prev_node.d +
-                                             prev_node.d_prev)
+            dag_node = dag.DagNodePointOp(iput_intf=None,
+                                          oput_intf=None,
+                                          prev=[prev_node],
+                                          next=[],
+                                          d=1,
+                                          d_prev=prev_node.d +
+                                          prev_node.d_prev)
             prev_node.next.append(dag_node)
             # cache dag node
             self.visited_nodes[node_hash] = dag_node
@@ -471,13 +471,13 @@ class FpgaDagCreator(ast.NodeTransformer):
         prev_node = self.visit(node.target)
         #
         if node_hash not in self.visited_nodes:
-            dag_node = dag.DagNodeImgFilter(iput_intf=None,
-                                            oput_intf=None,
-                                            prev=[prev_node],
-                                            next=[],
-                                            d=1,
-                                            d_prev=prev_node.d +
-                                            prev_node.d_prev)
+            dag_node = dag.DagNodeLocalOp(iput_intf=None,
+                                          oput_intf=None,
+                                          prev=[prev_node],
+                                          next=[],
+                                          d=1,
+                                          d_prev=prev_node.d +
+                                          prev_node.d_prev)
             prev_node.next.append(dag_node)
             # cache dag node
             self.visited_nodes[node_hash] = dag_node
@@ -508,12 +508,12 @@ class FpgaDagCreator(ast.NodeTransformer):
         """
         node_hash = hash(node)
         if node_hash not in self.visited_nodes:
-            dag_node = dag.DagNodeInImage(iput_intf=None,
-                                          oput_intf=None,
-                                          prev=[],
-                                          next=[],
-                                          d=1,
-                                          d_prev=0)
+            dag_node = dag.DagNodeInput(iput_intf=None,
+                                        oput_intf=None,
+                                        prev=[],
+                                        next=[],
+                                        d=1,
+                                        d_prev=0)
             # cache dag node
             self.visited_nodes[node_hash] = dag_node
             return dag_node
