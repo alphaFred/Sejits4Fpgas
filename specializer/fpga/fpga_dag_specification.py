@@ -34,40 +34,40 @@ class DagNode(ast.AST):
         self.d_prev = d_prev
 
 
-class DagNodeInImage(DagNode):
+class DagNodeInput(DagNode):
 
-    """ Describes an InImage Dag-Node. """
-
-    def __init__(self, **kwargs):
-        """ Initalize base class and class variables. """
-        super(DagNodeInImage, self).__init__(**kwargs)
-
-
-class DagNodeOutImage(DagNode):
-
-    """ Describes an OutImage Dag-Node. """
+    """ Describes an input Dag-Node. """
 
     def __init__(self, **kwargs):
         """ Initalize base class and class variables. """
-        super(DagNodeOutImage, self).__init__(**kwargs)
+        super(DagNodeInput, self).__init__(**kwargs)
 
 
-class DagNodeImgFilter(DagNode):
+class DagNodeOutput(DagNode):
 
-    """ Describes an Image Filter Dag-Node. """
-
-    def __init__(self, **kwargs):
-        """ Initalize base class and class variables. """
-        super(DagNodeImgFilter, self).__init__(**kwargs)
-
-
-class DagNodeImgPointOp(DagNode):
-
-    """ Describes an Image Point Operator Dag-Node. """
+    """ Describes an output Dag-Node. """
 
     def __init__(self, **kwargs):
         """ Initalize base class and class variables. """
-        super(DagNodeImgPointOp, self).__init__(**kwargs)
+        super(DagNodeOutput, self).__init__(**kwargs)
+
+
+class DagNodeLocalOp(DagNode):
+
+    """ Describes an local operator Dag-Node. """
+
+    def __init__(self, **kwargs):
+        """ Initalize base class and class variables. """
+        super(DagNodeLocalOp, self).__init__(**kwargs)
+
+
+class DagNodePointOp(DagNode):
+
+    """ Describes an point operator Dag-Node. """
+
+    def __init__(self, **kwargs):
+        """ Initalize base class and class variables. """
+        super(DagNodePointOp, self).__init__(**kwargs)
 
 
 class DagNodeBinOp(DagNode):
@@ -87,8 +87,9 @@ class DagNodeDReg(DagNode):
         """ Initalize base class and class variables. """
         super(DagNodeDReg, self).__init__(**kwargs)
 
-dag_node_dict = {"DagNodeInImage": DagNodeInImage,
-                 "DagNodeOutImage": DagNodeOutImage,
-                 "DagNodeImgFilter": DagNodeImgFilter,
-                 "DagNodeImgPointOp": DagNodeImgPointOp,
-                 "DagNodeBinOp": DagNodeBinOp}
+dag_node_dict = {"DagNodeInput": DagNodeInput,
+                 "DagNodeOutput": DagNodeOutput,
+                 "DagNodeLocalOp": DagNodeLocalOp,
+                 "DagNodePointOp": DagNodePointOp,
+                 "DagNodeBinOp": DagNodeBinOp,
+                 "DagNodeDReg": DagNodeDReg}
