@@ -3,55 +3,10 @@ __author__ = 'philipp'
 
 
 import ast
+import fpga_dag_specification as dag
 
-from subprocess import Popen, PIPE
-from collections import namedtuple
 from asp import tree_grammar
 from specializer.dsl.fpga_dag_specification import dag_spec
-
-
-Pixel = namedtuple('Pixel', ['mode', 'byte_size'])
-PixelMask = namedtuple('PixelMask', ['height', 'width', 'pattern', 'pixel'])
-
-PipelineObj = namedtuple(
-    'PipelineObj', ['id', 'consumer', 'producer', 'next_id', 'next'])
-
-def prittyprinter(flow_data, data_flow_graph):
-    """ docstring for pprinter. """
-    formats = {"ImageFilter": ', style=filled, fillcolor="#00EB5E"',
-               "ImagePointOp": ', style=filled, fillcolor="#C2FF66"',
-               "TempAssign": ', style=filled, fillcolor="#66C2FF"',
-               "OutAssign": ', style=filled, fillcolor="#6675FF"',
-               "InImageObj": ', style=filled, fillcolor="#FFF066"',
-               "OutImageObj": ', style=filled, fillcolor="#FFA366"'
-               }
-    # generate dot
-    graphviz_opts = ['rankdir="LR"']
-    dot_text = "digraph G {\n %s \n" % str.join("\n", graphviz_opts)
-    print "\n\n"
-    for f_obj in data_flow_graph:
-        flow_obj = flow_data[f_obj]
-        print flow_obj
-        dot_text += '%s ["label"="%s"%s];\n' % (
-            flow_obj.next_id, flow_obj.id, formats.get(flow_obj.id, ""))
-        for next_obj in flow_obj.next:
-            dot_text += '%s -> %s ["label"="%s"];\n' % \
-                (flow_obj.next_id,
-                    next_obj.next_id,
-                    str(flow_obj.producer.__class__.__name__
-                        + "->" + next_obj.consumer.__class__.__name__))
-    dot_text += "}"
-    #
-    print dot_text
-    #
-    dot_args = ['dot'] + ['-T', 'png']
-    p = Popen(dot_args, stdout=PIPE, stdin=PIPE, stderr=PIPE)
-    stdout, stderr = p.communicate(dot_text.encode('utf-8'))
-    #
-    print "stderr:", stderr
-    #
-    with open("./images/" + "data_flow_graph.png", "wb") as f:
-        f.write(stdout)
 
 
 class FpgaAstOptimizer(ast.NodeTransformer):
@@ -103,70 +58,153 @@ class FpgaAstOptimizer(ast.NodeTransformer):
         #
         self.dag_obj = []
         self.dag_dict = dict()
+        #
+        self.node_visits = dict()
+        #
+        self.ast_dag = []
+        self.current_ast_dag = []
+        self.ast_dag_set = set()
+        self.dag_creation = False
 
     def run(self):
         """ docstring for run. """
+        run_return = self.visit(self.lin_ast)
+        self.dag_creation = True
+        # run visitor again to create DAG
+        self.visit(self.lin_ast)
+        for item in self.ast_dag:
+            print item
+        return run_return
+
+    def run_lin(self):
+        """ docstring for run_lin. """
         linearizer = FpgaAstLinearizer()
-        lin_ast = linearizer.run(self.ast)
-        return self.visit(lin_ast)
-        #return(self.FpgaDAG.dag_objects[0])
+        self.lin_ast = linearizer.run(self.ast)
+        return(self.lin_ast)
 
     def getAstNodes(self):
         """ return dict of all special DataFlow nodes. """
         return self.dag_classes
 
     def visit_KernelModule(self, node):
+        self.current_ast_dag = self.ast_dag
         return self.visit(node.body[0])
 
     def visit_DFOutImage(self, node):
         """ Visitor-Method for DFOutImage. """
-        return DagOutImageObj(id=node.id,
-                              mode=node.mode,
-                              size=node.size,
-                              cons=Datum(bit_size=32),
-                              prod=Datum(bit_size=24),
-                              prev=self.visit(node.prev),
-                              args=None,
-                              node_hash=hash(node),)
+        if self.dag_creation is False:
+            node_hash = hash(node)
+            self.node_visits[node_hash] =\
+                self.node_visits.get(node_hash, 0) + 1
+            return DagOutImageObj(id=node.id,
+                                  mode=node.mode,
+                                  size=node.size,
+                                  cons=Datum(bit_size=32),
+                                  prod=Datum(bit_size=24),
+                                  prev=self.visit(node.prev),
+                                  args=None,
+                                  node_hash=hash(node))
+        else:
+            self.current_ast_dag.append(node)
+            self.ast_dag_set.add(hash(node))
+            self.visit(node.prev)
 
     def visit_ImagePointOp(self, node):
         """ Visitor-Method for ImagePointOp. """
-        return DagImagePointOp(op=node.op,
-                               cons=Data(width=3, bit_size=24),
-                               prod=Datum(bit_size=32),
-                               prev=self.visit(node.target),
-                               node_hash=hash(node),)
+        if self.dag_creation is False:
+            self.node_visits[hash(node)] =\
+                self.node_visits.get(hash(node), 0) + 1
+            return DagImagePointOp(op=node.op,
+                                   cons=Data(width=3, bit_size=24),
+                                   prod=Datum(bit_size=32),
+                                   prev=self.visit(node.target),
+                                   node_hash=hash(node))
+        else:
+            node_hash = hash(node)
+            if node_hash not in self.ast_dag_set and self.node_visits[node_hash] > 1:
+                self.ast_dag.append(node)
+                self.current_ast_dag = self.ast_dag
+                self.ast_dag_set.add(node_hash)
+            elif node_hash not in self.ast_dag_set:
+                self.current_ast_dag.append(node)
+                self.ast_dag_set.add(hash(node))
+            else:
+                pass
+            self.visit(node.target)
 
     def visit_ImageFilter(self, node):
         """ Visitor-Method for ImageFilter. """
-        return DagImageFilter(cons=Data(width=3, bit_size=24),
-                              prod=Datum(bit_size=24),
-                              prev=self.visit(node.target),
-                              node_hash=hash(node),)
+        if self.dag_creation is False:
+            self.node_visits[hash(node)] =\
+                self.node_visits.get(hash(node), 0) + 1
+            return DagImageFilter(cons=Data(width=3, bit_size=24),
+                                  prod=Datum(bit_size=24),
+                                  prev=self.visit(node.target),
+                                  node_hash=hash(node))
+        else:
+            node_hash = hash(node)
+            if node_hash not in self.ast_dag_set and self.node_visits[node_hash] > 1:
+                self.ast_dag.append(node)
+                self.current_ast_dag = self.ast_dag
+                self.ast_dag_set.add(node_hash)
+            elif node_hash not in self.ast_dag_set:
+                self.current_ast_dag.append(node)
+                self.ast_dag_set.add(hash(node))
+            else:
+                pass
+            self.visit(node.target)
 
     def visit_BinOp(self, node):
         """ Visitor-Method for BinOp. """
-        left = self.visit(node.left)
-        right = self.visit(node.right)
+        if self.dag_creation is False:
+            self.node_visits[hash(node)] =\
+                self.node_visits.get(hash(node), 0) + 1
+            left = self.visit(node.left)
+            right = self.visit(node.right)
 
-        assert type(left.prod) is type(right.prod)
+            assert type(left.prod) is type(right.prod)
 
-        return DagBinOp(op=node.op,
-                        left=left,
-                        right=right,
-                        cons=left.prod,
-                        prod=left.prod,
-                        node_hash=hash(node),)
+            return DagBinOp(op=node.op,
+                            left=left,
+                            right=right,
+                            cons=left.prod,
+                            prod=left.prod,
+                            node_hash=hash(node))
+        else:
+            self.current_ast_dag.append([[], []])
+            #
+            left_ref = self.current_ast_dag[-1][0]
+            right_ref = self.current_ast_dag[-1][1]
+            #
+            self.current_ast_dag = left_ref
+            self.visit(node.left)
+            self.current_ast_dag = right_ref
+            self.visit(node.right)
+            pass
 
     def visit_InImageObj(self, node):
         """ Visitor-Method for InImageObj. """
-        return DagInImageObj(id=node.id,
-                             node_hash=hash(node),
-                             mode=node.mode,
-                             size=node.size,
-                             cons=Datum(bit_size=24),
-                             prod=Datum(bit_size=32),
-                             args=node.args)
+        if self.dag_creation is False:
+            self.node_visits[hash(node)] =\
+                self.node_visits.get(hash(node), 0) + 1
+            return DagInImageObj(id=node.id,
+                                 node_hash=hash(node),
+                                 mode=node.mode,
+                                 size=node.size,
+                                 cons=Datum(bit_size=24),
+                                 prod=Datum(bit_size=32),
+                                 args=node.args)
+        else:
+            node_hash = hash(node)
+            if node_hash not in self.ast_dag_set and self.node_visits[node_hash] > 1:
+                self.ast_dag.append(node)
+                self.current_ast_dag = self.ast_dag
+                self.ast_dag_set.add(node_hash)
+            elif node_hash not in self.ast_dag_set:
+                self.current_ast_dag.append(node)
+                self.ast_dag_set.add(hash(node))
+            else:
+                pass
 
 
 class DFOutImage(ast.AST):
@@ -237,6 +275,253 @@ class FpgaAstLinearizer(ast.NodeTransformer):
                           mode=node.var.mode,
                           size=node.var.size,
                           prev=node_value)
+
+
+class FpgaDagCreator(ast.NodeTransformer):
+
+    """ docstring for FpgaAstLinearizer. """
+
+    def __init__(self):
+        """ docstring for __init__. """
+        super(FpgaDagCreator, self).__init__()
+        #
+        self.local_vars = dict()
+        self.visited_nodes = dict()
+
+    def run(self, iast):
+        """ docstring run. """
+        dag_graph = self.visit(iast)
+        #print ast.dump(dag_graph[-1])
+        return dag_graph[-1]
+
+    def getDagDict(self):
+        return dag.dag_node_dict
+
+    def visit_KernelModule(self, node):
+        return map(self.visit, node.body)
+
+    def visit_OutAssign(self, node):
+        """
+        Return DagNodeOutImage.
+
+        If node is visited create, cache and return new DagNodeOutImage
+
+        Args:
+            node: Node object of type OutAssign
+
+        Return:
+            Dag node object of type DagNodeOutImage
+        """
+        # TODO: check if hashing and caching of this node is necessary
+        node_hash = hash(node)
+        # get previous nodes
+        prev_node = self. visit(node.value)
+        #
+        dag_node = dag.DagNodeOutImage(iput_intf=None,
+                                       oput_intf=None,
+                                       prev=[prev_node],
+                                       next=[],
+                                       d=1,
+                                       d_prev=prev_node.d + prev_node.d_prev)
+        self.visited_nodes[node_hash] = dag_node
+        return dag_node
+
+    def visit_TempAssign(self, node):
+        """ docstring visit_TempAssign. """
+        if node.var.name not in self.local_vars:
+            node_value = self.visit(node.value)
+            self.local_vars[node.var.name] = node_value
+        else:
+            assert False, "{0} has been already used as assignment target!"\
+                .format(node.target.name)
+
+    def visit_Identifier(self, node):
+        """ docstring visit_Identifier. """
+        if node.name in self.local_vars:
+            return self.local_vars[node.name]
+        else:
+            return node
+
+    def visit_BinOp(self, node):
+        """
+        Return DagNodeBinOp.
+
+        If node is visited for the first time,
+            create, chache and return new DagNodeBinOp.
+        Else update cached DagNodeBinOp for this and return updated node.
+
+        Args:
+            node: Node object of type BinOP
+
+        Returns:
+            Dag node object of type DagNodeBinOp
+        """
+        node_hash = hash(node)
+        # get previous nodes
+        prev_node_left = self.visit(node.left)
+        prev_node_right = self.visit(node.right)
+        #
+        d_prev_left, d_prev_right = (prev_node_left.d + prev_node_left.d_prev,
+                                     prev_node_right.d + prev_node_right.d_prev)
+        d_prev_diff = d_prev_left - d_prev_right
+        if d_prev_diff < 0:
+            dag_dreg = dag.DagNodeDReg(iput_intf=None,
+                                       oput_intf=None,
+                                       prev=[prev_node_left],
+                                       next=prev_node_left.next
+                                       if type(prev_node_left.next) is
+                                       list else [prev_node_left.next],
+                                       d=abs(d_prev_diff),
+                                       d_prev=prev_node_left.d +
+                                       prev_node_left.d_prev)
+            prev_node_left.next = dag_dreg
+            retimed_left = dag_dreg
+            retimed_right = prev_node_right
+        elif d_prev_diff > 0:
+            dag_dreg = dag.DagNodeDReg(iput_intf=None,
+                                       oput_intf=None,
+                                       prev=[prev_node_right],
+                                       next=prev_node_left.next
+                                       if type(prev_node_left.next) is
+                                       list else [prev_node_left.next],
+                                       d=abs(d_prev_diff),
+                                       d_prev=prev_node_right.d +
+                                       prev_node_right.d_prev)
+            prev_node_right.next = dag_dreg
+            retimed_left = prev_node_left
+            retimed_right = dag_dreg
+        else:
+            retimed_left = prev_node_left
+            retimed_right = prev_node_right
+        #
+        if node_hash not in self.visited_nodes:
+            dag_node = dag.DagNodeBinOp(iput_intf=None,
+                                        oput_intf=None,
+                                        prev=[retimed_left, retimed_right],
+                                        next=[],
+                                        d=1,
+                                        d_prev=retimed_left.d + retimed_left.d_prev)
+            retimed_left.next.append(dag_node)
+            retimed_right.next.append(dag_node)
+            # cache dag node
+            self.visited_nodes[node_hash] = dag_node
+            return dag_node
+        else:
+            assert False, "BinOp can not be visted multiple times!"
+
+
+    def visit_ImagePointOp(self, node):
+        """
+        Return DagNodeImgPointOp.
+
+        If node is visited for the first time,
+            create, chache and return new DagNodeImgPointOp.
+        Else update cached DagNodeImgPointOp for this and return updated node.
+
+        Args:
+            node: Node object of type ImagePointOp
+
+        Returns:
+            Dag node object of type DagNodeImgPointOp
+        """
+        node_hash = hash(node)
+        # get previous node
+        prev_node = self.visit(node.target)
+        #
+        if node_hash not in self.visited_nodes:
+            dag_node = dag.DagNodeImgPointOp(iput_intf=None,
+                                             oput_intf=None,
+                                             prev=[prev_node],
+                                             next=[],
+                                             d=1,
+                                             d_prev=prev_node.d +
+                                             prev_node.d_prev)
+            prev_node.next.append(dag_node)
+            # cache dag node
+            self.visited_nodes[node_hash] = dag_node
+            return dag_node
+        else:
+            # get cached dag node
+            dag_node = self.visited_nodes[node_hash]
+            #
+            prev_node.next.append(dag_node)
+            # update cached node
+            dag_node.prev.append(prev_node)
+            dag_node.d_prev = prev_node.d + prev_node.d_prev
+            self.visited_nodes[node_hash] = dag_node
+            # return updated dag node
+            return dag_node
+
+    def visit_ImageFilter(self, node):
+        """
+        Return DagNodeImgFilter.
+
+        If node is visited for the first time,
+            create, cache and return new DagNodeImgFilter.
+        Else update cached DagNodeImgFilter for this and return updated node.
+
+        Args:
+            node: Node object of type ImageFilter
+
+        Returns:
+            Dag node object of type DagNodeImgFilter
+        """
+        node_hash = hash(node)
+        # get previous node
+        prev_node = self.visit(node.target)
+        #
+        if node_hash not in self.visited_nodes:
+            dag_node = dag.DagNodeImgFilter(iput_intf=None,
+                                            oput_intf=None,
+                                            prev=[prev_node],
+                                            next=[],
+                                            d=1,
+                                            d_prev=prev_node.d +
+                                            prev_node.d_prev)
+            prev_node.next.append(dag_node)
+            # cache dag node
+            self.visited_nodes[node_hash] = dag_node
+            return dag_node
+        else:
+            prev_node.next.append(dag_node)
+            # update cached node
+            dag_node = self.visited_nodes[node_hash]
+            dag_node.prev.append(prev_node)
+            dag_node.d_prev = prev_node.d + prev_node.d_prev
+            self.visited_nodes[node_hash] = dag_node
+            # return updated dag node
+            return dag_node
+
+    def visit_InImageObj(self, node):
+        """
+        Return DagNodeInImage.
+
+        If node is visited for the first time,
+            create, cache and return new DagNodeInImage.
+        Else return cached DagNodeInImage for this node.
+
+        Args:
+            node: Node object of type InImageObj
+
+        Returns:
+            Dag node object of type DagNodeInImage
+        """
+        node_hash = hash(node)
+        if node_hash not in self.visited_nodes:
+            dag_node = dag.DagNodeInImage(iput_intf=None,
+                                          oput_intf=None,
+                                          prev=[],
+                                          next=[],
+                                          d=1,
+                                          d_prev=0)
+            # cache dag node
+            self.visited_nodes[node_hash] = dag_node
+            return dag_node
+        else:
+            # return cached dag node
+            return self.visited_nodes[node_hash]
+
+
 
 '''
 class FiaKernelOptimizer(ast.NodeTransformer):
