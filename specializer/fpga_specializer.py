@@ -9,7 +9,7 @@ import copy
 from asp import tree_grammar
 from specializer.dsl.dsl_specification import dsl
 from specializer.utils.dsl_ast_transformer import DslAstTransformer
-from specializer.fpga.fpga_ast_optimizer import FpgaAstOptimizer
+from specializer.fpga.fpga_ast_optimizer import FpgaAstOptimizer, FpgaDagCreator
 
 
 class ZynqSpecializer(object):
@@ -31,22 +31,25 @@ class ZynqSpecializer(object):
     # ======================================================================= #
     def run(self):
         """ docstring for run. """
-        ast.__dict__.update(self.dsl_classes)
-        #
         ast_transformer = DslAstTransformer(self.func_ast,
                                             self.func_args,
                                             self.dsl_classes)
+        dag_creator = FpgaDagCreator()
+        #
+        ast.__dict__.update(self.dsl_classes)
+        ast.__dict__.update(dag_creator.getDagDict())
+
+        # transform ast and save result
         trans_ast = ast_transformer.run()
-        pprint_ast = copy.deepcopy(trans_ast)
+        _trans_ast = copy.deepcopy(trans_ast)
+        # optimize ast and create dag
+        dag_graph = dag_creator.run(trans_ast)
         #
-        ast_optimizer = FpgaAstOptimizer(trans_ast, self.dsl_classes)
-        #
-        ast.__dict__.update(ast_optimizer.getAstNodes())
-        #
-        opt_ast = ast_optimizer.run()
-        #
-        sejits_ctree.browser_show_ast(
-            pprint_ast, file_name="transformed_dsl_ast.png")
-        sejits_ctree.browser_show_dag(
-            opt_ast, file_name="optimized_dataFlow.png")
+        # create output images
+        sejits_ctree.browser_show_ast(_trans_ast,
+                                      file_name="transformed_graph.png")
+        print "generated: transformed_dsl_ast.png"
+        sejits_ctree.browser_show_dag(dag_graph,
+                                      file_name="dag_graph.png")
+        print "generated: dag_graph.png"
         return None
