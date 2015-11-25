@@ -51,16 +51,18 @@ class DagDotGenVisitor(NodeVisitor):
     def __init__(self):
         """ docstring for __init__. """
         self.edges_visited = set()
-        self.formats = {"DagNodeImgFilter":
+        self.formats = {"DagNodeLocalOp":
                         ', style=filled, fillcolor="#00EB5E"',
-                        "DagNodeImgPointOp":
+                        "DagNodePointOp":
                         ', style=filled, fillcolor="#C2FF66"',
-                        "DagNodeInImage":
+                        "DagNodeInput":
                         ', style=filled, fillcolor="#FFF066"',
-                        "DagNodeOutImage":
+                        "DagNodeOutput":
                         ', style=filled, fillcolor="#FFA366"',
                         "DagNodeBinOp":
-                        ', style=filled, fillcolor="#FFFFFF"'
+                        ', style=filled, fillcolor="#FFFFFF"',
+                        "DagNodeDReg":
+                        ', style=filled, fillcolor="#CC33FF"'
                         }
 
     @staticmethod
