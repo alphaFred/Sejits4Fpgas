@@ -16,7 +16,6 @@ dsl = '''
     Expr = Constant
          | Identifier
          | ImageObj
-         | BinOp
          | InImageObj
 
     Index(n=types.IntType)
@@ -31,6 +30,7 @@ dsl = '''
 
     DataOp = ImageFilter
            | ImagePointOp
+           | BinOp
 
     BinOp(left=Int|Float|Identifier|InImageObj|DataOp, op,
           right=Int|Float|Identifier|InImageObj|DataOp)
