@@ -19,7 +19,7 @@ out_image = in_images.filter(MinFilter(size=3))
 """
 out_image = in_images.point(lambda i: i * 2.2)
 """
-"""
+"""inspect.getmembers(sys.modules[__name__])
 out_image = in_images.point(lambda i: i + 25)
 """
 
@@ -31,14 +31,31 @@ out_image = temp1.point(lambda i: i * 2.2)
 
 # DummyFilter(size=types.IntType, bla=types.FloatType, blub)
 
+"""
+    temp1 = in_image.filter(MaxFilter(size=5))
+
+    temp2_1 = temp1.point(lambda i: i * 2.4)
+    temp2_2 = temp1.point(lambda i: i + 4)
+    temp2_3 = temp1.filter(MinFilter(size=3))
+
+    temp3_1 = temp2_1.filter(MaxFilter(size=3))
+    temp3_2 = temp2_2 + temp2_3
+
+    temp4 = temp3_2 + temp1
+    temp5 = (temp3_1 - temp3_2) + temp4
+    out_image = temp5 + in_image
+    return out_image
+"""
+
 
 @Specialize("fpga")
 def dec_kernel(in_image=Image.new("RGB", (512, 512), "white"),
-               out_image=Image.new("RGB", (512, 512), "white"),
-               in_arg=(3, 12, 4)):
-    temp1 = in_image.filter(MaxFilter(size=5))
-    out_image = temp1 + in_image.filter(MinFilter(size=3))\
-        .point(lambda i: i + 25)
+               out_image=Image.new("RGB", (512, 512), "white")):
+    temp1 = in_image.filter(MinFilter(size=3))
+    temp2 = in_image.filter(MaxFilter(size=5))
+    r1, g1, b1 = temp1.split()
+    r2, g2, b2 = temp2.split()
+    out_image = Image.merge("RGB", (r1, g2, b1))
     return out_image
 
 in_image = Image.open("./images/Lena.png")
@@ -48,5 +65,6 @@ in_image2 = Image.open("./images/Lena.png")
 out_image2 = Image.new("RGB", (512, 512), "white")
 
 print "-" * 80
-print "first line\n"
-dec_kernel(in_image, out_image, 25)
+ret_image = dec_kernel(in_image, out_image)
+ret_image.save("./images/landscape_transformed.jpg")
+
