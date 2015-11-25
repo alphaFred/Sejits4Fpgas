@@ -46,15 +46,13 @@ class Specialize(object):
                 self.kernel_core.run()
             except Exception:
                 print traceback.print_exc()
-                print "return wrapped func\n"
                 ret_func = wrapped_func
             else:
-                print "return fpga dummy"
-                ret_func = fpga_dummy
+                ret_func = wrapped_func
 
         def wrappee(*args, **kwargs):
             """ docstring for wrapped. """
-            ret_func(*args, **kwargs)
+            return ret_func(*args, **kwargs)
         return wrappee
 
 
