@@ -1,2 +1,2 @@
-""" Codegenerator for VHDL constructs. """
+""" Code generator for VHDL constructs. """
 __author__ = 'philipp ebensberger'
