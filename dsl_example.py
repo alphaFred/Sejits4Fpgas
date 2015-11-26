@@ -52,18 +52,11 @@ out_image = temp1.point(lambda i: i * 2.2)
 def dec_kernel(in_image=[Image.new("RGB", (512, 512), "white"),
                          Image.new("RGB", (512, 512), "white")],
                out_image=Image.new("RGB", (512, 512), "white")):
-    temp1 = in_image[0].filter(MaxFilter(size=5))
-
-    temp2_1 = temp1.point(lambda i: i * 2.4)
-    temp2_2 = temp1.point(lambda i: i + 4)
-    temp2_3 = temp1.filter(MinFilter(size=3))
-
-    temp3_1 = temp2_1.filter(MaxFilter(size=3))
-    temp3_2 = temp2_2 + temp2_3
-
-    temp4 = temp3_2 + temp1
-    temp5 = (temp3_1 - temp3_2) + temp4
-    out_image = temp5 + in_image[1]
+    conv_img_1 = in_image[0].filter(MinFilter(size=3))
+    conv_img_2 = in_image[1].filter(MinFilter(size=3))
+    tmp1 = conv_img_1.point(lambda i: i * 0.5)
+    tmp2 = conv_img_2.point(lambda i: i * 0.5)
+    out_image = tmp1 + tmp2
     return out_image
 
 in_image = Image.open("./images/Lena.png")
