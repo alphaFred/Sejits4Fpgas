@@ -9,7 +9,8 @@ import copy
 from asp import tree_grammar
 from specializer.dsl.dsl_specification import dsl
 from specializer.utils.dsl_ast_transformer import DslAstTransformer
-from specializer.fpga.fpga_ast_optimizer import FpgaAstOptimizer, FpgaDagCreator
+from specializer.fpga.fpga_ast_optimizer import FpgaDagCreator
+from specializer.fpga.fpga_codegen import FpgaCodeGen
 
 
 class ZynqSpecializer(object):
@@ -44,6 +45,10 @@ class ZynqSpecializer(object):
         _trans_ast = copy.deepcopy(trans_ast)
         # optimize ast and create dag
         dag_graph = dag_creator.run(trans_ast)
+        #
+        # Codegen
+        fpga_codegenerator = FpgaCodeGen()
+        fpga_codegenerator.run(dag_graph)
         #
         # create output images
         sejits_ctree.browser_show_ast(_trans_ast,
