@@ -6,7 +6,6 @@ import Image
 from sejits import Specialize
 from ImageFilter import MinFilter, MaxFilter
 
-
 # Example 1: Apply Minimum-Filter
 """
 out_image = in_images.filter(MinFilter(size=5))
