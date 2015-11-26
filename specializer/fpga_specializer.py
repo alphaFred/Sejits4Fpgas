@@ -34,7 +34,7 @@ class ZynqSpecializer(object):
         ast_transformer = DslAstTransformer(self.func_ast,
                                             self.func_args,
                                             self.dsl_classes)
-        dag_creator = FpgaDagCreator()
+        dag_creator = FpgaDagCreator(self.dsl_classes)
         #
         ast.__dict__.update(self.dsl_classes)
         ast.__dict__.update(dag_creator.getDagDict())
