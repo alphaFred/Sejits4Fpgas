@@ -281,8 +281,9 @@ class FpgaDagCreator(ast.NodeTransformer):
 
     """ docstring for FpgaAstLinearizer. """
 
-    def __init__(self):
+    def __init__(self, dsl_classes):
         """ docstring for __init__. """
+        globals().update(dsl_classes)
         super(FpgaDagCreator, self).__init__()
         #
         self.local_vars = dict()
@@ -335,6 +336,32 @@ class FpgaDagCreator(ast.NodeTransformer):
             assert False, "{0} has been already used as assignment target!"\
                 .format(node.target.name)
 
+    def visit_Float(self, node):
+        node_hash = hash(node)
+        dag_node = dag.DagNodeConstant(iput_intf=None,
+                                       oput_intf=None,
+                                       prev=[],
+                                       next=[],
+                                       d=0,
+                                       d_prev=0,
+                                       node_type=type(node),
+                                       node_value=node.n)
+        self.visited_nodes[node_hash] = dag_node
+        return dag_node
+
+    def visit_Int(self, node):
+        node_hash = hash(node)
+        dag_node = dag.DagNodeConstant(iput_intf=None,
+                                       oput_intf=None,
+                                       prev=[],
+                                       next=[],
+                                       d=0,
+                                       d_prev=0,
+                                       node_type=type(node),
+                                       node_value=node.n)
+        self.visited_nodes[node_hash] = dag_node
+        return dag_node
+
     def visit_Identifier(self, node):
         """ docstring visit_Identifier. """
         if node.name in self.local_vars:
@@ -361,38 +388,44 @@ class FpgaDagCreator(ast.NodeTransformer):
         prev_node_left = self.visit(node.left)
         prev_node_right = self.visit(node.right)
         #
-        d_prev_left, d_prev_right = (prev_node_left.d + prev_node_left.d_prev,
-                                     prev_node_right.d + prev_node_right.d_prev)
-        d_prev_diff = d_prev_left - d_prev_right
-        if d_prev_diff < 0:
-            dag_dreg = dag.DagNodeDReg(iput_intf=None,
-                                       oput_intf=None,
-                                       prev=[prev_node_left],
-                                       next=prev_node_left.next
-                                       if type(prev_node_left.next) is
-                                       list else [prev_node_left.next],
-                                       d=abs(d_prev_diff),
-                                       d_prev=prev_node_left.d +
-                                       prev_node_left.d_prev)
-            prev_node_left.next = dag_dreg
-            retimed_left = dag_dreg
-            retimed_right = prev_node_right
-        elif d_prev_diff > 0:
-            dag_dreg = dag.DagNodeDReg(iput_intf=None,
-                                       oput_intf=None,
-                                       prev=[prev_node_right],
-                                       next=prev_node_left.next
-                                       if type(prev_node_left.next) is
-                                       list else [prev_node_left.next],
-                                       d=abs(d_prev_diff),
-                                       d_prev=prev_node_right.d +
-                                       prev_node_right.d_prev)
-            prev_node_right.next = dag_dreg
+        print type(prev_node_left), type(prev_node_right)
+        #
+        if type(prev_node_left) is dag.DagNodeConstant or type(prev_node_right) is dag.DagNodeConstant:
             retimed_left = prev_node_left
-            retimed_right = dag_dreg
+            retimed_right = prev_node_right
         else:
-            retimed_left = prev_node_left
-            retimed_right = prev_node_right
+            d_prev_left, d_prev_right = (prev_node_left.d + prev_node_left.d_prev,
+                                         prev_node_right.d + prev_node_right.d_prev)
+            d_prev_diff = d_prev_left - d_prev_right
+            if d_prev_diff < 0:
+                dag_dreg = dag.DagNodeDReg(iput_intf=None,
+                                           oput_intf=None,
+                                           prev=[prev_node_left],
+                                           next=prev_node_left.next
+                                           if type(prev_node_left.next) is
+                                           list else [prev_node_left.next],
+                                           d=abs(d_prev_diff),
+                                           d_prev=prev_node_left.d +
+                                           prev_node_left.d_prev)
+                prev_node_left.next = dag_dreg
+                retimed_left = dag_dreg
+                retimed_right = prev_node_right
+            elif d_prev_diff > 0:
+                dag_dreg = dag.DagNodeDReg(iput_intf=None,
+                                           oput_intf=None,
+                                           prev=[prev_node_right],
+                                           next=prev_node_left.next
+                                           if type(prev_node_left.next) is
+                                           list else [prev_node_left.next],
+                                           d=abs(d_prev_diff),
+                                           d_prev=prev_node_right.d +
+                                           prev_node_right.d_prev)
+                prev_node_right.next = dag_dreg
+                retimed_left = prev_node_left
+                retimed_right = dag_dreg
+            else:
+                retimed_left = prev_node_left
+                retimed_right = prev_node_right
         #
         if node_hash not in self.visited_nodes:
             dag_node = dag.DagNodeBinOp(iput_intf=None,

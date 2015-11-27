@@ -87,9 +87,24 @@ class DagNodeDReg(DagNode):
         """ Initalize base class and class variables. """
         super(DagNodeDReg, self).__init__(**kwargs)
 
+
+class DagNodeConstant(DagNode):
+
+    """ Describes an Constant Dag-Node. """
+
+    node_type = None
+    node_value = None
+
+    def __init__(self, node_type, node_value, **kwargs):
+        """ Initalize base class and class variables. """
+        super(DagNodeConstant, self).__init__(**kwargs)
+        self.node_type = node_type
+        self.node_value = node_value
+
 dag_node_dict = {"DagNodeInput": DagNodeInput,
                  "DagNodeOutput": DagNodeOutput,
                  "DagNodeLocalOp": DagNodeLocalOp,
                  "DagNodePointOp": DagNodePointOp,
                  "DagNodeBinOp": DagNodeBinOp,
-                 "DagNodeDReg": DagNodeDReg}
+                 "DagNodeDReg": DagNodeDReg,
+                 "DagNodeConstant": DagNodeConstant}
