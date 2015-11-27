@@ -68,4 +68,3 @@ out_image2 = Image.new("RGB", (512, 512), "white")
 print "-" * 80
 ret_image = dec_kernel(in_image, out_image)
 ret_image.save("./images/landscape_transformed.jpg")
-
