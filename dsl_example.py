@@ -4,7 +4,7 @@ __author__ = 'philipp ebensberger'
 import Image
 
 from sejits import Specialize
-from ImageFilter import MinFilter, MaxFilter
+from ImageFilter import MinFilter, MaxFilter, Kernel
 
 # Example 1: Apply Minimum-Filter
 """
@@ -48,10 +48,13 @@ out_image = temp1.point(lambda i: i * 2.2)
 
 
 @Specialize("fpga")
-def dec_kernel(in_image=[Image.new("RGB", (512, 512), "white"),
-                         Image.new("RGB", (512, 512), "white")],
+def dec_kernel(a, in_image=[Image.new("RGB", (512, 512), "white"),Image.new("RGB", (512, 512), "white")],
                out_image=Image.new("RGB", (512, 512), "white")):
-    temp1 = in_image[0].filter(MaxFilter(size=5))
+    a = 10
+    temp1 = in_image[0].filter(Kernel(size=3,
+                                      kernel=[1, 3, 2, 4, 1, 2, 3, 4, 3, 2],
+                                      scale=16,
+                                      offset=1))
 
     temp2_1 = temp1.point(lambda i: i * 2.4)
     temp2_2 = temp1.point(lambda i: i + 4)

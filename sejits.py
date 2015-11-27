@@ -20,21 +20,19 @@ class Specialize(object):
     """ docstring for Specialize. """
 
     def __init__(self, target="python"):
-        """ docstring for __init__. """
+        """ Initalize Specialize. """
         super(Specialize, self).__init__()
-        self.sejits_active = False
+        # check if target hardware is supported
         if target in core_dispatch:
             self.target_core = core_dispatch[target]
-            self.sejits_active = True
+            self.target_supp = True
         else:
-            self.sejits_active = False
+            self.target_supp = False
 
     def __call__(self, wrapped_func):
         """ docstring for __call__. """
         ret_func = None
-        if self.sejits_active is False:
-            ret_func = wrapped_func
-        else:
+        if self.target_supp:
             try:
                 assert wrapped_func.func_defaults is not None,\
                     "ERROR NO FUNC_DEFAULTS!"
@@ -49,6 +47,8 @@ class Specialize(object):
                 ret_func = wrapped_func
             else:
                 ret_func = wrapped_func
+        else:
+            ret_func = wrapped_func
 
         def wrappee(*args, **kwargs):
             """ docstring for wrapped. """
