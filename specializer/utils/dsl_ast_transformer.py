@@ -2,6 +2,7 @@ __author__ = 'philipp ebensberger'
 
 import ast
 import PIL
+import numpy as np
 
 
 class DslAstTransformer(ast.NodeTransformer):
@@ -21,6 +22,9 @@ class DslAstTransformer(ast.NodeTransformer):
     # ======================================================================= #
     def check_args(self, args):
         """ docstring for check_args """
+        arg_dict = dict()
+
+        # ---------------------------------------------------------------------
         arg_dict = dict()
         for arg_name, arg_value in args:
             try:
@@ -163,9 +167,18 @@ class DslAstTransformer(ast.NodeTransformer):
         # TODO: implement BinOp in DSL
         return ImagePointOp(target=self.visit(value), op=self.visit(args[0]))
 
+    def visit_List(self, node):
+        list_items = [self.visit(x) for x in node.elts]
+        # TODO: change check; only int types is supported by FPGA
+        if all(isinstance(x, int) for x in list_items):
+            pass
+        return np.array(list_items)
+
     def visit_Lambda(self, node):
         """ docstring for visit_Lambda """
-        assert len(node.args.args)==1, "Lambda Expression takes at leas 1 argument ({0} given);".format(len(node.args.args))
+        assert len(node.args.args) == 1,\
+            "Lambda Expression takes at least 1 argument ({0} given);".\
+            format(len(node.args.args))
         arg = self.visit(node.args.args[0])
         body = self.visit(node.body)
         return body
@@ -179,7 +192,8 @@ class DslAstTransformer(ast.NodeTransformer):
     def visit_Num(self, node):
         """ docstring for visit_Num """
         if type(node.n) is int:
-            return Int(id=None, n=node.n, args=None)
+            return np.int64(node.n)
+            # return Int(id=None, n=node.n, args=None)
         elif type(node.n) is float:
             return Float(id=None, n=node.n, args=None)
         else:
