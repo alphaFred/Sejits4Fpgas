@@ -48,7 +48,8 @@ out_image = temp1.point(lambda i: i * 2.2)
 
 
 @Specialize("fpga")
-def dec_kernel(a, in_image=[Image.new("RGB", (512, 512), "white"),Image.new("RGB", (512, 512), "white")],
+def dec_kernel(in_image=[Image.new("RGB", (512, 512), "white"),
+                         Image.new("RGB", (512, 512), "white")],
                out_image=Image.new("RGB", (512, 512), "white")):
     conv_img_1 = in_image[0].filter(MinFilter(size=3))
     conv_img_2 = in_image[1].filter(MinFilter(size=3))
