@@ -36,7 +36,12 @@ class Specialize(object):
             try:
                 assert wrapped_func.func_defaults is not None,\
                     "ERROR NO FUNC_DEFAULTS!"
-                # zip function arguments
+                #
+                farg_names, farg_default = wrapped_func.func_code.co_varnames,\
+                    wrapped_func.func_defaults
+                #
+                self.target_core(farg_names, farg_default, wrapped_func).run()
+                # zip function argument names and default values
                 func_args = tuple(zip(wrapped_func.func_code.co_varnames,
                                       wrapped_func.func_defaults))
                 # TODO: copy target execution here
