@@ -9,6 +9,7 @@ __author__ = 'philipp ebensberger'
 
 import ast
 import types
+import numpy as np
 
 
 dsl = '''
@@ -18,13 +19,15 @@ dsl = '''
          | ImageObj
          | InImageObj
 
-    Index(n=types.IntType)
+    Index(n=np.int64)
 
     KernelModule(id=types.StringType, body)
 
-    Int(id=types.StringType|types.NoneType,n=types.IntType, args)
+    Input(id=types.StringType)
+
+    Int(id=types.StringType|types.NoneType,n=np.int64, args)
     Float(id=types.StringType|types.NoneType,n=types.FloatType, args)
-    Constant(id=types.StringType, value=Int|Float, args)
+    Constant(id=types.StringType, value=np.int64|Float, args)
 
     Identifier(name=types.StringType)
 
@@ -32,8 +35,8 @@ dsl = '''
            | ImagePointOp
            | BinOp
 
-    BinOp(left=Int|Float|Identifier|InImageObj|DataOp, op,
-          right=Int|Float|Identifier|InImageObj|DataOp)
+    BinOp(left=np.int64|Float|Identifier|InImageObj|DataOp, op,
+          right=np.int64|Float|Identifier|InImageObj|DataOp)
 
     InImageObj(id=types.StringType,
                mode=types.StringType,
@@ -52,11 +55,14 @@ dsl = '''
     # -------------------------------------------------------------------------
     Filter = MinFilter
            | MaxFilter
-           | DummyFilter
+           | Kernel
 
-    MinFilter(size=Int)
-    MaxFilter(size=Int)
-    DummyFilter(size=Int, bla=Float, blub=Int|Float)
+    MinFilter(size=np.int64)
+    MaxFilter(size=np.int64)
+    Kernel(size=np.int64,
+           kernel=types.ListType,
+           scale=np.int64|Types.NoneType,
+           offset=np.int64)
 
     ImageFilter(target=(InImageObj|Identifier|DataOp), filter=Filter)
     ImagePointOp(target=(InImageObj|Identifier|DataOp), op=Expr|ast.BinOp)
