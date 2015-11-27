@@ -17,7 +17,7 @@ class ZynqSpecializer(object):
 
     """ docstring for ZYNQ_Specializer. """
 
-    def __init__(self, args, func):
+    def __init__(self, arg_names, arg_default, func):
         """ docstring for __init__. """
         # parse dsl and add dsl classes to dsl_classes dictionary
         self.dsl_classes = dict()
