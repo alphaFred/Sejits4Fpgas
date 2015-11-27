@@ -6,14 +6,6 @@ import Image
 from sejits import Specialize
 from ImageFilter import MinFilter, MaxFilter
 
-# Import scikit modules
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-from scipy import ndimage as ndi
-from skimage import feature
-
-
 # Example 1: Apply Minimum-Filter
 """
 out_image = in_images.filter(MinFilter(size=5))

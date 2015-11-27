@@ -108,19 +108,19 @@ class DslAstTransformer(ast.NodeTransformer):
         node_targets = map(self.visit, node.targets)
         node_value = self.visit(node.value)
         #
-        assert len(node_targets) == 1, "Illegal number of targets for assignment; line {0}".format(node.lineno)
+        assert len(node_targets) == 1, "Illegal number of targets for assignment in line {0}".format(node.lineno)
         node_target = node_targets[0]
         #
         if type(node_target) is Identifier:
             if node_target.name in self.localVars:
-                assert False, "Illegal multiple assignment to identifier {0}; line {1}".format(node_value.name, node.lineno)
+                assert False, "Multiple assignment to identifier {0} in line {1}".format(node_target.name, node.lineno)
             else:
                 self.localVars[node_target.name] = node_target
             return TempAssign(var=node_target, value=node_value)
         elif type(node_target) is OutImageObj:
             return OutAssign(var=node_target, value=node_value)
         else:
-            assert False, "Illegal assignment to identifier of type {0}; line {1}".format(type(node_target).__name__, node.lineno)
+            assert False, "Illegal assignment to identifier of type {0} in line {1}".format(type(node_target).__name__, node.lineno)
 
     def visit_Name(self, node):
         """ docstring for visit_Name """
@@ -184,3 +184,7 @@ class DslAstTransformer(ast.NodeTransformer):
             return Float(id=None, n=node.n, args=None)
         else:
             assert False, "Illegal numeric type!"
+
+    def visit_If(self, node):
+        assert False,\
+            "If statement  in line {0} not supported".format(node.lineno)
