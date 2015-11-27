@@ -2,8 +2,7 @@ __author__ = 'philipp ebensberger'
 
 import ast
 import PIL
-import numpy as np
-
+import numpy
 
 class DslAstTransformer(ast.NodeTransformer):
     """ docstring for DslAstTransformer """
@@ -192,7 +191,7 @@ class DslAstTransformer(ast.NodeTransformer):
     def visit_Num(self, node):
         """ docstring for visit_Num """
         if type(node.n) is int:
-            return np.int64(node.n)
+            return Int(id=None,n=node.n, args=None)
             # return Int(id=None, n=node.n, args=None)
         elif type(node.n) is float:
             return Float(id=None, n=node.n, args=None)

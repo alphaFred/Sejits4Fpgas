@@ -37,10 +37,12 @@ class Specialize(object):
                 assert wrapped_func.func_defaults is not None,\
                     "ERROR NO FUNC_DEFAULTS!"
                 #
+                """
                 farg_names, farg_default = wrapped_func.func_code.co_varnames,\
                     wrapped_func.func_defaults
                 #
                 self.target_core(farg_names, farg_default, wrapped_func).run()
+                """
                 # zip function argument names and default values
                 func_args = tuple(zip(wrapped_func.func_code.co_varnames,
                                       wrapped_func.func_defaults))
@@ -51,7 +53,7 @@ class Specialize(object):
                 print traceback.print_exc()
                 ret_func = wrapped_func
             else:
-                ret_func = wrapped_func
+                ret_func = fpga_dummy
         else:
             ret_func = wrapped_func
 
