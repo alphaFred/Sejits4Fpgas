@@ -3,7 +3,6 @@ import ast
 from sejits_ctree.visitors import NodeVisitor
 from sejits_ctree.util import enumerate_flatten
 
-
 def label_for_py_ast_nodes(self):
     from sejits_ctree.py.dotgen import PyDotLabeller
 
@@ -43,37 +42,37 @@ class DotGenVisitor(NodeVisitor):
     """
     @staticmethod
     def _qualified_name(obj):
-        """
-        return object name with leading module
-        """
+        """ Return object name with leading module """
         return "%s.%s" % (obj.__module__, obj.__name__)
 
     def label(self, node):
         """
-        A string to provide useful information for visualization, debugging, etc.
+        A string to provide useful information for visualization,
+        debugging, etc.
         """
         return r"%s\n%s" % (type(node).__name__, node.label())
 
     # TODO: change formation to visitor pattern
     def format(self, node):
+        """ Format Dot nodes. """
         formats = {"ImageFilter": ', style=filled, fillcolor="#00EB5E"',
                    "DFImageFilter": ', style=filled, fillcolor="#00EB5E"',
-                   "ImagePointOp":', style=filled, fillcolor="#C2FF66"',
-                   "DFImagePointOp":', style=filled, fillcolor="#C2FF66"',
-                   "TempAssign":  ', style=filled, fillcolor="#66C2FF"',
-                   "DFTempAssign":  ', style=filled, fillcolor="#66C2FF"',
-                   "OutAssign":   ', style=filled, fillcolor="#6675FF"',
-                   "DFOutAssign":   ', style=filled, fillcolor="#6675FF"',
-                   "InImageObj":  ', style=filled, fillcolor="#FFF066"',
+                   "ImagePointOp": ', style=filled, fillcolor="#C2FF66"',
+                   "DFImagePointOp": ', style=filled, fillcolor="#C2FF66"',
+                   "TempAssign": ', style=filled, fillcolor="#66C2FF"',
+                   "DFTempAssign": ', style=filled, fillcolor="#66C2FF"',
+                   "OutAssign": ', style=filled, fillcolor="#6675FF"',
+                   "DFOutAssign": ', style=filled, fillcolor="#6675FF"',
+                   "InImageObj": ', style=filled, fillcolor="#FFF066"',
                    "OutImageObj": ', style=filled, fillcolor="#FFA366"'
                    }
         return formats.get(type(node).__name__, "")
 
     def generic_visit(self, node):
-
         # label this node
-        out_string = 'n%s [label="%s" %s];\n' % (id(node), self.label(node), self.format(node))
-
+        out_string = 'n%s [label="%s" %s];\n' % (id(node),
+                                                 self.label(node),
+                                                 self.format(node))
         # edges to children
         for fieldname, fieldvalue in ast.iter_fields(node):
             for index, child in enumerate_flatten(fieldvalue):
@@ -82,4 +81,64 @@ class DotGenVisitor(NodeVisitor):
                     out_string += 'n{} -> n{} [label="{}{}"];\n'.format(
                         id(node), id(child), fieldname, suffix)
                     out_string += self.visit(child)
+        return out_string
+
+
+class VhdlDotGenVisitor(NodeVisitor):
+    """
+    Generates a representation of the AST in the DOT graph language.
+    See http://en.wikipedia.org/wiki/DOT_(graph_description_language)
+    """
+    @staticmethod
+    def _qualified_name(obj):
+        """ Return object name with leading module """
+        return "%s.%s" % (obj.__module__, obj.__name__)
+
+    def label(self, node):
+        """
+        A string to provide useful information for visualization,
+        debugging, etc.
+        """
+        return r"%s\n%s" % (type(node).__name__, node.label())
+
+    # TODO: change formation to visitor pattern
+    def format(self, node):
+        """ Format Dot nodes. """
+        formats = {"VhdlFile": ', style=filled, fillcolor="#00EB5E"',
+                   "DFImageFilter": ', style=filled, fillcolor="#00EB5E"',
+                   "ImagePointOp": ', style=filled, fillcolor="#C2FF66"',
+                   "DFImagePointOp": ', style=filled, fillcolor="#C2FF66"',
+                   "TempAssign": ', style=filled, fillcolor="#66C2FF"',
+                   "DFTempAssign": ', style=filled, fillcolor="#66C2FF"',
+                   "OutAssign": ', style=filled, fillcolor="#6675FF"',
+                   "DFOutAssign": ', style=filled, fillcolor="#6675FF"',
+                   "InImageObj": ', style=filled, fillcolor="#FFF066"',
+                   "OutImageObj": ', style=filled, fillcolor="#FFA366"'
+                   }
+        return formats.get(type(node).__name__, "")
+
+    def generic_visit(self, node):
+        # label this node
+        out_string = 'n%s [label="%s" %s];\n' % (id(node),
+                                                 self.label(node),
+                                                 self.format(node))
+        # edges to children
+        for fieldname, fieldvalue in ast.iter_fields(node):
+            for index, child in enumerate_flatten(fieldvalue):
+                if isinstance(child, ast.AST):
+
+                    if type(node).__name__ is "VhdlFile":
+                        out_string += 'subgraph cluster_%s {\n node [style=filled];' % node.name
+
+                        suffix = "".join(["[%d]" % i for i in index])
+                        out_string += 'n{} -> n{} [label="{}{}"];\n'.format(
+                            id(node), id(child), fieldname, suffix)
+                        out_string += self.visit(child)
+
+                        out_string += 'label = "%s";\n}' % node.name
+                    else:
+                        suffix = "".join(["[%d]" % i for i in index])
+                        out_string += 'n{} -> n{} [label="{}{}"];\n'.format(
+                            id(node), id(child), fieldname, suffix)
+                        out_string += self.visit(child)
         return out_string
