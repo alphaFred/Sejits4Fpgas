@@ -2,7 +2,7 @@
 validation of ast trees
 """
 from sejits_ctree.visitors import NodeVisitor
-from sejits_ctree.nodes import CtreeNode, ast
+from sejits_ctree.nodes import CtreeNode, VhdlTreeNode, ast
 from sejits_ctree.c.nodes import SymbolRef
 from sejits_ctree.util import flatten
 
@@ -35,6 +35,7 @@ class AstValidationError(Exception):
 
 
 class VerifyOnlyCtreeNodes(NodeVisitor):
+
     """
     Checks that every node in the tree is an instance of
     sejits_ctree.nodes.common.CtreeNode. Raises an exception if a bad node
@@ -43,5 +44,21 @@ class VerifyOnlyCtreeNodes(NodeVisitor):
 
     def visit(self, node):
         if not isinstance(node, CtreeNode):
-            raise AstValidationError("Expected a pure C ast, but found a non-CtreeNode: %s." % node)
+            raise AstValidationError("Expected a pure C ast, but found a \
+                                      non-CtreeNode: %s." % node)
+        self.generic_visit(node)
+
+
+class VerifyOnlyVhdlNodes(NodeVisitor):
+
+    """
+    Checks that every node in the tree is an instance of VhdlTreeNode.
+
+    Raises an exception if a bad node is found.
+    """
+
+    def visit(self, node):
+        if not isinstance(node, VhdlTreeNode):
+            raise AstValidationError("Expected a pure Vhdl ast, but found a \
+                                      non-VhdlTreeNode: %s." % node)
         self.generic_visit(node)
