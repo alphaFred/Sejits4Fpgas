@@ -16,8 +16,8 @@ class DotManager(object):
     @staticmethod
     def dot_ast_to_browser(ast_node, file_name=None):
         dot_text = ast_node.to_dot()
+        #
         dot_output = DotManager.run_dot(dot_text)
-
         if file_name is None:
             with tempfile.NamedTemporaryFile(mode='wb', suffix=".png", delete=False) as f:
                 f.write(dot_output)
