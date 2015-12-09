@@ -1,6 +1,4 @@
-"""
-A set of basic transformers for python asts
-"""
+""" A set of basic transformers for python asts. """
 import os
 import sys
 import ast
@@ -118,7 +116,7 @@ class PyBasicConversions(NodeTransformer):
             return Return()
 
     def visit_For(self, node):
-        """restricted, for now, to range as iterator with long-type args"""
+        """ Restricted, for now, to range as iterator with long-type args. """
         if isinstance(node, ast.For) and \
            isinstance(node.iter, ast.Call) and \
            isinstance(node.iter.func, ast.Name) and \
