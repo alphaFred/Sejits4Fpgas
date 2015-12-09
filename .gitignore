@@ -35,3 +35,9 @@
 /specializer/fpga/fpga_dag_specification.pyc
 /specializer/fpga/fpga_codegen.pyc
 /test_code.vhdl
+/sejits_ctree/vhdl/__init__.pyc
+/sejits_ctree/vhdl/codegen.pyc
+/sejits_ctree/vhdl/dotgen.pyc
+/sejits_ctree/vhdl/nodes.pyc
+/sejits_ctree/vhdl/scikit_image/__init__.pyc
+/sejits_ctree/vhdl/scikit_image/transformations.pyc
