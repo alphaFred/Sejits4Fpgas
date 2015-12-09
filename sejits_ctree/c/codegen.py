@@ -13,7 +13,7 @@ from numbers import Number
 from sejits_ctree.nodes import CommonCodeGen
 
 class CCodeGen(CommonCodeGen):
-    """
+    """param_types
     Manages generation of C code.
     """
 
