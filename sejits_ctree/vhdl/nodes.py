@@ -62,6 +62,22 @@ class VhdlFile(VhdlNode, File):
         pass
 
 
+class VhdlProject(object):
+
+    """ Base class for an Vhdl Project. """
+
+    files = []
+
+    def __init__(self, master_file):
+        self.add_file(master_file)
+        # create base folder with master file
+
+    def add_file(self, file):
+        if type(file) is list:
+            self.files += file
+        else:
+            self.files.append(file)
+
 # =============================================================================#
 # NODES
 # =============================================================================#
@@ -70,6 +86,9 @@ class Op:
     class _Op(VhdlNode):
         def __str__(self):
             return self._vhdl_str
+
+        def sig_ref(self):
+            return self
 
     class Add(_Op):
         _vhdl_str = "add"
@@ -110,18 +129,31 @@ class Return(Statement):
         self.value = value
         super(Return, self).__init__()
 
+    def sig_ref(self):
+        return self.value.sig_ref()
+
 
 class Constant(Literal):
     """ docstring dummy. """
     _fields = ['value', 'type']
 
-    def __init__(self, value=None, type=None):
+    def __init__(self, value=None, sym_type=None):
         self.value = value
+        self.type = sym_type
+        """
         if type is None:
             self.type = get_ctype(self.value)
         else:
             self.type = type
+        """
         super(Constant, self).__init__()
+
+    def __str__(self):
+        return str(self.value)
+
+    def sig_ref(self):
+        return self
+
 
 class BinaryOp(Expression):
     """Cite me."""
@@ -141,22 +173,12 @@ class String(Literal):
         super(String, self).__init__()
 
 
-class Return(Statement):
-    """ docstring dummy. """
-    _fields = ['value']
-
-    def __init__(self, value=None):
-        self.value = value
-        super(Return, self).__init__()
-
-
 class SymbolRef(Literal):
     """ docstring dummy. """
     _next_id = 0
     _fields = ['name', 'type']
 
-    def __init__(self, name=None, sym_type=None, _global=False,
-                 _local=False, _const=False):
+    def __init__(self, name=None, sym_type=None):
         """
         Create a new symbol with the given name.
 
@@ -167,13 +189,13 @@ class SymbolRef(Literal):
         if sym_type is not None:
             assert not isinstance(sym_type, type)
         self.type = sym_type
-        self._global = _global
-        self._local = _local
-        self._const = _const
         super(SymbolRef, self).__init__()
 
     def __str__(self):
         return self.name
+
+    def sig_ref(self):
+        return self
 
     @classmethod
     def unique(cls, name="name", sym_type=None):
@@ -182,17 +204,15 @@ class SymbolRef(Literal):
         cls._next_id += 1
         return sym
 
+
 class EntityDecl(Statement):
     """ docstring dummy. """
-    _fields = ['params']
+    _fields = ['in_args', 'out_arg']
 
-    def __init__(self, return_type=None, name=None, params=None):
-        self.return_type = return_type
+    def __init__(self, name=None, in_args=None, out_arg=None):
         self.name = name
-        self.params = params if params else []
-        self.inline = False
-        self.static = False
-        self.kernel = False
+        self.in_args = in_args if in_args else []
+        self.out_arg = out_arg if out_arg else None
         super(EntityDecl, self).__init__()
 
 
@@ -212,9 +232,25 @@ class Architecture(Statement):
 
 class ComponentCall(Expression):
     """ docstring dummy. """
-    _fields = ['comp', 'args']
+    _fields = ['comp', 'in_args', 'out_args']
 
-    def __init__(self, comp=None, args=None):
+    def __init__(self, comp=None, in_args=None, out_args=None):
         self.comp = comp
-        self.args = args if args else []
+        self.in_args = in_args if in_args else []
+        self.out_args = out_args if out_args else SymbolRef(name="sig_" + str(hash(self)),
+                                                            sym_type=None)
         super(ComponentCall, self).__init__()
+
+    def sig_ref(self):
+        return self.out_args
+
+class DummyContainer(Statement):
+    """ docstring dummy. """
+    _fields = ['body']
+
+    def __init__(self, body=None):
+        assert isinstance(body, list)
+        self.body = body
+
+    def sig_ref(self):
+        return self.body[0].sig_ref()

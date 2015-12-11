@@ -6,13 +6,23 @@ from sejits_ctree.vhdl.nodes import SymbolRef
 from sejits_ctree.nodes import CommonCodeGen
 from collections import defaultdict
 
+
 class VhdlCodeGen(CommonCodeGen):
 
     """ docstring dummy. """
 
     active_module = {"entity_name": ""}
     module_comp_count = defaultdict(int)
+    #
+    comp_port_names = {"BinOp": ["left", "op", "right"],
+                       "sobel": ["image", "ret"],
+                       "sobel_v": ["image", "mask"],
+                       "sobel_h": ["image", "mask"],
+                       "sqrt": ["in1", "out1"],
+                       "assert_nD": ["array", "ndim"]}
+    #
     signals = set()
+    indent = "    "
 
     def run(self, node):
         ret = self.visit(node)
@@ -32,73 +42,44 @@ class VhdlCodeGen(CommonCodeGen):
         return s
 
     def visit_EntityDecl(self, node):
-        generic = ""
-        port = ""
-        #
-        if node.params:
-            if type(node.params) is list:
-                port += "\tport(\n"
-                port += "\t\t" + ",\n\t\t".join([param.name
-                                                 for param in node.params])
-                port += "\n\t);"
-        #
+        s = self._make_entity_block(ent_type=node.name,
+                                    ent_generics=None,
+                                    ent_ports=[node.in_args, node.out_arg],
+                                    indent=self.indent)
         self.active_module["entity_name"] = node.name
-        #
-        s = "entity {0} is\n{1}\n{2}\nend {0};".format(node.name,
-                                                       generic,
-                                                       port)
         return s
 
     def visit_Architecture(self, node):
         arch_name = "Behavioural"
         entity_name = self.active_module["entity_name"]
         arch_decl = ""
-        arch_instr = "\n\t\t".join([str(self.visit(body)) for body in node.body])
-        s = "architecture {0} of {1} is\n{2}\nbegin\n{3}\nend {0};"\
+        arch_instr = "\n".join([str(self.visit(body)) for body in node.body])
+        s = "architecture {0} of {1} is\n{2}\nbegin{3}end {0};"\
             .format(arch_name,
                     entity_name,
                     arch_decl,
                     arch_instr)
         return s
 
-    def visit_BinaryOp(self, node):
-        comp_count = self.module_comp_count[node.__class__.__name__]
-        #
-        left = "left : " + self.route_signal(node.left, node)
-        op = "op : " + str(node.op)
-        right = "right : " + self.route_signal(node.right, node)
-        #
-        ports = "\n\t\t".join([left, op, right])
-        # \n\t\t".join([self.visit(node.left), self.visit(node.right)])
-        s = "{0}_{1}: {0}\n\tport map(\n\t\t{2}\t);"\
-            .format(node.__class__.__name__,
-                    comp_count,
-                    ports)
-        #
-        sigs = [self.resolve_sig(node, getattr(node, sig))
-                for sig in node._fields]
-        #
-        s = self._make_comp_block(node.__class__.__name__,
-                                  None,
-                                  [node._fields, sigs],
-                                  "    ")
-        # update component count
-        self.module_comp_count[node.__class__.__name__] += 1
-        #
-        return s + self.visit(node.left) + self.visit(node.right)
-
     def visit_ComponentCall(self, node):
-        comp_count = self.module_comp_count[node.comp.name]
-        #
-        sigs = [self.resolve_sig(node, sig) for sig in node.args]
-        #
-        s = self._make_comp_block(node.comp.name,
-                                  None,
-                                  [node.args, sigs],
-                                  "    ")
-        # update component count
-        self.module_comp_count[node.comp.name] += 1
-        return s
+        if node.comp in self.comp_port_names:
+            iargs = node.in_args if type(node.in_args) is list\
+                else [node.in_args]
+            iargs = [str(iarg) for iarg in iargs]
+            #
+            oargs = node.out_args if type(node.out_args) is list\
+                else [node.out_args]
+            oargs = [str(oarg) for oarg in oargs]
+            sigs = iargs + oargs
+            #
+            s = self._make_comp_block(node.comp,
+                                      None,
+                                      [self.comp_port_names[node.comp], sigs],
+                                      self.indent)
+            #
+            return s
+        else:
+            return ""
 
     def _make_comp_block(self, comp_type, comp_generics, comp_ports, indent):
         comp_count = self.module_comp_count[comp_type]
@@ -115,11 +96,44 @@ class VhdlCodeGen(CommonCodeGen):
         maps = [self._make_map(*item, indent=indent * 2) for item in maps]
         s = s.format(comp_type, comp_count, *maps)
         #
+        self.module_comp_count[comp_type] += 1
+        return s
+
+    def _make_entity_block(self, ent_type, ent_generics, ent_ports, indent):
+        s = "entity {0} is\n"
+        s += "generic ({2})\n\n" if ent_generics else ""
+        # add port map if available
+        if ent_generics:
+            s += indent + "port (\n{3}end {0};\n\n" if ent_ports else ""
+        else:
+            s += indent + "port (\n{2}end {0};\n\n" if ent_ports else ""
+        #
+        maps = [None,
+                self._make_entitiy_io(ent_ports[0],
+                                      ent_ports[1],
+                                      indent + self.indent)]
+        s = s.format(ent_type, *maps)
+        #
         return s
 
     def _make_map(self, ports, sigs, indent):
         wrap = ",\n" + indent
-        s = wrap.join([str(port) + " => " + sig for port, sig in zip(ports, sigs)])
+        s = wrap.join([str(port) + " => " + sig
+                       for port, sig in zip(ports, sigs)])
+        return s
+
+    def _make_entitiy_io(self, iports, oports, indent):
+        iports = iports if type(iports) is list else [iports]
+        oports = oports if type(oports) is list else [oports]
+        #
+        wrap = ";\n" + indent
+        s = indent
+        s += wrap.join([iport.name + " : in " + str(iport.type)
+                       for iport in iports])
+        s += ";\n" + indent
+        s += wrap.join([oport.name + " : out " + str(oport.type)
+                        for oport in oports])
+        s += ");\n"
         return s
 
     def resolve_sig(self, node, prev_node):
