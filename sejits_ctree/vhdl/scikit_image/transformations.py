@@ -2,26 +2,95 @@
 __author__ = 'philipp ebensberger'
 
 import ast
-import numpy as np
-import skimage.filters
 import logging
 import sejits_ctree
 
 from skimage.filters import scharr, prewitt, sobel
-from sejits_ctree.visitors import NodeTransformer
 
-from sejits_ctree.vhdl.nodes import VhdlFile, VhdlProject, EntityDecl, Return
+from sejits_ctree.vhdl.scikit_image.func_resolutions import sobel_Resolver
+from sejits_ctree.vhdl.scikit_image.func_substitutes import assert_nD_Substituter
+
+from sejits_ctree.vhdl.nodes import VhdlFile, VhdlProject, Entity, Return
 from sejits_ctree.vhdl.nodes import Op, SymbolRef, Constant, ComponentCall
-from sejits_ctree.vhdl.nodes import Architecture, BinaryOp, DummyContainer
+from sejits_ctree.vhdl.nodes import Architecture, Block
 
 logger = logging.getLogger('test_transformer')
+
+
+class FuncResolver(object):
+
+    """
+    Resolve function calls using given resolvers.
+
+    If matching resolver is provided, the source code of the function is
+    retrieved from the library and inserted into the given tree using an
+    VhdlFile node.
+    """
+
+    resolvers = [sobel_Resolver]
+
+    def __init__(self):
+        """ Initialize FunctionalResolver. """
+        pass
+
+    def visit(self, tree):
+        """ Visit tree with all resolvers """
+        for resolver in self. resolvers:
+            resolver().visit(tree)
+        return tree
+
+
+class FuncSubstituter(object):
+
+    """ Substitutes function calls using given substituters. """
+
+    substituters = [assert_nD_Substituter]
+
+    def __init__(self):
+        """ Initialize FunctionalTransformer. """
+        pass
+
+    def visit(self, tree):
+        """ Visit tree with all substituters. """
+        for substiturer in self.substituters:
+            substiturer().visit(tree)
+        return tree
+
+
+class VhdlKeywordTransformer(ast.NodeTransformer):
+
+    """ Transforms Name nodes with VHDL keywords. """
+
+    VHDL_Keywords = {"abs", "access", "after", "alias", "all", "and",
+                     "architecture", "array", "assert", "attribute", "begin",
+                     "block", "body", "buffer", "bus", "case", "component",
+                     "configuration", "constant", "disconnect", "downto",
+                     "else", "elsif", "end", "entity", "exit", "file",
+                     "for", "function", "generate", "generic", "group",
+                     "guarded", "if", "impure", "in", "inertial", "inout",
+                     "is", "label", "library", "linkage", "literal", "loop",
+                     "map", "mod", "nand", "new", "next", "nor", "not",
+                     "null", "of", "on", "open", "or", "others", "out",
+                     "package", "port", "postponed", "procedure", "process",
+                     "pure", "range", "record", "register", "reject", "rem",
+                     "report", "return", "rol", "ror", "select", "severity",
+                     "signal", "shared", "sla", "sll", "sra", "srl",
+                     "subtype", "then", "to", "transport", "type",
+                     "unaffected", "units", "until", "use", "variable",
+                     "wait", "when", "while", "with", "xnor", "xor"}
+
+    def visit_Name(self, node):
+        """ Change id of Name node if it is a VHDL keyword. """
+        if node.id in self.VHDL_Keywords:
+            node.id = "sig_" + node.id
+        return node
 
 
 class VhdlBasicTransformer(ast.NodeTransformer):
 
     """ Transform ast to basic Vhdl nodes. """
 
-    change_ref = dict()
+    changed_ref = dict()
     vhdl_files = []
 
     PY_OP_TO_VHDLTREE_OP = {ast.Add: Op.Add,
@@ -29,7 +98,9 @@ class VhdlBasicTransformer(ast.NodeTransformer):
                             ast.Sub: Op.Sub,
                             ast.Div: Op.Div,
                             ast.Pow: Op.Pow}
-
+    """
+    COMP_TO_RESOLVE = {}
+    """
     COMP_TO_RESOLVE = {"scharr": scharr,
                        "prewitt": prewitt,
                        "sobel": sobel}
@@ -45,8 +116,8 @@ class VhdlBasicTransformer(ast.NodeTransformer):
 
     def visit_Name(self, node):
         """ Visit Name, return SigRef. """
-        if node.id in self.change_ref:
-            return self.change_ref[node.id]
+        if node.id in self.changed_ref:
+            return self.changed_ref[node.id]
         else:
             return SymbolRef(name=node.id, sym_type=None)
 
@@ -63,35 +134,77 @@ class VhdlBasicTransformer(ast.NodeTransformer):
 
     def visit_FunctionDef(self, node):
         """ Visit FunctionDef, return Entity and Architecture. """
+        # visit all body nodes, remove None nodes and flatten node.body
         body = filter(None, [self.visit(body) for body in node.body])
         assert type(body[-1]) is Return,\
             "Function %s must contain return statement!" % node.name
-        in_args = [self.visit(p) for p in node.args.args]
-        out_arg = body[-1].sig_ref()
         # resolve FunctionDef into Entity and Architecture
-        entity = EntityDecl(name=node.name,
-                            in_args=in_args,
-                            out_arg=out_arg)
-        # TODO: check for Dummy Container as Return value
-        if isinstance(body[-1].value, ComponentCall):
-            body = body[:-1] + [body[-1].value]
-        elif isinstance(body[-1].value, SymbolRef):
-            body = body[:-1]
-        else:
-            assert False
+        entity, io_signals = self.build_Entity(node, body)
+        architecture = self.build_Architecture(node, body, io_signals)
+        return (entity, architecture)
+
+    def build_Entity(self, node, node_body):
+        """
+        Create and return Entity node.
+
+        Args:
+            node: FunctionDef node
+            node_body: visited and filtered FunctionDef node body
+        Return:
+            Entity node
+        """
+        # visit FunctionDef node arguments and use them as input arguments
+        in_args = self.visit(node.args)  # in_args is list of SymbolRef
+        # get symbol reference of Return node in node body
+        out_arg = node_body[-1].sig_ref()  # out_arg is SymbolRef
         #
+        io_signals = {key for key in in_args + [out_arg]}
+        # return Entity node
+        entity = Entity(name=node.name,
+                        in_args=in_args,
+                        out_arg=out_arg)
+        return entity, io_signals
+
+    def visit_arguments(self, node):
+        """ Visit arguments. """
+        return [self.visit(arg) for arg in node.args]
+
+    def build_Architecture(self, node, node_body, io_signals):
+        """
+        Create and return Architecture node.
+
+        Args:
+            node: FunctionDef node
+            node_body: visited and filtered FunctionDef node body
+            io_signals: set of entitie's input and output signals
+        Return:
+            Architecture node
+        """
+        # detach Return node of node_body
+        node_body, ret_node = node_body[:-1], node_body[-1]
+        if isinstance(ret_node.value, ComponentCall):
+            # add returned ComponentCall node to node_body
+            node_body.append(ret_node.value)
+        elif isinstance(ret_node.value, SymbolRef):
+            pass  # returned SymbolRef already attached to out_args of entity
+        else:
+            assert False, "Undefined Return value type"
+        # flatten Block in node_body
         arch_body = []
-        for elem in body:
-            if type(elem) is DummyContainer:
-                arch_body = arch_body + list(self.flatten_DummyContainer(elem))
+        for elem in node_body:
+            if type(elem) is Block:
+                arch_body = arch_body + list(self.flatten_Block(elem))
             else:
                 arch_body.append(elem)
+        """
+        # get all architecture signals
+        for elem in arch_body:
         #
-        arch = Architecture(body=arch_body)
-        return (entity, arch)
+        """
+        return Architecture(body=arch_body)
 
     def visit_Return(self, node):
-        """ Visit Return, return Return(Vhdl). """
+        """ Visit Return node, return Vhdl-Return node. """
         if hasattr(node, 'value'):
             value = self.visit(node.value)
             assert type(value) is not list
@@ -102,11 +215,14 @@ class VhdlBasicTransformer(ast.NodeTransformer):
             assert False, "Empty return statement not allowed!"
 
     def visit_Expr(self, node):
-        """ Visit Expr, remove comments or return value. """
-        if type(node.value) is ast.Str:
-            return None
+        """ Visit Expr node, return None if string else return node value. """
+        if hasattr(node, "value"):
+            if type(node.value) is ast.Str:
+                return None
+            else:
+                return self.visit(node.value)
         else:
-            return self.visit(node.value)
+            return None
 
     def visit_Assign(self, node):
         """ Visit Assign, return or update CompCall. """
@@ -119,7 +235,7 @@ class VhdlBasicTransformer(ast.NodeTransformer):
                 all(isinstance(t, SymbolRef) for t in targets):
             value.out_args = targets
             return value
-        elif type(value) is DummyContainer and\
+        elif type(value) is Block and\
                 all(isinstance(t, SymbolRef) for t in targets):
             value.out_args = targets
             return value
@@ -133,9 +249,19 @@ class VhdlBasicTransformer(ast.NodeTransformer):
                 2. b = a
                 3. c = foo(b)
             b is equal to a in (3.) therefore we can change the subsequent
-            calls to b with a in the ast
+            calls to b with a in the ast:
+                3. c = foo(a)
             """
+            targets = targets[0]
+            self.changed_ref[targets.name] = value
             return None
+        elif type(value) is VhdlFile and\
+                all(isinstance(t, SymbolRef) for t in targets):
+            self.vhdl_files.append(value)
+            value = ComponentCall(comp=value.body[0].name,
+                                  in_args=value.body[0].in_args,
+                                  out_args=targets)
+            return value
         else:
             assert False
 
@@ -154,6 +280,7 @@ class VhdlBasicTransformer(ast.NodeTransformer):
                                                      right=right)))
 
     def visit_BinOp(self, node):
+        """ Visit BinOp node and return Block. """
         left = self.visit(node.left)
         op = self.PY_OP_TO_VHDLTREE_OP[type(node.op)]()
         right = self.visit(node.right)
@@ -164,12 +291,14 @@ class VhdlBasicTransformer(ast.NodeTransformer):
                              out_args=None)]
         ret = ret + filter(lambda i: not isinstance(i, SymbolRef)
                            and not isinstance(i, Constant), [left, right])
-        return DummyContainer(body=ret)
+        return Block(body=ret)
 
     def visit_Attribute(self, node):
+        """ Visit Attribute node and return SymbolRef. """
         return SymbolRef(name=node.attr)
 
     def visit_Call(self, node):
+        """ Visit Call node and return ComponentCall or Block. """
         func = self.visit(node.func)
         if func.name in self.COMP_TO_RESOLVE:
             vhdl_file = VhdlBasicTransformer().\
@@ -177,265 +306,25 @@ class VhdlBasicTransformer(ast.NodeTransformer):
             self.vhdl_files.append(vhdl_file)
         # check arguments
         _args = [self.visit(arg) for arg in node.args]
-        dummy_cont = [arg for arg in _args if isinstance(arg, DummyContainer)]
-        args = [arg for arg in _args if not isinstance(arg, DummyContainer)]
-        if len(dummy_cont) >= 1:
-            args = args + [dc.sig_ref() for dc in dummy_cont]
+        blocks = [arg for arg in _args if isinstance(arg, Block)]
+        args = [arg for arg in _args if not isinstance(arg, Block)]
+        if len(blocks) >= 1:
+            args = args + [dc.sig_ref() for dc in blocks]
             ret = ComponentCall(comp=func.name,
                                 in_args=args,
                                 out_args=None)
-            ret = [ret] + dummy_cont
-            return DummyContainer(body=ret)
+            ret = [ret] + blocks
+            return Block(body=ret)
         else:
             return ComponentCall(comp=func.name,
                                  in_args=args,
                                  out_args=None)
 
-    def flatten(self, lst):
-        for elem in lst:
-            if type(elem) in (tuple, list):
-                for i in self.flatten(elem):
-                    yield i
-            else:
-                yield elem
-
-    def flatten_DummyContainer(self, dummy_cont):
-        for elem in dummy_cont.body:
-            if type(elem) is DummyContainer:
-                for ielem in self.flatten_DummyContainer(elem):
+    def flatten_Block(self, block):
+        """ Flatten Block nodes recursively. """
+        for elem in block.body:
+            if type(elem) is Block:
+                for ielem in self.flatten_Block(elem):
                     yield ielem
             else:
                 yield elem
-
-
-
-
-
-
-
-
-
-
-
-
-
-# ============================================================================ #
-# ============================================================================ #
-# ============================================================================ #
-# ============================================================================ #
-# ============================================================================ #
-class VhdlTransformer(ast.NodeTransformer):
-
-    """ Transforms kernel ast to vhdl ast. """
-
-    visited_nodes = dict()
-    enable_caching = True
-
-    def __init__(self):
-        """ docstring dummy. """
-        self.temp_dict = {}
-        #
-        self.names_dict = {"HSOBEL_WEIGHTS": 'HSOBEL_WEIGHTS',
-                           "VSOBEL_WEIGHTS": 'VSOBEL_WEIGHTS'}
-        #
-        self.active_architecture = None
-        #
-        super(VhdlTransformer, self).__init__()
-
-    PY_OP_TO_VHDLTREE_OP = {ast.Add: Op.Add,
-                            ast.Mult: Op.Mul,
-                            ast.Sub: Op.Sub,
-                            ast.Div: Op.Div,
-                            ast.Pow: Op.Pow}
-
-    def visit_Name(self, node):
-        """ Remove ctx node and linearize local variable calls. """
-        node.ctx = None
-        # if local variable exists return cached data, else return node
-        if node.id in self.temp_dict:
-            return self.temp_dict[node.id]
-        else:
-            return SymbolRef(node.id,
-                             _global=node.id in self.names_dict,
-                             _local=node.id not in self.names_dict)
-
-    def visit_Num(self, node):
-        """ Transform ast.Num into Constant node. """
-        node_hash = hash(node)
-        if self.enable_caching and node_hash in self.visited_nodes:
-            return self.visited_nodes[node_hash]
-        else:
-            ret = Constant(value=node.n)
-            self.visited_nodes[node_hash] = ret
-            return ret
-
-    def visit_Module(self, node):
-        """ Return .vhdl-file node. """
-        node_hash = hash(node)
-        if self.enable_caching and node_hash in self.visited_nodes:
-            print "visit cache"
-            return self.visited_nodes[node_hash]
-        else:
-            body = [self.visit(body) for body in node.body]
-            assert len(body) == 1
-            body = body[0]  # body is now [EntityDecl, Architecture]
-            # body = (entity, arch)
-            ret = VhdlFile(name=body[0].name,
-                           body=body)
-            # update next in child nodes
-            [item.next.append(ret) for item in body]
-            # cache node
-            self.visited_nodes[body[0].name] = ret
-            print "visit new"
-            return ret
-
-    def visit_FunctionDef(self, node):
-        """
-        Return function node.
-
-        # TODO: implement full linearization
-        # TODO: handle decorators
-        # TODO: implement architecture/entity
-        """
-        node_hash = hash(node)
-        if self.enable_caching and node_hash in self.visited_nodes:
-            return self.visited_nodes[node_hash]
-        else:
-            # save previously active architecture
-            prev_arch = self.active_architecture
-            name = node.name
-            params = [self.visit(p) for p in node.args.args]
-            # add new active architecture
-            self.active_architecture = Architecture()
-            # filter out None bodies caused by linearization
-            body = filter(None, [self.visit(body) for body in node.body])
-            assert type(body[-1]) is Return, "Function %s must contain return statement!" % name
-            self.active_architecture.body = body
-            # update next in child nodes
-            [item.next.append(self.active_architecture) for item in body]
-            ret = EntityDecl(return_type=None,
-                             name=name,
-                             params=params)
-            ret = [ret, self.active_architecture]
-            self.active_architecture = prev_arch
-            # cache node
-            self.visited_nodes[node_hash] = ret
-            return ret
-
-    # TODO: check necessity of visit_arg
-    def visit_arg(self, node):
-        """ docstring dummy. """
-        node_hash = hash(node)
-        if self.enable_caching and node_hash in self.visited_nodes:
-            return self.visited_nodes[node_hash]
-        else:
-            ret = SymbolRef(node.arg, node.annotation)
-            # cache node
-            self.visited_nodes[node_hash] = ret
-            return ret
-
-    def visit_Return(self, node):
-        """ docstring dummy. """
-        if hasattr(node, 'value'):
-            value = self.visit(node.value)
-            ret = Return(value)
-            # update next in child node
-            value.next.append(ret)
-            return ret
-        else:
-            assert False, "Empty return statement not allowed!"
-
-    def visit_Expr(self, node):
-        """ Remove comments. """
-        if type(node.value) is ast.Str:
-            return None
-        else:
-            return self.visit(node.value)
-
-    def visit_Assign(self, node):
-        """ docstring dummy. """
-        assert len(node.targets) == 1, "Multiple assignments are currently not \
-            supported!"
-        # cache assignment to ast.Name node
-        if type(node.targets[0]) is ast.Name:
-            self.temp_dict[node.targets[0].id] = self.visit(node.value)
-            return None
-        else:
-            return node
-
-    def visit_AugAssign(self, node):
-        """ docstring dummy. """
-        left = self.visit(node.target)
-        op = self.visit(node.op)
-        right = self.visit(node.value)
-        '''
-        resolution into ast.Assign neccessary to trigger visit of visit_Assign
-        and check for temporary variable resolution!
-        '''
-        return self.visit(ast.Assign(targets=[node.target],
-                                     value=ast.BinOp(left=left,
-                                                     op=op,
-                                                     right=right)))
-
-    def visit_Attribute(self, node):
-        """ docstring dummy. """
-        value = self.visit(node.value)
-        if type(value) is SymbolRef:
-            _node = SymbolRef(name=value.name + "." + node.attr)
-        else:
-            # TODO: implement vhdl ast node return &| log entry|exception
-            _node = ast.Attribute(value=value, attr=node.attr, ctx=None)
-        return ast.copy_location(_node, node)
-
-    def visit_BinOp(self, node):
-        """ docstring dummy. """
-        return BinaryOp(left=self.visit(node.left),
-                        op=self.PY_OP_TO_VHDLTREE_OP[type(node.op)](),
-                        right=self.visit(node.right))
-
-    def visit_Call(self, node):
-        """ docstring dummy. """
-        if hasattr(node.func, 'id') and hasattr(skimage.filters, node.func.id):
-            func_obj = getattr(skimage.filters, node.func.id)
-            #
-            func = VhdlTransformer().visit(sejits_ctree.get_ast(func_obj))
-            args = [self.visit(arg) for arg in node.args]
-            # keywords = [self.visit(keyword) for keyword in node.keywords]
-
-            # TODO: visit starargs and kwargs
-            # starargs = self.visit(node.starargs)
-            # kwargs = self.visit(node.kwargs)
-        else:
-            func = self.visit(node.func)
-            args = [self.visit(arg) for arg in node.args]
-            # keywords = [self.visit(keyword) for keyword in node.keywords]
-
-            # TODO: visit starargs and kwargs
-            '''
-            starargs/kwargs probably unsuitable for compilation/synthetisation
-            anyway
-            '''
-            # starargs = self.visit(node.starargs)
-            # kwargs = self.visit(node.kwargs)
-        # TODO: resolve usage of keyword, starargs and kwargs
-        ret = ComponentCall(comp=func,
-                            args=args)
-        self.active_architecture.add_component(ret)
-        return ret
-
-
-class IfTransformer(NodeTransformer):
-    def visit_Expr(self, node):
-        """ Remove comments. """
-        if type(node.value) is str:
-            return None
-
-    def visit_Name(self, node):
-        """ Remove ctx node. """
-        node.ctx = None
-        return node
-
-    def visit_Attribute(self, node):
-        """ Remove ctx node. """
-        node.ctx = None
-        return node
