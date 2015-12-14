@@ -92,9 +92,9 @@ class JitModule(object):
 
 
 class ConcreteSpecializedFunction(object):
-    """
-    A function backed by generated code.
-    """
+
+    """ A function backed by generated code. """
+
     __metaclass__ = abc.ABCMeta
 
     def _compile(self, entry_point_name, project_node, entry_point_typesig,
@@ -121,19 +121,17 @@ class ConcreteSpecializedFunction(object):
 
 
 class LazySpecializedFunction(object):
-    """
-    A callable object that will produce executable
-    code just-in-time.
-    """
+
+    """ A callable object that will produce executable code just-in-time. """
 
     ProgramConfig = namedtuple('ProgramConfig',
                                ['args_subconfig', 'tuner_subconfig'])
     _directory_fields = ['__class__.__name__', 'backend_name']
 
     class NameExtractor(ast.NodeVisitor):
-        """
-        Extracts the first functiondef name found
-        """
+
+        """ Extracts the first functiondef name found. """
+
         def visit_FunctionDef(self, node):
             return node.name
 
@@ -234,8 +232,7 @@ class LazySpecializedFunction(object):
         path_parts = [
             self.sub_dir,
             str(self._hash(program_config.args_subconfig)),
-            str(self._hash(program_config.tuner_subconfig))
-            ]
+            str(self._hash(program_config.tuner_subconfig))]
 
         for attrib in self._directory_fields:
             path_parts.append(str(deep_getattr(self, attrib)))
@@ -407,3 +404,54 @@ class LazySpecializedFunction(object):
     @staticmethod
     def apply(*args):
         raise NotImplementedError()
+
+
+class LazyVhdlSpecializedFunction(object):
+
+    """
+    Returns a callable object.
+
+    That object will produce executable code just-in-time.
+    """
+
+    def __init__(self, py_ast=None, sub_dir=None):
+        """
+        Initialize LazyVhdlSpecializedFunction.
+
+        Args:
+            py_ast: raw python AST of function to specialize
+            sub_dir:
+        """
+        pass
+
+    def transform(self, tree, program_config):
+        """
+        Convert the AST into Vhdl-AST using actual runtime arguments.
+
+        Args:
+            tree: raw python AST of function to specialize
+            program_config:
+        Returns:
+            VhdlProject
+        """
+        raise NotImplementedError("transform must be implemented")
+
+    def finalize(self, transform_result, program_config):
+        """
+        Return a ConcreteSpecializedFunction based on result from transform.
+
+        Args:
+            transform_result: result from transform method
+            program_config:
+        Returns:
+            ConcreteSpecializedFunction
+        """
+        raise NotImplementedError("finalize must be implemented")
+
+
+class ConcreteVhdlSpecializedFunction(object):
+
+    """ A function backed by synthesized and loaded code. """
+
+    def _initialize(self):
+        pass
