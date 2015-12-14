@@ -193,6 +193,5 @@ class Dummy(object):
         else:
             arch = "\n" + str(self.visit(node.arch))
         #
-        print s + arch + "\n"
         return s + arch
 
