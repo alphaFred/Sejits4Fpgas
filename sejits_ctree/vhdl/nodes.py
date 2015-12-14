@@ -205,7 +205,7 @@ class SymbolRef(Literal):
         return sym
 
 
-class EntityDecl(Statement):
+class Entity(Statement):
     """ docstring dummy. """
     _fields = ['in_args', 'out_arg']
 
@@ -213,15 +213,16 @@ class EntityDecl(Statement):
         self.name = name
         self.in_args = in_args if in_args else []
         self.out_arg = out_arg if out_arg else None
-        super(EntityDecl, self).__init__()
+        super(Entity, self).__init__()
 
 
 class Architecture(Statement):
     """ docstring dummy. """
-    _fields = ['body']
+    _fields = ['body', 'signals']
 
-    def __init__(self, body=None):
+    def __init__(self, body=None, signals=None):
         self.body = body if body else []
+        self.signals = signals if signals else []
         self.components = set()
         super(Architecture, self).__init__()
 
@@ -235,16 +236,19 @@ class ComponentCall(Expression):
     _fields = ['comp', 'in_args', 'out_args']
 
     def __init__(self, comp=None, in_args=None, out_args=None):
+        """ Initialize ComponentCall node. """
         self.comp = comp
         self.in_args = in_args if in_args else []
-        self.out_args = out_args if out_args else SymbolRef(name="sig_" + str(hash(self)),
-                                                            sym_type=None)
+        self.out_args = out_args if out_args else\
+            SymbolRef(name="sig_" + str(hash(self)), sym_type=None)
         super(ComponentCall, self).__init__()
 
     def sig_ref(self):
+        """ Return signal reference to value/return value of node. """
         return self.out_args
 
-class DummyContainer(Statement):
+
+class Block(Statement):
     """ docstring dummy. """
     _fields = ['body']
 
