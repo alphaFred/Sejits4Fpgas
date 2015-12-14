@@ -126,7 +126,6 @@ class VhdlTreeNode(ast.AST):
 
     def to_dot(self):
         """Retrieve the AST in DOT format for vizualization."""
-        print "to_dot"
         return "digraph mytree {\n%s}" % self._to_dot()
 
     def _to_dot(self):
