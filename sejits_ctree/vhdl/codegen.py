@@ -7,6 +7,22 @@ from sejits_ctree.nodes import CommonCodeGen
 from collections import defaultdict
 
 
+VHDLMODULE = """{libraries}
+{entity}
+{architecture}"""
+
+ARCHITECTURE = """architecture {architecture_name} of {entity_name} is
+{architecture_declarations}
+begin
+{vhdl_instructions}
+end {architecture_name};"""
+
+ENTITY = """entity {entity_name} is
+{generic_declarations}
+{port_declarations}
+end {entity_name};"""
+
+
 class VhdlCodeGen(CommonCodeGen):
 
     """ docstring dummy. """
@@ -29,19 +45,17 @@ class VhdlCodeGen(CommonCodeGen):
         return ret
 
     def visit_VhdlFile(self, node):
-        s = ""
+        libs = ""
         # add libs
         for lib in node.libs:
-            s += lib + ";\n"
-        s += "\n"
-        # add entity
-        s += self.visit(node.body[0]) + "\n\n"
-        # add architecture
-        s += self.visit(node.body[1]) + "\n"
-        # return module source code
+            libs += lib + ";\n"
+        #
+        s = VHDLMODULE.format(libraries=libs,
+                              entity=self.visit(node.body[0]),
+                              architecture=self.visit(node.body[1]))
         return s
 
-    def visit_EntityDecl(self, node):
+    def visit_Entity(self, node):
         s = self._make_entity_block(ent_type=node.name,
                                     ent_generics=None,
                                     ent_ports=[node.in_args, node.out_arg],
@@ -54,11 +68,11 @@ class VhdlCodeGen(CommonCodeGen):
         entity_name = self.active_module["entity_name"]
         arch_decl = ""
         arch_instr = "\n".join([str(self.visit(body)) for body in node.body])
-        s = "architecture {0} of {1} is\n{2}\nbegin{3}end {0};"\
-            .format(arch_name,
-                    entity_name,
-                    arch_decl,
-                    arch_instr)
+        # add components to architecture vhdl template
+        s = ARCHITECTURE.format(architecture_name=arch_name,
+                                entity_name=entity_name,
+                                architecture_declarations=arch_decl,
+                                vhdl_instructions=arch_instr)
         return s
 
     def visit_ComponentCall(self, node):
@@ -85,18 +99,24 @@ class VhdlCodeGen(CommonCodeGen):
         comp_count = self.module_comp_count[comp_type]
         s = "{0}_{1} : {0}\n"
         # add generics map if available
-        s += "generic map({2})\n\n" if comp_generics else ""
+        s += "generic map({2})" if comp_generics else ""
         # add port map if available
         if comp_generics:
-            s += indent + "port map({3});\n\n" if comp_ports else ""
+            s += indent + "port map({3});\n" if comp_ports else ""
         else:
-            s += indent + "port map({2});\n\n" if comp_ports else ""
+            s += indent + "port map({2});\n" if comp_ports else ""
         #
         maps = filter(None, [comp_generics, comp_ports])
         maps = [self._make_map(*item, indent=indent * 2) for item in maps]
         s = s.format(comp_type, comp_count, *maps)
         #
         self.module_comp_count[comp_type] += 1
+        return s
+
+    def _make_map(self, ports, sigs, indent):
+        wrap = ",\n" + indent
+        s = wrap.join([str(port) + " => " + sig
+                       for port, sig in zip(ports, sigs)])
         return s
 
     def _make_entity_block(self, ent_type, ent_generics, ent_ports, indent):
@@ -116,12 +136,6 @@ class VhdlCodeGen(CommonCodeGen):
         #
         return s
 
-    def _make_map(self, ports, sigs, indent):
-        wrap = ",\n" + indent
-        s = wrap.join([str(port) + " => " + sig
-                       for port, sig in zip(ports, sigs)])
-        return s
-
     def _make_entitiy_io(self, iports, oports, indent):
         iports = iports if type(iports) is list else [iports]
         oports = oports if type(oports) is list else [oports]
@@ -136,28 +150,7 @@ class VhdlCodeGen(CommonCodeGen):
         s += ");\n"
         return s
 
-    def resolve_sig(self, node, prev_node):
-        if type(prev_node) is SymbolRef:
-            if prev_node._local:
-                return str(prev_node)
-            elif prev_node._global:
-                return "GLOBAL"
-            else:
-                return "SIG-RESOLUTION-ERROR"
-        else:
-            return"DUMMY"
 
-    def visit_Return(self, node):
-        return self.visit(node.value)
-
-    def route_signal(self, source, sink):
-        # create unique signal name
-        sig_name = "sig_" + str(hash(source)) + "_" +\
-            source.__class__.__name__ + "__" + str(hash(sink)) +\
-            "_" + sink.__class__.__name__
-        # cache signal name
-        self.signals.add(sig_name)
-        return sig_name
 
 
 class Dummy(object):
@@ -179,7 +172,7 @@ class Dummy(object):
         s += "end %s;\n" % "Behavioural"
         return s
 
-    def visit_EntityDecl(self, node):
+    def visit_Entity(self, node):
         self.active_module["entity_name"] = node.name
         #
         s = ""
