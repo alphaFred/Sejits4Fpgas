@@ -1,5 +1,7 @@
 """ Contains FunctionTransformers for scikit-image functions """
 
+import time
+from skimage.data import camera
 from ast import NodeTransformer
 
 
@@ -22,7 +24,6 @@ class BaseFunctionalTransformer(NodeTransformer):
     def convert(self, node):
         """ Convert passed node. """
         # in_args = self._get_args(node)
-        from skimage.data import camera
         in_args = [camera(), 2]
         component_call = self.get_def(node, in_args)
         return component_call
