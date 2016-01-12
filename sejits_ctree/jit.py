@@ -406,6 +406,9 @@ class LazySpecializedFunction(object):
         raise NotImplementedError()
 
 
+# =========================================================================== #
+
+
 class LazyVhdlSpecializedFunction(object):
 
     """

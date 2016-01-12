@@ -5,21 +5,19 @@ The ctree package
 """
 from __future__ import print_function
 
-
-
-# ---------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 # explicit version check
 
 import sys
 # assert sys.version_info[0] >= 3, "sejits_ctree requires Python 3.x"
 assert sys.version_info[0] >= 2, "sejits_ctree requires Python 2.7.x"
 
-
 # ---------------------------------------------------------------------------
 # logging
 
 import logging
 
+logging.basicConfig(filename='vhdl_sejits.log', level=logging.DEBUG)
 LOG = logging.getLogger(__name__)
 LOG.info("initializing sejits_ctree")
 
@@ -38,7 +36,8 @@ except ImportError:
 from os import path, getcwd
 
 CONFIG = configparser.ConfigParser()
-DEFAULT_CFG_FILE_PATH = path.join(path.abspath(path.dirname(__file__)), "defaults.cfg")
+DEFAULT_CFG_FILE_PATH = path.join(path.abspath(path.dirname(__file__)),
+                                  "defaults.cfg")
 LOG.info("reading default configuration from: %s", DEFAULT_CFG_FILE_PATH)
 
 CONFIG.readfp(open(DEFAULT_CFG_FILE_PATH), filename="defaults.cfg")
@@ -56,16 +55,15 @@ if sys.version_info.major == 2:
 else:
     from io import StringIO as Memfile
 
-from sejits_ctree.util import highlight
-
 CONFIGFILE = Memfile()
 CONFIG.write(CONFIGFILE)
 CONFIG_TXT = CONFIGFILE.getvalue()
-LOG.info("using configuration:\n%s", highlight(CONFIG_TXT, language='ini'))
-CONFIGFILE.close()
-if CONFIG.has_option('log','level'):
-    logging.basicConfig(level=getattr(logging,CONFIG.get('log','level')))
 
+LOG.info("using configuration:\n%s", CONFIG_TXT)
+
+CONFIGFILE.close()
+if CONFIG.has_option('log', 'level'):
+    logging.basicConfig(level=getattr(logging, CONFIG.get('log', 'level')))
 
 # ---------------------------------------------------------------------------
 # stats
@@ -95,8 +93,8 @@ class LogInfo(object):
 STATS = LogInfo()
 atexit.register(STATS.report)
 
-#----------------------------------------------------------------------------
-#Temporary directory stuff
+# ---------------------------------------------------------------------------
+# Temporary directory stuff
 import tempfile
 import shutil
 

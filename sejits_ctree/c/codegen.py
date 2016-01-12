@@ -13,7 +13,7 @@ from numbers import Number
 from sejits_ctree.nodes import CommonCodeGen
 
 class CCodeGen(CommonCodeGen):
-    """param_types
+    """
     Manages generation of C code.
     """
 
@@ -162,5 +162,3 @@ class CCodeGen(CommonCodeGen):
 
     def visit_Hex(self, node):
         return hex(node.value)
-
-

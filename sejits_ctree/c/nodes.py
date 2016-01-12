@@ -73,13 +73,11 @@ class CNode(CtreeNode):
         return Mod(self, other)
 
 
-
-
 class CFile(CNode, File):
     """Represents a .c file."""
     _ext = "c"
 
-    def __init__(self, name="generated", body=None, config_target='c', path = None):
+    def __init__(self, name="generated", body=None, config_target='c', path=None):
         CNode.__init__(self)
         File.__init__(self, name, body, path)
         self.config_target = config_target
@@ -329,8 +327,9 @@ class SymbolRef(Literal):
         else:
             return SymbolRef(self.name)
 
+
 class FunctionDecl(Statement):
-    """Cite me."""
+    """ Cite me. """
     _fields = ['params', 'defn']
 
     def __init__(self, return_type=None, name=None, params=None, defn=None):

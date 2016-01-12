@@ -1,6 +1,4 @@
-"""
-Defines the hierarchy of AST nodes.
-"""
+""" Defines the hierarchy of AST nodes. """
 
 import logging
 import os.path
@@ -8,12 +6,10 @@ import os.path
 log = logging.getLogger(__name__)
 
 import ast
-import collections
 
 from sejits_ctree.codegen import CodeGenVisitor
 from sejits_ctree.dotgen import DotGenVisitor, DotGenLabeller
 from sejits_ctree.dotgen import VhdlDotGenVisitor
-from sejits_ctree.util import flatten
 import sejits_ctree
 import os
 
@@ -113,8 +109,6 @@ class VhdlTreeNode(ast.AST):
 
     """ Base class for all Vhdl AST nodes in sejits_ctree."""
 
-    next = []
-
     def __init__(self):
         """Initialize a new AST Node."""
         super(VhdlTreeNode, self).__init__()
@@ -125,11 +119,11 @@ class VhdlTreeNode(ast.AST):
         return self.__class__.__name__
 
     def to_dot(self):
-        """Retrieve the AST in DOT format for vizualization."""
+        """ Retrieve the AST in DOT format for visualization."""
         return "digraph mytree {\n%s}" % self._to_dot()
 
     def _to_dot(self):
-        """Retrieve the AST in DOT format for vizualization."""
+        """ Retrieve the AST in DOT format for vizualization."""
         return VhdlDotGenVisitor().visit(self)
 
     def lift(self, **kwargs):
@@ -197,7 +191,6 @@ class File(CommonNode):
     _fields = ['body']
     _empty = None
 
-
     def __init__(self, name="generated", body=None, path = None):
         self.name = name
         self.body = body or []
@@ -211,7 +204,6 @@ class File(CommonNode):
             self._empty = type(self)(name=self.name, path=self.path).codegen()
         return self._empty
 
-
     @property
     def path(self):
         return self._path
@@ -224,7 +216,6 @@ class File(CommonNode):
 
     def get_hash_filename(self):
         return "%s.%s.sha" % (self.name, self._ext)
-
 
     @property
     def program_hash(self):
