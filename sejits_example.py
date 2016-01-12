@@ -1,92 +1,115 @@
 """ Example of Ctree Specializer/Transformer and Visitor. """
 
+import logging
+
+from skimage.filters import sobel
+
 import sejits_ctree
-import time
-from skimage.filters import scharr, prewitt, sobel
+import sejits_ctree.frontend
+
+#
+import ctypes
+import numpy as np
 from skimage.data import camera
-# from skimage.filters import sobel_v, sobel_h, scharr_h, scharr_v
-from sejits_ctree.vhdl.scikit_image.transformations import VhdlKeywordTransformer
-from sejits_ctree.vhdl.scikit_image.transformations import VhdlBasicTransformer
-from sejits_ctree.vhdl.scikit_image.transformations import FuncResolver
-from sejits_ctree.vhdl.scikit_image.transformations import FuncSubstituter
-from sejits_ctree.vhdl.codegen import VhdlCodeGen
-# from sejits_ctree.transformations import PyBasicConversions
-from sejits_ctree.types import get_ctype
+#
+from sejits_ctree.vhdl.nodes import Signal, VhdlProject
+from sejits_ctree.vhdl.transformations import VhdlTransformer
+from sejits_ctree.vhdl.transformations import UserTransformers
+
 from sejits_ctree.vhdl.jit_synth import LazySpecializedFunction
-from sejits_ctree.jit import ConcreteSpecializedFunction
+from sejits_ctree.vhdl.jit_synth import ConcreteSpecializedFunction
 
-def test_func(img):
-    """ return skimage.filters.sobel(img) """
-    out = sobel(img)
-    return out
 
+log = logging.getLogger(__name__)
+
+
+def filter_sobel(img):
+    """ return sobel filtered image. """
+    return sobel(img)
+
+
+def sejits_test(img):
+    """ return sobel filtered image. """
+    filtered_image = filter_sobel(img)
+    return filtered_image
+
+
+# =========================================================================== #
+# LAZY / CONCRETE SPECIALIZED FUNCTION
+# =========================================================================== #
 
 class BasicVhdlTrans(LazySpecializedFunction):
 
-    """ docstring dummy. """
-
     def args_to_subconfig(self, args):
-        return {'arg_type': type(get_ctype(args[0]))}
+        arg = args[0]
+        arg_type = np.ctypeslib.ndpointer(arg.dtype, arg.ndim, arg.shape)
+        return {'arg_type': arg_type}
 
     def transform(self, tree, program_config):
-        t1 = time.time()
-        funcres_tree = FuncResolver().visit(sejits_ctree.get_ast(test_func))
-        t2 = time.time()
-        _t1 = "FuncResolver execution time: %s sec" % str(t2 - t1)
-
-        t1 = time.time()
-        functrans_tree = FuncSubstituter().visit(funcres_tree)
-        t2 = time.time()
-        _t2 = "FuncSubstituter execution time: %s sec" % str(t2 - t1)
-
-        t1 = time.time()
-        keytrans_tree = VhdlKeywordTransformer().visit(functrans_tree)
-        t2 = time.time()
-        _t3 = "VhdlKeywordTransformer execution time: %s sec" % str(t2 - t1)
-
-        t1 = time.time()
-        trees = VhdlBasicTransformer().run(keytrans_tree)
-        t2 = time.time()
-        _t4 = "VhdlBasicTransformer execution time: %s sec" % str(t2 - t1)
+        arg_type = program_config.args_subconfig['arg_type']
         #
-        print """
->> generate debug output:
-\t\t{0}\n\t\t{1}\n\t\t{2}\n\t\t{3}""".format(_t1, _t2, _t3, _t4)
+        name_dict = {"img": Signal(name="img", vhdl_type="nd_array")}
+        # tree = UserTransformers().visit(tree)
         #
-        # generate debug output
-        self.generate_debug_output(trees)
+        basic_transformer = VhdlTransformer(name_dict)
+        tree = basic_transformer.visit(tree)
+        trees = [tree] + basic_transformer.vhdl_files
         #
-        return None
-
-    def generate_debug_output(self, vhdl_proj):
-        for idx, tree in enumerate(vhdl_proj.files):
-            code = VhdlCodeGen().run(tree)
-            if idx == 0:
-                with open("test_code.vhdl", 'w') as f:
-                    f.write(code)
-                    f.write("\n" + "-" * 80 + "\n")
-            else:
-                with open("test_code.vhdl", 'a') as f:
-                    f.write(code)
-                    f.write("\n" + "-" * 80 + "\n")
-            name = "test_graph_" + str(idx) + ".png"
-            sejits_ctree.browser_show_ast(tree, file_name=name)
+        sejits_ctree.browser_show_ast(trees[0], file_name="trans_ast.png")
+        #
+        return trees
 
     def finalize(self, transform_result, program_config):
-        return BasicVhdlFunc()
+        proj = VhdlProject(files=transform_result,
+                           synthesis_dir="./")
+        #
+        proj.codegen(1)
+        #
+        arg_config, tuner_config = program_config
+        arg_type = arg_config['arg_type']
+        entry_type = ctypes.CFUNCTYPE(arg_type._dtype_.type, arg_type)
 
-class BasicVhdlFunc(ConcreteSpecializedFunction):
-    def __init__(self):
-        super(BasicVhdlFunc, self).__init__()
+        return BasicFunction("dummy_func", proj, entry_type)
+
+
+class BasicFunction(ConcreteSpecializedFunction):
+    def __init__(self, entry_name, project_node, entry_typesig):
+        pass
 
     def __call__(self, *args, **kwargs):
-        print "Call of ConcreteSpecializedFunction"
+        return "bla"
 
+# =========================================================================== #
+#
+# =========================================================================== #
 
 def main():
-    vhdl_trans = BasicVhdlTrans.from_function(test_func)
+    """
+    # get raw ast of test function
+    raw_ast = sejits_ctree.frontend.get_ast(sejits_test)
+
+    sejits_ctree.browser_show_ast(raw_ast, file_name="basic_ast.png")
+
+    name_dict = {"img": Signal(name="img", vhdl_type="nd_array")}
+
+    # generate Vhdl Basic Transformer
+    vhdl_transformer = VhdlTransformer(name_dict)
+
+    # Tranform python source code
+    master_file = vhdl_transformer.visit(raw_ast)
+    sejits_ctree.browser_show_ast(master_file, file_name="trans_ast.png")
+    # Collect all generated Vhdl files
+    vhdl_files = [master_file] + vhdl_transformer.vhdl_files
+
+    # Generate Vhdl Project
+    vhdlproject = VhdlProject(vhdl_files, "./")
+    vhdlproject.codegen(indent=1)
+
+    """
+    vhdl_trans = BasicVhdlTrans.from_function(sejits_test)
     img = camera()
     vhdl_trans(img)
+
 
 if __name__ == "__main__":
     main()
