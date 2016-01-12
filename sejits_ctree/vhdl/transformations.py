@@ -2,15 +2,19 @@
 __author__ = 'philipp ebensberger'
 
 import ast
+from sejits_ctree.vhdl import USERTRANSFORMERS
 import logging
 
 from collections import namedtuple
 
-from sejits_ctree.vhdl.nodes import VhdlFile, VhdlProject
+from sejits_ctree.vhdl.nodes import VhdlFile
 from sejits_ctree.vhdl.nodes import Entity, Architecture
 from sejits_ctree.vhdl.nodes import Op, Signal, Constant, Generic, Port
 from sejits_ctree.vhdl.nodes import UnaryOp, BinaryOp, Component, VhdlReturn
 from sejits_ctree.vhdl.nodes import Expression
+
+from sejits_ctree.vhdl.user.nodes import UserNode
+
 
 logger = logging.getLogger('test_transformer')
 
@@ -97,6 +101,8 @@ class VhdlTransformer(ast.NodeTransformer):
 
     def __init__(self, names_dict={}, constants_dict={}):
         """ Initialize the VhdlBasicTransformer. """
+        logger.debug("VhdlTransformer initialized")
+
         self.names_dict = names_dict
         self.constants_dict = constants_dict
 
@@ -104,7 +110,9 @@ class VhdlTransformer(ast.NodeTransformer):
         """ Visit Module node and return VhdlFile. """
         entity, architecture = self.visit(node.body[0])
         #
-        return VhdlFile(name=entity.name, body=[entity, architecture])
+        return VhdlFile(name=entity.name,
+                        entity=entity,
+                        architecture=architecture)
 
     def visit_FunctionDef(self, node):
         """ Visit FunctionDef node and return [Entity, Architecture]. """
@@ -138,10 +146,16 @@ class VhdlTransformer(ast.NodeTransformer):
 
     def visit_Name(self, node):
         """
-        Visit Name node, return SymbolRef node.
+        Visit Name node, return Signal node.
+
+        If node.id is in names_dict, architecture_io_signals or
+        architecture_int_signals, return cached Signal. Otherwise create a new
+        Signal instance.
 
         Attributes:
             node: ast.Name node
+        Return:
+            Signal node
         """
         if node.id in self.names_dict:
             return self.names_dict[node.id]
@@ -156,38 +170,70 @@ class VhdlTransformer(ast.NodeTransformer):
             return ret_signal
 
     def visit_Num(self, node):
-        """ Visit Num node, return Constant node. """
+        """
+        Visit Num node, return Constant node.
+
+        Attributes:
+            node: ast.Num node
+        Return:
+            Constant node
+        """
+        # TODO: transform type to VhdlType instance
         return Constant(name="",
                         vhdl_type=node.n.__class__.__name__,
                         value=node.n)
 
     def visit_Call(self, node):
-        """ Visit Call node and return Component. """
-        if isinstance(node.func, ast.Module):
+        """
+        Visit Call node and return Component.
+
+        Check whether node.func is an instance of ast.FunctionDef, hence a
+        call previously transformed by a user, or not.
+
+        A user transformed call delivers information about the port names and
+        return type. A generic call will be returned with "comp_dummy" as
+        its name and enumerated port names (in_sig0, in_sig1 ...).
+        The return type of an generic call is equal to the type of the first
+        in_port.
+
+        Attributes:
+            node: ast.Call node
+        Return:
+            Component node
+        """
+
+        if isinstance(node.func, UserNode):
             """ Resolve user transformed call. """
-            usercall_transformer = VhdlTransformer()
-            usercall_args = [self.visit(arg) for arg in node.args]
+            # TODO: add additional information for logger
+            logger.info("UserNode processed")
 
-            main_vhdl_file = usercall_transformer.visit(node.func)
-
-            comp_name = main_vhdl_file.name
+            comp_name = ""
             comp_generics = None
-            comp_iargs = None
-            comp_outtype = ""
+            comp_iports = None
+            comp_oport = None
+            comp_outtype = None
 
-            # save generated vhdl files
-            self.vhdl_files.append(main_vhdl_file)
-            for vhdl_file in usercall_transformer.vhdl_files:
-                self.vhdl_files.append(vhdl_file)
+            comp_name = node.func.name
+            comp_generics = None
+            #
+            intf = node.func.interface
+            #
+            comp_iports = intf.iports
+            comp_oport = intf.oport
+            comp_outtype = comp_oport.value.vhdl_type
+            #
+            node.func.codegenflag = "imported"
+            self.vhdl_files.append(node.func)
         else:
             """ Resolve ordinary call. """
             comp_name = node.func.id
 
             in_args = [self.visit(arg) for arg in node.args]
-            comp_iargs = [Port("in_sig" + str(idx), "in", arg)
-                          for idx, arg in enumerate(in_args)]
+            comp_iports = [Port("in_sig" + str(idx), "in", arg)
+                           for idx, arg in enumerate(in_args)]
 
             comp_generics = None
+            comp_oport = None
             comp_outtype = ""
 
             if node.func in BASIC_COMPONENTS:
@@ -196,11 +242,10 @@ class VhdlTransformer(ast.NodeTransformer):
                 comp_name = "comp_dummy"
                 comp_outtype = in_args[0].vhdl_type
 
-        """ Return Component node. """
         ret_comp = Component(name=comp_name,
                              generics=comp_generics,
-                             in_ports=comp_iargs,
-                             out_port=None,
+                             in_ports=comp_iports,
+                             out_port=comp_oport,
                              out_type=comp_outtype)
         self.arch_components.append(ret_comp)
         return ret_comp
@@ -337,29 +382,20 @@ class VhdlTransformer(ast.NodeTransformer):
         else:
             return None
 
-
-# ====
-
-
-class TypeConverter(object):
-
-    def __init__(self):
+    def visit_UserCodeTemplate(self, node):
         pass
 
-    def to_vhdl(self, var):
+    def visit_UserFileTemplate(self, node):
         pass
-
-    def to_python(self, var):
-        pass
-
-
-class vhdl_type(object):
-    pass
+# =========================================================================== #
+# USER TRANSFORMERS
+# =========================================================================== #
 
 
-class std_logic(vhdl_type):
-    pass
+class UserTransformers(object):
+    transformers = USERTRANSFORMERS
 
-
-class std_logic_vector(vhdl_type):
-    pass
+    def visit(self, tree):
+        for transformer in self.transformers:
+            transformer().visit(tree)
+        return tree
