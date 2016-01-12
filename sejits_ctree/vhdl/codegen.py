@@ -1,197 +1,186 @@
 """ Code generator for VHDL constructs. """
 __author__ = 'philipp ebensberger'
 
-from sejits_ctree.codegen import CodeGenVisitor
-from sejits_ctree.vhdl.nodes import SymbolRef
-from sejits_ctree.nodes import CommonCodeGen
-from collections import defaultdict
+
+import ast
 
 
-VHDLMODULE = """{libraries}
-{entity}
+VHDLMODULE = """{libraries}\n\n
+{entity}\n
 {architecture}"""
 
 ARCHITECTURE = """architecture {architecture_name} of {entity_name} is
 {architecture_declarations}
 begin
-{vhdl_instructions}
+{architecture_instructions}\
 end {architecture_name};"""
 
-ENTITY = """entity {entity_name} is
-{generic_declarations}
+ENTITY = """entity {entity_name} is\
+{generic_declarations}\
 {port_declarations}
 end {entity_name};"""
 
+SIGNAL = "signal {signal_name} : {signal_type};"
 
-class VhdlCodeGen(CommonCodeGen):
+CONSTANT = "constant {const_name} : {const_type} = {const_value}"
 
-    """ docstring dummy. """
+COMPONENT = """{instance_name} : {component_name}\
+{generic_map}\
+{port_map};
+"""
 
-    active_module = {"entity_name": ""}
-    module_comp_count = defaultdict(int)
-    #
-    comp_port_names = {"BinOp": ["left", "op", "right"],
-                       "sobel": ["image", "ret"],
-                       "sobel_v": ["image", "mask"],
-                       "sobel_h": ["image", "mask"],
-                       "sqrt": ["in1", "out1"],
-                       "assert_nD": ["array", "ndim"]}
-    #
-    signals = set()
-    indent = "    "
 
-    def run(self, node):
-        ret = self.visit(node)
-        return ret
+class VhdlCodeGen(ast.NodeVisitor):
+
+    def __init__(self, indent=0):
+        self._indent = indent
+
+    def _tab(self):
+        """return correct spaces if tab found"""
+        return "    " * self._indent
 
     def visit_VhdlFile(self, node):
-        libs = ""
-        # add libs
-        for lib in node.libs:
-            libs += lib + ";\n"
-        #
-        s = VHDLMODULE.format(libraries=libs,
-                              entity=self.visit(node.body[0]),
-                              architecture=self.visit(node.body[1]))
-        return s
+        """ Generate Vhdl description of VhdlFile. """
+        libraries = "\n".join(node.libs)
+        entity = self.visit(node.body[0])
+        architecture = self.visit(node.body[1])
+        return VHDLMODULE.format(libraries=libraries,
+                                 entity=entity,
+                                 architecture=architecture)
 
     def visit_Entity(self, node):
-        s = self._make_entity_block(ent_type=node.name,
-                                    ent_generics=None,
-                                    ent_ports=[node.in_args, node.out_arg],
-                                    indent=self.indent)
-        self.active_module["entity_name"] = node.name
-        return s
+        """ Generate Vhdl description of entity."""
+        # generate optional vhdl description of generics
+        generics = ""
+        if node.generics != []:
+            generics = self._generic_block(node.generics)
+        # generate vhdl description of ports
+        ports = self._port_block(node.in_ports + [node.out_port])
+        # return vhdl description of entity
+        return ENTITY.format(entity_name=node.name,
+                             generic_declarations=generics,
+                             port_declarations=ports)
 
     def visit_Architecture(self, node):
-        arch_name = "Behavioural"
-        entity_name = self.active_module["entity_name"]
-        arch_decl = ""
-        arch_instr = "\n".join([str(self.visit(body)) for body in node.body])
-        # add components to architecture vhdl template
-        s = ARCHITECTURE.format(architecture_name=arch_name,
-                                entity_name=entity_name,
-                                architecture_declarations=arch_decl,
-                                vhdl_instructions=arch_instr)
-        return s
+        join_statement = "\n" + self._tab()
+        #
+        declarations = self._tab() +\
+            join_statement.join([self.visit(sig) for sig in node.signals])
+        instructions = "\n".join([self.visit(comp) for comp in node.components])
+        # return vhdl description of architecture
+        return ARCHITECTURE.format(architecture_name=node.architecture_name,
+                                   entity_name=node.entity_name,
+                                   architecture_declarations=declarations,
+                                   architecture_instructions=instructions)
 
-    def visit_ComponentCall(self, node):
-        if node.comp in self.comp_port_names:
-            iargs = node.in_args if type(node.in_args) is list\
-                else [node.in_args]
-            iargs = [str(iarg) for iarg in iargs]
-            #
-            oargs = node.out_args if type(node.out_args) is list\
-                else [node.out_args]
-            oargs = [str(oarg) for oarg in oargs]
-            sigs = iargs + oargs
-            #
-            s = self._make_comp_block(node.comp,
-                                      None,
-                                      [self.comp_port_names[node.comp], sigs],
-                                      self.indent)
-            #
-            return s
+    def visit_VhdlReturn(self, node):
+        generic_map = ""
+        port_map = self._port_map([node.in_port, node.out_port])
+        #
+        return COMPONENT.format(instance_name=node.instance_name,
+                                component_name=node.name,
+                                generic_map=generic_map,
+                                port_map=port_map)
+
+    def visit_Component(self, node):
+        if node.generics != []:
+            generic_map = self._generic_map(node.generics)
         else:
-            return ""
+            generic_map = ""
 
-    def _make_comp_block(self, comp_type, comp_generics, comp_ports, indent):
-        comp_count = self.module_comp_count[comp_type]
-        s = "{0}_{1} : {0}\n"
-        # add generics map if available
-        s += "generic map({2})" if comp_generics else ""
-        # add port map if available
-        if comp_generics:
-            s += indent + "port map({3});\n" if comp_ports else ""
-        else:
-            s += indent + "port map({2});\n" if comp_ports else ""
+        port_map = self._port_map(node.in_ports + [node.out_port])
         #
-        maps = filter(None, [comp_generics, comp_ports])
-        maps = [self._make_map(*item, indent=indent * 2) for item in maps]
-        s = s.format(comp_type, comp_count, *maps)
+        return COMPONENT.format(instance_name=node.instance_name,
+                                component_name=node.name,
+                                generic_map=generic_map,
+                                port_map=port_map)
+
+    def visit_BinaryOp(self, node):
+        generic_map = self._generic_map([node.op])
+        port_map = self._port_map([node.left_port,
+                                   node.right_port,
+                                   node.out_port])
         #
-        self.module_comp_count[comp_type] += 1
+        return COMPONENT.format(instance_name=node.instance_name,
+                                component_name=node.name,
+                                generic_map=generic_map,
+                                port_map=port_map)
+
+    def visit_UnaryOp(self, node):
+        generic_map = self._generic_map([node.op])
+        port_map = self._port_map([node.in_port, node.out_port])
+        #
+        return COMPONENT.format(instance_name=node.instance_name,
+                                component_name=node.name,
+                                generic_map=generic_map,
+                                port_map=port_map)
+
+    def visit_Signal(self, node):
+        """ Return signal description for architecture declaration. """
+        return SIGNAL.format(signal_name=node.name,
+                             signal_type=node.vhdl_type)
+
+    def visit_Constant(self, node):
+        """ Return constant description for architecture declaration. """
+        return CONSTANT.format(const_name=node.name,
+                               const_type=node.vhdl_type,
+                               const_value=node.value)
+
+    # ======================================================================= #
+    # HELPER METHODS FOR ENTITY
+    # ======================================================================= #
+    def _generic_block(self, generics):
+        block_indent = " " * len("generic(")
+        #
+        generic_block = [g.name + " : " + str(g.vhdl_type) for g in generics]
+        join_statement = ";\n" + self._tab() + block_indent
+        #
+        s = "\n"
+        s += self._tab() + "generic("
+        s += join_statement.join(generic_block)
+        s += ");"
         return s
 
-    def _make_map(self, ports, sigs, indent):
-        wrap = ",\n" + indent
-        s = wrap.join([str(port) + " => " + sig
-                       for port, sig in zip(ports, sigs)])
-        return s
-
-    def _make_entity_block(self, ent_type, ent_generics, ent_ports, indent):
-        s = "entity {0} is\n"
-        s += "generic ({2})\n\n" if ent_generics else ""
-        # add port map if available
-        if ent_generics:
-            s += indent + "port (\n{3}end {0};\n\n" if ent_ports else ""
-        else:
-            s += indent + "port (\n{2}end {0};\n\n" if ent_ports else ""
+    def _port_block(self, ports):
+        block_indent = " " * len("port(")
         #
-        maps = [None,
-                self._make_entitiy_io(ent_ports[0],
-                                      ent_ports[1],
-                                      indent + self.indent)]
-        s = s.format(ent_type, *maps)
+        port_block = [p.name + " : " + p.direction + " " +
+                      str(p.value.vhdl_type) for p in ports]
+        join_statement = ";\n" + self._tab() + block_indent
+        #
+        s = "\n"
+        s += self._tab() + "port("
+        s += join_statement.join(port_block)
+        s += ");"
         #
         return s
 
-    def _make_entitiy_io(self, iports, oports, indent):
-        iports = iports if type(iports) is list else [iports]
-        oports = oports if type(oports) is list else [oports]
+    # ======================================================================= #
+    # HELPER METHODS FOR COMPONENTS
+    # ======================================================================= #
+
+    def _generic_map(self, generics):
+        block_indent = " " * len("generic map(")
         #
-        wrap = ";\n" + indent
-        s = indent
-        s += wrap.join([iport.name + " : in " + str(iport.type)
-                       for iport in iports])
-        s += ";\n" + indent
-        s += wrap.join([oport.name + " : out " + str(oport.type)
-                        for oport in oports])
-        s += ");\n"
+        generic_map = [g.name + " => " + str(g.value) for g in generics]
+        join_statement = ",\n" + self._tab() + block_indent
+        #
+        s = "\n"
+        s += self._tab() + "generic map("
+        s += join_statement.join(generic_map)
+        s += ")"
+        #
         return s
 
-
-
-
-class Dummy(object):
-    def visit_Architecture(self, node):
-        s = ""
+    def _port_map(self, ports):
+        block_indent = " " * len("port map(")
         #
-        s += "architecture %s of %s is\n" % ("Behavioural",
-                                             self.active_module["entity_name"])
-        # architecture declarations
-        s += "\t-- components\n"
-        for decl in node.components:
-            s += "\tcomponent " + decl.comp.name + " is\n"
-            s += "\t\tport(\n"
-            for port in decl.comp.entity.params:
-                s += "\t\t\t%s : %s %s;\n" % (port.name, "in", "std_logic")
-            s += "\tend component;\n"
-        s += "\t-- signals\n"
-        s += "begin\n"
-        s += "end %s;\n" % "Behavioural"
+        port_map = [p.name + " => " + p.value.name for p in ports]
+        join_statement = ",\n" + self._tab() + block_indent
+        #
+        s = "\n"
+        s += self._tab() + "port map("
+        s += join_statement.join(port_map)
+        s += ")"
+        #
         return s
-
-    def visit_Entity(self, node):
-        self.active_module["entity_name"] = node.name
-        #
-        s = ""
-        # add entity name
-        s += "entity %s is\n" % node.name
-        # add ports
-        ports = node.params if type(node.params) is list else list(node.params)
-        s += "\tport(\n"
-        for port in ports:
-            s += "\t\t%s : %s %s;\n" %(port.name, "in", "std_logic")
-        #
-        s += "\t);\n"
-        #
-        s += "end entity %s;\n" % node.name
-        #
-        if type(node.arch) is list:
-            arch = "\n".join(map(self.visit, node.arch))
-        else:
-            arch = "\n" + str(self.visit(node.arch))
-        #
-        return s + arch
-

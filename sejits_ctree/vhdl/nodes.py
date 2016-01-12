@@ -1,15 +1,17 @@
 """ DAG nodes for VHDL constructs. """
 __author__ = 'philipp ebensberger'
 
+import os
 import logging
 # set up module-level logger
 log = logging.getLogger(__name__)
 
-from sejits_ctree.types import get_ctype
+from collections import defaultdict, namedtuple
+from sejits_ctree.vhdl import STDLIBS
+from sejits_ctree.util import singleton
 from sejits_ctree.nodes import VhdlTreeNode, File
 
-
-std_libs = ["library ieee", "use ieee.std_logic_1164.all"]
+from subprocess import call
 
 
 class VhdlNode(VhdlTreeNode):
@@ -20,15 +22,13 @@ class VhdlNode(VhdlTreeNode):
         """
         Generate Vhdl code of node.
 
-        Args:
+        Attributes:
             indent: number of spaces per indentation level (Default = 0)
-
-        Returns:
+        Return:
             string with source code of node
         """
-        # from sejits_ctree.vhdl.codegen import VhdlCodeGen
-        # return VhdlCodeGen(indent).visit(self)
-        pass
+        from sejits_ctree.vhdl.codegen import VhdlCodeGen
+        return VhdlCodeGen(indent).visit(self)
 
     def label(self):
         """ Return node label for dot file. """
@@ -36,29 +36,40 @@ class VhdlNode(VhdlTreeNode):
         return VhdlDotGenLabeller().visit(self)
 
 
+Interface = namedtuple("Interface", ["iports", "oport"])
+
+
 class VhdlFile(VhdlNode, File):
 
     """Represents a .vhd file."""
 
     _ext = "vhd"
+    codegenflag = "generated"
 
-    def __init__(self,
-                 name="generated",
-                 libs=None,
-                 body=None,
-                 config_target='vhdl',
-                 path=None):
-        """ docstring dummy. """
+    def __init__(self, name="generated", libs=None,
+                 entity=None, architecture=None, path=None):
+        """ Initialize VhdlFile. """
         VhdlNode.__init__(self)
         # body = entity, archs
-        File.__init__(self, name, body, path)
+        File.__init__(self, name, [entity, architecture], path)
         #
-        self.libs = std_libs + libs if libs else std_libs
+        self._interface = Interface(entity.in_ports, entity.out_port)
         #
-        self.config_target = config_target
+        self.libs = STDLIBS + libs if libs else STDLIBS
 
-    def synthesise(self, program_text):
-        """ docstring dummy. """
+    @property
+    def interface(self):
+        return self._interface
+
+    def codegen(self, indent=0):
+        """ Generate vhdl descriptioin of VhdlFile if it is generated. """
+        if self.codegenflag == "generated":
+            from sejits_ctree.vhdl.codegen import VhdlCodeGen
+            return VhdlCodeGen(indent).visit(self)
+        else:
+            return ""
+
+    def _compile(self, program_text):
         pass
 
 
@@ -66,45 +77,36 @@ class VhdlProject(object):
 
     """ Base class for an Vhdl Project. """
 
-    files = []
+    def __init__(self, files=None, synthesis_dir=""):
+        """ Initialize VhdlProject. """
+        self.files = files if files else []
+        self.synthesis_dir = synthesis_dir
 
-    def __init__(self, master_file):
-        self.add_file(master_file)
-        # create base folder with master file
+    def codegen(self, indent=0):
+        """ Generate vhdl descriptions for all vhdl files in project. """
+        if not os.path.exists(self.synthesis_dir):
+            os.makedirs(self.synthesis_dir)
+        for vhdl_file in self.files:
+            if vhdl_file.codegenflag == "generated":
+                # generate file name
+                fname = self.synthesis_dir + vhdl_file.get_filename()
+                # save generated vhdl file
+                with open(fname, "w") as output_file:
+                    output_file.write(vhdl_file.codegen(indent=indent))
+            else:
+                # move imported file to synthesis directory
+                call(["cp", vhdl_file.path, self.synthesis_dir])
 
-    def add_file(self, file):
-        if type(file) is list:
-            self.files += file
-        else:
-            self.files.append(file)
+    def synthesize(self):
+        """ Integrate VhdlFiles and synthesise VhdlProject. """
+        pass
 
-# =============================================================================#
-# NODES
-# =============================================================================#
+# =============================================================================
+# COMPONENT NODE CLASSES
+# =============================================================================
 
-class Op:
-    class _Op(VhdlNode):
-        def __str__(self):
-            return self._vhdl_str
-
-        def sig_ref(self):
-            return self
-
-    class Add(_Op):
-        _vhdl_str = "add"
-
-    class Mul(_Op):
-        _vhdl_str = "mul"
-
-    class Div(_Op):
-        _vhdl_str = "div"
-
-    class Sub(_Op):
-        _vhdl_str = "sub"
-
-    class Pow(_Op):
-        _vhdl_str = "pow"
-
+PORT_DIRECTIONs = ({"in", "out"})
+VHDL_TYPEs = ({})
 
 
 class Statement(VhdlNode):
@@ -113,148 +115,261 @@ class Statement(VhdlNode):
 
 
 class Expression(VhdlNode):
-    """ docstring dummy. """
+    """ Base class for Expression nodes. """
+
+    # instance counter to generate unique instance names
+    _ids = defaultdict(int)
+
+    def out_type(self):
+        """ Return node's output type. """
+        raise NotImplementedError()
 
 
-class Literal(Expression):
+class Literal(VhdlNode):
     """ docstring dummy. """
     pass
 
 
-class Return(Statement):
-    """ docstring dummy. """
-    _fields = ['value']
+# LITERALS
 
-    def __init__(self, value=None):
-        self.value = value
-        super(Return, self).__init__()
+@singleton
+class Op(Literal):
+    class _Op(object):
+        def __str__(self):
+            return self._str
 
-    def sig_ref(self):
-        return self.value.sig_ref()
+    class Add(_Op):
+        _str = '"Add"'
+
+    class Mul(_Op):
+        _str = "Mul"
+
+    class Sub(_Op):
+        _str = "Sub"
+
+    class Div(_Op):
+        _str = "Div"
+
+
+class Signal(Literal):
+
+    """ Node class for Vhdl Signal. """
+
+    _fields = ["name", "vhdl_type", "def_value"]
+
+    def __init__(self, name="", vhdl_type="", def_value=None):
+        """ Create a new signal with the given name. """
+        if name != "":
+            self.name = name
+        else:
+            raise Exception
+        #
+        self.vhdl_type = vhdl_type
+        #
+        if def_value is not None:
+            # TODO: check if default value is of type self.vhdl_type
+            self.def_value = def_value
+        else:
+            self.def_value = def_value
 
 
 class Constant(Literal):
-    """ docstring dummy. """
-    _fields = ['value', 'type']
 
-    def __init__(self, value=None, sym_type=None):
+    """ Node class for Vhdl Constant. """
+
+    _fields = ["name", "vhdl_type", "value"]
+
+    def __init__(self, name="", vhdl_type="", value=None):
+        self._name = name
+        self.vhdl_type = vhdl_type
         self.value = value
-        self.type = sym_type
-        """
-        if type is None:
-            self.type = get_ctype(self.value)
+
+    @property
+    def name(self):
+        """ If Constant has a name, add it to Architecture signals. """
+        if self._name == "":
+            return str(self.value)
         else:
-            self.type = type
-        """
-        super(Constant, self).__init__()
+            return self._name
 
-    def __str__(self):
-        return str(self.value)
+    @name.setter
+    def name(self, name):
+        self._name = name
 
-    def sig_ref(self):
-        return self
+
+class Port(Literal):
+
+    """ Base class of Vhld Port item. """
+
+    _fields = ["name", "direction", "value"]
+
+    def __init__(self, name="", direction="", value=None):
+        """ Initialize name, direction and value of Port. """
+        self.name = name
+        self.direction = direction
+        self.value = value
+
+
+class Generic(Literal):
+
+    """ Base class of Vhdl Generic item. """
+
+    _fields = ["name", "vhdl_type", "value"]
+
+    def __init__(self, name="", vhdl_type="", value=None):
+        """ Initialize name and value of Generic. """
+        self.name = name
+        self.vhdl_type = vhdl_type
+        self.value = value
 
 
 class BinaryOp(Expression):
-    """Cite me."""
-    _fields = ['left', 'op', 'right']
 
-    def __init__(self, left=None, op=None, right=None):
-        self.left = left
+    """ Node class for Vhdl binary operator. """
+
+    _fields = ["left_port", "op", "right_port", "out_port"]
+    _op_values = ({"add", "sub", "mul", "div"})
+    name = "BinaryOp"
+
+    def __init__(self, left_port=None, op=None, right_port=None,
+                 out_port=None):
+        """ Initialize BinaryOp node. """
+        self.left_port = left_port
+        self.right_port = right_port
         self.op = op
-        self.right = right
-        super(BinaryOp, self).__init__()
+        self.out_port = out_port
+        # generate unique instance id
+        instance_id = self._ids[self.name.lower()]
+        self._ids[self.name.lower()] += 1
+        # generate unique instance name
+        self.instance_name = self.name.lower() +\
+            (str(instance_id) if instance_id != 0 else "")
 
-class String(Literal):
-    """Cite me."""
-
-    def __init__(self, *values):
-        self.values = values
-        super(String, self).__init__()
+    def out_type(self):
+        """ Return node's output type. """
+        # TODO: calculate output type based on input types
+        return self.left_port.value.vhdl_type
 
 
-class SymbolRef(Literal):
-    """ docstring dummy. """
-    _next_id = 0
-    _fields = ['name', 'type']
+class UnaryOp(Expression):
 
-    def __init__(self, name=None, sym_type=None):
-        """
-        Create a new symbol with the given name.
+    """ Node class for Vhdl unary operator. """
 
-        If a declaration type is specified, the symbol is considered a
-        declaration and unparsed with the type.
-        """
+    _fields = ["in_port", "op", "out_port"]
+    _op_values = ({"sqrt", "pow"})
+    name = "UnaryOp"
+
+    def __init__(self, in_port=None, op=None, out_port=None):
+        """ Initialize UnaryOp node. """
+        self.in_port = in_port
+        self.op = op
+        self.out_port = out_port
+        # generate unique instance id
+        instance_id = self._ids[self.name]
+        self._ids[self.name] += 1
+        # generate unique instance name
+        self.instance_name = self.name +\
+            (str(instance_id) if instance_id != 0 else "")
+
+    def out_type(self):
+        """ Return node's output type. """
+        return self.in_port.value.vhdl_type
+
+
+class Component(Expression):
+
+    """ Node class for generic Vhdl Component. """
+
+    _fields = ["name", "generics", "in_ports", "out_port"]
+
+    def __init__(self, name="", generics=None, in_ports=None,
+                 out_port=None, out_type=""):
+        """ Initialize Component node. """
         self.name = name
-        if sym_type is not None:
-            assert not isinstance(sym_type, type)
-        self.type = sym_type
-        super(SymbolRef, self).__init__()
 
-    def __str__(self):
-        return self.name
+        self.generics = []
+        self.in_ports = []
 
-    def sig_ref(self):
-        return self
+        if generics is not None:
+            self.generics = generics if type(generics) is list else [generics]
+        if in_ports is not None:
+            self.in_ports = in_ports if type(in_ports) is list else [in_ports]
+        self.out_port = out_port
 
-    @classmethod
-    def unique(cls, name="name", sym_type=None):
-        """ Factory for making unique symbols. """
-        sym = SymbolRef("%s_%d" % (name, cls._next_id), sym_type)
-        cls._next_id += 1
-        return sym
+        self._out_type = out_type
+        # generate unique instance id
+        instance_id = self._ids[self.name]
+        self._ids[self.name] += 1
+        # generate unique instance name
+        self.instance_name = self.name +\
+            (str(instance_id) if instance_id != 0 else "")
+
+    def out_type(self):
+        """ Return node's output type. """
+        return self._out_type
 
 
+class VhdlReturn(Expression):
+
+    """ Special Node class for Vhdl Return node. """
+
+    _fields = ["in_port", "out_port"]
+    name = "Return"
+
+    def __init__(self, in_port, out_port):
+        """ Initialize VhdlReturn node. """
+        self.in_port = in_port
+        self.out_port = out_port
+        #
+        instance_id = self._ids[self.name]
+        self._ids[self.name] += 1
+        #
+        self.instance_name = self.name +\
+            (str(instance_id) if instance_id != 0 else "")
+
+    def out_type(self):
+        """ Return Vhdl type of input signal. """
+        return self.in_port.value.vhdl_type
+
+
+# STATEMENTS
 class Entity(Statement):
-    """ docstring dummy. """
-    _fields = ['in_args', 'out_arg']
 
-    def __init__(self, name=None, in_args=None, out_arg=None):
+    """ Node class for Entity nodes. """
+
+    _fields = ["name", "generics", "in_ports", "out_port"]
+
+    def __init__(self, name, generics, in_ports, out_port):
+        """ Initialize Entity generics and port lists. """
         self.name = name
-        self.in_args = in_args if in_args else []
-        self.out_arg = out_arg if out_arg else None
-        super(Entity, self).__init__()
+
+        self.generics = None
+        self.in_ports = None
+        self.out_port = None
+
+        if generics is not None:
+            self.generics = generics if type(generics) is list else [generics]
+
+        if in_ports is not None:
+            self.in_ports = in_ports if type(in_ports) is list else [in_ports]
+
+        if out_port is not None:
+            self.out_port = out_port
 
 
 class Architecture(Statement):
-    """ docstring dummy. """
-    _fields = ['body', 'signals']
 
-    def __init__(self, body=None, signals=None):
+    """ Node class for Architecture node. """
+
+    _fields = ["entity_name", "architecture_name", "body"]
+    signals = None
+    components = None
+
+    def __init__(self, entity_name=None, architecture_name="behaviour",
+                 signals=None, body=None, components=None):
         self.body = body if body else []
         self.signals = signals if signals else []
-        self.components = set()
+        self.entity_name = entity_name
+        self.architecture_name = architecture_name
+        self.components = components if components else []
         super(Architecture, self).__init__()
-
-    def add_component(self, node):
-        """ Create set of instantiated components. """
-        self.components.add(node)
-
-
-class ComponentCall(Expression):
-    """ docstring dummy. """
-    _fields = ['comp', 'in_args', 'out_args']
-
-    def __init__(self, comp=None, in_args=None, out_args=None):
-        """ Initialize ComponentCall node. """
-        self.comp = comp
-        self.in_args = in_args if in_args else []
-        self.out_args = out_args if out_args else\
-            SymbolRef(name="sig_" + str(hash(self)), sym_type=None)
-        super(ComponentCall, self).__init__()
-
-    def sig_ref(self):
-        """ Return signal reference to value/return value of node. """
-        return self.out_args
-
-
-class Block(Statement):
-    """ docstring dummy. """
-    _fields = ['body']
-
-    def __init__(self, body=None):
-        assert isinstance(body, list)
-        self.body = body
-
-    def sig_ref(self):
-        return self.body[0].sig_ref()
