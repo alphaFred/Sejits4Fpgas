@@ -9,7 +9,6 @@ import ast
 
 from sejits_ctree.codegen import CodeGenVisitor
 from sejits_ctree.dotgen import DotGenVisitor, DotGenLabeller
-from sejits_ctree.dotgen import VhdlDotGenVisitor
 import sejits_ctree
 import os
 
@@ -103,34 +102,6 @@ class CtreeNode(ast.AST):
     def __eq__(self, other):
         """Two nodes are equal if their attributes are equal."""
         return self.__dict__ == getattr(other, '__dict__', None)
-
-
-class VhdlTreeNode(ast.AST):
-
-    """ Base class for all Vhdl AST nodes in sejits_ctree."""
-
-    def __init__(self):
-        """Initialize a new AST Node."""
-        super(VhdlTreeNode, self).__init__()
-        self.deleted = False
-        self._force_parentheses = False
-
-    def __str__(self):
-        return self.__class__.__name__
-
-    def to_dot(self):
-        """ Retrieve the AST in DOT format for visualization."""
-        return "digraph mytree {\n%s}" % self._to_dot()
-
-    def _to_dot(self):
-        """ Retrieve the AST in DOT format for vizualization."""
-        return VhdlDotGenVisitor().visit(self)
-
-    def lift(self, **kwargs):
-        for key, val in kwargs.items():
-            attr = "_lift_%s" % key
-            setattr(self, attr, getattr(self, attr, []) + val)
-            type(self)._fields.append(attr)
 
 # ---------------------------------------------------------------------------
 # Common nodes
