@@ -2,7 +2,7 @@
 
 import logging
 
-from skimage.filters import sobel
+from skimage.filters import sobel, sobel_h, sobel_v
 
 import sejits_ctree
 import sejits_ctree.frontend
@@ -10,28 +10,39 @@ import sejits_ctree.frontend
 #
 import ctypes
 import numpy as np
+
+import sejits_ctree.vhdl
 from skimage.data import camera
 #
 from sejits_ctree.vhdl.nodes import Signal, VhdlProject
 from sejits_ctree.vhdl.transformations import VhdlTransformer
-from sejits_ctree.vhdl.transformations import UserTransformers
+from sejits_ctree.vhdl.transformations import VhdlKeywordTransformer
 
 from sejits_ctree.vhdl.jit_synth import LazySpecializedFunction
 from sejits_ctree.vhdl.jit_synth import ConcreteSpecializedFunction
 
+from sejits_ctree.vhdl.nodes import VhdlType
+from sejits_ctree.vhdl.basic_blocks import convolve, sqrt
 
 log = logging.getLogger(__name__)
 
 
-def filter_sobel(img):
+def sejits_test(img, a, b):
     """ return sobel filtered image. """
-    return sobel(img)
+    MASK = (1, 2, 1, 0, 0, 0, -1, -2, -1)
+    DIV = 4
+    WIDTH = 8
+    #
+    ret = (a * convolve(img, MASK, DIV, WIDTH)) + b
+    #
+    return ret
 
-
-def sejits_test(img):
-    """ return sobel filtered image. """
-    filtered_image = filter_sobel(img)
-    return filtered_image
+"""
+    HSOBEL_WEIGHTS = [[1, 2, 1], [0, 0, 0], [-1, -2, -1]]
+    out = np.sqrt(convolve(img, HSOBEL_WEIGHTS) ** 2 + filter_sobel_v(img) ** 2)
+    out2 = out / np.sqrt(out)
+    return out2
+"""
 
 
 # =========================================================================== #
@@ -46,24 +57,32 @@ class BasicVhdlTrans(LazySpecializedFunction):
         return {'arg_type': arg_type}
 
     def transform(self, tree, program_config):
-        arg_type = program_config.args_subconfig['arg_type']
+        # TODO: convert arg_type to vhdl_type (OPTIONALLY)
+        # arg_type = program_config.args_subconfig['arg_type']
+        img_type = Signal(name="img",
+                          vhdl_type=VhdlType.VhdlStdLogicVector(size=8,
+                                                                default="0"))
+        a_type = Signal(name="a",
+                        vhdl_type=VhdlType.VhdlUnsigned(size=8))
+        b_type = Signal(name="b",
+                        vhdl_type=VhdlType.VhdlUnsigned(size=8))
+
+        libraries = ["work.the_filter_package.all"]
+        name_dict = {"img": img_type, "a": a_type, "b": b_type}
         #
-        name_dict = {"img": Signal(name="img", vhdl_type="nd_array")}
-        # tree = UserTransformers().visit(tree)
+        sejits_ctree.browser_show_ast(tree, file_name="basic_ast.png")
+        tree = VhdlKeywordTransformer().visit(tree)
+        tree = VhdlTransformer(name_dict, libs=libraries).visit(tree)
         #
-        basic_transformer = VhdlTransformer(name_dict)
-        tree = basic_transformer.visit(tree)
-        trees = [tree] + basic_transformer.vhdl_files
+        sejits_ctree.browser_show_ast(tree, file_name="trans_ast.png")
         #
-        sejits_ctree.browser_show_ast(trees[0], file_name="trans_ast.png")
-        #
-        return trees
+        return [tree]
 
     def finalize(self, transform_result, program_config):
         proj = VhdlProject(files=transform_result,
                            synthesis_dir="./")
-        #
-        proj.codegen(1)
+        # GENERATE PROGRAM CODE
+        proj.codegen(indent=4)
         #
         arg_config, tuner_config = program_config
         arg_type = arg_config['arg_type']
@@ -74,14 +93,16 @@ class BasicVhdlTrans(LazySpecializedFunction):
 
 class BasicFunction(ConcreteSpecializedFunction):
     def __init__(self, entry_name, project_node, entry_typesig):
-        pass
+        self.module = project_node.codegen(indent=4)
+        self.jit_callable = self.module.get_callable("bla", None)
 
     def __call__(self, *args, **kwargs):
-        return "bla"
+        return self.jit_callable()
 
 # =========================================================================== #
 #
 # =========================================================================== #
+
 
 def main():
     """

@@ -119,6 +119,7 @@ _TYPE_CODEGENERATORS = {}
 _TYPE_RECOGNIZERS = {}
 
 OCL_ENABLED = True
+
 try:
     import pycl
 except ImportError:
