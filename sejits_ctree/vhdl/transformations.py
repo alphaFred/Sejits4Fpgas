@@ -2,43 +2,32 @@
 __author__ = 'philipp ebensberger'
 
 import ast
-from sejits_ctree.vhdl import USERTRANSFORMERS
+import itertools
+
+from ..vhdl import TransformationError
+from ..vhdl import USERTRANSFORMERS
 import logging
 
 from collections import namedtuple
 
-from sejits_ctree.vhdl.nodes import VhdlFile
-from sejits_ctree.vhdl.nodes import Entity, Architecture
-from sejits_ctree.vhdl.nodes import Op, Signal, Constant, Generic, Port
-from sejits_ctree.vhdl.nodes import UnaryOp, BinaryOp, Component, VhdlReturn
-from sejits_ctree.vhdl.nodes import Expression
+from nodes import VhdlFile
+from nodes import Entity, Architecture
+from nodes import Op, Signal, Constant, Generic, Port
+from nodes import UnaryOp, BinaryOp, Component
+from nodes import Expression, Literal
 
-from sejits_ctree.vhdl.user.nodes import UserNode
+from nodes import VhdlType
+
+from basic_blocks import BASICBLOCKS
+from user.nodes import UserNode
 
 
 logger = logging.getLogger('test_transformer')
 
 UNARY_OP = namedtuple("UNARY_OP", ["i_args", "out_arg"])
 
-BASIC_COMPONENTS = ({"vhdl_convolve"})
 UNARY_OPs = {"sqrt": UNARY_OP(["i_sig"], ["o_sig"]),
              "pow": UNARY_OP(["i_sig"], ["o_sig"])}
-
-
-class TransformationError(Exception):
-
-    """
-    Exception that caused transformation not to occur.
-
-    Attributes:
-      msg -- the message/explanation to the user
-    """
-
-    def __init__(self, msg):
-        self.msg = msg
-
-    def __str__(self):
-        return self.msg
 
 
 class VhdlKeywordTransformer(ast.NodeTransformer):
@@ -63,12 +52,12 @@ class VhdlKeywordTransformer(ast.NodeTransformer):
                       "select", "severity", "signal", "shared", "sla",
                       "sll", "sra", "srl", "subtype", "then", "to",
                       "transport", "type", "unaffected", "units", "until",
-                      "use", "variable", "wait", "when", "while", "with",
-                      "xnor", "xor"})
+                      "use", "variable", "wait", "when", "while", "width",
+                      "with", "xnor", "xor"})
 
     def visit_Name(self, node):
         """ Change id of Name node if it is a VHDL keyword. """
-        if node.id in self.VHDL_Keywords:
+        if node.id.lower() in self.VHDL_Keywords:
             node.id = "sig_" + node.id
         return node
 
@@ -77,8 +66,9 @@ class VhdlTransformer(ast.NodeTransformer):
 
     """ Transform Python AST to Vhdl AST. """
 
+    # TODO: refactor class variables
     # contains all additionaly created vhdl files while parsing
-    vhdl_files = []
+    dependencies = []
 
     # contains all components of the architecture
     arch_components = []
@@ -92,27 +82,40 @@ class VhdlTransformer(ast.NodeTransformer):
     # contains all architecture internal signals/constants
     architecture_int_signals = {}
 
+    architecture_temp_signals = {}
+
     PY_OP_TO_VHDL_OP = {
         ast.Add: Op.Add,
         ast.Mult: Op.Mul,
         ast.Sub: Op.Sub,
         ast.Div: Op.Div,
+        ast.Pow: Op.Pow,
+        "sqrt": Op.Sqrt
     }
 
-    def __init__(self, names_dict={}, constants_dict={}):
+    def __init__(self, names_dict={}, constants_dict={}, libs=[], bit_width=8):
         """ Initialize the VhdlBasicTransformer. """
         logger.debug("VhdlTransformer initialized")
 
         self.names_dict = names_dict
         self.constants_dict = constants_dict
+        self.libs = libs
+        # add dependency for binary operations
+        basic_arith_blocks_lib = VhdlFile(path="/home/philipp/University/M4/Masterthesis/src/git_repo/ebensberger_ma/BasicArithBlocks.vhd")
+        basic_arith_blocks_lib.generated = False
+        self.dependencies.append(basic_arith_blocks_lib)
+        #
+        self.bit_width = bit_width
 
     def visit_Module(self, node):
         """ Visit Module node and return VhdlFile. """
         entity, architecture = self.visit(node.body[0])
         #
         return VhdlFile(name=entity.name,
+                        libs=self.libs,
                         entity=entity,
-                        architecture=architecture)
+                        architecture=architecture,
+                        dependencies=self.dependencies)
 
     def visit_FunctionDef(self, node):
         """ Visit FunctionDef node and return [Entity, Architecture]. """
@@ -123,11 +126,12 @@ class VhdlTransformer(ast.NodeTransformer):
             self.architecture_io_signals[arg.id] = arg_sig
             in_args.append(Port(arg.id, "in",
                                 self.architecture_io_signals[arg.id]))
+        # Visit all body elements
+        for body_elem in node.body:
+            self.visit(body_elem)
 
-        body = [self.visit(body) for body in node.body]
-        body = body + self.architecture_body_additions
-        out_arg = Port("return", "out",
-                       self.architecture_io_signals["return_sig"])
+        out_port = Port("return_sig", "out",
+                        self.architecture_io_signals["return_sig"])
 
         # get architecture internal signals
         arch_signals = self.architecture_int_signals.values()
@@ -136,12 +140,11 @@ class VhdlTransformer(ast.NodeTransformer):
         entity = Entity(name=node.name,
                         generics=[],
                         in_ports=in_args,
-                        out_port=out_arg)
+                        out_port=out_port)
 
         architecture = Architecture(entity_name=node.name,
                                     signals=arch_signals,
-                                    body=body,
-                                    components=self.arch_components)
+                                    body=self.arch_components)
         return (entity, architecture)
 
     def visit_Name(self, node):
@@ -163,6 +166,8 @@ class VhdlTransformer(ast.NodeTransformer):
             return self.architecture_io_signals[node.id]
         elif node.id in self.architecture_int_signals:
             return self.architecture_int_signals[node.id]
+        elif node.id in self.architecture_temp_signals:
+            return self.architecture_temp_signals[node.id]
         else:
             ret_signal = Signal(name=node.id)
             # save internal architecture signal
@@ -178,10 +183,38 @@ class VhdlTransformer(ast.NodeTransformer):
         Return:
             Constant node
         """
-        # TODO: transform type to VhdlType instance
+        if type(node.n) is int:
+            # TODO: find smallest bit representation of integer for size
+            if node.n < 0:
+                return Constant(name="",
+                                vhdl_type=VhdlType.VhdlSigned(size=self.bit_width),
+                                value=node.n)
+            else:
+                return Constant(name="",
+                                vhdl_type=VhdlType.VhdlUnsigned(self.bit_width),
+                                value=node.n)
+        else:
+            error_msg = "Unsupported type {0}".format(type(node.n))
+            raise TransformationError(error_msg)
+
+    def visit_Str(self, node):
         return Constant(name="",
-                        vhdl_type=node.n.__class__.__name__,
-                        value=node.n)
+                        vhdl_type=VhdlType.VhdlStr(),
+                        value=node.s)
+
+    def visit_Tuple(self, node):
+        # Tuple(expr* elts, expr_context ctx)
+        itms = [self.visit(itm) for itm in node.elts]
+        return Constant(name="",
+                        vhdl_type=VhdlType.VhdlArray.from_list(itms),
+                        value="(" + ",".join(str(itm.value) for itm in itms) + ")")
+
+    def visit_List(self, node):
+        itms = [self.visit(itm) for itm in node.elts]
+        #
+        return Constant(name="",
+                        vhdl_type=VhdlType.VhdlArray.from_list(itms),
+                        value="(" + ",".join(str(itm.value) for itm in itms) + ")")
 
     def visit_Call(self, node):
         """
@@ -201,84 +234,52 @@ class VhdlTransformer(ast.NodeTransformer):
         Return:
             Component node
         """
-
         if isinstance(node.func, UserNode):
             """ Resolve user transformed call. """
             # TODO: add additional information for logger
             logger.info("UserNode processed")
-
-            comp_name = ""
-            comp_generics = None
-            comp_iports = None
-            comp_oport = None
-            comp_outtype = None
-
-            comp_name = node.func.name
-            comp_generics = None
             #
-            intf = node.func.interface
-            #
-            comp_iports = intf.iports
-            comp_oport = intf.oport
-            comp_outtype = comp_oport.value.vhdl_type
-            #
-            node.func.codegenflag = "imported"
-            self.vhdl_files.append(node.func)
+            node.func.generated = False
+            self.dependencies.append(node.func)
+            ret_comp = None
         else:
-            """ Resolve ordinary call. """
-            comp_name = node.func.id
-
-            in_args = [self.visit(arg) for arg in node.args]
-            comp_iports = [Port("in_sig" + str(idx), "in", arg)
-                           for idx, arg in enumerate(in_args)]
-
-            comp_generics = None
-            comp_oport = None
-            comp_outtype = ""
-
-            if node.func in BASIC_COMPONENTS:
-                pass
+            if node.func.id in BASICBLOCKS:
+                basic_block = BASICBLOCKS[node.func.id]
+                # visit arguments and create connection signals if neccessary
+                _in_args = [self.create_connection(self.visit(arg)) for arg in node.args]
+                # _in_args has to contain only Signals/Constants
+                basic_file = basic_block(_in_args)
+                ret_comp = basic_file.component
+                # add new basic block to dependency file list
+                self.dependencies.append(basic_file)
             else:
-                comp_name = "comp_dummy"
-                comp_outtype = in_args[0].vhdl_type
-
-        ret_comp = Component(name=comp_name,
-                             generics=comp_generics,
-                             in_ports=comp_iports,
-                             out_port=comp_oport,
-                             out_type=comp_outtype)
+                raise TransformationError("Unknown function %s called" % node.func.id)
         self.arch_components.append(ret_comp)
         return ret_comp
 
-    def visit_BinOp(self, node):
-        left = self.visit(node.left)
-        op = self.PY_OP_TO_VHDL_OP[type(node.op)]()
-        right = self.visit(node.right)
-        #
-        if isinstance(left, Expression):
-            #  Create additional connection signal
-            con_signal = Signal(name=left.instance_name + "_return",
-                                vhdl_type=left.out_type())
-            left.out_port = Port("return", "out", con_signal)
-            #
-            self.architecture_body_additions.append(left)
+    def create_connection(self, obj):
+        if isinstance(obj, Literal):
+            return obj
+        elif isinstance(obj, Expression):
+            con_signal = Signal(name=obj.instance_name + "_return",
+                                vhdl_type=obj.out_type)
+            obj.out_port = Port("return_sig", "out", con_signal)
             #
             self.architecture_int_signals[con_signal.name] = con_signal
-            left = con_signal
+            return con_signal
+        else:
+            error_msg = "Trying to connect invalid object of type %s"\
+                        % type(obj)
+            raise TransformationError(error_msg)
 
-        if isinstance(right, Expression):
-            # Create additional connection signal
-            con_signal = Signal(name=right.instance_name + "_return",
-                                vhdl_type=right.out_type())
-            right.out_port = Port("return", "out", con_signal)
-            #
-            self.architecture_body_additions.append(right)
-            #
-            self.architecture_int_signals[con_signal.name] = con_signal
-            right = con_signal
+
+    def visit_BinOp(self, node):
+        op = self.PY_OP_TO_VHDL_OP[type(node.op)]()
+        left, right = [self.create_connection(self.visit(arg))
+                       for arg in [node.left, node.right]]
         #
         ret_comp = BinaryOp(left_port=Port("left", "in", left),
-                            op=Generic("op", "", op),
+                            op=Generic("op", op),
                             right_port=Port("right", "in", right))
         self.arch_components.append(ret_comp)
         return ret_comp
@@ -287,18 +288,21 @@ class VhdlTransformer(ast.NodeTransformer):
         operand = self.visit(node.operand)
         op = self.PY_OP_TO_VHDL_OP[type(node.op)]
         #
-        if isinstance(operand, Expression):
+        if isinstance(operand, Literal):
+            pass
+            # TODO: implement Literal handling
+        elif isinstance(operand, Expression):
             # Create additional connection signal
             con_signal = Signal(name=operand.instance_name + "_return",
-                                vhdl_type=operand.out_type())
-            operand.out_port = Port("return", "out", con_signal)
-            self.architecture_body_additions.append(operand)
+                                vhdl_type=operand.out_type)
+            operand.out_port = Port("return_sig", "out", con_signal)
             #
             self.architecture_int_signals[con_signal.name] = con_signal
             operand = con_signal
         #
         ret_comp = UnaryOp(in_port=Port("operand", "in", operand),
-                           op=Generic("op", "", op))
+                           op=Generic("op", op))
+        self.arch_components.append(ret_comp)
         return ret_comp
 
     def visit_Assign(self, node):
@@ -314,58 +318,62 @@ class VhdlTransformer(ast.NodeTransformer):
             raise TransformationError("Only one assignment target supported")
         target = node.targets[0]
         #
-        if isinstance(value, Expression):
+
+        # TODO: optimize reassignment check
+        error_msg = "Reassignment of {0} in line {1} is not supported"\
+            .format(target.id, node.lineno)
+        if target.id in self.names_dict:
+            raise TransformationError(error_msg)
+        elif target.id in self.architecture_io_signals:
+            raise TransformationError(error_msg)
+        elif target.id in self.architecture_int_signals:
+            raise TransformationError(error_msg)
+        elif target.id in self.architecture_temp_signals:
+            raise TransformationError(error_msg)
+        else:
+            pass
+        #
+
+        if isinstance(value, Literal):
+            if type(value) is Constant:
+                value.name = target.id
+                self.architecture_int_signals[target.id] = value
+            else:
+                self.architecture_temp_signals[target.id] = value
+        elif isinstance(value, Expression):
             if isinstance(target, ast.Name):
-                out_sig = Signal(name=target.id, vhdl_type=value.out_type())
+                out_sig = Signal(name=target.id, vhdl_type=value.out_type)
                 #
                 self.architecture_int_signals[target.id] = out_sig
                 #
-                value.out_port = Port("return_sig", "out", out_sig)
+                if value.out_port:
+                    value.out_port.value = out_sig
+                else:
+                    value.out_port = Port("return_sig", "out", out_sig)
                 return value
             else:
                 error_msg = "Undefined assignment to %s" % type(target)
                 raise TransformationError(error_msg)
-        elif isinstance(value, Constant):
-                value.name = target.id
-                self.architecture_int_signals[target.id] = value
         else:
-            error_msg = "Undefined assignment to %s" % type(target)
+            error_msg = "Undefined assignment of {1} to {2}".format(type(value), type(target))
             raise TransformationError(error_msg)
-
-    def visit_AugAssign(self, node):
-        """
-        Visit AugAssign node, resolve to Assign node.
-
-        Attributes:
-            node: ast.AugAssign node
-        """
-        left = node.target
-        op = node.op
-        right = node.value
-        #
-        value = ast.BinOp(left=left, op=op, right=right)
-        #
-        return self.visit(ast.Assign(targets=[node.target], value=value))
 
     def visit_Return(self, node):
         """ Visit Return node and add Vhdl Return. """
         value = self.visit(node.value)
         #
-        if isinstance(value, Signal):
-            out_sig = Signal("return_sig", value.vhdl_type)
-            #
-            self.architecture_io_signals["return_sig"] = out_sig
-            #
-            in_arg = Port("in_sig", "in", value)
-            out_arg = Port("return_sig", "out", out_sig)
-            #
-            ret_comp = VhdlReturn(in_port=in_arg, out_port=out_arg)
-            self.arch_components.append(ret_comp)
-            return ret_comp
+        # VhdlReturn(in_port, out_port)
+        #
+        if isinstance(value, Literal):
+            self.architecture_io_signals["return_sig"] = value
         elif isinstance(value, Expression):
-            pass
+            out_sig = Signal("return_sig", value.out_type)
+            value.out_port = Port("return_sig", "out", out_sig)
+            #
+            self.architecture_int_signals["return_sig"] = out_sig
+            self.architecture_io_signals["return_sig"] = out_sig
         else:
-            raise Exception
+            raise TransformationError("Node value has undefined instance")
 
     def visit_Expr(self, node):
         """
@@ -380,6 +388,7 @@ class VhdlTransformer(ast.NodeTransformer):
             else:
                 return self.visit(node.value)
         else:
+            # TODO: check again for correctness
             return None
 
     def visit_UserCodeTemplate(self, node):
