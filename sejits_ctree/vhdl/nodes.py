@@ -8,6 +8,7 @@ import ast
 import logging
 
 from . import STDLIBS
+from ..vhdl import TransformationError
 from collections import defaultdict, namedtuple
 from dotgen import VhdlDotGenVisitor
 from ctree.nodes import File
@@ -150,6 +151,82 @@ class VhdlFile(VhdlNode, File):
 class VhdlProject(object):
 
     """ Base class for an Vhdl Project. """
+
+    AXI_STREAM_WIDTH = 32
+
+    class ProjectWrapper(VhdlFile):
+
+        """ Wraps user created VhdlFile for the template vivado project. """
+
+        def __init__(self):
+            # input signals
+            M_AXIS_MM2S_tdata = Signal("M_AXIS_MM2S_tdata",
+                                       VhdlType.VhdlStdLogicVector(self.AXI_STREAM_WIDTH, "0"))
+            M_AXIS_MM2S_tkeep = Signal("M_AXIS_MM2S_tkeep",
+                                       VhdlType.VhdlStdLogicVector(4, "0"))
+            M_AXIS_MM2S_tlast = Signal("M_AXIS_MM2S_tlast",
+                                       VhdlType.VhdlStdLogic("0"))
+            M_AXIS_MM2S_tready = Signal("M_AXIS_MM2S_tready",
+                                        VhdlType.VhdlStdLogic("0"))
+            M_AXIS_MM2S_tvalid = Signal("M_AXIS_MM2S_tvalid",
+                                        VhdlType.VhdlStdLogic("0"))
+            in_sigs = [M_AXIS_MM2S_tdata, M_AXIS_MM2S_tkeep, M_AXIS_MM2S_tlast,
+                       M_AXIS_MM2S_tready, M_AXIS_MM2S_tvalid]
+
+            # output signals
+            S_AXIS_S2MM_tdata = Signal("S_AXIS_S2MM_tdata",
+                                       VhdlType.VhdlStdLogicVector(self.AXI_STREAM_WIDTH, "0"))
+            S_AXIS_S2MM_tkeep = Signal("S_AXIS_S2MM_tkeep",
+                                       VhdlType.VhdlStdLogicVector(4, "0"))
+            S_AXIS_S2MM_tlast = Signal("S_AXIS_S2MM_tlast",
+                                       VhdlType.VhdlStdLogic("0"))
+            S_AXIS_S2MM_tready = Signal("S_AXIS_S2MM_tready",
+                                        VhdlType.VhdlStdLogic("0"))
+            S_AXIS_S2MM_tvalid = Signal("S_AXIS_S2MM_tvalid",
+                                        VhdlType.VhdlStdLogic("0"))
+            out_sigs = [S_AXIS_S2MM_tdata, S_AXIS_S2MM_tkeep,
+                        S_AXIS_S2MM_tlast, S_AXIS_S2MM_tready,
+                        S_AXIS_S2MM_tvalid]
+
+            # input/ output ports
+            in_ports = [Port(sig.name, "in", sig) for sig in in_sigs]
+            out_ports = [Port(sig.name, "out", sig) for sig in out_sigs]
+
+            # TODO: change entity to handle multiple output ports
+            # TODO: connect user generated file with io ports
+
+            entity = Entity(name="project_wrapper",
+                            generics=[],
+                            in_ports=in_ports,
+                            out_port=None)
+
+            # TODO: check streamable attribute of input ports
+            # TODO: maximize raw input bandwidth utilization
+
+            streamable_width = 8
+            if self.AXI_STREAM_WIDTH % streamable_width:
+                utilization = self.AXI_STREAM_WIDTH / streamable_width
+            else:
+                error_msg = "Could not create even utilization with {} streamable width".format(streamable_width)
+                raise TransformationError(error_msg)
+
+            # TODO: Integrate from-to assignment in std_logic_vector
+            # TODO: implement architecture body
+
+            arch = Architecture(entity_name="project_wrapper",
+                                architecture_name="behaviour",
+                                signals=[],
+                                body=[])
+            # =============================================================== #
+            # Initialize Base Class
+            # =============================================================== #
+            VhdlFile.__init__(name="project_wrapper",
+                              libs=None,
+                              entity=entity,
+                              architecture=arch,
+                              config_target="vhd",
+                              path=None,
+                              dependencies=[])
 
     def __init__(self, files=None, synthesis_dir=""):
         """ Initialize VhdlProject. """
