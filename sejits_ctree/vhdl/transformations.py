@@ -4,8 +4,7 @@ __author__ = 'philipp ebensberger'
 import ast
 import itertools
 
-from ..vhdl import TransformationError
-from ..vhdl import USERTRANSFORMERS
+from sejits_ctree.vhdl import TransformationError
 import logging
 
 from collections import namedtuple
@@ -140,11 +139,11 @@ class VhdlTransformer(ast.NodeTransformer):
         entity = Entity(name=node.name,
                         generics=[],
                         in_ports=in_args,
-                        out_port=out_port)
+                        out_ports=[out_port])
 
         architecture = Architecture(entity_name=node.name,
                                     signals=arch_signals,
-                                    body=self.arch_components)
+                                    components=self.arch_components)
         return (entity, architecture)
 
     def visit_Name(self, node):
@@ -396,15 +395,3 @@ class VhdlTransformer(ast.NodeTransformer):
 
     def visit_UserFileTemplate(self, node):
         pass
-# =========================================================================== #
-# USER TRANSFORMERS
-# =========================================================================== #
-
-
-class UserTransformers(object):
-    transformers = USERTRANSFORMERS
-
-    def visit(self, tree):
-        for transformer in self.transformers:
-            transformer().visit(tree)
-        return tree

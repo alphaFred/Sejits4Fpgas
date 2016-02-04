@@ -3,7 +3,6 @@
 import logging
 
 from skimage.filters import sobel, sobel_h, sobel_v
-
 import sejits_ctree
 import sejits_ctree.frontend
 

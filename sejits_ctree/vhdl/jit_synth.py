@@ -87,7 +87,7 @@ class VhdlSynthModule(object):
                             file_comp = Component(name=entity.name,
                                                   generics=entity.generics,
                                                   in_ports=entity.in_ports,
-                                                  out_port=entity.out_port)
+                                                  out_ports=entity.out_ports)
                             file_comp.lib_name = "work." + entity.name
 
                             gen_code = VhdlCodeGen().visit_Component(file_comp)

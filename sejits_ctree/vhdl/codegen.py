@@ -15,7 +15,7 @@ ARCHITECTURE = """architecture {architecture_name} of {entity_name} is
 {architecture_declarations}
 begin
 {architecture_instructions}
-{entity_return} <= {architecture_return};
+{architecture_return}
 end {architecture_name};"""
 
 ENTITY = """entity {entity_name} is\
@@ -45,6 +45,9 @@ class VhdlCodeGen(ast.NodeVisitor):
         """return correct spaces if tab found"""
         return " " * self._indent
 
+    def visit_ProjectWrapper(self, node):
+        return self.visit_VhdlFile(node)
+
     def visit_VhdlFile(self, node):
         """ Generate Vhdl description of VhdlFile. """
         libraries = "library " + "\nuse ".join(node.libs)
@@ -65,7 +68,7 @@ class VhdlCodeGen(ast.NodeVisitor):
         if node.generics != []:
             generics = self._generic_block(node.generics)
         # generate vhdl description of ports
-        ports = self._port_block(node.in_ports + [node.out_port])
+        ports = self._port_block(node.in_ports + node.out_ports)
         # return vhdl description of entity
         return ENTITY.format(entity_name=node.name,
                              generic_declarations=generics,
@@ -75,18 +78,24 @@ class VhdlCodeGen(ast.NodeVisitor):
         join_statement = "\n" + self._tab()
         #
         declarations = self._tab() +\
-            join_statement.join([self.visit(sig) for sig in node.signals])
-        instructions = "\n".join([self.visit(comp) for comp in node.body])
+            join_statement.join([self.visit(sig) for sig in node.signals()])
+        instructions = "\n".join([self.visit(comp) for comp in node.components()])
         #
-        ret_port_name = self.active_entity.out_port.name
-        ret_sig_name = self.active_entity.out_port.value.name
+        ret_port_name = [oport.name
+                         for oport in self.active_entity.out_ports]
+        ret_sig_name = [oport.value.name
+                        for oport in self.active_entity.out_ports]
+        #
+        arch_return = ";\n".join([pname + " <= " + sname
+                                 for pname, sname in
+                                 zip(ret_port_name, ret_sig_name)])
+        arch_return += ";\n"
         # return vhdl description of architecture
         return ARCHITECTURE.format(architecture_name=node.architecture_name,
                                    entity_name=node.entity_name,
                                    architecture_declarations=declarations,
                                    architecture_instructions=instructions,
-                                   entity_return=ret_port_name,
-                                   architecture_return=ret_sig_name)
+                                   architecture_return=arch_return)
 
     def visit_Component(self, node):
         if node.generics != []:

@@ -8,7 +8,7 @@ import ast
 import logging
 
 from . import STDLIBS
-from ..vhdl import TransformationError
+from sejits_ctree.vhdl import TransformationError, VhdlNodeError, VhdlTypeError
 from collections import defaultdict, namedtuple
 from dotgen import VhdlDotGenVisitor
 from ctree.nodes import File
@@ -89,9 +89,9 @@ class VhdlFile(VhdlNode, File):
         File.__init__(self, name, [entity, architecture], path)
         #
         if entity:
-            self._interface = Interface(entity.in_ports, entity.out_port)
+            self.interface = Interface(entity.in_ports, entity.out_ports)
         else:
-            self._interface = []
+            self.interface = []
         if libs:
             self.libs = STDLIBS + list(libs)
         else:
@@ -99,6 +99,17 @@ class VhdlFile(VhdlNode, File):
         #
         self.config_target = config_target
         self.dependencies = dependencies
+        #
+        """ Evaluate component return for VhdlFile; out_type declaration of Component """
+        if entity and architecture:
+            self.component = Component(name=name,
+                                       generics=entity.generics,
+                                       in_ports=entity.in_ports,
+                                       out_ports=entity.out_ports,
+                                       out_type=None)
+            self.component.lib_name = self.libs
+        else:
+            self.component = None
 
     def __repr__(self):
         """ Return entity vhdl source code for debug. """
@@ -114,11 +125,6 @@ class VhdlFile(VhdlNode, File):
             vhdl_file.write(program_text)
 
         return vhdl_src_file
-
-    @property
-    def interface(self):
-        """ Return interface [in_ports, out_port]. """
-        return self._interface
 
     def codegen(self, indent=4):
         """ Generate source and save in file if VhdlFile.generated == True. """
@@ -152,13 +158,13 @@ class VhdlProject(object):
 
     """ Base class for an Vhdl Project. """
 
-    AXI_STREAM_WIDTH = 32
-
     class ProjectWrapper(VhdlFile):
+
+        AXI_STREAM_WIDTH = 32
 
         """ Wraps user created VhdlFile for the template vivado project. """
 
-        def __init__(self):
+        def __init__(self, project_data):
             # input signals
             M_AXIS_MM2S_tdata = Signal("M_AXIS_MM2S_tdata",
                                        VhdlType.VhdlStdLogicVector(self.AXI_STREAM_WIDTH, "0"))
@@ -198,34 +204,37 @@ class VhdlProject(object):
             entity = Entity(name="project_wrapper",
                             generics=[],
                             in_ports=in_ports,
-                            out_port=None)
+                            out_ports=out_ports)
 
             # TODO: check streamable attribute of input ports
             # TODO: maximize raw input bandwidth utilization
 
+            # Make sure that streamable_width is < stream_width
             streamable_width = 8
-            if self.AXI_STREAM_WIDTH % streamable_width:
-                utilization = self.AXI_STREAM_WIDTH / streamable_width
-            else:
-                error_msg = "Could not create even utilization with {} streamable width".format(streamable_width)
-                raise TransformationError(error_msg)
-
-            # TODO: Integrate from-to assignment in std_logic_vector
-            # TODO: implement architecture body
 
             arch = Architecture(entity_name="project_wrapper",
                                 architecture_name="behaviour",
                                 signals=[],
-                                body=[])
+                                components=[])
             # =============================================================== #
             # Initialize Base Class
             # =============================================================== #
-            VhdlFile.__init__(name="project_wrapper",
+            """
+            super(ProjectWrapper, self).__init__(name="project_wrapper",
+                     libs=None,
+                     entity=entity,
+                     architecture=arch,
+                     config_target="vhd",
+                     path=None,
+                     dependencies=[])
+            """
+            VhdlFile.__init__(self,
+                              name="project_wrapper",
                               libs=None,
                               entity=entity,
                               architecture=arch,
                               config_target="vhd",
-                              path=None,
+                              path="./",
                               dependencies=[])
 
     def __init__(self, files=None, synthesis_dir=""):
@@ -279,12 +288,7 @@ class Expression(VhdlNode):
     lib_name = ""
     latency = 0
     in_ports = []
-    out_port = None
-
-    @property
-    def out_type(self):
-        """ Return node's output type. """
-        raise NotImplementedError()
+    out_ports = None
 
 
 class Literal(VhdlNode):
@@ -295,7 +299,6 @@ class LiteralWrapper(VhdlNode):
     """ docstring dummy. """
 
 # LITERALS
-
 
 class Op(Literal):
     class _Op(Literal):
@@ -422,11 +425,7 @@ class BinaryOp(Expression):
         self.instance_name = self.name.lower() +\
             (str(instance_id) if instance_id != 0 else "")
 
-    @property
-    def out_type(self):
-        """ Return node's output type. """
-        # TODO: calculate output type based on input types
-        return VhdlType.VhdlStdLogicVector(size=8, default='0')
+        self.out_type = VhdlType.VhdlStdLogicVector(size=8, default='0')
 
 
 class UnaryOp(Expression):
@@ -453,45 +452,82 @@ class UnaryOp(Expression):
         self.instance_name = self.name +\
             (str(instance_id) if instance_id != 0 else "")
 
-    @property
-    def out_type(self):
-        """ Return node's output type. """
-        return self.in_port.value.vhdl_type
+        self.out_type = self.in_port.value.vhdl_type
 
 
 class Component(Expression):
 
     """ Node class for generic Vhdl Component. """
 
-    _fields = ["generics", "in_ports", "out_port"]
+    _fields = ["generics", "in_ports", "out_ports"]
     name = ""
 
-    def __init__(self, name="", generics=None, in_ports=None,
-                 out_port=None, out_type=""):
+    def __init__(self, name="", generics=(), in_ports=(),
+                 out_ports=(), out_types=()):
         """ Initialize Component node. """
         self.name = name
 
-        self.generics = []
-        self.in_ports = []
+        self.generics = generics
+        self.in_ports = in_ports
+        self.out_ports = out_ports
+        self.out_types = out_types
 
-        if generics is not None:
-            self.generics = generics if type(generics) is list else [generics]
-        if in_ports is not None:
-            self.in_ports = in_ports if type(in_ports) is list else [in_ports]
-        self.out_port = out_port
-
-        self._out_type = out_type
         # generate unique instance id
         instance_id = self._ids[self.name]
         self._ids[self.name] += 1
-        # generate unique instance name
+        # generate unique instance nameclass Entity(Statement):
         self.instance_name = "comp_" + self.name.lower() +\
             (str(instance_id) if instance_id != 0 else "")
 
     @property
-    def out_type(self):
-        """ Return node's output type. """
-        return self._out_type
+    def generics(self):
+        return self._generics
+
+    @generics.setter
+    def generics(self, generics=()):
+        # TRUE if all items are of type Generic or generics == ()
+        if all([type(itm) is Generic for itm in list(generics)]):
+            self._generics = tuple(generics)
+        else:
+            error_msg = "All elements of attribute generics of Component" +\
+                        " must be of type Generic"
+            raise VhdlTypeError(error_msg)
+
+    @property
+    def in_ports(self):
+        return self._in_ports
+
+    @in_ports.setter
+    def in_ports(self, in_ports):
+        clk_sig = Signal(name="CLK_SIG",
+                         vhdl_type=VhdlType.VhdlStdLogic())
+        rst_sig = Signal(name="RST_SIG",
+                         vhdl_type=VhdlType.VhdlStdLogic())
+        en_sig = Signal(name="EN_SIG",
+                        vhdl_type=VhdlType.VhdlStdLogic())
+        ctrl_ports = (Port("CLK", "in", clk_sig),
+                      Port("EN", "in", en_sig),
+                      Port("RST", "in", rst_sig))
+        # TRUE if all items are of type Port or in_ports == ()
+        if all([type(itm) is Port and itm.direction == "in" for itm in list(in_ports)]):
+            self._in_ports = ctrl_ports + tuple(in_ports)
+        else:
+            error_msg = "All elements of attribute in_ports of Component" +\
+                        " must be of type Port with direction == in"
+            raise VhdlTypeError(error_msg)
+
+    @property
+    def out_ports(self):
+        return self._out_ports
+
+    @out_ports.setter
+    def out_ports(self, out_ports):
+        if all([type(itm) is Port and itm.direction == "out" for itm in list(out_ports)]):
+            self._out_ports = tuple(out_ports)
+        else:
+            error_msg = "All elements of attribute out_ports of Component" +\
+                        " must be of type Port with direction == out"
+            raise VhdlTypeError(error_msg)
 
 
 # STATEMENTS
@@ -499,58 +535,83 @@ class Entity(Statement):
 
     """ Node class for Entity nodes. """
 
-    _fields = ["name", "generics", "in_ports", "out_port"]
+    _fields = ["name", "generics", "in_ports", "out_ports"]
 
-    def __init__(self, name="", generics=[], in_ports=[], out_port=None):
+    def __init__(self, name="", generics=(), in_ports=(), out_ports=()):
         """ Initialize Entity generics and port lists. """
+        if name != "":
+            self.name = name
+        else:
+            raise VhdlNodeError("An entity-name must be provided")
+        #
+        self.generics = generics
+        self.in_ports = in_ports
+        self.out_ports = out_ports
+
+    @property
+    def generics(self):
+        return self._generics
+
+    @generics.setter
+    def generics(self, generics=()):
+        # TRUE if all items are of type Generic or generics == ()
+        if all([type(itm) is Generic for itm in list(generics)]):
+            self._generics = tuple(generics)
+        else:
+            error_msg = "All elements of attribute generics of Entity" +\
+                        " must be of type Generic"
+            raise VhdlTypeError(error_msg)
+
+    @property
+    def in_ports(self):
+        return self._in_ports
+
+    @in_ports.setter
+    def in_ports(self, in_ports):
         clk_sig = Signal(name="CLK_SIG",
                          vhdl_type=VhdlType.VhdlStdLogic())
         rst_sig = Signal(name="RST_SIG",
                          vhdl_type=VhdlType.VhdlStdLogic())
         en_sig = Signal(name="EN_SIG",
                         vhdl_type=VhdlType.VhdlStdLogic())
-        self.in_ports = [Port("CLK", "in", clk_sig),
-                         Port("RST", "in", rst_sig),
-                         Port("EN", "in", en_sig)]
-        #
-        if name != "":
-            self.name = name
+        ctrl_ports = (Port("CLK", "in", clk_sig),
+                      Port("EN", "in", en_sig),
+                      Port("RST", "in", rst_sig))
+        # TRUE if all items are of type Port or in_ports == ()
+        if all([type(itm) is Port and itm.direction == "in" for itm in list(in_ports)]):
+            self._in_ports = ctrl_ports + tuple(in_ports)
         else:
-            raise ValueError("An entity name must be provided")
-        #
-        if all([type(itm) is Generic for itm in generics]):
-            self.generics = list(generics)
+            error_msg = "All elements of attribute in_ports of Entity" +\
+                        " must be of type Port with direction == in"
+            raise VhdlTypeError(error_msg)
+
+    @property
+    def out_ports(self):
+        return self._out_ports
+
+    @out_ports.setter
+    def out_ports(self, out_ports):
+        if all([type(itm) is Port and itm.direction == "out" for itm in list(out_ports)]):
+            self._out_ports = tuple(out_ports)
         else:
-            raise TypeError("Initialize generics must be of type Generic")
-        #
-        if all([type(itm) is Port for itm in in_ports]):
-            self.in_ports = list(in_ports)
-        else:
-            raise TypeError("Initialize in_ports must be of type Port")
-        #
-        if out_port and type(out_port) is Port:
-            self.out_port = out_port
-        elif not out_port:
-            self.out_port = None
-        else:
-            raise TypeError("Initialize out_port must be None or of type Port")
+            error_msg = "All elements of attribute out_ports of Entity" +\
+                        " must be of type Port with direction == out"
+            raise VhdlTypeError(error_msg)
 
 
 class Architecture(Statement):
 
     """ Node class for Architecture node. """
 
-    _fields = ["entity_name", "architecture_name", "body"]
-    signals = None
-    components = None
+    _fields = ["entity_name", "architecture_name", "components"]
 
     def __init__(self, entity_name="", architecture_name="behaviour",
-                 signals=[], body=[]):
+                 signals=[], components=[]):
         """
         Initialize Architecture.
 
         Check signals:
-            all elements of singlas must be an instance of Literal.
+            all elements of signals must be an instance of Literal.
         Check body:
             all elements of body must be an instance of Expression.
         Check entitiy name:
@@ -565,49 +626,38 @@ class Architecture(Statement):
         if entity_name != "":
             self.entity_name = entity_name
         else:
-            raise ValueError("An entitiy name must be provided")
-        #
-        if all([isinstance(itm, Literal) for itm in list(signals)]):
-            self.signals = list(signals)
+            raise VhdlNodeError("An entitiy name must be provided")
+
+        if architecture_name != "":
+            self.architecture_name = architecture_name
         else:
-            raise TypeError("Initialize signals are of invalid type")
+            raise VhdlNodeError("An architecture name must be provided")
+
+        self._signals = []
+        self._components = []
         #
-        if all([isinstance(itm, Expression) for itm in list(body)]):
-            self.body = [self._auto_route(comp) for comp in list(body)]
-        else:
-            raise TypeError("Initialize body elements are of invalid type")
-        #
-        self.architecture_name = architecture_name
-        #
-        super(Architecture, self).__init__()
+        [self.add_signal(itm) for itm in signals]
+        [self.add_component(itm) for itm in components]
+
+    def signals(self):
+        return self._signals
+
+    def components(self):
+        return self._components
 
     def add_signal(self, new_signal):
-        """ Add new signal to architecture if instance of Literal. """
+        """ Add new signal to architecture if signal is instance of Literal. """
         if isinstance(new_signal, Literal):
             self.signals.append(new_signal)
         else:
             raise TypeError("Invalid signal type: %s" % type(new_signal))
 
     def add_component(self, new_component):
-        """ Add new component to architecture if instance of Expression. """
+        """ Add new component to architecture if component is instance of Expression. """
         if isinstance(new_component, Expression):
-            self.body.append(self._auto_route(new_component))
+            self.components.append(new_component)
         else:
             raise TypeError("Invalid component type: %s" % type(new_component))
-
-    def _auto_route(self, component):
-        """ Add infrastructure ports to component. """
-        clk_sig = Signal(name="CLK_SIG",
-                         vhdl_type=VhdlType.VhdlStdLogic())
-        rst_sig = Signal(name="RST_SIG",
-                         vhdl_type=VhdlType.VhdlStdLogic())
-        en_sig = Signal(name="EN_SIG",
-                        vhdl_type=VhdlType.VhdlStdLogic())
-        #
-        component.in_ports.extend([Port("CLK", "in", clk_sig),
-                                   Port("RST", "in", rst_sig),
-                                   Port("EN", "in", en_sig)])
-        return component
 
 
 class VhdlType(object):

@@ -32,11 +32,11 @@ class convolve(BasicBlock, VhdlFile):
         in_ports = [Port("rgb_input", "in", args[0])]
         #
         out_type = args[0].vhdl_type
-        out_port = Port("rgb_output", "out", Signal("dummy", out_type))
+        out_ports = [Port("rgb_output", "out", Signal("dummy", out_type))]
         entity = Entity(name="Convolve",
                         generics=generics,
                         in_ports=in_ports,
-                        out_port=out_port)
+                        out_ports=out_ports)
         # initialize file
         BasicBlock.__init__(self)
         VhdlFile.__init__(self,
@@ -50,7 +50,7 @@ class convolve(BasicBlock, VhdlFile):
         self.component = Component(name=self.name,
                                    generics=generics,
                                    in_ports=in_ports,
-                                   out_port=out_port,
+                                   out_ports=out_ports,
                                    out_type=out_type)
         self.component.lib_name = self.lib_name
 
@@ -93,12 +93,12 @@ class sqrt(BasicBlock, VhdlFile):
         in_ports = [Port("sqrt_input", "in", args[0])]
         #
         out_type = args[0].vhdl_type
-        out_port = Port("sqrt_output", "out", Signal("dummy", out_type))
+        out_ports = [Port("sqrt_output", "out", Signal("dummy", out_type))]
         #
         entity = Entity(name="Squareroot",
                         generics=[],
                         in_ports=in_ports,
-                        out_port=out_port)
+                        out_ports=out_ports)
         #
         BasicBlock.__init__(self)
         VhdlFile.__init__(self,
@@ -112,7 +112,7 @@ class sqrt(BasicBlock, VhdlFile):
         self.component = Component(name=self.name,
                                    generics=None,
                                    in_ports=in_ports,
-                                   out_port=out_port,
+                                   out_ports=out_ports,
                                    out_type=out_type)
         self.component.lib_name = self.lib_name
 
