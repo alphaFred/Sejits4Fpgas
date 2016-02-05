@@ -26,13 +26,12 @@ class VhdlSynthModule(object):
 
     def __init__(self):
         import os
-
         # write files to $TEMPDIR/sejits_ctree/run-XXXX
         ctree_dir = os.path.join(tempfile.gettempdir(), "sejits_ctree")
         if not os.path.exists(ctree_dir):
             os.mkdir(ctree_dir)
 
-        self.synthesis_dir = tempfile.mkdtemp(prefix="run-", dir=ctree_dir)
+        # self.synthesis_dir = tempfile.mkdtemp(prefix="run-", dir=ctree_dir)
         self.ll_module = None
         self.exec_engine = None
         #
@@ -58,8 +57,15 @@ class VhdlSynthModule(object):
         return self
 
     def _link_to_project(self):
-        ip_repo_dir = "../../ip_repo/proc_ip_1.0/"
+        proj_top_folder = "../../vivado/template_project/template_project.srcs/sources_1/new/"
         #
+        proj_top_file = proj_top_folder + "top.vhd"
+        # Copy all files to top folder
+        for linked_file in self._linked_files:
+            for file_path in linked_file.file_names:
+                os.system("cp " + file_path + " " + proj_top_folder)
+
+        """
         hdl_dir = ip_repo_dir + "hdl/"
         #
         filenames = next(os.walk(hdl_dir))[2]
@@ -101,6 +107,7 @@ class VhdlSynthModule(object):
         for data_module in self._linked_files:
             for path in data_module.file_names:
                 os.system("cp " + path + " " + hdl_dir)
+        """
 
     def _activate(self):
         """ Activate synthesis subprocess. """
@@ -110,7 +117,6 @@ class VhdlSynthModule(object):
         #   multiply process pipeline according to input width and data width
         #   integrate and connect pipelines into axi stream ip
         pass
-
 
 class LazySpecializedFunction(object):
 
@@ -149,34 +155,6 @@ class LazySpecializedFunction(object):
         self.original_tree = py_ast
         self.backend_name = backend_name
 
-    @property
-    def original_tree(self):
-        return copy.deepcopy(self._original_tree)
-
-    @original_tree.setter
-    def original_tree(self, value):
-        if not hasattr(self, '_original_tree'):
-            self._original_tree = value
-        elif ast.dump(self.__original_tree, True, True) != \
-                ast.dump(value, True, True):
-            raise AttributeError('Cannot redefine the ast')
-
-    @property
-    def info_filename(self):
-        return 'info.json'
-
-    def get_info(self, path):
-        info_filepath = os.path.join(path, self.info_filename)
-        if not os.path.exists(info_filepath):
-            return {'hash': None, 'files': []}
-        with open(info_filepath) as info_file:
-            return json.load(info_file)
-
-    def set_info(self, path, dictionary):
-        info_filepath = os.path.join(path, self.info_filename)
-        with open(info_filepath, 'w') as info_file:
-            return json.dump(dictionary, info_file)
-
     def __call__(self, *args, **kwargs):
         """
         Determines the program_configuration to be run. If it has yet to be
@@ -204,6 +182,34 @@ class LazySpecializedFunction(object):
         csf = self.finalize(transform_result, program_config)
 
         return csf(*args, **kwargs)
+
+    @property
+    def original_tree(self):
+        return copy.deepcopy(self._original_tree)
+
+    @original_tree.setter
+    def original_tree(self, value):
+        if not hasattr(self, '_original_tree'):
+            self._original_tree = value
+        elif ast.dump(self.__original_tree, True, True) != \
+                ast.dump(value, True, True):
+            raise AttributeError('Cannot redefine the ast')
+
+    @property
+    def info_filename(self):
+        return 'info.json'
+
+    def get_info(self, path):
+        info_filepath = os.path.join(path, self.info_filename)
+        if not os.path.exists(info_filepath):
+            return {'hash': None, 'files': []}
+        with open(info_filepath) as info_file:
+            return json.load(info_file)
+
+    def set_info(self, path, dictionary):
+        info_filepath = os.path.join(path, self.info_filename)
+        with open(info_filepath, 'w') as info_file:
+            return json.dump(dictionary, info_file)
 
     def get_program_config(self, args, kwargs):
         """ Return ProgramConfig namedtuple. """

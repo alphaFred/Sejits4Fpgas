@@ -103,7 +103,7 @@ class VhdlCodeGen(ast.NodeVisitor):
         else:
             generic_map = ""
 
-        port_map = self._port_map(node.in_ports + [node.out_port])
+        port_map = self._port_map(node.in_ports + node.out_ports)
         #
         return COMPONENT.format(instance_name=node.instance_name,
                                 component_name=node.name,
@@ -115,7 +115,7 @@ class VhdlCodeGen(ast.NodeVisitor):
         generic_map = self._generic_map([node.op])
         _in_ports = [self.type_cast(VhdlType.VhdlStdLogicVector, port)
                      for port in [node.left_port, node.right_port]]
-        port_map = self._port_map(_in_ports + node.in_ports[2:] + [node.out_port])
+        port_map = self._port_map(node.in_ports + (node.out_port,))
         #
         return COMPONENT.format(instance_name=node.instance_name,
                                 component_name=node.name,

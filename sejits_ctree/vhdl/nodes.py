@@ -71,7 +71,31 @@ class VhdlNode(VhdlTreeNode):
 Interface = namedtuple("Interface", ["iports", "oport"])
 
 
-class VhdlFile(VhdlNode, File):
+class VhdlBaseFile(VhdlTreeNode):
+    """Holds a list of statements."""
+    _fields = ['body']
+
+    def __init__(self, name="generated", body=None, path=None):
+        self.name = name
+        self.body = body or []
+        self.config_target = 'vhd'
+        self.path = path
+
+    @property
+    def path(self):
+        return self._path
+
+    @path.setter
+    def path(self, value):
+        self._path = value
+        if not os.path.exists(self._path):
+            os.makedirs(self._path)
+
+    def get_filename(self):
+        return "%s.%s" % (self.name, self._ext)
+
+
+class VhdlFile(VhdlNode, VhdlBaseFile):
 
     """Represents a .vhd file."""
 
@@ -86,7 +110,7 @@ class VhdlFile(VhdlNode, File):
                  dependencies=[]):
         """ Initialize VhdlFile. """
         VhdlNode.__init__(self)
-        File.__init__(self, name, [entity, architecture], path)
+        VhdlBaseFile.__init__(self, name, [entity, architecture], path)
         #
         if entity:
             self.interface = Interface(entity.in_ports, entity.out_ports)
@@ -106,7 +130,7 @@ class VhdlFile(VhdlNode, File):
                                        generics=entity.generics,
                                        in_ports=entity.in_ports,
                                        out_ports=entity.out_ports,
-                                       out_type=None)
+                                       out_types=None)
             self.component.lib_name = self.libs
         else:
             self.component = None
@@ -414,7 +438,7 @@ class BinaryOp(Expression):
         self.left_port = left_port
         self.right_port = right_port
         #
-        self.in_ports = [left_port, right_port]
+        self.in_ports = (left_port, right_port)
         #
         self.op = op
         self.out_port = out_port
@@ -425,7 +449,30 @@ class BinaryOp(Expression):
         self.instance_name = self.name.lower() +\
             (str(instance_id) if instance_id != 0 else "")
 
-        self.out_type = VhdlType.VhdlStdLogicVector(size=8, default='0')
+        self.out_types = VhdlType.VhdlStdLogicVector(size=8, default='0')
+
+    @property
+    def in_ports(self):
+        return self._in_ports
+
+    @in_ports.setter
+    def in_ports(self, in_ports):
+        clk_sig = Signal(name="CLK_SIG",
+                         vhdl_type=VhdlType.VhdlStdLogic())
+        rst_sig = Signal(name="RST_SIG",
+                         vhdl_type=VhdlType.VhdlStdLogic())
+        en_sig = Signal(name="EN_SIG",
+                        vhdl_type=VhdlType.VhdlStdLogic())
+        ctrl_ports = (Port("CLK", "in", clk_sig),
+                      Port("EN", "in", en_sig),
+                      Port("RST", "in", rst_sig))
+        # TRUE if all items are of type Port or in_ports == ()
+        if all([type(itm) is Port and itm.direction == "in" for itm in list(in_ports)]):
+            self._in_ports = ctrl_ports + tuple(in_ports)
+        else:
+            error_msg = "All elements of attribute in_ports of Component" +\
+                        " must be of type Port with direction == in"
+            raise VhdlTypeError(error_msg)
 
 
 class UnaryOp(Expression):
@@ -452,7 +499,7 @@ class UnaryOp(Expression):
         self.instance_name = self.name +\
             (str(instance_id) if instance_id != 0 else "")
 
-        self.out_type = self.in_port.value.vhdl_type
+        self.out_types = self.in_port.value.vhdl_type
 
 
 class Component(Expression):
@@ -648,14 +695,14 @@ class Architecture(Statement):
     def add_signal(self, new_signal):
         """ Add new signal to architecture if signal is instance of Literal. """
         if isinstance(new_signal, Literal):
-            self.signals.append(new_signal)
+            self._signals.append(new_signal)
         else:
             raise TypeError("Invalid signal type: %s" % type(new_signal))
 
     def add_component(self, new_component):
         """ Add new component to architecture if component is instance of Expression. """
         if isinstance(new_component, Expression):
-            self.components.append(new_component)
+            self._components.append(new_component)
         else:
             raise TypeError("Invalid component type: %s" % type(new_component))
 

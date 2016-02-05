@@ -114,6 +114,7 @@ class VhdlTransformer(ast.NodeTransformer):
                         libs=self.libs,
                         entity=entity,
                         architecture=architecture,
+                        path="./",
                         dependencies=self.dependencies)
 
     def visit_FunctionDef(self, node):
@@ -261,7 +262,7 @@ class VhdlTransformer(ast.NodeTransformer):
             return obj
         elif isinstance(obj, Expression):
             con_signal = Signal(name=obj.instance_name + "_return",
-                                vhdl_type=obj.out_type)
+                                vhdl_type=obj.out_types)
             obj.out_port = Port("return_sig", "out", con_signal)
             #
             self.architecture_int_signals[con_signal.name] = con_signal
@@ -331,7 +332,6 @@ class VhdlTransformer(ast.NodeTransformer):
             raise TransformationError(error_msg)
         else:
             pass
-        #
 
         if isinstance(value, Literal):
             if type(value) is Constant:
@@ -341,7 +341,7 @@ class VhdlTransformer(ast.NodeTransformer):
                 self.architecture_temp_signals[target.id] = value
         elif isinstance(value, Expression):
             if isinstance(target, ast.Name):
-                out_sig = Signal(name=target.id, vhdl_type=value.out_type)
+                out_sig = Signal(name=target.id, vhdl_type=value.out_types)
                 #
                 self.architecture_int_signals[target.id] = out_sig
                 #

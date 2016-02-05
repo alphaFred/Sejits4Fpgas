@@ -51,7 +51,7 @@ class convolve(BasicBlock, VhdlFile):
                                    generics=generics,
                                    in_ports=in_ports,
                                    out_ports=out_ports,
-                                   out_type=out_type)
+                                   out_types=out_type)
         self.component.lib_name = self.lib_name
 
     def _check_input(self, args):
