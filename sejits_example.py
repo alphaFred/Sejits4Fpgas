@@ -26,11 +26,14 @@ from sejits_ctree.vhdl.basic_blocks import convolve, sqrt
 log = logging.getLogger(__name__)
 
 
-def sejits_test(img, a, b):
+def sejits_test(img):
     """ return sobel filtered image. """
     MASK = (1, 2, 1, 0, 0, 0, -1, -2, -1)
     DIV = 4
     WIDTH = 8
+    #
+    a = 5
+    b = 1
     #
     ret = (a * convolve(img, MASK, DIV, WIDTH)) + b
     #
@@ -61,13 +64,10 @@ class BasicVhdlTrans(LazySpecializedFunction):
         img_type = Signal(name="img",
                           vhdl_type=VhdlType.VhdlStdLogicVector(size=8,
                                                                 default="0"))
-        a_type = Signal(name="a",
-                        vhdl_type=VhdlType.VhdlUnsigned(size=8))
-        b_type = Signal(name="b",
-                        vhdl_type=VhdlType.VhdlUnsigned(size=8))
 
         libraries = ["work.the_filter_package.all"]
-        name_dict = {"img": img_type, "a": a_type, "b": b_type}
+        name_dict = {"img": img_type}
+        
         #
         sejits_ctree.browser_show_ast(tree, file_name="basic_ast.png")
         tree = VhdlKeywordTransformer().visit(tree)
@@ -80,13 +80,11 @@ class BasicVhdlTrans(LazySpecializedFunction):
     def finalize(self, transform_result, program_config):
         proj = VhdlProject(files=transform_result,
                            synthesis_dir="./")
-        # GENERATE PROGRAM CODE
-        proj.codegen(indent=4)
         #
         arg_config, tuner_config = program_config
         arg_type = arg_config['arg_type']
         entry_type = ctypes.CFUNCTYPE(arg_type._dtype_.type, arg_type)
-
+        #
         return BasicFunction("dummy_func", proj, entry_type)
 
 
@@ -94,6 +92,7 @@ class BasicFunction(ConcreteSpecializedFunction):
     def __init__(self, entry_name, project_node, entry_typesig):
         self.module = project_node.codegen(indent=4)
         self.jit_callable = self.module.get_callable("bla", None)
+        # self.module.cleanup()
 
     def __call__(self, *args, **kwargs):
         return self.jit_callable()

@@ -3,6 +3,7 @@
 import re
 import os
 import ast
+import glob
 import copy
 import json
 import logging
@@ -16,107 +17,102 @@ from sejits_ctree.frontend import get_ast
 
 logger = logging.getLogger(__name__)
 
-JitSyntDataModule = namedtuple("JitSyntDataModule", ["main_file", "file_names"])
+VhdlSyntData = namedtuple("VhdlSyntData", ["main_file", "file_paths"])
 
 
 class VhdlSynthModule(object):
-    """
-    Manages compilation of multiple ASTs.
-    """
+    """Manages synthetisation of generated AST."""
 
     def __init__(self):
-        import os
-        # write files to $TEMPDIR/sejits_ctree/run-XXXX
-        ctree_dir = os.path.join(tempfile.gettempdir(), "sejits_ctree")
-        if not os.path.exists(ctree_dir):
-            os.mkdir(ctree_dir)
-
-        # self.synthesis_dir = tempfile.mkdtemp(prefix="run-", dir=ctree_dir)
-        self.ll_module = None
-        self.exec_engine = None
-        #
+        """Initialize VhdlSynthModule instance."""
         self._linked_files = []
 
     def __call__(self):
-        """ Redirect call to python or vhdl kernel. """
+        """Redirect call to python or vhdl kernel."""
         print "VhdlSynthModule got called"
 
     def _link_in(self, data_module):
-        self._linked_files.append(data_module)
-        # if self.ll_module is not None:
-        #     self.ll_module.link_in(submodule)
-        # else:
-        #     self.ll_module = submodule
+        self._linked_files = data_module
 
     def get_callable(self, entry_point_name, entry_point_typesig):
-        """
-        Returns a python callable that dispatches to the requested C function.
-        """
-        self._link_to_project()
+        """Return a python callable that redirects to hardware."""
+        self._link_to_vivado_project()
         self._activate()
         return self
 
-    def _link_to_project(self):
-        proj_top_folder = "../../vivado/template_project/template_project.srcs/sources_1/new/"
-        #
-        proj_top_file = proj_top_folder + "top.vhd"
-        # Copy all files to top folder
-        for linked_file in self._linked_files:
-            for file_path in linked_file.file_names:
-                os.system("cp " + file_path + " " + proj_top_folder)
+    def _link_to_vivado_project(self):
+        """Link all files to vivado template project."""
+        proj_src_folder = "./sejits_ctree/vhdl/vivado/template_project/template_project.srcs/sources_1/new/"
+        proj_tcl_folder = "./sejits_ctree/vhdl/vivado/template_project/"
 
-        """
-        hdl_dir = ip_repo_dir + "hdl/"
-        #
-        filenames = next(os.walk(hdl_dir))[2]
-        #
-        axi_file = [fname for fname in filenames if "AXI" in fname]
-        assert len(axi_file) == 1, "Could not find unique AXI file in ip_repo"
+        # /home/philipp/University/M4/Masterthesis/src/git_repo/ebensberger_ma/sejits_ctree/vhdl/vivado/template_project/template_project.tcl
 
-        tmp_axi_file = hdl_dir + "temp_" + axi_file[0]
-        axi_file = hdl_dir + axi_file[0]
+        # Clean up source folder
+        for proj_file in glob.glob(proj_src_folder + "*"):
+            if os.path.basename(proj_file) != "top.vhd":
+                os.remove(proj_file)
 
-        with open(tmp_axi_file, "w")as w_temp_file:
-            with open(axi_file, "r") as r_temp_file:
-                for line in r_temp_file:
-                    if "-- Add user logic here" in line:
-                        w_temp_file.write(line)
-                        #
-                        for lfile in self._linked_files:
+        # Copy all files to top folder and save file names
+        file_names = []
+        for file_path in self._linked_files.file_paths:
+            os.system("cp " + file_path + " " + proj_src_folder)
+            file_names.append(os.path.basename(file_path))
 
-                            node = lfile.main_file
-                            entity = node.body[0]
+        # Add update source files in TCL script
+        saved_tcl_file_path = proj_tcl_folder + "template_project.sav"
+        mod_tcl_file_path = proj_tcl_folder + "template_project.tcl"
+        if not os.path.exists(saved_tcl_file_path):
+            os.system("cp " + mod_tcl_file_path + " " + saved_tcl_file_path)
 
-                            from nodes import Component
-                            from codegen import VhdlCodeGen
+        with open(saved_tcl_file_path, "r") as old_tcl:
+            with open(mod_tcl_file_path, "w") as new_tcl:
+                line = old_tcl.readline()
+                
+                # read till set origin_dir
+                while "set origin_dir" not in line:
+                    new_tcl.write(line)
+                    line = old_tcl.readline()
 
-                            file_comp = Component(name=entity.name,
-                                                  generics=entity.generics,
-                                                  in_ports=entity.in_ports,
-                                                  out_ports=entity.out_ports)
-                            file_comp.lib_name = "work." + entity.name
+                new_tcl.write("set origin_dir " + '"' + os.path.abspath(proj_tcl_folder) + '"')
+                line = ""
 
-                            gen_code = VhdlCodeGen().visit_Component(file_comp)
-                            w_temp_file.write(gen_code)
-                    else:
-                        w_temp_file.write(line)
-        #
-        os.remove(axi_file)
-        os.rename(tmp_axi_file, axi_file)
-        #
-        for data_module in self._linked_files:
-            for path in data_module.file_names:
-                os.system("cp " + path + " " + hdl_dir)
-        """
+                # read till create_project
+                while "create_project" not in line:
+                    new_tcl.write(line)
+                    line = old_tcl.readline()
+
+                new_tcl.write("create_project -force template_project ./template_project\n")
+                line = ""
+
+                # read till set files begins
+                while "set files" not in line:
+                    new_tcl.write(line)
+                    line = old_tcl.readline()
+                # read till end of set files
+                while "]\n" != line:
+                    new_tcl.write(line)
+                    line = old_tcl.readline()
+
+                # insert new files
+                tcl_set_file = ' "[file normalize "$origin_dir/template_project.srcs/sources_1/new/{file_name}"]"\\\n'
+
+                for vhdl_file_name in file_names:
+                    new_tcl.write(tcl_set_file.format(file_name=vhdl_file_name))
+                new_tcl.write("]\n")
+
+                # copy rest of file
+                for line in old_tcl.readlines():
+                    new_tcl.write(line)
 
     def _activate(self):
-        """ Activate synthesis subprocess. """
+        """Activate synthesis subprocess."""
         # copy template project to synthesis directory
         # copy all vhdl files to template project ip folder
         # integrate vhdl files into templare project
         #   multiply process pipeline according to input width and data width
         #   integrate and connect pipelines into axi stream ip
         pass
+
 
 class LazySpecializedFunction(object):
 
@@ -169,16 +165,17 @@ class LazySpecializedFunction(object):
                     [type(kwargs[key]) for key in kwargs])
 
         program_config = self.get_program_config(args, kwargs)
-        dir_name = self.config_to_dirname(program_config)
+        # dir_name = self.config_to_dirname(program_config)
+
+        dir_name = "/home/philipp/University/M4/Masterthesis/src/git_repo/ebensberger_ma/sejits_ctree/vhdl/vivado/tmp_vhdl_files"
 
         if not os.path.exists(dir_name):
             os.makedirs(dir_name)
 
-        sejits_ctree.STATS.log("specialized function cache miss")
-        logger.info("specialized function cache miss.")
         transform_result = self.get_transform_result(
             program_config, dir_name)
 
+        # get concrete specialized function
         csf = self.finalize(transform_result, program_config)
 
         return csf(*args, **kwargs)
@@ -223,12 +220,19 @@ class LazySpecializedFunction(object):
 
         return self.ProgramConfig(args_subconfig, None)
 
-    """
     def get_transform_result(self, program_config, dir_name, cache=True):
-        transform_result = self.run_transform(program_config)
-        return transform_result
-    """
+        transform_result = self.transform(self.original_tree, program_config)
 
+        # Saving files to cache directory
+        for source_file in transform_result:
+            assert isinstance(source_file, VhdlFile), \
+                "Transform must return an iterable of Files"
+            if source_file.generated:
+                source_file.path = dir_name
+
+        return transform_result
+
+    '''
     def get_transform_result(self, program_config, dir_name, cache=True):
         info = self.get_info(dir_name)
         # check to see if the necessary code is in the persistent cache
@@ -259,11 +263,9 @@ class LazySpecializedFunction(object):
             # transform_result = files
             transform_result = None
         return transform_result
+    '''
 
-    def run_transform(self, program_config):
-        transform_result = self.transform(self.original_tree, program_config)
-        return transform_result
-
+    '''
     def config_to_dirname(self, program_config):
         """Returns the subdirectory name under .compiled/funcname"""
         # fixes the directory names and squishes invalid chars
@@ -289,6 +291,7 @@ class LazySpecializedFunction(object):
         path = os.path.join(compile_path, *filtered_parts)
         ret = re.sub('_+', '_', path)
         return ret
+    '''
 
     @staticmethod
     def _hash(o):
