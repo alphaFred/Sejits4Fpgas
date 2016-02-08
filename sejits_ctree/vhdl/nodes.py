@@ -25,8 +25,6 @@ class VhdlTreeNode(ast.AST):
     def __init__(self):
         """Initialize a new AST Node."""
         super(VhdlTreeNode, self).__init__()
-        self.deleted = False
-        self._force_parentheses = False
 
     def __str__(self):
         return self.__class__.__name__
@@ -71,15 +69,49 @@ class VhdlNode(VhdlTreeNode):
 Interface = namedtuple("Interface", ["iports", "oport"])
 
 
-class VhdlBaseFile(VhdlTreeNode):
-    """Holds a list of statements."""
-    _fields = ['body']
+class VhdlFile(VhdlNode):
 
-    def __init__(self, name="generated", body=None, path=None):
+    """Represents a .vhd file."""
+
+    _ext = "vhd"
+    _fields = ['body']
+    generated = True
+    dependencies = []
+    latency = 0
+
+    def __init__(self, name="generated", libs=None, entity=None, architecture=None, config_target="vhd", path=None, dependencies=[]):
+        """ Initialize VhdlFile. """
+        VhdlNode.__init__(self)
         self.name = name
-        self.body = body or []
-        self.config_target = 'vhd'
         self.path = path
+        self.body = (entity, architecture)
+        self.config_target = config_target
+        self.dependencies = dependencies
+
+        if entity:
+            self.interface = Interface(entity.in_ports, entity.out_ports)
+        else:
+            self.interface = []
+
+        if libs:
+            self.libs = STDLIBS + list(libs)
+        else:
+            self.libs = STDLIBS
+
+        if entity and architecture:
+            self.component = Component(name=name,
+                                       generics=entity.generics,
+                                       in_ports=entity.in_ports[3:],
+                                       out_ports=entity.out_ports,
+                                       out_types=None)
+            self.component.lib_name = "work." + self.name
+        else:
+            self.component = None
+
+    def __repr__(self):
+        """ Return entity vhdl source code for debug. """
+        from codegen import VhdlCodeGen
+        return VhdlCodeGen(indent=4).visit(self.body[0])
 
     @property
     def path(self):
@@ -93,52 +125,6 @@ class VhdlBaseFile(VhdlTreeNode):
 
     def get_filename(self):
         return "%s.%s" % (self.name, self._ext)
-
-
-class VhdlFile(VhdlNode, VhdlBaseFile):
-
-    """Represents a .vhd file."""
-
-    _ext = "vhd"
-    generated = True
-    dependencies = []
-    latency = 0
-
-    def __init__(self, name="generated", libs=None,
-                 entity=None, architecture=None,
-                 config_target="vhd", path=None,
-                 dependencies=[]):
-        """ Initialize VhdlFile. """
-        VhdlNode.__init__(self)
-        VhdlBaseFile.__init__(self, name, [entity, architecture], path)
-        #
-        if entity:
-            self.interface = Interface(entity.in_ports, entity.out_ports)
-        else:
-            self.interface = []
-        if libs:
-            self.libs = STDLIBS + list(libs)
-        else:
-            self.libs = STDLIBS
-        #
-        self.config_target = config_target
-        self.dependencies = dependencies
-        #
-        """ Evaluate component return for VhdlFile; out_type declaration of Component """
-        if entity and architecture:
-            self.component = Component(name=name,
-                                       generics=entity.generics,
-                                       in_ports=entity.in_ports,
-                                       out_ports=entity.out_ports,
-                                       out_types=None)
-            self.component.lib_name = self.libs
-        else:
-            self.component = None
-
-    def __repr__(self):
-        """ Return entity vhdl source code for debug. """
-        from codegen import VhdlCodeGen
-        return VhdlCodeGen(indent=4).visit(self.body[0])
 
     def _compile(self, program_text):
         """ Save program_text in file. """
@@ -182,85 +168,6 @@ class VhdlProject(object):
 
     """ Base class for an Vhdl Project. """
 
-    class ProjectWrapper(VhdlFile):
-
-        AXI_STREAM_WIDTH = 32
-
-        """ Wraps user created VhdlFile for the template vivado project. """
-
-        def __init__(self, project_data):
-            # input signals
-            M_AXIS_MM2S_tdata = Signal("M_AXIS_MM2S_tdata",
-                                       VhdlType.VhdlStdLogicVector(self.AXI_STREAM_WIDTH, "0"))
-            M_AXIS_MM2S_tkeep = Signal("M_AXIS_MM2S_tkeep",
-                                       VhdlType.VhdlStdLogicVector(4, "0"))
-            M_AXIS_MM2S_tlast = Signal("M_AXIS_MM2S_tlast",
-                                       VhdlType.VhdlStdLogic("0"))
-            M_AXIS_MM2S_tready = Signal("M_AXIS_MM2S_tready",
-                                        VhdlType.VhdlStdLogic("0"))
-            M_AXIS_MM2S_tvalid = Signal("M_AXIS_MM2S_tvalid",
-                                        VhdlType.VhdlStdLogic("0"))
-            in_sigs = [M_AXIS_MM2S_tdata, M_AXIS_MM2S_tkeep, M_AXIS_MM2S_tlast,
-                       M_AXIS_MM2S_tready, M_AXIS_MM2S_tvalid]
-
-            # output signals
-            S_AXIS_S2MM_tdata = Signal("S_AXIS_S2MM_tdata",
-                                       VhdlType.VhdlStdLogicVector(self.AXI_STREAM_WIDTH, "0"))
-            S_AXIS_S2MM_tkeep = Signal("S_AXIS_S2MM_tkeep",
-                                       VhdlType.VhdlStdLogicVector(4, "0"))
-            S_AXIS_S2MM_tlast = Signal("S_AXIS_S2MM_tlast",
-                                       VhdlType.VhdlStdLogic("0"))
-            S_AXIS_S2MM_tready = Signal("S_AXIS_S2MM_tready",
-                                        VhdlType.VhdlStdLogic("0"))
-            S_AXIS_S2MM_tvalid = Signal("S_AXIS_S2MM_tvalid",
-                                        VhdlType.VhdlStdLogic("0"))
-            out_sigs = [S_AXIS_S2MM_tdata, S_AXIS_S2MM_tkeep,
-                        S_AXIS_S2MM_tlast, S_AXIS_S2MM_tready,
-                        S_AXIS_S2MM_tvalid]
-
-            # input/ output ports
-            in_ports = [Port(sig.name, "in", sig) for sig in in_sigs]
-            out_ports = [Port(sig.name, "out", sig) for sig in out_sigs]
-
-            # TODO: change entity to handle multiple output ports
-            # TODO: connect user generated file with io ports
-
-            entity = Entity(name="project_wrapper",
-                            generics=[],
-                            in_ports=in_ports,
-                            out_ports=out_ports)
-
-            # TODO: check streamable attribute of input ports
-            # TODO: maximize raw input bandwidth utilization
-
-            # Make sure that streamable_width is < stream_width
-            streamable_width = 8
-
-            arch = Architecture(entity_name="project_wrapper",
-                                architecture_name="behaviour",
-                                signals=[],
-                                components=[])
-            # =============================================================== #
-            # Initialize Base Class
-            # =============================================================== #
-            """
-            super(ProjectWrapper, self).__init__(name="project_wrapper",
-                     libs=None,
-                     entity=entity,
-                     architecture=arch,
-                     config_target="vhd",
-                     path=None,
-                     dependencies=[])
-            """
-            VhdlFile.__init__(self,
-                              name="project_wrapper",
-                              libs=None,
-                              entity=entity,
-                              architecture=arch,
-                              config_target="vhd",
-                              path="./",
-                              dependencies=[])
-
     def __init__(self, files=None, synthesis_dir=""):
         """ Initialize VhdlProject. """
         self.files = files if files else []
@@ -276,23 +183,90 @@ class VhdlProject(object):
         Return:
             VhdlSynthModule
         """
-        from jit_synth import VhdlSynthModule
-        from jit_synth import JitSyntDataModule
+        from jit_synth import VhdlSynthModule, VhdlSyntData
         self._module = VhdlSynthModule()
+
+        wrapper_file = self.generate_wrapper(self.files[0])
+        self.files = [wrapper_file] + self.files
 
         # process vhdl-files in project
         temp_submodules = []
         if len(self.files) > 0:
             for vhdl_file in self.files:
                 temp_submodules += vhdl_file.codegen(indent)
-            data_module = JitSyntDataModule(self.files[0],
-                                            set(temp_submodules))
+            synth_data = VhdlSyntData(self.files[0], set(temp_submodules))
 
-            # return VhdlSynthModule with linked submodule list
-            self._module._link_in(data_module)
+            # return VhdlSynthModule with linked VhdlSyntData
+            self._module._link_in(synth_data)
             return self._module
         else:
             raise Exception()
+
+    def generate_wrapper(self, gen_top_file):
+            AXI_STREAM_WIDTH = 32
+
+            # input signals
+            m_axis_mm2s_tdata = Signal("m_axis_mm2s_tdata",
+                                       VhdlType.VhdlStdLogicVector(AXI_STREAM_WIDTH, "0"))
+            m_axis_mm2s_tkeep = Signal("m_axis_mm2s_tkeep",
+                                       VhdlType.VhdlStdLogicVector(4, "0"))
+            m_axis_mm2s_tlast = Signal("m_axis_mm2s_tlast",
+                                       VhdlType.VhdlStdLogic("0"))
+            m_axis_mm2s_tready = Signal("m_axis_mm2s_tready",
+                                        VhdlType.VhdlStdLogic("0"))
+            m_axis_mm2s_tvalid = Signal("m_axis_mm2s_tvalid",
+                                        VhdlType.VhdlStdLogic("0"))
+            in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast,
+                       m_axis_mm2s_tready, m_axis_mm2s_tvalid]
+
+            # output signals
+            s_axis_s2mm_tdata = Signal("s_axis_s2mm_tdata",
+                                       VhdlType.VhdlStdLogicVector(AXI_STREAM_WIDTH, "0"))
+            s_axis_s2mm_tkeep = Signal("s_axis_s2mm_tkeep",
+                                       VhdlType.VhdlStdLogicVector(4, "0"))
+            s_axis_s2mm_tlast = Signal("s_axis_s2mm_tlast",
+                                       VhdlType.VhdlStdLogic("0"))
+            s_axis_s2mm_tready = Signal("s_axis_s2mm_tready",
+                                        VhdlType.VhdlStdLogic("0"))
+            s_axis_s2mm_tvalid = Signal("s_axis_s2mm_tvalid",
+                                        VhdlType.VhdlStdLogic("0"))
+            out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep,
+                        s_axis_s2mm_tlast, s_axis_s2mm_tready,
+                        s_axis_s2mm_tvalid]
+
+            # input/ output ports
+            in_ports = [Port(sig.name, "in", sig) for sig in in_sigs]
+            out_ports = [Port(sig.name, "out", sig) for sig in out_sigs]
+
+            wrappee_comp = gen_top_file.component
+            wrappee_comp.in_ports[3].value = m_axis_mm2s_tdata
+
+            ret_sig = Signal("ret_tdata", VhdlType.VhdlStdLogicVector(AXI_STREAM_WIDTH, "0"))
+            wrappee_comp.out_ports[0].value = ret_sig
+
+            out_ports[0].value = ret_sig
+            for o_port,osig in zip(out_ports[1:], in_sigs[1:]):
+                o_port.value = osig
+
+            entity = Entity(name="project_wrapper",
+                            generics=[],
+                            in_ports=in_ports,
+                            out_ports=out_ports)
+
+            arch = Architecture(entity_name="project_wrapper",
+                                architecture_name="behaviour",
+                                signals=[],
+                                components=[wrappee_comp])
+            # =============================================================== #
+            # Initialize Base Class
+            # =============================================================== #
+            return VhdlFile(name="project_wrapper",
+                            libs=None,
+                            entity=entity,
+                            architecture=arch,
+                            config_target="vhd",
+                            path="/home/philipp/University/M4/Masterthesis/src/git_repo/ebensberger_ma/sejits_ctree/vhdl/vivado/tmp_vhdl_files",
+                            dependencies=[])
 
 # =============================================================================
 # COMPONENT NODE CLASSES
@@ -457,11 +431,11 @@ class BinaryOp(Expression):
 
     @in_ports.setter
     def in_ports(self, in_ports):
-        clk_sig = Signal(name="CLK_SIG",
+        clk_sig = Signal(name="CLK",
                          vhdl_type=VhdlType.VhdlStdLogic())
-        rst_sig = Signal(name="RST_SIG",
+        rst_sig = Signal(name="RST",
                          vhdl_type=VhdlType.VhdlStdLogic())
-        en_sig = Signal(name="EN_SIG",
+        en_sig = Signal(name="EN",
                         vhdl_type=VhdlType.VhdlStdLogic())
         ctrl_ports = (Port("CLK", "in", clk_sig),
                       Port("EN", "in", en_sig),
@@ -546,11 +520,11 @@ class Component(Expression):
 
     @in_ports.setter
     def in_ports(self, in_ports):
-        clk_sig = Signal(name="CLK_SIG",
+        clk_sig = Signal(name="CLK",
                          vhdl_type=VhdlType.VhdlStdLogic())
-        rst_sig = Signal(name="RST_SIG",
+        rst_sig = Signal(name="RST",
                          vhdl_type=VhdlType.VhdlStdLogic())
-        en_sig = Signal(name="EN_SIG",
+        en_sig = Signal(name="EN",
                         vhdl_type=VhdlType.VhdlStdLogic())
         ctrl_ports = (Port("CLK", "in", clk_sig),
                       Port("EN", "in", en_sig),
@@ -615,11 +589,11 @@ class Entity(Statement):
 
     @in_ports.setter
     def in_ports(self, in_ports):
-        clk_sig = Signal(name="CLK_SIG",
+        clk_sig = Signal(name="CLK",
                          vhdl_type=VhdlType.VhdlStdLogic())
-        rst_sig = Signal(name="RST_SIG",
+        rst_sig = Signal(name="RST",
                          vhdl_type=VhdlType.VhdlStdLogic())
-        en_sig = Signal(name="EN_SIG",
+        en_sig = Signal(name="EN",
                         vhdl_type=VhdlType.VhdlStdLogic())
         ctrl_ports = (Port("CLK", "in", clk_sig),
                       Port("EN", "in", en_sig),
