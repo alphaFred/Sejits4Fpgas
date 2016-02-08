@@ -27,7 +27,7 @@ SIGNAL = "signal {signal_name} : {signal_type};"
 
 CONSTANT = "constant {const_name} : {const_type} := {const_value};"
 
-COMPONENT = """{instance_name} : {component_name} entity {component_lib}\
+COMPONENT = """{instance_name} : entity {component_lib}\
 {generic_map}\
 {port_map};
 """
@@ -50,13 +50,13 @@ class VhdlCodeGen(ast.NodeVisitor):
 
     def visit_VhdlFile(self, node):
         """ Generate Vhdl description of VhdlFile. """
-        libraries = "library " + "\nuse ".join(node.libs)
+        libraries = "library " + ";\nuse ".join(node.libs) + ";"
         #
         self.active_entity = node.body[0]
         self.active_arch = node.body[1]
         #
-        entity = self.visit(node.body[0])
-        architecture = self.visit(node.body[1])
+        entity = self.visit(self.active_entity)
+        architecture = self.visit(self.active_arch)
         return VHDLMODULE.format(libraries=libraries,
                                  entity=entity,
                                  architecture=architecture)
@@ -65,7 +65,7 @@ class VhdlCodeGen(ast.NodeVisitor):
         """ Generate Vhdl description of entity."""
         # generate optional vhdl description of generics
         generics = ""
-        if node.generics != []:
+        if node.generics != ():
             generics = self._generic_block(node.generics)
         # generate vhdl description of ports
         ports = self._port_block(node.in_ports + node.out_ports)
@@ -98,7 +98,7 @@ class VhdlCodeGen(ast.NodeVisitor):
                                    architecture_return=arch_return)
 
     def visit_Component(self, node):
-        if node.generics != []:
+        if node.generics != ():
             generic_map = self._generic_map(node.generics)
         else:
             generic_map = ""
