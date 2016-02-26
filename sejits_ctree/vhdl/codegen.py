@@ -48,175 +48,109 @@ COMPONENT = """{instance_name} : entity {component_lib}\
 {port_map};
 """
 
+class VhdlCodegen(ast.NodeVisitor):
 
-class VhdlCodeGen(ast.NodeVisitor):
+    ENTITY = """entity {entity_name} is\
+                    \r{generic_declarations}\
+                    \r{port_declarations}\
+                \rend {entity_name};"""
+    ARCHITECTURE = """architecture {architecture_name} of {entity_name} is\
+                          \r{architecture_declarations}\
+                      \rbegin\
+                          \r{architecture_body}\
+                      \rend {architecture_name};"""
+    SIGNAL = "signal {name} : {type} := {default};"
+    CONSTANT = "constant {name} : {type} := {value};"
+    COMPONENT = """{instance_name} : entity {component_lib}\
+                       \r{generic_map}\
+                       \r{port_map}; """
 
-    active_entity = None
-    active_arch = None
-
-    def __init__(self, indent=4):
-        self._indent = indent
-
-        # ---------------------------------------------------------------------
-        # LOGGING
-        # ---------------------------------------------------------------------
-        log_data = [['indent', str(self._indent)]]
-        col_width = max(len(row[0]) for row in log_data) + 2 # padding
-        log_txt = "\n".join(["".join(word.ljust(col_width) for word in row) for row in log_data])
-        logger.debug("Initialized {0}: \n{1}".format(self.__class__.__name__, log_txt))
-        # ---------------------------------------------------------------------
+    def __init__(self):
+        from collections import defaultdict
+        self.src_code = ""
+        self.architecture_body = ""
+        self.symbols = ""
+        self.used_symols = set()
+        self.component_ids = defaultdict(int)
 
     def _tab(self):
         """return correct spaces if tab found"""
-        return " " * self._indent
+        return " " * 4
 
-    def visit_ProjectWrapper(self, node):
-        return self.visit_VhdlFile(node)
+    def visit_VhdlModule(self, node):
+        port_src = self._port_block((node.entity,[]))
+        self.src_code += self.ENTITY.format(entity_name=node.name,
+                                            generic_declarations="",
+                                            port_declarations=port_src) + "\n"
+        self.visit(node.architecture)
+        self.src_code += self.ARCHITECTURE.format(architecture_name="BEHAVE",
+                                                  entity_name=node.name,
+                                                  architecture_declarations=self.symbols,
+                                                  architecture_body=self.architecture_body)
+        return self.src_code
 
-    def visit_VhdlFile(self, node):
-        """ Generate Vhdl description of VhdlFile. """
-        libraries = "library " + ";\nuse ".join(node.libs) + ";"
+    def visit_VhdlBinaryOp(self, node):
+        map(self.visit, node.prev)
         #
-        self.active_entity = node.body[0]
-        self.active_arch = node.body[1]
+        self._generate_ports(node)
         #
-        entity = self.visit(self.active_entity)
-        architecture = self.visit(self.active_arch)
-        return VHDLMODULE.format(libraries=libraries,
-                                 entity=entity,
-                                 architecture=architecture)
+        generic_src = self._generic_map(node.generic)
+        port_src = self._port_map((node.in_port, node.out_port))
+        self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
+                                                        component_lib="work.BasicArith",
+                                                        generic_map=generic_src,
+                                                        port_map=port_src) + "\n"
 
-    def visit_Entity(self, node):
-        """ Generate Vhdl description of entity."""
-        # generate optional vhdl description of generics
-        generics = ""
-        if node.generics != ():
-            generics = self._generic_block(node.generics)
-        # generate vhdl description of ports
-        ports = self._port_block(node.in_ports + node.out_ports)
-        # return vhdl description of entity
-        return ENTITY.format(entity_name=node.name,
-                             generic_declarations=generics,
-                             port_declarations=ports)
+    def visit_VhdlReturn(self, node):
+        map(self.visit, node.prev)
+        self.architecture_body += node.out_port[0].name + " <= " + node.in_port[0].name
+        pass
 
-    def visit_Architecture(self, node):
-        join_statement = "\n" + self._tab()
+    def visit_VhdlComponent(self, node):
+        map(self.visit, node.prev)
         #
-        declarations = self._tab() +\
-            join_statement.join([self.visit(sig) for sig in node.signals()])
-        instructions = "\n".join([self.visit(comp) for comp in node.components()])
+        self._generate_ports(node)
         #
-        ret_port_name = [oport.name
-                         for oport in self.active_entity.out_ports]
-        ret_sig_name = [oport.value.name
-                        for oport in self.active_entity.out_ports]
+        generic_src = self._generic_map(node.generic)
+        port_src = self._port_map((node.in_port, node.out_port))
+        self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
+                                                        component_lib="work.BasicArith",
+                                                        generic_map=generic_src,
+                                                        port_map=port_src) + "\n"
+
+    def _generic_map(self, generics):
+        block_indent = " " * len("generic map(")
         #
-        arch_return = ";\n".join([pname + " <= " + sname
-                                 for pname, sname in
-                                 zip(ret_port_name, ret_sig_name)])
-        arch_return += ";\n"
-        # return vhdl description of architecture
-        return ARCHITECTURE.format(architecture_name=node.architecture_name,
-                                   entity_name=node.entity_name,
-                                   architecture_declarations=declarations,
-                                   architecture_instructions=instructions,
-                                   architecture_return=arch_return)
-
-    def visit_Component(self, node):
-        if node.generics != ():
-            generic_map = self._generic_map(node.generics)
-        else:
-            generic_map = ""
-
-        port_map = self._port_map(node.in_ports + node.out_ports)
+        generic_map = ["GENERIC" + " => " + str(g) for g in generics]
+        join_statement = ",\n" + self._tab() + block_indent
         #
-        return COMPONENT.format(instance_name=node.instance_name,
-                                component_name=node.name,
-                                component_lib=node.lib_name,
-                                generic_map=generic_map,
-                                port_map=port_map)
-
-    def visit_BinaryOp(self, node):
-        generic_map = self._generic_map([node.op])
-        _in_ports = [self.type_cast(VhdlType.VhdlStdLogicVector, port)
-                     for port in [node.left_port, node.right_port]]
-        port_map = self._port_map(node.in_ports + (node.out_ports,))
+        s = "\n"
+        s += self._tab() + "generic map("
+        s += join_statement.join(generic_map)
+        s += ")"
         #
-        return COMPONENT.format(instance_name=node.instance_name,
-                                component_name=node.name,
-                                component_lib=node.lib_name,
-                                generic_map=generic_map,
-                                port_map=port_map)
+        return s
 
-    def type_cast(self, out_type, port):
-        castable = (VhdlType.VhdlSigned,
-                    VhdlType.VhdlUnsigned,
-                    VhdlType.VhdlStdLogicVector)
-
-        class cast(object):
-
-            class obj_name(object):
-                def __init__(self, out_type, name):
-                    self.name = out_type.vhdl_type + "(" + name + ")"
-
-            def __init__(self, out_type, port):
-                self.name = port.name
-                self.value = self.obj_name(out_type, port.value.name)
+    def _port_map(self, ports=([],[])):
+        block_indent = " " * len("port map(")
         #
-        if type(port.value.vhdl_type) is out_type:
-            return port
-        else:
-            if type(port.value.vhdl_type) in castable:
-                return cast(out_type, port)
-
-    def visit_UnaryOp(self, node):
-        generic_map = self._generic_map([node.op])
-        port_map = self._port_map(node.in_ports + [node.out_port])
+        port_map = []
+        port_map.extend([p.name + " => " + p.value.name for p in ports[0]])
+        port_map.extend([p.name + " => " + p.value.name for p in ports[1]])
+        join_statement = ",\n" + self._tab() + block_indent
         #
-        return COMPONENT.format(instance_name=node.instance_name,
-                                component_name=node.name,
-                                component_lib=node.lib_name,
-                                generic_map=generic_map,
-                                port_map=port_map)
+        for port in ports[1]:
+            self.symbols += self._tab() + self.SIGNAL.format(name=port.value.name,
+                                               type=port.value.vhdl_type,
+                                               default=port.value.vhdl_type.default) + "\n"
+        #
+        s = "\n"
+        s += self._tab() + "port map("
+        s += join_statement.join(port_map)
+        s += ")"
+        #
+        return s
 
-    def visit_Signal(self, node):
-        """ Return signal description for architecture declaration. """
-        return SIGNAL.format(signal_name=node.name,
-                             signal_type=self.visit(node.vhdl_type))
-
-    def visit_Constant(self, node):
-        """ Return constant description for architecture declaration. """
-        return CONSTANT.format(const_name=node.name,
-                               const_type=self.visit(node.vhdl_type),
-                               const_value=node.value)
-
-    def visit_VhdlString(self, node):
-        return node.vhdl_type
-
-    def visit_VhdlArray(self, node):
-        if node.generated:
-            raise Exception("Generated arrays currently unsupported")
-        else:
-            return node.type_def
-
-    def visit_VhdlUnsigned(self, node):
-        return node.vhdl_type
-
-    def visit_VhdlSigned(self, node):
-        return node.vhdl_type
-
-    def visit_VhdlStdLogicVector(self, node):
-        if node.default:
-            if len(node.default) == 1:
-                return node.vhdl_type + " := (others => " + "'" + node.default[0] + "'" + ")"
-            else:
-                return node.vhdl_type + ' := "' + "".join(node.default) + '"'
-        else:
-            return node.vhdl_type
-
-    # ======================================================================= #
-    # HELPER METHODS FOR ENTITY
-    # ======================================================================= #
     def _generic_block(self, generics):
         block_indent = " " * len("generic(")
         #
@@ -229,10 +163,12 @@ class VhdlCodeGen(ast.NodeVisitor):
         s += ");"
         return s
 
-    def _port_block(self, ports):
+    def _port_block(self, ports=([],[])):
         block_indent = " " * len("port(")
         #
-        port_block = [p.name + " : " + p.direction + " " + str(p.value.vhdl_type) for p in ports]
+        port_block = []
+        port_block.extend([p.name + " : " + "in" + " " + str(p.vhdl_type) for p in ports[0]])
+        port_block.extend([p.name + " : " + "out" + " " + str(p.vhdl_type) for p in ports[1]])
         join_statement = ";\n" + self._tab() + block_indent
         #
         s = "\n"
@@ -242,32 +178,44 @@ class VhdlCodeGen(ast.NodeVisitor):
         #
         return s
 
-    # ======================================================================= #
-    # HELPER METHODS FOR COMPONENTS
-    # ======================================================================= #
+    def _generate_ports(self, node):
+        # TODO add exception handling
+        try:
+            inport_info = node.inport_info
+            in_port = node.in_port
+            #
+            outport_info = node.outport_info
+            out_port = node.out_port
+        except:
+            raise TransformationError("msg0")
 
-    def _generic_map(self, generics):
-        block_indent = " " * len("generic map(")
-        #
-        generic_map = [g.name + " => " + str(g.value) for g in generics]
-        join_statement = ",\n" + self._tab() + block_indent
-        #
-        s = "\n"
-        s += self._tab() + "generic map("
-        s += join_statement.join(generic_map)
-        s += ")"
-        #
-        return s
+        if all([type(port) is Port for port in in_port]):
+            # continue if node already has ports
+            pass
+        else:
+            if len(inport_info) != len(in_port):
+                raise TransformationError("msg1")
 
-    def _port_map(self, ports):
-        block_indent = " " * len("port map(")
-        #
-        port_map = [p.name + " => " + p.value.name for p in ports]
-        join_statement = ",\n" + self._tab() + block_indent
-        #
-        s = "\n"
-        s += self._tab() + "port map("
-        s += join_statement.join(port_map)
-        s += ")"
-        #
-        return s
+            cmd_info = [("CLK", "in"), ("EN", "in"), ("RST", "in")]
+            cmd_symb = [VhdlSignal("CLK", VhdlType.VhdlStdLogic()),
+                        VhdlSignal("EN", VhdlType.VhdlStdLogic()),
+                        VhdlSignal("RST", VhdlType.VhdlStdLogic())]
+            cmd_port = [Port(info[0], info[1], port) for info,port in zip(cmd_info, cmd_symb)]
+            node.in_port = cmd_port + [Port(info[0], info[1], port) for info,port in zip(inport_info, in_port)]
+
+        if all([type(port) is Port for port in out_port]):
+            # continue if node already has ports
+            pass
+        else:
+            if len(outport_info) != len(out_port):
+                raise TransformationError("msg2")
+
+            node.out_port = [Port(info[0], info[1], port) for info,port in zip(outport_info, out_port)]
+
+    def _generate_name(self, node):
+        c_id = self.component_ids[node.__class__.__name__]
+        self.component_ids[node.__class__.__name__] += 1
+        if c_id != 0:
+            return node.__class__.__name__ + "_" + str(c_id)
+        else:
+            return node.__class__.__name__
