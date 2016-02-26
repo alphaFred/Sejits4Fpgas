@@ -3,8 +3,24 @@ __author__ = 'philipp ebensberger'
 
 
 import ast
-
+import logging
 from nodes import VhdlType
+
+from sejits_ctree.vhdl.utils import CONFIG
+
+
+logger = logging.getLogger(__name__)
+logger.disabled = CONFIG.getboolean("logging", "ENABLE_LOGGING")
+logger.setLevel(logging.DEBUG)
+# create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+# create formatter
+formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+# add formatter to ch
+ch.setFormatter(formatter)
+# add ch to logger
+logger.addHandler(ch)
 
 
 VHDLMODULE = """{libraries}\n\n
@@ -40,6 +56,15 @@ class VhdlCodeGen(ast.NodeVisitor):
 
     def __init__(self, indent=4):
         self._indent = indent
+
+        # ---------------------------------------------------------------------
+        # LOGGING
+        # ---------------------------------------------------------------------
+        log_data = [['indent', str(self._indent)]]
+        col_width = max(len(row[0]) for row in log_data) + 2 # padding
+        log_txt = "\n".join(["".join(word.ljust(col_width) for word in row) for row in log_data])
+        logger.debug("Initialized {0}: \n{1}".format(self.__class__.__name__, log_txt))
+        # ---------------------------------------------------------------------
 
     def _tab(self):
         """return correct spaces if tab found"""
@@ -115,7 +140,7 @@ class VhdlCodeGen(ast.NodeVisitor):
         generic_map = self._generic_map([node.op])
         _in_ports = [self.type_cast(VhdlType.VhdlStdLogicVector, port)
                      for port in [node.left_port, node.right_port]]
-        port_map = self._port_map(node.in_ports + (node.out_port,))
+        port_map = self._port_map(node.in_ports + (node.out_ports,))
         #
         return COMPONENT.format(instance_name=node.instance_name,
                                 component_name=node.name,

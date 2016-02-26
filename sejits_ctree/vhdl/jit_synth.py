@@ -13,9 +13,22 @@ import sejits_ctree
 from sejits_ctree.vhdl.nodes import VhdlFile
 from collections import namedtuple
 from sejits_ctree.frontend import get_ast
+from sejits_ctree.vhdl.utils import CONFIG
 
 
 logger = logging.getLogger(__name__)
+logger.disabled = CONFIG.getboolean("logging", "ENABLE_LOGGING")
+logger.setLevel(logging.DEBUG)
+# create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+# create formatter
+formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+# add formatter to ch
+ch.setFormatter(formatter)
+# add ch to logger
+logger.addHandler(ch)
+
 
 VhdlSyntData = namedtuple("VhdlSyntData", ["main_file", "file_paths"])
 
@@ -26,6 +39,17 @@ class VhdlSynthModule(object):
     def __init__(self):
         """Initialize VhdlSynthModule instance."""
         self._linked_files = []
+        # vivado project folder
+        self.v_proj_fol = CONFIG.get("vivado", "PROJ_FOLDER_PATH")
+        if os.path.isdir(self.v_proj_fol):
+            logger.info("Found Vivado Project at: %s" % self.v_proj_fol)
+        else:
+            logger.warning("Could not find Vivado Project at: %s" % self.v_proj_fol)
+        # ---------------------------------------------------------------------
+        # LOGGING
+        # ---------------------------------------------------------------------
+        logger.info("Initialized VhdlSynthModule")
+        # ---------------------------------------------------------------------
 
     def __call__(self):
         """Redirect call to python or vhdl kernel."""
@@ -42,38 +66,36 @@ class VhdlSynthModule(object):
 
     def _link_to_vivado_project(self):
         """Link all files to vivado template project."""
-        proj_src_folder = "./sejits_ctree/vhdl/vivado/template_project/template_project.srcs/sources_1/new/"
-        proj_tcl_folder = "./sejits_ctree/vhdl/vivado/template_project/"
-
-        # /home/philipp/University/M4/Masterthesis/src/git_repo/ebensberger_ma/sejits_ctree/vhdl/vivado/template_project/template_project.tcl
+        # vivado src folder
+        v_src_fol = self.v_proj_fol + "template_project.srcs/sources_1/new/"
 
         # Clean up source folder
-        for proj_file in glob.glob(proj_src_folder + "*"):
+        for proj_file in glob.glob(v_src_fol + "*"):
             if os.path.basename(proj_file) != "top.vhd":
                 os.remove(proj_file)
 
         # Copy all files to top folder and save file names
         file_names = []
         for file_path in self._linked_files.file_paths:
-            os.system("cp " + file_path + " " + proj_src_folder)
+            os.system("cp " + file_path + " " + v_src_fol)
             file_names.append(os.path.basename(file_path))
 
         # Add update source files in TCL script
-        saved_tcl_file_path = proj_tcl_folder + "template_project.sav"
-        mod_tcl_file_path = proj_tcl_folder + "template_project.tcl"
+        saved_tcl_file_path = self.v_proj_fol + "template_project.sav"
+        mod_tcl_file_path = self.v_proj_fol + "template_project.tcl"
         if not os.path.exists(saved_tcl_file_path):
             os.system("cp " + mod_tcl_file_path + " " + saved_tcl_file_path)
 
         with open(saved_tcl_file_path, "r") as old_tcl:
             with open(mod_tcl_file_path, "w") as new_tcl:
                 line = old_tcl.readline()
-                
+
                 # read till set origin_dir
                 while "set origin_dir" not in line:
                     new_tcl.write(line)
                     line = old_tcl.readline()
 
-                new_tcl.write("set origin_dir " + '"' + os.path.abspath(proj_tcl_folder) + '"')
+                new_tcl.write("set origin_dir " + '"' + os.path.abspath(self.v_proj_fol) + '"')
                 line = ""
 
                 # read till create_project
@@ -151,6 +173,17 @@ class LazySpecializedFunction(object):
         self.original_tree = py_ast
         self.backend_name = backend_name
 
+        # ---------------------------------------------------------------------
+        # LOGGING
+        # ---------------------------------------------------------------------
+        log_data = [['py_ast', str(py_ast)],
+                    ['sub_dir', str(sub_dir)],
+                    ['backend_name', str(backend_name)]]
+        col_width = max(len(row[0]) for row in log_data) + 2 # padding
+        log_txt = "\n".join(["".join(word.ljust(col_width) for word in row) for row in log_data])
+        logger.debug("Initialized {0}: \n{1}".format(self.__class__.__name__, log_txt))
+        # ---------------------------------------------------------------------
+
     def __call__(self, *args, **kwargs):
         """
         Determines the program_configuration to be run. If it has yet to be
@@ -167,6 +200,7 @@ class LazySpecializedFunction(object):
         program_config = self.get_program_config(args, kwargs)
         # dir_name = self.config_to_dirname(program_config)
 
+        # TODO: define globaly in config
         dir_name = "/home/philipp/University/M4/Masterthesis/src/git_repo/ebensberger_ma/sejits_ctree/vhdl/vivado/tmp_vhdl_files"
 
         if not os.path.exists(dir_name):
@@ -231,67 +265,6 @@ class LazySpecializedFunction(object):
                 source_file.path = dir_name
 
         return transform_result
-
-    '''
-    def get_transform_result(self, program_config, dir_name, cache=True):
-        info = self.get_info(dir_name)
-        # check to see if the necessary code is in the persistent cache
-        if hash(self) != info['hash'] and self.original_tree is not None \
-                or not cache:
-            # need to run transform() for code generation
-            logger.info('Hash miss. Running Transform\n')
-            sejits_ctree.STATS.log("Filesystem cache miss")
-            transform_result = self.run_transform(program_config)
-
-            # Saving files to cache directory
-            for source_file in transform_result:
-                assert isinstance(source_file, VhdlFile), \
-                    "Transform must return an iterable of Files"
-                if source_file.generated:
-                    source_file.path = dir_name
-
-            new_info = {'hash': hash(self),
-                        'files': [os.path.join(f.path, f.get_filename())
-                                  for f in transform_result]}
-            self.set_info(dir_name, new_info)
-        else:
-            logger.info('Hash hit. Skipping transform')
-            sejits_ctree.STATS.log('Filesystem cache hit')
-            # retrieves VhdlFile from from cache
-            # TODO: reintegrate code below!
-            # files = [getFile(path) for path in info['files']]
-            # transform_result = files
-            transform_result = None
-        return transform_result
-    '''
-
-    '''
-    def config_to_dirname(self, program_config):
-        """Returns the subdirectory name under .compiled/funcname"""
-        # fixes the directory names and squishes invalid chars
-        regex_filter = re.compile(r"""[/\?%*:|"<>()'{} ]""")
-
-        def deep_getattr(obj, s):
-            parts = s.split('.')
-            for part in parts:
-                obj = getattr(obj, part)
-            return obj
-
-        path_parts = [
-            self.sub_dir,
-            str(self._hash(program_config.args_subconfig)),
-            str(self._hash(program_config.tuner_subconfig))]
-
-        for attrib in self._directory_fields:
-            path_parts.append(str(deep_getattr(self, attrib)))
-        filtered_parts = [
-            str(re.sub(regex_filter, '_', part)) for part in path_parts]
-        compile_path = str(sejits_ctree.CONFIG.get('jit', 'COMPILE_PATH'))
-
-        path = os.path.join(compile_path, *filtered_parts)
-        ret = re.sub('_+', '_', path)
-        return ret
-    '''
 
     @staticmethod
     def _hash(o):
