@@ -21,10 +21,12 @@ from sejits_ctree.vhdl.jit_synth import LazySpecializedFunction
 from sejits_ctree.vhdl.jit_synth import ConcreteSpecializedFunction
 
 from sejits_ctree.vhdl.nodes import VhdlType
-from sejits_ctree.vhdl.basic_blocks import convolve, sqrt
+from sejits_ctree.vhdl.basic_blocks import convolve
 
-log = logging.getLogger(__name__)
-
+def fib(n):
+    a = n * n
+    b = a + 5
+    return (n * 2) + (1/a)
 
 def sejits_test(img):
     """ return sobel filtered image. """
@@ -67,7 +69,7 @@ class BasicVhdlTrans(LazySpecializedFunction):
 
         libraries = ["work.the_filter_package.all"]
         name_dict = {"img": img_type}
-        
+
         #
         sejits_ctree.browser_show_ast(tree, file_name="basic_ast.png")
         tree = VhdlKeywordTransformer().visit(tree)
