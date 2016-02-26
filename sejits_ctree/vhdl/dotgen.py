@@ -83,3 +83,9 @@ class VhdlDotGenLabeller(DotGenLabeller):
     def visit_Constant(self, node):
         """ Add Constant information to dot node. """
         return str(node.value) + " : " + str(node.vhdl_type)
+
+    def visit_VhdlBinaryOp(self, node):
+        return node.op
+
+    def visit_VhdlConstant(self, node):
+        return node.value
