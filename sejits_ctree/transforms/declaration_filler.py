@@ -95,7 +95,7 @@ class DeclarationFiller(ast.NodeTransformer):
                     if self._has_key(stripped_name):
                         node.left.type = self._lookup(stripped_name)
                     elif hasattr(value, 'get_type'):
-                        node.left.type = value.get_type(self)
+                        node.left.type = value.get_type()
                     elif isinstance(value, C.FunctionCall):
                         if self._has_key(value.func):
                             node.left.type = self._lookup(value.func)

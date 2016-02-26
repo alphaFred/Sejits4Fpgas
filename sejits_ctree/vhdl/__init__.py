@@ -1,6 +1,7 @@
+# ---------------------------------------------------------------------------
+# configuration file parsing
 
 STDLIBS = ["ieee", "ieee.std_logic_1164.all"]
-
 
 class TransformationError(Exception):
 
@@ -32,7 +33,7 @@ class VhdlNodeError(TransformationError):
 
     def __str__(self):
         return self.msg
-   
+
 
 class VhdlTypeError(TransformationError):
 
@@ -78,3 +79,4 @@ class VhdlJitSynthError(TransformationError):
 
     def __str__(self):
         return self.msg
+

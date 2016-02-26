@@ -242,6 +242,7 @@ class Constant(Literal):
     def get_type(self):
         return get_ctype(self.value)
 
+
 class Hex(Constant):
     pass
 

@@ -4,20 +4,21 @@ from nodes import Entity, Signal, Component, Generic, Port
 from nodes import VhdlFile
 from nodes import VhdlType
 
-from ..vhdl import TransformationError
+from sejits_ctree.vhdl import TransformationError
+from sejits_ctree.vhdl.utils import CONFIG
 
 
 class BasicBlock(object):
 
     """ Base class for all vhdl basic blocks. """
 
-    pass
 
 
 class convolve(BasicBlock, VhdlFile):
-
-    vhdl_path = "/home/philipp/University/M4/Masterthesis/src/git_repo/ebensberger_ma/BasicBlocks.vhd"
-    lib_name = "work.BasicBlocks"
+    folder_path = CONFIG.get("basic_blocks", "FOLDER_PATH")
+    file_name = "Convolve"
+    file_path = folder_path + file_name + ".vhd"
+    lib_name = "work." + file_name
     # all vhdl files neccessary to build the module
 
     def __init__(self, args):
@@ -28,11 +29,11 @@ class convolve(BasicBlock, VhdlFile):
         args[1].vhdl_type.type_def = "filtMASK"
         generics = [Generic("MASK", args[1]),
                     Generic("DIV", args[2]),
-                    Generic("IN_BITWIDTH", args[3])]
-        in_ports = [Port("rgb_input", "in", args[0])]
+                    Generic("WIDTH", args[3])]
+        in_ports = [Port("FILT_INPUT", "in", args[0])]
         #
         out_type = args[0].vhdl_type
-        out_ports = [Port("rgb_output", "out", Signal("dummy", out_type))]
+        out_ports = [Port("FILT_OUTPUT", "out", Signal("dummy", out_type))]
         entity = Entity(name="Convolve",
                         generics=generics,
                         in_ports=in_ports,
@@ -44,7 +45,7 @@ class convolve(BasicBlock, VhdlFile):
                           libs=[],
                           entity=entity,
                           architecture=None,
-                          path=self.vhdl_path)
+                          path=self.file_path)
         self.generated = False
         # create component
         self.component = Component(name=self.name,
@@ -85,37 +86,4 @@ class convolve(BasicBlock, VhdlFile):
         pass
 
 
-class sqrt(BasicBlock, VhdlFile):
-    vhdl_path = "/home/philipp/University/M4/Masterthesis/src/git_repo/ebensberger_ma/BasicBlocks.vhd"
-    lib_name = "work.BasicBlocks"
-
-    def __init__(self, args):
-        in_ports = [Port("sqrt_input", "in", args[0])]
-        #
-        out_type = args[0].vhdl_type
-        out_ports = [Port("sqrt_output", "out", Signal("dummy", out_type))]
-        #
-        entity = Entity(name="Squareroot",
-                        generics=[],
-                        in_ports=in_ports,
-                        out_ports=out_ports)
-        #
-        BasicBlock.__init__(self)
-        VhdlFile.__init__(self,
-                          name="Squareroot",
-                          libs=[],
-                          entity=entity,
-                          architecture=None,
-                          path=self.vhdl_path)
-        self.generated = False
-        #
-        self.component = Component(name=self.name,
-                                   generics=None,
-                                   in_ports=in_ports,
-                                   out_ports=out_ports,
-                                   out_type=out_type)
-        self.component.lib_name = self.lib_name
-
-
-BASICBLOCKS = {"convolve": convolve,
-               "sqrt": sqrt}
+BASICBLOCKS = {"convolve": convolve}

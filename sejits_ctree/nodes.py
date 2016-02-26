@@ -162,7 +162,7 @@ class File(CommonNode):
     _fields = ['body']
     _empty = None
 
-    def __init__(self, name="generated", body=None, path = None):
+    def __init__(self, name="generated", body=None, path=None):
         self.name = name
         self.body = body or []
         self.config_target = 'c'
