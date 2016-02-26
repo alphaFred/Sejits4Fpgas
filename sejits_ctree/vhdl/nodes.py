@@ -852,3 +852,111 @@ class VhdlType(object):
 
         def __len__(self):
             return self.len
+
+
+
+class VhdlSymbol(VhdlTreeNode):
+    def label(self):
+        """ Return node label for dot file. """
+        from sejits_ctree.vhdl.dotgen import VhdlDotGenLabeller
+        return VhdlDotGenLabeller().visit(self)
+
+class VhdlSource(VhdlSymbol):
+    _fields = ["name", "vhdl_type"]
+
+    def __init__(self, name="", vhdl_type=None):
+        self.name = name
+        self.vhdl_type = vhdl_type
+
+class VhdlSignal(VhdlSymbol):
+    _fields = ["name", "vhdl_type"]
+
+    def __init__(self, name="", vhdl_type=None):
+        self.name = name
+        self.vhdl_type = vhdl_type
+
+class VhdlConstant(VhdlSymbol):
+    _fields = ["name", "vhdl_type", "value"]
+
+    def __init__(self, name="", vhdl_type=None, value=None, ):
+        if name == "":
+            self.name = str(value)
+        else:
+            self.name = name
+        self.vhdl_type = vhdl_type
+        self.value = value
+
+class VhdlModule(VhdlTreeNode):
+    _fields = ["entity", "architecture"]
+
+    def __init__(self, name="", entity=[], architecture=[]):
+        self.name = name
+        self.entity = entity
+        self.architecture = architecture
+
+    def label(self):
+        """ Return node label for dot file. """
+        from sejits_ctree.vhdl.dotgen import VhdlDotGenLabeller
+        return VhdlDotGenLabeller().visit(self)
+
+
+class VhdlNode(VhdlTreeNode):
+    _fields = ["prev", "next"]
+
+    def __init__(self, prev=[], next=[], in_port=[], inport_info=None, out_port=[], outport_info=None):
+        self.prev = prev
+        self.next = next
+        self.in_port = in_port
+        self.out_port = out_port
+        #
+        self.inport_info = inport_info
+        self.outport_info = outport_info
+        #
+        self.generic = []
+
+    def label(self):
+        """ Return node label for dot file. """
+        from sejits_ctree.vhdl.dotgen import VhdlDotGenLabeller
+        return VhdlDotGenLabeller().visit(self)
+
+
+class VhdlBinaryOp(VhdlNode):
+    _fields = ["prev", "next"]
+
+    def __init__(self, prev=[], next=[], in_port=[], op=None, out_port=[]):
+
+        in_port_info = [("LEFT", "in"), ("RIGHT", "in")]
+        out_port_info = [("BINOP_OUT", "out")]
+
+        super(VhdlBinaryOp, self).__init__(prev, next, in_port, in_port_info, out_port, out_port_info)
+        self.generic = [op]
+        self.op = op
+        self.d = 5  # TODO: make dependent on op
+
+class VhdlReturn(VhdlNode):
+    _fields = ["prev", "next"]
+
+    def __init__(self, prev=[], next=[], in_port=[], out_port=[]):
+        if len(in_port) != 1 or len(out_port) != 1:
+            raise TransformationError("VhdlReturn node supports only 1 in- and output")
+
+        in_port_info = [("RETURN_IN", "in")]
+        out_port_info = [("RETURN_OUT", "out")]
+
+        super(VhdlReturn, self).__init__(prev, next, in_port, in_port_info, out_port, out_port_info)
+        self.d = 0
+
+class VhdlComponent(VhdlNode):
+
+    _fields = ["prev", "next"]
+
+    def __init__(self, prev=[], next=[], generic_slice=None, delay=0, in_port=[], inport_info=None, out_port=[], outport_info=None):
+        # port info = [("PORTNAME", direction), ...]
+        if generic_slice:
+            in_port = in_port[generic_slice.stop:]
+
+        super(VhdlComponent, self).__init__(prev, next, in_port, in_port_info, out_port, out_port_info)
+
+        if generic_slice:
+            self.generic = in_port[generic_slice]
+        self.d = delay
