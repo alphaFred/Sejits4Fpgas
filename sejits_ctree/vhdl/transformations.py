@@ -9,7 +9,7 @@ from sejits_ctree.vhdl.utils import CONFIG
 from collections import namedtuple
 from nodes import VhdlType
 #
-from nodes import VhdlBinaryOp, VhdlComponent, VhdlConstant, VhdlModule, VhdlReturn, VhdlSource, VhdlNode, VhdlSignal
+from nodes import VhdlBinaryOp, VhdlComponent, VhdlConstant, VhdlModule, VhdlReturn, VhdlSource, VhdlNode, VhdlSignal, VhdlDReg
 from ctree.c.nodes import Op
 
 logger = logging.getLogger(__name__)
@@ -213,13 +213,16 @@ class ConstantNode(object):
 
 # =====================================================================================================================
 
-class VhdlDag(ast.NodeVisitor):
+class VhdlDag(ast.NodeTransformer):
 
     def __init__(self):
         self.con_edge_id = 0
 
-    def generic_visit(self, node):
-        """Called if no explicit visitor function exists for a node."""
+    def visit_VhdlReturn(self, node):
+        map(self.visit, node.prev)
+        self.retime(node)
+
+    def visit_VhdlBinaryOp(self, node):
         map(self.visit, node.prev)
         self.retime(node)
 
