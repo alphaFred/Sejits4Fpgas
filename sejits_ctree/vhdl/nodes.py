@@ -520,11 +520,10 @@ class VhdlModule(VhdlTreeNode):
         return VhdlDotGenLabeller().visit(self)
 
 class VhdlNode(VhdlTreeNode):
-    _fields = ["prev", "next"]
+    _fields = ["prev"]
 
-    def __init__(self, prev=[], next=[], in_port=[], inport_info=None, out_port=[], outport_info=None):
+    def __init__(self, prev=[], in_port=[], inport_info=None, out_port=[], outport_info=None):
         self.prev = prev
-        self.next = next
         self.in_port = in_port
         self.out_port = out_port
         #
@@ -542,14 +541,14 @@ class VhdlNode(VhdlTreeNode):
         return VhdlDotGenLabeller().visit(self)
 
 class VhdlBinaryOp(VhdlNode):
-    _fields = ["prev", "next"]
+    _fields = ["prev"]
 
-    def __init__(self, prev=[], next=[], in_port=[], op=None, out_port=[]):
+    def __init__(self, prev=[], in_port=[], op=None, out_port=[]):
 
         in_port_info = [("LEFT", "in"), ("RIGHT", "in")]
         out_port_info = [("BINOP_OUT", "out")]
 
-        super(VhdlBinaryOp, self).__init__(prev, next, in_port, in_port_info, out_port, out_port_info)
+        super(VhdlBinaryOp, self).__init__(prev, in_port, in_port_info, out_port, out_port_info)
         #
         op_decoder = {Op.Add:(0, 4),
                       Op.Sub:(1, 4),
@@ -562,28 +561,28 @@ class VhdlBinaryOp(VhdlNode):
             raise TransformationError("Unsupported binary operation %s" % op)
 
 class VhdlReturn(VhdlNode):
-    _fields = ["prev", "next"]
+    _fields = ["prev"]
 
-    def __init__(self, prev=[], next=[], in_port=[], out_port=[]):
+    def __init__(self, prev=[], in_port=[], out_port=[]):
         if len(in_port) != 1 or len(out_port) != 1:
             raise TransformationError("VhdlReturn node supports only 1 in- and output")
 
         in_port_info = [("RETURN_IN", "in")]
         out_port_info = [("RETURN_OUT", "out")]
 
-        super(VhdlReturn, self).__init__(prev, next, in_port, in_port_info, out_port, out_port_info)
+        super(VhdlReturn, self).__init__(prev, in_port, in_port_info, out_port, out_port_info)
         self.d = 0
 
 class VhdlComponent(VhdlNode):
 
-    _fields = ["prev", "next"]
+    _fields = ["prev"]
 
-    def __init__(self, prev=[], next=[], generic_slice=None, delay=0, in_port=[], inport_info=None, out_port=[], outport_info=None):
+    def __init__(self, prev=[], generic_slice=None, delay=0, in_port=[], inport_info=None, out_port=[], outport_info=None):
         # port info = [("PORTNAME", direction), ...]
         if generic_slice:
             in_port = in_port[generic_slice.stop:]
 
-        super(VhdlComponent, self).__init__(prev, next, in_port, in_port_info, out_port, out_port_info)
+        super(VhdlComponent, self).__init__(prev, in_port, in_port_info, out_port, out_port_info)
 
         if generic_slice:
             self.generic = in_port[generic_slice]
@@ -591,10 +590,10 @@ class VhdlComponent(VhdlNode):
 
 class VhdlDReg(VhdlNode):
 
-    _fields = ["prev", "next"]
+    _fields = ["prev"]
 
-    def __init__(self, prev=[], next=[], delay=0, in_port=[], out_port=[]):
+    def __init__(self, prev=[], delay=0, in_port=[], out_port=[]):
         inport_info = [("DREG_IN", "in")]
         outport_info = [("DREG_OUT", "out")]
-        super(VhdlDReg, self).__init__(prev, next, in_port, inport_info, out_port, outport_info)
+        super(VhdlDReg, self).__init__(prev, in_port, inport_info, out_port, outport_info)
         self.d = delay

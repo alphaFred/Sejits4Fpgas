@@ -108,7 +108,6 @@ class VhdlTransformer(ast.NodeTransformer):
             self.assignments.add(left.name)
         else:
             vhdl_node = VhdlBinaryOp(prev=[left, right],
-                                     next=[],
                                      in_port=[self._connect(left),
                                                self._connect(right)],
                                      op=node.op,
@@ -182,7 +181,6 @@ class VhdlDag(ast.NodeTransformer):
                 con_edge = VhdlSignal(name=edge.name + "_DREG_" + str(c_id),
                                       vhdl_type=edge.vhdl_type)
                 dreg = VhdlDReg(prev=[prev],
-                                next=[],
                                 delay=d,
                                 in_port=[edge],
                                 out_port=[con_edge])
