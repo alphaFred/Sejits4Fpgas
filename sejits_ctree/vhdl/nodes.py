@@ -594,5 +594,7 @@ class VhdlDReg(VhdlNode):
     _fields = ["prev", "next"]
 
     def __init__(self, prev=[], next=[], delay=0, in_port=[], out_port=[]):
+        inport_info = [("DREG_IN", "in")]
+        outport_info = [("DREG_OUT", "out")]
         super(VhdlDReg, self).__init__(prev, next, in_port, inport_info, out_port, outport_info)
         self.d = delay
