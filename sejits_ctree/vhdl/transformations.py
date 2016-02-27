@@ -75,14 +75,14 @@ class VhdlTransformer(ast.NodeTransformer):
 
     def visit_MultiNode(self, node):
         module = map(self.visit, node.body)
-        #
-        VhdlDag().visit(module[0].architecture)
-        #
         return module[0]
 
     def visit_FunctionDecl(self, node):
         params = map(self.visit, node.params)
         body = map(self.visit, node.defn)
+        # retime, beginning with Retunrn node
+        VhdlDag().visit(body[-1])
+        #
         return VhdlModule("TEST", params, body[-1])
 
     def visit_BinaryOp(self, node):
