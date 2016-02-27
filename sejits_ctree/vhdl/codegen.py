@@ -120,6 +120,18 @@ class VhdlCodegen(ast.NodeVisitor):
                                                         generic_map=generic_src,
                                                         port_map=port_src) + "\n"
 
+    def visit_VhdlDReg(self, node):
+        map(self.visit, node.prev)
+        #
+        self._generate_ports(node)
+        #
+        generic_src = self._generic_map(node.generic)
+        port_src = self._port_map((node.in_port, node.out_port))
+        self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
+                                                        component_lib="work.BasicArith",
+                                                        generic_map=generic_src,
+                                                        port_map=port_src) + "\n"
+
     def _generic_map(self, generics):
         block_indent = " " * len("generic map(")
         #
