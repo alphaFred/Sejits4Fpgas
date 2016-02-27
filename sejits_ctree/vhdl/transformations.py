@@ -246,6 +246,7 @@ class VhdlDag(ast.NodeTransformer):
                                 out_port=[con_edge])
                 node.prev[idx] = dreg
                 node.in_port[idx] = con_edge
+        node.dprev = max_d
 
 
 class VhdlADag(ast.NodeVisitor):
