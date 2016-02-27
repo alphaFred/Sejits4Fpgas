@@ -10,6 +10,7 @@ from sejits_ctree.vhdl import TransformationError, VhdlNodeError, VhdlTypeError
 from collections import defaultdict, namedtuple
 from sejits_ctree.vhdl.dotgen import VhdlDotGenVisitor
 from sejits_ctree.nodes import File
+from ctree.c.nodes import Op
 from sejits_ctree.vhdl.utils import CONFIG
 
 
@@ -237,29 +238,29 @@ class VhdlProject(object):
         AXI_STREAM_WIDTH = 32
 
         # input signals
-        m_axis_mm2s_tdata = Signal("m_axis_mm2s_tdata",
-                                   VhdlType.VhdlStdLogicVector(AXI_STREAM_WIDTH, "0"))
-        m_axis_mm2s_tkeep = Signal("m_axis_mm2s_tkeep",
+        m_axis_mm2s_tdata = VhdlSignal("m_axis_mm2s_tdata",
+                                       VhdlType.VhdlStdLogicVector(AXI_STREAM_WIDTH, "0"))
+        m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep",
                                    VhdlType.VhdlStdLogicVector(4, "0"))
-        m_axis_mm2s_tlast = Signal("m_axis_mm2s_tlast",
+        m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast",
                                    VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tready = Signal("m_axis_mm2s_tready",
+        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready",
                                     VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tvalid = Signal("m_axis_mm2s_tvalid",
+        m_axis_mm2s_tvalid = VhdlSignal("m_axis_mm2s_tvalid",
                                     VhdlType.VhdlStdLogic("0"))
         in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast,
                    m_axis_mm2s_tready, m_axis_mm2s_tvalid]
 
         # output signals
-        s_axis_s2mm_tdata = Signal("s_axis_s2mm_tdata",
+        s_axis_s2mm_tdata = VhdlSignal("s_axis_s2mm_tdata",
                                    VhdlType.VhdlStdLogicVector(AXI_STREAM_WIDTH, "0"))
-        s_axis_s2mm_tkeep = Signal("s_axis_s2mm_tkeep",
+        s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep",
                                    VhdlType.VhdlStdLogicVector(4, "0"))
-        s_axis_s2mm_tlast = Signal("s_axis_s2mm_tlast",
+        s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast",
                                    VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tready = Signal("s_axis_s2mm_tready",
+        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready",
                                     VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tvalid = Signal("s_axis_s2mm_tvalid",
+        s_axis_s2mm_tvalid = VhdlSignal("s_axis_s2mm_tvalid",
                                     VhdlType.VhdlStdLogic("0"))
         out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep,
                     s_axis_s2mm_tlast, s_axis_s2mm_tready,
@@ -272,7 +273,7 @@ class VhdlProject(object):
         wrappee_comp = gen_top_file.component
         wrappee_comp.in_ports[3].value = m_axis_mm2s_tdata
 
-        ret_sig = Signal("ret_tdata", VhdlType.VhdlStdLogicVector(AXI_STREAM_WIDTH, "0"))
+        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(AXI_STREAM_WIDTH, "0"))
         wrappee_comp.out_ports[0].value = ret_sig
 
         out_ports[0].value = ret_sig
@@ -330,32 +331,6 @@ class LiteralWrapper(VhdlNode):
     """ docstring dummy. """
 
 # LITERALS
-
-class Op(Literal):
-    class _Op(Literal):
-        vhdl_type = "string"
-
-        def __str__(self):
-            return self._str
-
-    class Add(_Op):
-        _str = '"Add"'
-
-    class Mul(_Op):
-        _str = '"Mul"'
-
-    class Sub(_Op):
-        _str = '"Sub"'
-
-    class Div(_Op):
-        _str = '"Div"'
-
-    class Pow(_Op):
-        _str = '"Pow"'
-
-    class Sqrt(_Op):
-        _str = '"Div"'
-
 
 class Port(LiteralWrapper):
 
@@ -568,9 +543,16 @@ class VhdlBinaryOp(VhdlNode):
         out_port_info = [("BINOP_OUT", "out")]
 
         super(VhdlBinaryOp, self).__init__(prev, next, in_port, in_port_info, out_port, out_port_info)
-        self.generic = [op]
-        self.op = op
-        self.d = 5  # TODO: make dependent on op
+        #
+        op_decoder = {Op.Add:(0, 4),
+                      Op.Sub:(1, 4),
+                      Op.Mul:(2, 5)}
+        #
+        if type(op) in op_decoder:
+            self.op, self.d = op_decoder[type(op)]
+            self.generic = [self.op]
+        else:
+            raise TransformationError("Unsupported binary operation %s" % op)
 
 class VhdlReturn(VhdlNode):
     _fields = ["prev", "next"]
