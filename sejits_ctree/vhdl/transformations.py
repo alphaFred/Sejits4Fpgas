@@ -238,7 +238,8 @@ class VhdlDag(ast.NodeTransformer):
                 c_id = self.con_edge_id
                 self.con_edge_id += 1
                 #
-                con_edge = VhdlSignal(name=edge.name + "_DREG_" + str(c_id))
+                con_edge = VhdlSignal(name=edge.name + "_DREG_" + str(c_id),
+                                      vhdl_type=edge.vhdl_type)
                 dreg = VhdlDReg(prev=[prev],
                                 next=[],
                                 delay=d,
