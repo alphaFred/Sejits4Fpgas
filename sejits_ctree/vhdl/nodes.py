@@ -524,6 +524,9 @@ class VhdlNode(VhdlTreeNode):
         self.in_port = in_port
         self.out_port = out_port
         #
+        self.d = -1
+        self.dprev = -1
+        #
         self.inport_info = inport_info
         self.outport_info = outport_info
         #
@@ -580,4 +583,12 @@ class VhdlComponent(VhdlNode):
 
         if generic_slice:
             self.generic = in_port[generic_slice]
+        self.d = delay
+
+class VhdlDReg(VhdlNode):
+
+    _fields = ["prev", "next"]
+
+    def __init__(self, prev=[], next=[], delay=0, in_port=[], out_port=[]):
+        super(VhdlDReg, self).__init__(prev, next, in_port, inport_info, out_port, outport_info)
         self.d = delay
