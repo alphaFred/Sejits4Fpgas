@@ -6,7 +6,9 @@ import ast
 import logging
 from nodes import VhdlType
 
+from sejits_ctree.vhdl import TransformationError
 from sejits_ctree.vhdl.utils import CONFIG
+from sejits_ctree.vhdl.nodes import Port, VhdlSignal
 
 
 logger = logging.getLogger(__name__)
