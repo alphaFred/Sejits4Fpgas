@@ -99,8 +99,6 @@ class VhdlTransformer(ast.NodeTransformer):
             elif isinstance(right, VhdlConstant):
                 vhdl_node = right
                 vhdl_node.name = left.name
-            elif isinstance(right, VhdlSource):
-                vhdl_node = right
             else:
                 raise TransformationError("Illegal assignment to symbol %s" % node.left.name)
             self.symbols[left.name] = vhdl_node
