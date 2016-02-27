@@ -72,7 +72,7 @@ class VhdlCodegen(ast.NodeVisitor):
         self.src_code = ""
         self.architecture_body = ""
         self.symbols = ""
-        self.used_symols = set()
+        self.used_symbols = set()
         self.component_ids = defaultdict(int)
 
     def _tab(self):
@@ -142,9 +142,11 @@ class VhdlCodegen(ast.NodeVisitor):
         join_statement = ",\n" + self._tab() + block_indent
         #
         for port in ports[1]:
-            self.symbols += self._tab() + self.SIGNAL.format(name=port.value.name,
-                                               type=port.value.vhdl_type,
-                                               default=port.value.vhdl_type.default) + "\n"
+            if port.value.name not in self.used_symbols:
+                self.symbols += self._tab() + self.SIGNAL.format(name=port.value.name,
+                                                                 type=port.value.vhdl_type,
+                                                                 default=port.value.vhdl_type.default) + "\n"
+                self.used_symbols.add(port.value.name)
         #
         s = "\n"
         s += self._tab() + "port map("
