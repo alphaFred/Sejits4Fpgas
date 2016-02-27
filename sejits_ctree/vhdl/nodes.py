@@ -473,8 +473,9 @@ class VhdlType(object):
 
 class VhdlSymbol(VhdlTreeNode):
 
-    d = 0
-    dprev = 0
+    def __init__(self):
+        self.d = 0
+        self.dprev = 0
 
     def label(self):
         """ Return node label for dot file. """
