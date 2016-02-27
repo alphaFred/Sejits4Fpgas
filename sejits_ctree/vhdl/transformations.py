@@ -75,6 +75,9 @@ class VhdlTransformer(ast.NodeTransformer):
 
     def visit_MultiNode(self, node):
         module = map(self.visit, node.body)
+        #
+        VhdlDag().visit(module[0].architecture)
+        #
         return module[0]
 
     def visit_FunctionDecl(self, node):
@@ -212,81 +215,34 @@ class ConstantNode(object):
 
 class VhdlDag(ast.NodeVisitor):
 
+    def __init__(self):
+        self.con_edge_id = 0
+
     def generic_visit(self, node):
         """Called if no explicit visitor function exists for a node."""
-        self.add_node(node)
+        map(self.visit, node.prev)
+        self.retime(node)
 
     def retime(self, node):
-        """Retime all previous edges and update next attribute.
-
-            An edge in the ADAG is identical with a constant or signal in the
-                VHDL Ast, connecting two components.
-
-            - Calculate sum of delay and previous delay of each previous node
-                --> sum(node.delay + node.prev_delay) = edge delay (e_dlay)
-            - Calculate max(e_dlays) - e_dlay for every e_dlay
-
-
-            Retime only if max(e_dlays) - e_dlay > 0:
-            Step 1):    |node n-1|-->|node|
-            Step 2):    |node n-1|-->|DReg|-->  |node|
-                - Generate additional connection edge
-                - Generate and configure DReg
-                - Connect prev_node with original edge to DREG
-                - Save connection edge and DReg
-            Step 3):    |node n-1|-->|DReg|-->|node|
-                - Connect DReg with connection edge to node
-        """
-        # get accumulated delay of every input edge
-        e_dlays = [pn.d + pn.prev_d for pn in node.prev]
-        max_e_dlay = max(e_dlays)
-        e_dlays = [max_e_dlay - e_d for e_d in e_dlays]
+        prev_d = [prev.d + prev.dprev for prev in node.prev]
+        max_d = max(prev_d)
+        norm_prev_d = [max_d - d for d in prev_d]
 
         # retime every edge to match maximum delay
-        updated_edges = []
-        for edge_idx, d in enumerate(e_dlays):
-            if d > 0:
-                # generate additional connection signal from dreg-->node
-                con_edge = deepcopy(node.prev[edge_idx].out_sig)
-                con_edge.name = con_edge.name + "_dreg"
-
-                # generate dreg and link to previous node
-                dreg = VhdlDReg(delay=Generic("DELAY", VhdlType.VhdlSigned,
-                                          Constant("", VhdlType.VhdlSigned, d)),
-                                i_port=Port("DREG_IN", "in",
-                                            node.prev[edge_idx].out_sig),
-                                o_port=Port("DREG_OUT", "out",
-                                            con_edge))
-                adag_dreg = ADag_DReg(dreg, node.prev[edge_idx])
-
-                # update ADAG
-                node.prev[edge_idx].next.append(adag_dreg)
-                node.prev[edge_idx] = adag_dreg
-
-                # save con_edge and d_reg
-                self.con_edges.append(con_edge)
-                self.dregs.append(dreg)
-
-                # add signals to update VHDL nodes
-                updated_edges.append((edge_idx, con_edge))
-            else:
-                node.prev[edge_idx].next.append(node)
-
-        # connect all added DRegs with vhdl_node
-        self._update_iports(node, updated_edges)
-
-    def _update_iports(self, node, updated_edges):
-        """Update in_ports of vhdl_node to connect all DRegs."""
-        # get nodes in_ports without cmd_ports
-        in_ports = list(node.vhdl_node.in_ports[3:])
-        # update all neccessary in_ports
-        for updated_edge in updated_edges:
-            updated_port = in_ports[edge_idx]
-            updated_port.value = updated_edge
-            in_ports[edge_idx] = updated_port
-        # update nodes in_ports
-        node.vhdl_node.in_ports = in_ports
-
+        for idx, prev, edge, d in zip(range(len(node.prev)), node.prev, node.in_port, norm_prev_d):
+            if d > 0 and type(edge) is not VhdlConstant:
+                # generate unique connection signal name
+                c_id = self.con_edge_id
+                self.con_edge_id += 1
+                #
+                con_edge = VhdlSignal(name=edge.name + "_DREG_" + str(c_id))
+                dreg = VhdlDReg(prev=[prev],
+                                next=[],
+                                delay=d,
+                                in_port=[edge],
+                                out_port=[con_edge])
+                node.prev[idx] = dreg
+                node.in_port[idx] = con_edge
 
 
 class VhdlADag(ast.NodeVisitor):
