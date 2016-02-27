@@ -89,3 +89,6 @@ class VhdlDotGenLabeller(DotGenLabeller):
 
     def visit_VhdlConstant(self, node):
         return node.value
+
+    def visit_VhdlDReg(self, node):
+        return node.d
