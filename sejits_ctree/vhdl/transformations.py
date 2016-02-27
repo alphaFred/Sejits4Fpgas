@@ -2,25 +2,15 @@
 __author__ = 'philipp ebensberger'
 
 import ast
-import itertools
+import logging
 
 from sejits_ctree.vhdl import TransformationError
 from sejits_ctree.vhdl.utils import CONFIG
-import logging
-
 from collections import namedtuple
-
-from nodes import VhdlFile
-from nodes import Entity, Architecture
-from nodes import Op, Signal, Constant, Generic, Port
-from nodes import BinaryOp, Component
-from nodes import Expression, Literal
-
 from nodes import VhdlType
-
-from basic_blocks import BASICBLOCKS
-from user.nodes import UserNode
-
+#
+from nodes import VhdlBinaryOp, VhdlComponent, VhdlConstant, VhdlModule, VhdlReturn, VhdlSource, VhdlNode, VhdlSignal
+from ctree.c.nodes import Op
 
 logger = logging.getLogger(__name__)
 logger.disabled = CONFIG.getboolean("logging", "ENABLE_LOGGING")
@@ -37,10 +27,6 @@ logger.addHandler(ch)
 
 
 UNARY_OP = namedtuple("UNARY_OP", ["i_args", "out_arg"])
-
-UNARY_OPs = {"sqrt": UNARY_OP(["i_sig"], ["o_sig"]),
-             "pow": UNARY_OP(["i_sig"], ["o_sig"])}
-
 
 class VhdlKeywordTransformer(ast.NodeTransformer):
 
@@ -98,21 +84,27 @@ class VhdlTransformer(ast.NodeTransformer):
 
     def visit_BinaryOp(self, node):
         left, right = map(self.visit, [node.left, node.right])
+        #
         if isinstance(node.op, Op.Assign):
+            # check for source assignment
+            if type(left) is VhdlSource:
+                raise TransformationError("Assignment to input parameter %s" % left.name)
             # check for reassignment
-            if node.left.name not in self.assignments and isinstance(right, VhdlNode):
+            if node.left.name in self.assignments:
+                raise TransformationError("Reassignment of symbol %s" % node.left.name)
+
+            if isinstance(right, VhdlNode):
                 vhdl_node = right
                 vhdl_node.out_port = [left]
-                self.symbols[left.name] = vhdl_node
-                self.assignments.add(left.name)
-            elif node.left.name not in self.assignments and isinstance(right, VhdlConstant):
+            elif isinstance(right, VhdlConstant):
                 vhdl_node = right
                 vhdl_node.name = left.name
-                self.symbols[vhdl_node.name] = vhdl_node
-                self.assignments.add(left.name)
+            elif isinstance(right, VhdlSource):
+                vhdl_node = right
             else:
-                print left, right
-                raise TransformationError("Reassignment of symbol %s" % node.left.name)
+                raise TransformationError("Illegal assignment to symbol %s" % node.left.name)
+            self.symbols[left.name] = vhdl_node
+            self.assignments.add(left.name)
         else:
             vhdl_node = VhdlBinaryOp(prev=[left, right],
                                      next=[],
@@ -147,7 +139,7 @@ class VhdlTransformer(ast.NodeTransformer):
                                out_port=[ret_signal])
         return vhdl_node
 
-    def _connect(self, node):
+    def _connect(self, node, target=None):
         if isinstance(node, VhdlNode):
             if len(node.out_port) == 0:
                 con_signal = VhdlSignal(name=node.__class__.__name__.upper() + "_OUT_" + str(self.n_con_signals),
@@ -155,9 +147,9 @@ class VhdlTransformer(ast.NodeTransformer):
                 self.n_con_signals += 1
                 node.out_port.append(con_signal)
                 self.symbols[con_signal.name] = con_signal
+                return con_signal
             else:
                 return node.out_port[0]
-            return con_signal
         else:
             return node
 
