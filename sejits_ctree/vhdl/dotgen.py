@@ -85,7 +85,8 @@ class VhdlDotGenLabeller(DotGenLabeller):
         return str(node.value) + " : " + str(node.vhdl_type)
 
     def visit_VhdlBinaryOp(self, node):
-        return node.op
+        op_decode = {0: "+", 1 : "-", 2: "*"}
+        return op_decode[node.op] + " ; " + "d=" + str(node.d)
 
     def visit_VhdlConstant(self, node):
         return node.value
