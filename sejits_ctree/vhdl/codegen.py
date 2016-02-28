@@ -50,6 +50,11 @@ COMPONENT = """{instance_name} : entity {component_lib}\
 {port_map};
 """
 
+COMPONENT = """{instance_name} : entity {component_lib}\
+{generic_map}\
+{port_map};
+"""
+
 class VhdlCodegen(ast.NodeVisitor):
 
     ENTITY = """entity {entity_name} is\
@@ -65,6 +70,8 @@ class VhdlCodegen(ast.NodeVisitor):
     CONSTANT = "constant {name} : {type} := {value};"
     COMPONENT = """{instance_name} : entity {component_lib}\
                        \r{generic_map}\
+                       \r{port_map}; """
+    COMPONENT_noG = """{instance_name} : entity {component_lib}\
                        \r{port_map}; """
 
     def __init__(self, indent):
@@ -100,10 +107,15 @@ class VhdlCodegen(ast.NodeVisitor):
         #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
-        self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
-                                                        component_lib="work.BasicArith",
-                                                        generic_map=generic_src,
-                                                        port_map=port_src) + "\n"
+        if node.generic:
+            self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
+                                                            component_lib="work.BasicArith",
+                                                            generic_map=generic_src,
+                                                            port_map=port_src) + "\n"
+        else:
+            self.architecture_body += self.COMPONENT_noG.format(instance_name=self._generate_name(node),
+                                                                component_lib="work.BasicArith",
+                                                                port_map=port_src) + "\n"
 
     def visit_VhdlReturn(self, node):
         map(self.visit, node.prev)
@@ -116,10 +128,15 @@ class VhdlCodegen(ast.NodeVisitor):
         #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
-        self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
-                                                        component_lib="work.BasicArith",
-                                                        generic_map=generic_src,
-                                                        port_map=port_src) + "\n"
+        if node.generic:
+            self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
+                                                            component_lib="work.BasicArith",
+                                                            generic_map=generic_src,
+                                                            port_map=port_src) + "\n"
+        else:
+            self.architecture_body += self.COMPONENT_noG.format(instance_name=self._generate_name(node),
+                                                                component_lib="work.BasicArith",
+                                                                port_map=port_src) + "\n"
 
     def visit_VhdlDReg(self, node):
         map(self.visit, node.prev)
@@ -128,10 +145,15 @@ class VhdlCodegen(ast.NodeVisitor):
         #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
-        self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
-                                                        component_lib="work.BasicArith",
-                                                        generic_map=generic_src,
-                                                        port_map=port_src) + "\n"
+        if node.generic:
+            self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
+                                                            component_lib="work.BasicArith",
+                                                            generic_map=generic_src,
+                                                            port_map=port_src) + "\n"
+        else:
+            self.architecture_body += self.COMPONENT_noG.format(instance_name=self._generate_name(node),
+                                                                component_lib="work.BasicArith",
+                                                                port_map=port_src) + "\n"
 
     def visit_VhdlFile(self, node):
         if node.body:
@@ -142,7 +164,7 @@ class VhdlCodegen(ast.NodeVisitor):
     def _generic_map(self, generics):
         block_indent = " " * len("generic map(")
         #
-        generic_map = ["GENERIC" + " => " + str(g) for g in generics]
+        generic_map = [g.name + " => " + str(g.value) for g in generics]
         join_statement = ",\n" + self._tab() + block_indent
         #
         s = "\n"
