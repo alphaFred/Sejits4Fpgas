@@ -121,6 +121,30 @@ class VhdlFile(VhdlBaseNode, File):
         return VhdlCodegen(indent).visit(self)
 
 
+class VhdlProject(object):
+
+    def __init__(self, files=None, indent=4, synthesis_dir=""):
+        self.files = files if files else []
+        self.synthesis_dir = synthesis_dir
+        self.indent = indent
+
+    def codegen(self):
+        from sejits_ctree.vhdl.jit_synth import VhdlSynthModule
+        self._module = VhdlSynthModule()
+
+        for f in self.files:
+            submodule = f._compile(f.codegen(self.indent))
+            if submodule:
+                self._module._link_in(submodule)
+        return self._module
+
+    @property
+    def module(self):
+        if self._module:
+            return self._module
+        return self.codegen(indent=self.indent)
+
+
 class VhdlFile1(VhdlBaseNode):
     """Represents a .vhd file."""
 
@@ -223,7 +247,7 @@ class VhdlFile1(VhdlBaseNode):
             return gen_files
 
 
-class VhdlProject(object):
+class VhdlProject1(object):
 
     """ Base class for an Vhdl Project. """
 
