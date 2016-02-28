@@ -247,7 +247,7 @@ class VhdlCodegen(ast.NodeVisitor):
     def _generate_libs(self, node):
         src = ""
         for lib in node.libraries:
-            src += "library " + lib.mainlib_name + ";\n"
+            src += "library " + lib.mainlib_name + ";\n" if lib.mainlib_name else ""
             for sublib in lib.sublib:
                 src += "use " + sublib + ";\n"
         return src
