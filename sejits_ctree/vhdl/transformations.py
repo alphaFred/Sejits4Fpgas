@@ -9,7 +9,9 @@ from sejits_ctree.vhdl.utils import CONFIG
 from collections import namedtuple
 from nodes import VhdlType
 #
-from nodes import VhdlBinaryOp, VhdlComponent, VhdlConstant, VhdlModule, VhdlReturn, VhdlSource, VhdlNode, VhdlSignal, VhdlDReg
+from nodes import VhdlBinaryOp, VhdlComponent, VhdlConstant, VhdlModule
+from nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal, VhdlDReg
+from nodes import VhdlLibrary
 from ctree.c.nodes import Op
 
 logger = logging.getLogger(__name__)
@@ -83,7 +85,10 @@ class VhdlTransformer(ast.NodeTransformer):
         # retime, beginning with Return node
         VhdlDag().visit(body[-1])
         #
-        return VhdlModule(node.name, [], params, body[-1])
+        libraries = []
+        libraries.append(VhdlLibrary("ieee",["ieee.std_logic_1164.all", "work.the_filter_package.all"]))
+        #
+        return VhdlModule(node.name, libraries, params, body[-1])
 
     def visit_BinaryOp(self, node):
         left, right = map(self.visit, [node.left, node.right])
