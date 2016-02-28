@@ -8,7 +8,7 @@ from nodes import VhdlType
 
 from sejits_ctree.vhdl import TransformationError
 from sejits_ctree.vhdl.utils import CONFIG
-from sejits_ctree.vhdl.nodes import Port, VhdlSignal
+from sejits_ctree.vhdl.nodes import Port, Generic, VhdlSignal
 
 
 logger = logging.getLogger(__name__)
@@ -209,6 +209,9 @@ class VhdlCodegen(ast.NodeVisitor):
             #
             outport_info = node.outport_info
             out_port = node.out_port
+            #
+            generic_info = node.generic_info
+            generic_port = node.generic
         except:
             raise TransformationError("msg0")
 
@@ -234,6 +237,15 @@ class VhdlCodegen(ast.NodeVisitor):
                 raise TransformationError("msg2")
 
             node.out_port = [Port(info[0], info[1], port) for info,port in zip(outport_info, out_port)]
+
+        if all([type(port) is Generic for port in generic_port]):
+            # continue if node already has generics
+            pass
+        else:
+            if len(generic_info) != len(generic_port):
+                raise TransformationError("msg3")
+
+            node.generic = [Generic(info[0], info[1], port) for info,port in zip(generic_info, generic_port)]
 
     def _generate_name(self, node):
         c_id = self.component_ids[node.__class__.__name__]
