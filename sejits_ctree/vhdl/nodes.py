@@ -508,6 +508,7 @@ class VhdlModule(VhdlTreeNode):
             architecture
         """
         self.name = name
+        self.libraries = libraries
         self.entity = entity
         self.architecture = architecture
 
