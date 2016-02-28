@@ -307,30 +307,8 @@ class VhdlProject(object):
 # =============================================================================
 
 
-class Statement(VhdlNode):
-    """ docstring dummy."""
-    pass
-
-
-class Expression(VhdlNode):
-    """ Base class for Expression nodes. """
-
-    # instance counter to generate unique instance names
-    _ids = defaultdict(int)
-    lib_name = ""
-    delay = 0
-    in_ports = []
-    out_ports = None
-
-
-class LiteralWrapper(VhdlNode):
-    """ docstring dummy. """
-
-# LITERALS
-
-class Port(LiteralWrapper):
-
-    """ Base class of Vhld Port item. """
+class Port(VhdlNode):
+    """Base class of Vhld Port item."""
 
     _fields = ["name", "direction", "value"]
 
@@ -341,9 +319,8 @@ class Port(LiteralWrapper):
         self.value = value
 
 
-class Generic(LiteralWrapper):
-
-    """ Base class of Vhdl Generic item. """
+class Generic(VhdlNode):
+    """Base class of Vhdl Generic item."""
 
     _fields = ["name", "vhdl_type", "value"]
 
