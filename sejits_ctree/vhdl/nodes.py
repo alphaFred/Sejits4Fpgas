@@ -489,10 +489,11 @@ class VhdlModule(VhdlTreeNode):
 
     _fields = ["entity", "architecture"]
 
-    def __init__(self, name="", entity=[], architecture=[]):
+    def __init__(self, name="", libraries=[], entity=[], architecture=[]):
         """Initialize VhdlModule node.
 
         :param name: str containing name of module
+        :param libraries: list containing library objects
         :param entity: list containing VhdlSource nodes, describing kernel
             parameter
         :param architecture: list containing vhdl nodes, describing body of

@@ -83,7 +83,7 @@ class VhdlTransformer(ast.NodeTransformer):
         # retime, beginning with Retunrn node
         VhdlDag().visit(body[-1])
         #
-        return VhdlModule(node.name, params, body[-1])
+        return VhdlModule(node.name, [], params, body[-1])
 
     def visit_BinaryOp(self, node):
         left, right = map(self.visit, [node.left, node.right])
