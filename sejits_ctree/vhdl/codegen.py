@@ -108,7 +108,6 @@ class VhdlCodegen(ast.NodeVisitor):
     def visit_VhdlReturn(self, node):
         map(self.visit, node.prev)
         self.architecture_body += node.out_port[0].name + " <= " + node.in_port[0].name
-        pass
 
     def visit_VhdlComponent(self, node):
         map(self.visit, node.prev)
