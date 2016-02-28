@@ -120,6 +120,13 @@ class VhdlFile(VhdlBaseNode, File):
         from sejits_ctree.vhdl.codegen import VhdlCodegen
         return VhdlCodegen(indent).visit(self)
 
+    @classmethod
+    def fromPrebuilt(cls, name="prebuilt", libraries=[], path=""):
+        vhdlfile = VhdlFile(name, libraries, [], "")
+        vhdlfile.generated = False
+        vhdlfile.file_path = path
+        return vhdlfile
+
 
 class VhdlProject(object):
 
