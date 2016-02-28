@@ -56,7 +56,7 @@ class VhdlSynthModule(object):
         print "VhdlSynthModule got called"
 
     def _link_in(self, submodule):
-        self._linked_files = submodule
+        self._linked_files.append(submodule)
 
     def get_callable(self, entry_point_name, entry_point_typesig):
         """Return a python callable that redirects to hardware."""
