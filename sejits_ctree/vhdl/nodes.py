@@ -54,7 +54,7 @@ class VhdlTreeNode(ast.AST):
             type(self)._fields.append(attr)
 
 
-class VhdlNode(VhdlTreeNode):
+class VhdlBaseNode(VhdlTreeNode):
     """Base class for all VHDL nodes in sejits_ctree."""
 
     def codegen(self, indent=4):
@@ -65,11 +65,15 @@ class VhdlNode(VhdlTreeNode):
         :return: string with source code of node
         :rtype: str
         """
-        from codegen import VhdlCodeGen
-        return VhdlCodeGen(indent).visit(self)
+        from sejits_ctree.vhdl.codegen import VhdlCodegen
+        return VhdlCodegen(indent).visit(self)
 
     def label(self):
-        """Return node label for dot file."""
+        """ Return node label for dot file.
+
+        :return: string describing dot label of node
+        :rtype: str
+        """
         from dotgen import VhdlDotGenLabeller
         return VhdlDotGenLabeller().visit(self)
 
@@ -77,15 +81,47 @@ class VhdlNode(VhdlTreeNode):
 Interface = namedtuple("Interface", ["iports", "oport"])
 
 
-class VhdlFile(VhdlNode):
+class VhdlFile(VhdlBaseNode, File):
 
-    def __init__(self, name="generated", libraries=[], body=[]):
-        self.name = name
-        self.libraries = []
-        self.body = body
+    _ext = "vhd"
+    generated = True
+    file_path = ""
+
+    def __init__(self, name="generated", libraries=[], body=[], path=""):
+        VhdlBaseNode.__init__(self)
+        File.__init__(self, name, body, path)
+        self.libraries = libraries
+
+    @property
+    def file_path(self):
+        return self._filepath
+
+    @file_path.setter
+    def file_path(self, value):
+        self._filepath = value
+        if not os.path.exists(self._filepath):
+            os.makedirs(self._filepath)
+
+    def get_filename(self):
+        return "%s.%s" % (self.name, self._ext)
+
+    def _compile(self, program_text):
+        if not self.generated:
+            return self.file_path
+        else:
+            vhdl_src_file = os.path.join(self.path, self.get_filename())
+            with open(vhdl_src_file, 'w') as vhdl_file:
+                vhdl_file.write(program_text)
+            logger.info("file for generated VHDL: %s", vhdl_src_file)
+            logger.info("generated VHDL program: (((\n%s\n)))", program_text)
+            return vhdl_src_file
+
+    def codegen(self, indent=4):
+        from sejits_ctree.vhdl.codegen import VhdlCodegen
+        return VhdlCodegen(indent).visit(self)
 
 
-class VhdlFile1(VhdlNode):
+class VhdlFile1(VhdlBaseNode):
     """Represents a .vhd file."""
 
     _ext = "vhd"
@@ -98,7 +134,7 @@ class VhdlFile1(VhdlNode):
                  architecture=None, config_target="vhd", path=None,
                  dependencies=[]):
         """Initialize VhdlFile."""
-        VhdlNode.__init__(self)
+        VhdlBaseNode.__init__(self)
         self.name = name
         self.path = path
         self.body = (entity, architecture)
@@ -310,29 +346,7 @@ class VhdlProject(object):
 # COMPONENT NODE CLASSES
 # =============================================================================
 
-
-class Port(VhdlNode):
-    """Base class of Vhld Port item."""
-
-    _fields = ["name", "direction", "value"]
-
-    def __init__(self, name="", direction="", value=None):
-        """ Initialize name, direction and value of Port. """
-        self.name = name
-        self.direction = direction
-        self.value = value
-
-
-class Generic(VhdlNode):
-    """Base class of Vhdl Generic item."""
-
-    _fields = ["name", "vhdl_type", "value"]
-
-    def __init__(self, name="", value=None):
-        """ Initialize name and value of Generic. """
-        self.name = name
-        self.value = value
-        self.vhdl_type = value.vhdl_type
+VhdlLibrary = namedtuple("VhdlLibrary", ["mainlib_name", "sublib"])
 
 
 class VhdlType(object):
@@ -446,16 +460,69 @@ class VhdlType(object):
             return self.len
 
 
-class VhdlSymbol(VhdlTreeNode):
+class VhdlSymbol(VhdlBaseNode):
     """Base class for vhdl symbols."""
 
     d = 0
     dprev = 0
 
+
+class VhdlModule(VhdlBaseNode):
+    """Base class for vhdl module."""
+
+    _fields = ["entity", "architecture"]
+
+    def __init__(self, name="", libraries=[], entity=[], architecture=[]):
+        """Initialize VhdlModule node.
+
+        :param name: str containing name of module
+        :param libraries: list containing library objects
+        :param entity: list containing VhdlSource nodes, describing kernel
+            parameter
+        :param architecture: list containing vhdl nodes, describing body of
+            architecture
+        """
+        self.name = name
+        self.libraries = libraries
+        self.entity = entity
+        self.architecture = architecture
+
     def label(self):
-        """ Return node label for dot file. """
+
         from sejits_ctree.vhdl.dotgen import VhdlDotGenLabeller
         return VhdlDotGenLabeller().visit(self)
+
+
+class VhdlNode(VhdlBaseNode):
+    """Base class for vhdl node."""
+
+    _fields = ["prev"]
+
+    def __init__(self, prev=[], in_port=[], inport_info=None, out_port=[],
+                 outport_info=None):
+        """Initialize VhdlNode node.
+
+        :param prev: list of previous nodes in DAG
+        :param in_port: list of input signals
+        :param inport_info: list of tuples describing port name and
+            direction ("PORTNAME", "direction") or
+            generic name and vhdl type ("GENERICNAME", VhdlType)
+        :param out_port: list of output signals
+        :param outport_info: list of tuples describing port name and
+            direction ("PORTNAME", "direction")
+        """
+        self.prev = prev
+        self.in_port = in_port
+        self.out_port = out_port
+        # initalize delay and cumulative previous delay
+        self.d = -1
+        self.dprev = -1
+        # save in/outport information, initialize generic_info
+        self.generic_info = None
+        self.inport_info = inport_info
+        self.outport_info = outport_info
+        # initialize generic list
+        self.generic = []
 
 
 class VhdlSource(VhdlSymbol):
@@ -492,74 +559,28 @@ class VhdlConstant(VhdlSymbol):
         self.value = value
 
 
-VhdlLibrary = namedtuple("VhdlLibrary", ["mainlib_name", "sublib"])
+class Port(VhdlSymbol):
+    """Base class of Vhld Port item."""
 
+    _fields = ["name", "direction", "value"]
 
-class VhdlModule(VhdlTreeNode):
-    """Base class for vhdl module."""
-
-    _fields = ["entity", "architecture"]
-
-    def __init__(self, name="", libraries=[], entity=[], architecture=[]):
-        """Initialize VhdlModule node.
-
-        :param name: str containing name of module
-        :param libraries: list containing library objects
-        :param entity: list containing VhdlSource nodes, describing kernel
-            parameter
-        :param architecture: list containing vhdl nodes, describing body of
-            architecture
-        """
+    def __init__(self, name="", direction="", value=None):
+        """ Initialize name, direction and value of Port. """
         self.name = name
-        self.libraries = libraries
-        self.entity = entity
-        self.architecture = architecture
-
-    def label(self):
-        """ Return node label for dot file.
-
-        :return: string describing dot label of node
-        :rtype: str
-        """
-        from sejits_ctree.vhdl.dotgen import VhdlDotGenLabeller
-        return VhdlDotGenLabeller().visit(self)
+        self.direction = direction
+        self.value = value
 
 
-class VhdlNode(VhdlTreeNode):
-    """Base class for vhdl node."""
+class Generic(VhdlSymbol):
+    """Base class of Vhdl Generic item."""
 
-    _fields = ["prev"]
+    _fields = ["name", "vhdl_type", "value"]
 
-    def __init__(self, prev=[], in_port=[], inport_info=None, out_port=[],
-                 outport_info=None):
-        """Initialize VhdlNode node.
-
-        :param prev: list of previous nodes in DAG
-        :param in_port: list of input signals
-        :param inport_info: list of tuples describing port name and
-            direction ("PORTNAME", "direction") or
-            generic name and vhdl type ("GENERICNAME", VhdlType)
-        :param out_port: list of output signals
-        :param outport_info: list of tuples describing port name and
-            direction ("PORTNAME", "direction")
-        """
-        self.prev = prev
-        self.in_port = in_port
-        self.out_port = out_port
-        # initalize delay and cumulative previous delay
-        self.d = -1
-        self.dprev = -1
-        # save in/outport information, initialize generic_info
-        self.generic_info = None
-        self.inport_info = inport_info
-        self.outport_info = outport_info
-        # initialize generic list
-        self.generic = []
-
-    def label(self):
-        """ Return node label for dot file. """
-        from sejits_ctree.vhdl.dotgen import VhdlDotGenLabeller
-        return VhdlDotGenLabeller().visit(self)
+    def __init__(self, name="", value=None):
+        """ Initialize name and value of Generic. """
+        self.name = name
+        self.value = value
+        self.vhdl_type = value.vhdl_type
 
 
 class VhdlBinaryOp(VhdlNode):
