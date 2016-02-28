@@ -30,8 +30,7 @@ logger.addHandler(ch)
 
 
 class VhdlTreeNode(ast.AST):
-
-    """ Base class for all Vhdl AST nodes in sejits_ctree."""
+    """Base class for all Vhdl AST nodes in sejits_ctree."""
 
     def __init__(self):
         """Initialize a new AST Node."""
@@ -41,11 +40,11 @@ class VhdlTreeNode(ast.AST):
         return self.__class__.__name__
 
     def to_dot(self):
-        """ Retrieve the AST in DOT format for visualization."""
+        """Retrieve the AST in DOT format for visualization."""
         return "digraph mytree {\n%s}" % self._to_dot()
 
     def _to_dot(self):
-        """ Retrieve the AST in DOT format for vizualization."""
+        """Retrieve the AST in DOT format for vizualization."""
         return VhdlDotGenVisitor().visit(self)
 
     def lift(self, **kwargs):
@@ -56,23 +55,21 @@ class VhdlTreeNode(ast.AST):
 
 
 class VhdlNode(VhdlTreeNode):
-
     """Base class for all VHDL nodes in sejits_ctree."""
 
     def codegen(self, indent=4):
         """
         Generate Vhdl code of node.
 
-        Attributes:
-            indent: number of spaces per indentation level (Default = 0)
-        Return:
-            string with source code of node
+        :param indent: number of spaces per indentation level (Default = 0)
+        :return: string with source code of node
+        :rtype: str
         """
         from codegen import VhdlCodeGen
         return VhdlCodeGen(indent).visit(self)
 
     def label(self):
-        """ Return node label for dot file. """
+        """Return node label for dot file."""
         from dotgen import VhdlDotGenLabeller
         return VhdlDotGenLabeller().visit(self)
 
@@ -81,7 +78,6 @@ Interface = namedtuple("Interface", ["iports", "oport"])
 
 
 class VhdlFile(VhdlNode):
-
     """Represents a .vhd file."""
 
     _ext = "vhd"
@@ -93,7 +89,7 @@ class VhdlFile(VhdlNode):
     def __init__(self, name="generated", libs=None, entity=None,
                  architecture=None, config_target="vhd", path=None,
                  dependencies=[]):
-        """ Initialize VhdlFile. """
+        """Initialize VhdlFile."""
         VhdlNode.__init__(self)
         self.name = name
         self.path = path
@@ -122,7 +118,7 @@ class VhdlFile(VhdlNode):
             self.component = None
 
     def __repr__(self):
-        """ Return entity vhdl source code for debug. """
+        """Return entity vhdl source code for debug."""
         from codegen import VhdlCodeGen
         return VhdlCodeGen(indent=4).visit(self.body[0])
 
@@ -140,7 +136,7 @@ class VhdlFile(VhdlNode):
         return "%s.%s" % (self.name, self._ext)
 
     def _compile(self, program_text):
-        """ Save program_text in file. """
+        """Save program_text in file."""
         vhdl_src_file = os.path.join(self.path, self.get_filename())
         # TODO: implement hashing to avoid writing already existing files
         # create vhdl source file
@@ -150,7 +146,7 @@ class VhdlFile(VhdlNode):
         return vhdl_src_file
 
     def codegen(self, indent=4):
-        """ Generate source and save in file if VhdlFile.generated == True. """
+        """Generate source and save in file if VhdlFile.generated == True."""
         from sejits_ctree.vhdl.codegen import VhdlCodeGen
 
         # ---------------------------------------------------------------------
