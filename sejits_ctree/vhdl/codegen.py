@@ -80,6 +80,7 @@ class VhdlCodegen(ast.NodeVisitor):
         return " " * 4
 
     def visit_VhdlModule(self, node):
+        self.src_code += self._generate_libs(node)
         port_src = self._port_block((node.entity,[]))
         self.src_code += self.ENTITY.format(entity_name=node.name,
                                             generic_declarations="",
@@ -235,3 +236,11 @@ class VhdlCodegen(ast.NodeVisitor):
             return node.__class__.__name__ + "_" + str(c_id)
         else:
             return node.__class__.__name__
+
+    def _generate_libs(self, node):
+        src = ""
+        for lib in node.libraries:
+            src += "library " + lib.mainlib_name + ";\n"
+            for sublib in lib.sublib:
+                src += "use " + sublib + ";\n"
+        return src
