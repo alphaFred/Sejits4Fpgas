@@ -323,10 +323,6 @@ class Expression(VhdlNode):
     out_ports = None
 
 
-class Literal(VhdlNode):
-    """ docstring dummy. """
-
-
 class LiteralWrapper(VhdlNode):
     """ docstring dummy. """
 
@@ -354,11 +350,9 @@ class Generic(LiteralWrapper):
     def __init__(self, name="", value=None):
         """ Initialize name and value of Generic. """
         self.name = name
-        if isinstance(value, Literal):
-            self.value = value
-            self.vhdl_type = value.vhdl_type
-        else:
-            raise TypeError
+        self.value = value
+        self.vhdl_type = value.vhdl_type
+
 
 class VhdlType(object):
 
@@ -472,6 +466,7 @@ class VhdlType(object):
 
 
 class VhdlSymbol(VhdlTreeNode):
+    """Base class for vhdl symbols."""
 
     d = 0
     dprev = 0
@@ -481,21 +476,30 @@ class VhdlSymbol(VhdlTreeNode):
         from sejits_ctree.vhdl.dotgen import VhdlDotGenLabeller
         return VhdlDotGenLabeller().visit(self)
 
+
 class VhdlSource(VhdlSymbol):
+    """Base class for kernel source signal."""
+
     _fields = ["name", "vhdl_type"]
 
     def __init__(self, name="", vhdl_type=None):
         self.name = name
         self.vhdl_type = vhdl_type
+
 
 class VhdlSignal(VhdlSymbol):
+    """Base class for vhdl signal."""
+
     _fields = ["name", "vhdl_type"]
 
     def __init__(self, name="", vhdl_type=None):
         self.name = name
         self.vhdl_type = vhdl_type
 
+
 class VhdlConstant(VhdlSymbol):
+    """Base class for vhdl constant."""
+
     _fields = ["name", "vhdl_type", "value"]
 
     def __init__(self, name="", vhdl_type=None, value=None, ):
@@ -506,33 +510,64 @@ class VhdlConstant(VhdlSymbol):
         self.vhdl_type = vhdl_type
         self.value = value
 
+
 class VhdlModule(VhdlTreeNode):
+    """Base class for vhdl module."""
+
     _fields = ["entity", "architecture"]
 
     def __init__(self, name="", entity=[], architecture=[]):
+        """Initialize VhdlModule node.
+
+        :param name: str containing name of module
+        :param entity: list containing VhdlSource nodes, describing kernel
+            parameter
+        :param architecture: list containing vhdl nodes, describing body of
+            architecture
+        """
         self.name = name
         self.entity = entity
         self.architecture = architecture
 
     def label(self):
-        """ Return node label for dot file. """
+        """ Return node label for dot file.
+
+        :return: string describing dot label of node
+        :rtype: str
+        """
         from sejits_ctree.vhdl.dotgen import VhdlDotGenLabeller
         return VhdlDotGenLabeller().visit(self)
 
+
 class VhdlNode(VhdlTreeNode):
+    """Base class for vhdl node."""
+
     _fields = ["prev"]
 
-    def __init__(self, prev=[], in_port=[], inport_info=None, out_port=[], outport_info=None):
+    def __init__(self, prev=[], in_port=[], inport_info=None, out_port=[],
+                 outport_info=None):
+        """Initialize VhdlNode node.
+
+        :param prev: list of previous nodes in DAG
+        :param in_port: list of input signals
+        :param inport_info: list of tuples describing port name and
+            direction ("PORTNAME", "direction") or
+            generic name and vhdl type ("GENERICNAME", VhdlType)
+        :param out_port: list of output signals
+        :param outport_info: list of tuples describing port name and
+            direction ("PORTNAME", "direction")
+        """
         self.prev = prev
         self.in_port = in_port
         self.out_port = out_port
-        #
+        # initalize delay and cumulative previous delay
         self.d = -1
         self.dprev = -1
-        #
+        # save in/outport information, initialize generic_info
+        self.generic_info = None
         self.inport_info = inport_info
         self.outport_info = outport_info
-        #
+        # initialize generic list
         self.generic = []
 
     def label(self):
@@ -540,60 +575,143 @@ class VhdlNode(VhdlTreeNode):
         from sejits_ctree.vhdl.dotgen import VhdlDotGenLabeller
         return VhdlDotGenLabeller().visit(self)
 
+
 class VhdlBinaryOp(VhdlNode):
+    """Vhdl BinaryOp node class."""
+
     _fields = ["prev"]
 
     def __init__(self, prev=[], in_port=[], op=None, out_port=[]):
+        """Initialize VhdlBinaryOp node.
 
+        :param prev: list of previous nodes in DAG
+        :param in_port: list of input signals
+        :param op: Op object describing binary operation
+        :param out_port: list of output signals
+
+        :raises TransformationError: raised if type of op is not supported
+        """
         in_port_info = [("LEFT", "in"), ("RIGHT", "in")]
         out_port_info = [("BINOP_OUT", "out")]
 
-        super(VhdlBinaryOp, self).__init__(prev, in_port, in_port_info, out_port, out_port_info)
-        #
+        super(VhdlBinaryOp, self).__init__(prev,
+                                           in_port,
+                                           in_port_info,
+                                           out_port,
+                                           out_port_info)
+
+        # operation decoder with (Operation ID, Delay)
         op_decoder = {Op.Add:(0, 4),
                       Op.Sub:(1, 4),
                       Op.Mul:(2, 5)}
-        #
+
         if type(op) in op_decoder:
             self.op, self.d = op_decoder[type(op)]
             self.generic = [self.op]
         else:
             raise TransformationError("Unsupported binary operation %s" % op)
 
+
 class VhdlReturn(VhdlNode):
+    """Vhdl Return node class."""
+
     _fields = ["prev"]
 
     def __init__(self, prev=[], in_port=[], out_port=[]):
+        """Initialize VhdlReturn node.
+
+        :param prev: list of previous nodes in DAG
+        :param in_port: list of input signals
+        :param out_port: list of output signals
+
+        :raises TransformationError: raised if len(in_port)
+            and/or len(out_port) != 1
+        """
         if len(in_port) != 1 or len(out_port) != 1:
-            raise TransformationError("VhdlReturn node supports only 1 in- and output")
+            error_msg = "VhdlReturn node supports only 1 in- and output"
+            raise TransformationError(error_msg)
 
         in_port_info = [("RETURN_IN", "in")]
         out_port_info = [("RETURN_OUT", "out")]
 
-        super(VhdlReturn, self).__init__(prev, in_port, in_port_info, out_port, out_port_info)
+        super(VhdlReturn, self).__init__(prev,
+                                         in_port,
+                                         in_port_info,
+                                         out_port,
+                                         out_port_info)
         self.d = 0
 
+
 class VhdlComponent(VhdlNode):
+    """Vhdl Component node class."""
 
     _fields = ["prev"]
 
-    def __init__(self, prev=[], generic_slice=None, delay=0, in_port=[], inport_info=None, out_port=[], outport_info=None):
-        # port info = [("PORTNAME", direction), ...]
-        if generic_slice:
-            in_port = in_port[generic_slice.stop:]
+    def __init__(self, prev=[], generic_slice=None, delay=-1, in_port=[],
+                 inport_info=None, out_port=[], outport_info=None):
+        """Initialize VhdlComponent node.
 
-        super(VhdlComponent, self).__init__(prev, in_port, in_port_info, out_port, out_port_info)
+        :param prev: list of previous nodes in DAG
+        :param generic_slice: slice object to slice in_port into
+            generic ports and ordinary input ports
+        :param delay: int describing delay of node in clock cycles
+        :param in_port: list of input signals
+        :param inport_info: list of tuples describing port name and
+            direction ("PORTNAME", "direction") or
+            generic name and vhdl type ("GENERICNAME", VhdlType)
+        :param out_port: list of output signals
+        :param outport_info: list of tuples describing port name and
+            direction -> [("PORTNAME", "direction"), ...]
+
+        :raises TransformationError: raised if delay is not >= 0
+        """
+        super(VhdlComponent, self).__init__(prev,
+                                            in_port,
+                                            inport_info,
+                                            out_port,
+                                            outport_info)
 
         if generic_slice:
             self.generic = in_port[generic_slice]
-        self.d = delay
+            self.generic_info = inport_info[generic_slice]
+            #
+            self.in_port = in_port[generic_slice.stop:]
+            self.inport_info = inport_info[generic_slice.stop:]
+
+        if delay >= 0:
+            self.d = delay
+        else:
+            error_msg = "Delay of Component must be >= 0"
+            raise TransformationError(error_msg)
+
 
 class VhdlDReg(VhdlNode):
+    """Vhdl D-Register node class."""
 
     _fields = ["prev"]
 
-    def __init__(self, prev=[], delay=0, in_port=[], out_port=[]):
+    def __init__(self, prev=[], delay=-1, in_port=[], out_port=[]):
+        """Initialize VhdlDReg node.
+
+        :param prev: list of previous nodes in DAG
+        :param delay: int describing delay of node in clock cycles
+        :param in_port: list of input signals
+        :param out_port: list of output signals
+
+        :raises TransformationError: raised if len(in_port)
+            and/or len(out_port) != 1
+        :raises TransformationError: raised if delay is not >= 0
+        """
         inport_info = [("DREG_IN", "in")]
         outport_info = [("DREG_OUT", "out")]
-        super(VhdlDReg, self).__init__(prev, in_port, inport_info, out_port, outport_info)
-        self.d = delay
+
+        super(VhdlDReg, self).__init__(prev,
+                                       in_port,
+                                       inport_info,
+                                       out_port,
+                                       outport_info)
+        if delay >= 0:
+            self.d = delay
+        else:
+            error_msg = "Delay of Component must be >= 0"
+            raise TransformationError(error_msg)
