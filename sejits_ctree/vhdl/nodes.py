@@ -492,6 +492,9 @@ class VhdlConstant(VhdlSymbol):
         self.value = value
 
 
+VhdlLibrary = namedtuple("VhdlLibrary", ["mainlib_name", "sublib"])
+
+
 class VhdlModule(VhdlTreeNode):
     """Base class for vhdl module."""
 
