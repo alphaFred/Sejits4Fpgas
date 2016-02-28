@@ -80,7 +80,7 @@ class VhdlTransformer(ast.NodeTransformer):
     def visit_FunctionDecl(self, node):
         params = map(self.visit, node.params)
         body = map(self.visit, node.defn)
-        # retime, beginning with Retunrn node
+        # retime, beginning with Return node
         VhdlDag().visit(body[-1])
         #
         return VhdlModule(node.name, [], params, body[-1])
