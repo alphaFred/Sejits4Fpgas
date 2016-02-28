@@ -85,8 +85,8 @@ class VhdlTransformer(ast.NodeTransformer):
         # retime, beginning with Return node
         VhdlDag().visit(body[-1])
         #
-        libraries = []
-        libraries.append(VhdlLibrary("ieee",["ieee.std_logic_1164.all", "work.the_filter_package.all"]))
+        libraries = [VhdlLibrary("ieee",["ieee.std_logic_1164.all"]),
+                     VhdlLibrary(None,["work.the_filter_package.all"])]
         #
         return VhdlModule(node.name, libraries, params, body[-1])
 
