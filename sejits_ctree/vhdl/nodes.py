@@ -549,7 +549,7 @@ class VhdlNode(VhdlBaseNode):
         self.d = -1
         self.dprev = -1
         # save in/outport information, initialize generic_info
-        self.generic_info = None
+        self.generic_info = []
         self.inport_info = inport_info
         self.outport_info = outport_info
         # initialize generic list
@@ -607,11 +607,11 @@ class Generic(VhdlSymbol):
 
     _fields = ["name", "vhdl_type", "value"]
 
-    def __init__(self, name="", value=None):
+    def __init__(self, name="", vhdl_type=None, value=None):
         """ Initialize name and value of Generic. """
         self.name = name
+        self.vhdl_type = vhdl_type
         self.value = value
-        self.vhdl_type = value.vhdl_type
 
 
 class VhdlBinaryOp(VhdlNode):
@@ -645,6 +645,7 @@ class VhdlBinaryOp(VhdlNode):
 
         if type(op) in op_decoder:
             self.op, self.d = op_decoder[type(op)]
+            self.generic_info = [("OP", VhdlType.VhdlInteger)]
             self.generic = [self.op]
         else:
             raise TransformationError("Unsupported binary operation %s" % op)
