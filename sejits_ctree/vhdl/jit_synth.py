@@ -55,8 +55,8 @@ class VhdlSynthModule(object):
         """Redirect call to python or vhdl kernel."""
         print "VhdlSynthModule got called"
 
-    def _link_in(self, data_module):
-        self._linked_files = data_module
+    def _link_in(self, submodule):
+        self._linked_files = submodule
 
     def get_callable(self, entry_point_name, entry_point_typesig):
         """Return a python callable that redirects to hardware."""
@@ -76,7 +76,7 @@ class VhdlSynthModule(object):
 
         # Copy all files to top folder and save file names
         file_names = []
-        for file_path in self._linked_files.file_paths:
+        for file_path in self._linked_files:
             os.system("cp " + file_path + " " + v_src_fol)
             file_names.append(os.path.basename(file_path))
 
