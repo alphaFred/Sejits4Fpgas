@@ -78,6 +78,14 @@ Interface = namedtuple("Interface", ["iports", "oport"])
 
 
 class VhdlFile(VhdlNode):
+
+    def __init__(self, name="generated", libraries=[], body=[]):
+        self.name = name
+        self.libraries = []
+        self.body = body
+
+
+class VhdlFile1(VhdlNode):
     """Represents a .vhd file."""
 
     _ext = "vhd"
