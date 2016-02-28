@@ -61,6 +61,11 @@ class VhdlCodegen(ast.NodeVisitor):
                     \r{generic_declarations}\
                     \r{port_declarations}\
                 \rend {entity_name};"""
+
+    ENTITY_noG = """entity {entity_name} is\
+                    \r{port_declarations}\
+                \rend {entity_name};"""
+
     ARCHITECTURE = """architecture {architecture_name} of {entity_name} is\
                           \r{architecture_declarations}\
                       \rbegin\
@@ -88,15 +93,14 @@ class VhdlCodegen(ast.NodeVisitor):
         return " " * self.indent
 
     def visit_VhdlModule(self, node):
-        self.src_code += self._generate_libs(node)
+        self.src_code += self._generate_libs(node) + "\n\n"
         port_src = self._port_block((node.entity,[]))
-        self.src_code += self.ENTITY.format(entity_name=node.name,
-                                            generic_declarations="",
-                                            port_declarations=port_src) + "\n"
+        self.src_code += self.ENTITY_noG.format(entity_name=node.name,
+                                                port_declarations=port_src) + "\n\n"
         self.visit(node.architecture)
         self.src_code += self.ARCHITECTURE.format(architecture_name="BEHAVE",
                                                   entity_name=node.name,
-                                                  architecture_declarations=self.symbols,
+                                                  architecture_declarations=self.symbols.strip("\n"),
                                                   architecture_body=self.architecture_body)
         return self.src_code
 
