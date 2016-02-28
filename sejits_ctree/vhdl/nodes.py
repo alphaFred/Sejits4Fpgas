@@ -9,7 +9,7 @@ from sejits_ctree.vhdl import STDLIBS
 from sejits_ctree.vhdl import TransformationError, VhdlNodeError, VhdlTypeError
 from collections import defaultdict, namedtuple
 from sejits_ctree.vhdl.dotgen import VhdlDotGenVisitor
-from sejits_ctree.nodes import File
+from ctree.nodes import File, Project, CtreeNode
 from ctree.c.nodes import Op
 from sejits_ctree.vhdl.utils import CONFIG
 
@@ -29,7 +29,7 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-class VhdlTreeNode(ast.AST):
+class VhdlTreeNode(CtreeNode):
     """Base class for all Vhdl AST nodes in sejits_ctree."""
 
     def __init__(self):
@@ -128,7 +128,7 @@ class VhdlFile(VhdlBaseNode, File):
         return vhdlfile
 
 
-class VhdlProject(object):
+class VhdlProject(Project):
 
     def __init__(self, files=None, indent=4, synthesis_dir=""):
         self.files = files if files else []
