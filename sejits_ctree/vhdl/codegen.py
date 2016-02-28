@@ -67,8 +67,9 @@ class VhdlCodegen(ast.NodeVisitor):
                        \r{generic_map}\
                        \r{port_map}; """
 
-    def __init__(self):
+    def __init__(self, indent):
         from collections import defaultdict
+        self.indent = indent
         self.src_code = ""
         self.architecture_body = ""
         self.symbols = ""
@@ -77,7 +78,7 @@ class VhdlCodegen(ast.NodeVisitor):
 
     def _tab(self):
         """return correct spaces if tab found"""
-        return " " * 4
+        return " " * self.indent
 
     def visit_VhdlModule(self, node):
         self.src_code += self._generate_libs(node)
@@ -132,6 +133,12 @@ class VhdlCodegen(ast.NodeVisitor):
                                                         component_lib="work.BasicArith",
                                                         generic_map=generic_src,
                                                         port_map=port_src) + "\n"
+
+    def visit_VhdlFile(self, node):
+        if node.body:
+            return self.visit(node.body[0])
+        else:
+            return ""
 
     def _generic_map(self, generics):
         block_indent = " " * len("generic map(")
