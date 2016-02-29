@@ -25,36 +25,6 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-VHDLMODULE = """{libraries}\n\n
-{entity}\n
-{architecture}"""
-
-ARCHITECTURE = """architecture {architecture_name} of {entity_name} is
-{architecture_declarations}
-begin
-{architecture_instructions}
-{architecture_return}
-end {architecture_name};"""
-
-ENTITY = """entity {entity_name} is\
-{generic_declarations}\
-{port_declarations}
-end {entity_name};"""
-
-SIGNAL = "signal {signal_name} : {signal_type};"
-
-CONSTANT = "constant {const_name} : {const_type} := {const_value};"
-
-COMPONENT = """{instance_name} : entity {component_lib}\
-{generic_map}\
-{port_map};
-"""
-
-COMPONENT = """{instance_name} : entity {component_lib}\
-{generic_map}\
-{port_map};
-"""
-
 class VhdlCodegen(ast.NodeVisitor):
 
     ENTITY = """entity {entity_name} is\
