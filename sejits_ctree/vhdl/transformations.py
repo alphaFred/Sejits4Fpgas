@@ -82,6 +82,8 @@ class VhdlTransformer(ast.NodeTransformer):
     def visit_FunctionDecl(self, node):
         params = map(self.visit, node.params)
         body = map(self.visit, node.defn)
+        # add return signal
+        params.append(self.symbols["MODULE_OUT"])
         # retime, beginning with Return node
         VhdlDag().visit(body[-1])
         #
