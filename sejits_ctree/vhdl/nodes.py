@@ -6,7 +6,7 @@ import ast
 import logging
 
 from sejits_ctree.vhdl import STDLIBS
-from sejits_ctree.vhdl import TransformationError, VhdlNodeError, VhdlTypeError
+from sejits_ctree.vhdl import TransformationError
 from collections import defaultdict, namedtuple
 from sejits_ctree.vhdl.dotgen import VhdlDotGenVisitor
 from ctree.nodes import File, Project, CtreeNode
@@ -150,109 +150,6 @@ class VhdlProject(Project):
         if self._module:
             return self._module
         return self.codegen(indent=self.indent)
-
-
-class VhdlFile1(VhdlBaseNode):
-    """Represents a .vhd file."""
-
-    _ext = "vhd"
-    _fields = ['body']
-    generated = True
-    dependencies = []
-    delay = 0
-
-    def __init__(self, name="generated", libs=None, entity=None,
-                 architecture=None, config_target="vhd", path=None,
-                 dependencies=[]):
-        """Initialize VhdlFile."""
-        VhdlBaseNode.__init__(self)
-        self.name = name
-        self.path = path
-        self.body = (entity, architecture)
-        self.config_target = config_target
-        self.dependencies = dependencies
-
-        if entity:
-            self.interface = Interface(entity.in_ports, entity.out_ports)
-        else:
-            self.interface = []
-
-        if libs:
-            self.libs = STDLIBS + list(libs)
-        else:
-            self.libs = STDLIBS
-
-        if entity and architecture:
-            self.component = Component(name=name,
-                                       generics=entity.generics,
-                                       in_ports=entity.in_ports[3:],
-                                       out_ports=entity.out_ports,
-                                       out_types=None)
-            self.component.lib_name = "work." + self.name
-        else:
-            self.component = None
-
-    def __repr__(self):
-        """Return entity vhdl source code for debug."""
-        from codegen import VhdlCodeGen
-        return VhdlCodeGen(indent=4).visit(self.body[0])
-
-    @property
-    def path(self):
-        return self._path
-
-    @path.setter
-    def path(self, value):
-        self._path = value
-        if not os.path.exists(self._path):
-            os.makedirs(self._path)
-
-    def get_filename(self):
-        return "%s.%s" % (self.name, self._ext)
-
-    def _compile(self, program_text):
-        """Save program_text in file."""
-        vhdl_src_file = os.path.join(self.path, self.get_filename())
-        # TODO: implement hashing to avoid writing already existing files
-        # create vhdl source file
-        with open(vhdl_src_file, "w") as vhdl_file:
-            vhdl_file.write(program_text)
-
-        return vhdl_src_file
-
-    def codegen(self, indent=4):
-        """Generate source and save in file if VhdlFile.generated == True."""
-        from sejits_ctree.vhdl.codegen import VhdlCodeGen
-
-        # ---------------------------------------------------------------------
-        # LOGGING
-        # ---------------------------------------------------------------------
-        logger.info("Start codegen of VhdlFile \"{0}\"".format(self.name))
-        # ---------------------------------------------------------------------
-
-        files = self.dependencies
-        gen_files = []
-
-        if len(files) > 0:
-            for vhdl_file in files:
-                gen_files += vhdl_file.codegen(indent=4)
-
-            if self.generated:
-                file_path = self._compile(VhdlCodeGen(indent).visit(self))
-                if file_path:
-                    gen_files = [file_path] + gen_files
-            else:
-                gen_files = [self.path] + gen_files
-            return gen_files
-        else:
-            if self.generated:
-                file_path = self._compile(VhdlCodeGen(indent).visit(self))
-                if file_path:
-                    gen_files = [file_path]
-            else:
-                gen_files = [self.path]
-            return gen_files
-
 
 class VhdlProject1(object):
 
