@@ -11,6 +11,9 @@ class VhdlDotGenVisitor(ast.NodeVisitor):
     Generates a representation of the AST in the DOT graph language.
     See http://en.wikipedia.org/wiki/DOT_(graph_description_language)
     """
+
+    visited_nodes = set()
+
     @staticmethod
     def _qualified_name(obj):
         """ Return object name with leading module """
@@ -46,10 +49,14 @@ class VhdlDotGenVisitor(ast.NodeVisitor):
         for fieldname, fieldvalue in ast.iter_fields(node):
             for index, child in enumerate_flatten(fieldvalue):
                 if isinstance(child, ast.AST):
-                        suffix = "".join(["[%d]" % i for i in index])
-                        out_string += 'n{} -> n{} [label="{}{}"];\n'.format(
-                            id(node), id(child), fieldname, suffix)
+                    suffix = "".join(["[%d]" % i for i in index])
+                    out_string += 'n{} -> n{} [label="{}{}"];\n'.format(
+                        id(node), id(child), fieldname, suffix)
+                    if hash(child) not in self.visited_nodes:
+                        self.visited_nodes.add(hash(child))
                         out_string += self.visit(child)
+                    else:
+                        ""
         return out_string
 
 
