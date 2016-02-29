@@ -46,17 +46,6 @@ class VhdlDotGenVisitor(ast.NodeVisitor):
         for fieldname, fieldvalue in ast.iter_fields(node):
             for index, child in enumerate_flatten(fieldvalue):
                 if isinstance(child, ast.AST):
-
-                    if type(node).__name__ is "VhdlFile":
-                        out_string += 'subgraph cluster_%s {\n node [style=filled];' % node.name
-
-                        suffix = "".join(["[%d]" % i for i in index])
-                        out_string += 'n{} -> n{} [label="{}{}"];\n'.format(
-                            id(node), id(child), fieldname, suffix)
-                        out_string += self.visit(child)
-
-                        out_string += 'label = "%s";\n}' % node.name
-                    else:
                         suffix = "".join(["[%d]" % i for i in index])
                         out_string += 'n{} -> n{} [label="{}{}"];\n'.format(
                             id(node), id(child), fieldname, suffix)
