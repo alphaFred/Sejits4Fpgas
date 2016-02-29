@@ -12,7 +12,7 @@ from nodes import VhdlType
 from nodes import VhdlBinaryOp, VhdlComponent, VhdlConstant, VhdlModule
 from nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal, VhdlSink, VhdlDReg
 from nodes import VhdlLibrary
-from ctree.c.nodes import Op
+from ctree.c.nodes import *
 
 logger = logging.getLogger(__name__)
 logger.disabled = CONFIG.getboolean("logging", "ENABLE_LOGGING")
@@ -64,8 +64,9 @@ class VhdlKeywordTransformer(ast.NodeTransformer):
 
 class VhdlTransformer(ast.NodeTransformer):
 
-    def __init__(self):
+    def __init__(self, lifted_functions=[]):
         self.symbols = {}
+        self.lifted_functions = {f.name: f for f in lifted_functions}
         self.assignments = set()
         self.n_con_signals = 0
 
@@ -91,6 +92,12 @@ class VhdlTransformer(ast.NodeTransformer):
                      VhdlLibrary(None,["work.the_filter_package.all"])]
         #
         return VhdlModule(node.name, libraries, params, body[-1])
+
+    def visit_FunctionCall(self, node):
+        if node.func.name in self.lifted_functions:
+            print node.func
+        else:
+            raise TransformationError("Unknown function %s" % node.func)
 
     def visit_BinaryOp(self, node):
         left, right = map(self.visit, [node.left, node.right])
@@ -169,6 +176,7 @@ class VhdlTransformer(ast.NodeTransformer):
         else:
             return node
 
+
 class VhdlDag(ast.NodeTransformer):
 
     def __init__(self):
@@ -203,3 +211,87 @@ class VhdlDag(ast.NodeTransformer):
                 node.prev[idx] = dreg
                 node.in_port[idx] = con_edge
         node.dprev = max_d
+
+
+class BB_BaseFuncTransformer(ast.NodeTransformer):
+    lifted_functions = []
+    func_count = 0
+
+    def __init__(self, backend="C"):
+        self.backend = backend.lower()
+
+    def visit_Call(self, node):
+        self.generic_visit(node)
+        if getattr(node.func, "id", None) != self.func_name:
+            return node
+
+        return self.convert(node)
+
+    def convert(self, node):
+        inner_function = node.args[0]
+
+
+        method = "get_func_def_" + self.backend
+        try:
+            func_def_getter = getattr(self, method)
+        except AttributeError:
+            error_msg = "No function definition provided for %s backend"\
+                % self.backend
+            raise TransformationError(error_msg)
+        func_def = func_def_getter(inner_function)
+
+        BB_BaseFuncTransformer.lifted_functions.append(func_def)
+
+        c_node = FunctionCall(SymbolRef(func_def.name), node.args[1:])
+        return c_node
+
+    @property
+    def gen_func_name(self):
+        name = "%s_%s" % (self.func_name, str(type(self).func_count))
+        type(self).func_count += 1
+        return name
+
+    @property
+    def func_name(self):
+        raise NotImplementedError("Class %s should override func_name()"
+                                  % type(self))
+
+    def get_func_def_c(self, inner_function_name):
+        raise NotImplementedError("Class %s should override get_func_def()"
+                                  % type(self))
+
+
+class BB_ConvolveTransformer(BB_BaseFuncTransformer):
+    func_name = "bb_convolve"
+
+    def get_func_def_c(self, inner_function):
+        pass
+
+    def get_func_def_vhdl(self, inner_function):
+        inport_info = [("CONV_IN", "in")]
+        outport_info = [("CONV_OUT", "out")]
+        defn = VhdlComponent(name="bb_convolve",
+                             prev=[],
+                             generic_slice=None,
+                             delay=10,
+                             in_port=[],
+                             inport_info=inport_info,
+                             out_port=[],
+                             outport_info=outport_info)
+        return defn
+
+
+class BB_FuncTransformer(object):
+    transformers = [BB_ConvolveTransformer]
+
+    def __init__(self, backend="C"):
+        self.backend = backend
+
+    def visit(self, tree):
+        for transformer in self.transformers:
+            transformer(self.backend).visit(tree)
+        return tree
+
+    @staticmethod
+    def lifted_functions():
+        return BB_BaseFuncTransformer.lifted_functions
