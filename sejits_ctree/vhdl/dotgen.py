@@ -26,10 +26,12 @@ class VhdlDotGenVisitor(ast.NodeVisitor):
     # TODO: change formation to visitor pattern
     def format(self, node):
         """ Format Dot nodes. """
-        formats = {"VhdlFile": ', style=filled, fillcolor="#00EB5E"',
-                   "EntityDecl": ', style=filled, fillcolor="#C2FF66"',
-                   "Architecture": ', style=filled, fillcolor="#C2FF66"',
-                   "ComponentCall": ', style=filled, fillcolor="#FFF066"'
+        formats = {"VhdlModule": ', style=filled, fillcolor="#00EB5E"',
+                   "VhdlBinaryOp": ', style=filled, fillcolor="#C2FF66"',
+                   "VhdlReturn": ', style=filled, fillcolor="#C2FF66"',
+                   "VhdlDReg": ', style=filled, shape=rect, fillcolor="#99CCFF"',
+                   "VhdlSource": ', style=filled, fillcolor="#FFF066"',
+                   "VhdlConstant": ', style=filled, fillcolor="#FFF066"'
                    }
         return formats.get(type(node).__name__, "")
 
@@ -85,7 +87,7 @@ class VhdlDotGenLabeller(DotGenLabeller):
         return str(node.value) + " : " + str(node.vhdl_type)
 
     def visit_VhdlBinaryOp(self, node):
-        op_decode = {0: "+", 1 : "-", 2: "*"}
+        op_decode = {0: "Add", 1 : "Sub", 2: "Mul"}
         return op_decode[node.op] + " ; " + "d=" + str(node.d)
 
     def visit_VhdlConstant(self, node):
@@ -93,3 +95,6 @@ class VhdlDotGenLabeller(DotGenLabeller):
 
     def visit_VhdlDReg(self, node):
         return "d=" + str(node.d)
+
+    def visit_VhdlSource(self, node):
+        return node.name
