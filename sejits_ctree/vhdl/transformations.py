@@ -126,6 +126,15 @@ class VhdlTransformer(ast.NodeTransformer):
             self.symbols[vhdl_sym.name] = vhdl_sym
         return self.symbols[node.name]
 
+    def visit_Array(self, node):
+        body = map(self.visit, node.body)
+        if all([isinstance(bdy_elem, VhdlConstant) for bdy_elem in body]):
+            return VhdlConstant(name="",
+                                vhdl_type=VhdlType.VhdlArray.from_list(body),
+                                value=body)
+        else:
+            raise TransformationError("All elements of array must be constant")
+
     def visit_Constant(self, node):
         vhdl_sym = VhdlConstant(name="",
                                 vhdl_type=VhdlType.VhdlStdLogicVector(8),
