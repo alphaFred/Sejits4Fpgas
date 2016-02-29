@@ -270,7 +270,10 @@ class BB_ConvolveTransformer(BB_BaseFuncTransformer):
     func_name = "bb_convolve"
 
     def get_func_def_c(self):
-        pass
+        params = [SymbolRef("inpt", ctypes.c_long())]
+        return_type = ctypes.c_long()
+        defn = [Return(BinaryOp(SymbolRef("inpt"), Op.Mul(), Constant(2)))]
+        return FunctionDecl(return_type, self.gen_func_name, params, defn)
 
     def get_func_def_vhdl(self):
         inport_info = [("CONV_IN", "in")]
