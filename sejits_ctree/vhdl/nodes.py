@@ -601,7 +601,7 @@ class VhdlComponent(VhdlNode):
 
     _fields = ["prev"]
 
-    def __init__(self, prev=[], generic_slice=None, delay=-1, in_port=[],
+    def __init__(self, name="", prev=[], generic_slice=None, delay=-1, in_port=[],
                  inport_info=None, out_port=[], outport_info=None):
         """Initialize VhdlComponent node.
 
@@ -619,6 +619,7 @@ class VhdlComponent(VhdlNode):
 
         :raises TransformationError: raised if delay is not >= 0
         """
+        self.name = name
         super(VhdlComponent, self).__init__(prev,
                                             in_port,
                                             inport_info,
