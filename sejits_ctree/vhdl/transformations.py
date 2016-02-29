@@ -94,8 +94,12 @@ class VhdlTransformer(ast.NodeTransformer):
         return VhdlModule(node.name, libraries, params, body[-1])
 
     def visit_FunctionCall(self, node):
+        args = map(self.visit, node.args)
         if node.func.name in self.lifted_functions:
-            print node.func
+            vhdl_node = self.lifted_functions[node.func.name]
+            vhdl_node.prev = args
+            vhdl_node.in_port = [self._connect(arg) for arg in args]
+            return vhdl_node
         else:
             raise TransformationError("Unknown function %s" % node.func)
 
@@ -190,6 +194,10 @@ class VhdlDag(ast.NodeTransformer):
         map(self.visit, node.prev)
         self.retime(node)
 
+    def visit_VhdlComponent(self, node):
+        map(self.visit, node.prev)
+        self.retime(node)
+
     def retime(self, node):
         prev_d = [prev.d + prev.dprev for prev in node.prev]
         max_d = max(prev_d)
@@ -228,9 +236,6 @@ class BB_BaseFuncTransformer(ast.NodeTransformer):
         return self.convert(node)
 
     def convert(self, node):
-        inner_function = node.args[0]
-
-
         method = "get_func_def_" + self.backend
         try:
             func_def_getter = getattr(self, method)
@@ -238,11 +243,11 @@ class BB_BaseFuncTransformer(ast.NodeTransformer):
             error_msg = "No function definition provided for %s backend"\
                 % self.backend
             raise TransformationError(error_msg)
-        func_def = func_def_getter(inner_function)
+        func_def = func_def_getter()
 
         BB_BaseFuncTransformer.lifted_functions.append(func_def)
 
-        c_node = FunctionCall(SymbolRef(func_def.name), node.args[1:])
+        c_node = FunctionCall(SymbolRef(func_def.name), node.args)
         return c_node
 
     @property
@@ -264,10 +269,10 @@ class BB_BaseFuncTransformer(ast.NodeTransformer):
 class BB_ConvolveTransformer(BB_BaseFuncTransformer):
     func_name = "bb_convolve"
 
-    def get_func_def_c(self, inner_function):
+    def get_func_def_c(self):
         pass
 
-    def get_func_def_vhdl(self, inner_function):
+    def get_func_def_vhdl(self):
         inport_info = [("CONV_IN", "in")]
         outport_info = [("CONV_OUT", "out")]
         defn = VhdlComponent(name="bb_convolve",
