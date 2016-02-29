@@ -395,32 +395,6 @@ class VhdlSymbol(VhdlBaseNode):
     dprev = 0
 
 
-class VhdlModule(VhdlBaseNode):
-    """Base class for vhdl module."""
-
-    _fields = ["entity", "architecture"]
-
-    def __init__(self, name="", libraries=[], entity=[], architecture=[]):
-        """Initialize VhdlModule node.
-
-        :param name: str containing name of module
-        :param libraries: list containing library objects
-        :param entity: list containing VhdlSource nodes, describing kernel
-            parameter
-        :param architecture: list containing vhdl nodes, describing body of
-            architecture
-        """
-        self.name = name
-        self.libraries = libraries
-        self.entity = entity
-        self.architecture = architecture
-
-    def label(self):
-
-        from sejits_ctree.vhdl.dotgen import VhdlDotGenLabeller
-        return VhdlDotGenLabeller().visit(self)
-
-
 class VhdlNode(VhdlBaseNode):
     """Base class for vhdl node."""
 
@@ -509,6 +483,41 @@ class Generic(VhdlSymbol):
         self.name = name
         self.vhdl_type = vhdl_type
         self.value = value
+
+
+
+class VhdlModule(VhdlNode):
+    """Base class for vhdl module."""
+
+    _fields = ["entity", "architecture"]
+
+    def __init__(self, name="", libraries=[], entity=[], architecture=[]):
+        """Initialize VhdlModule node.
+
+        :param name: str containing name of module
+        :param libraries: list containing library objects
+        :param entity: list containing VhdlSource nodes, describing kernel
+            parameter
+        :param architecture: list containing vhdl nodes, describing body of
+            architecture
+        """
+        in_port_info = [(port.name, "in") for port in entity[:-1]]
+        out_port_info = [("MODULE_OUT", "out")]
+
+        super(VhdlModule, self).__init__([],
+                                         entity[:-1],
+                                         in_port_info,
+                                         entity[-1:],
+                                         out_port_info)
+        self.name = name
+        self.libraries = libraries
+        self.entity = entity
+        self.architecture = architecture
+
+    def label(self):
+
+        from sejits_ctree.vhdl.dotgen import VhdlDotGenLabeller
+        return VhdlDotGenLabeller().visit(self)
 
 
 class VhdlBinaryOp(VhdlNode):
