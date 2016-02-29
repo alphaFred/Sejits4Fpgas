@@ -91,7 +91,7 @@ class VhdlTransformer(ast.NodeTransformer):
         libraries = [VhdlLibrary("ieee",["ieee.std_logic_1164.all"]),
                      VhdlLibrary(None,["work.the_filter_package.all"])]
         #
-        return VhdlModule(node.name, libraries, params, body[-1])
+        return VhdlModule(node.name, libraries, None, params, body[-1])
 
     def visit_FunctionCall(self, node):
         args = map(self.visit, node.args)

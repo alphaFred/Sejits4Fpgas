@@ -145,11 +145,61 @@ class VhdlProject(Project):
                 self._module._link_in(submodule)
         return self._module
 
+    def _generate_wrapper(self):
+        logger.info("Generate project wrapper")
+
+        AXI_STREAM_WIDTH = 32
+        # input signals
+        m_axis_mm2s_tdata = VhdlSignal("m_axis_mm2s_tdata",
+                                       VhdlType.VhdlStdLogicVector(AXI_STREAM_WIDTH, "0"))
+        m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep",
+                                   VhdlType.VhdlStdLogicVector(4, "0"))
+        m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast",
+                                   VhdlType.VhdlStdLogic("0"))
+        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready",
+                                    VhdlType.VhdlStdLogic("0"))
+        m_axis_mm2s_tvalid = VhdlSignal("m_axis_mm2s_tvalid",
+                                    VhdlType.VhdlStdLogic("0"))
+        in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast,
+                   m_axis_mm2s_tready, m_axis_mm2s_tvalid]
+
+        # output signals
+        s_axis_s2mm_tdata = VhdlSignal("s_axis_s2mm_tdata",
+                                   VhdlType.VhdlStdLogicVector(AXI_STREAM_WIDTH, "0"))
+        s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep",
+                                   VhdlType.VhdlStdLogicVector(4, "0"))
+        s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast",
+                                   VhdlType.VhdlStdLogic("0"))
+        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready",
+                                    VhdlType.VhdlStdLogic("0"))
+        s_axis_s2mm_tvalid = VhdlSignal("s_axis_s2mm_tvalid",
+                                    VhdlType.VhdlStdLogic("0"))
+        out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep,
+                    s_axis_s2mm_tlast, s_axis_s2mm_tready,
+                    s_axis_s2mm_tvalid]
+
+        component = self.files[0].component()
+        component.in_port = [m_axis_mm2s_tdata]
+
+        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(7, "0"))
+        component.out_port = [ret_sig]
+        #
+        ret_component = Return([component], [ret_sig], [out_sigs[0]])
+
+        libraries = [VhdlLibrary("ieee",["ieee.std_logic_1164.all"]),
+                     VhdlLibrary(None,["work.the_filter_package.all"])]
+        #
+        return VhdlModule(node.name, libraries, params, ret_component)
+
+
+
+
     @property
     def module(self):
         if self._module:
             return self._module
         return self.codegen(indent=self.indent)
+
 
 class VhdlProject1(object):
 
@@ -500,7 +550,7 @@ class VhdlModule(VhdlNode):
 
     _fields = ["entity", "architecture"]
 
-    def __init__(self, name="", libraries=[], entity=[], architecture=[]):
+    def __init__(self, name="", libraries=[], inport_slice=None, entity=[], architecture=[]):
         """Initialize VhdlModule node.
 
         :param name: str containing name of module
@@ -510,14 +560,17 @@ class VhdlModule(VhdlNode):
         :param architecture: list containing vhdl nodes, describing body of
             architecture
         """
-        in_port_info = [(port.name, "in") for port in entity[:-1]]
-        out_port_info = [("MODULE_OUT", "out")]
+        if inport_slice:
+            pass
+        else:
+            in_port_info = [(port.name, "in") for port in entity[:-1]]
+            out_port_info = [(port.name, "out") for port in entity[-1:]]
 
-        super(VhdlModule, self).__init__([],
-                                         entity[:-1],
-                                         in_port_info,
-                                         entity[-1:],
-                                         out_port_info)
+            super(VhdlModule, self).__init__([],
+                                             entity[:-1],
+                                             in_port_info,
+                                             entity[-1:],
+                                             out_port_info)
         self.name = name
         self.libraries = libraries
         self.entity = entity
