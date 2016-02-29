@@ -121,7 +121,7 @@ class VhdlFile(VhdlBaseNode, File):
 
     @classmethod
     def fromPrebuilt(cls, name="prebuilt", path=""):
-        vhdlfile = VhdlFile(name, [], "")
+        vhdlfile = VhdlFile(name, body=[],path= "")
         vhdlfile.generated = False
         vhdlfile.file_path = path
         return vhdlfile
