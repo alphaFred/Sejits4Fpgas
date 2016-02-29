@@ -90,7 +90,7 @@ class VhdlDotGenLabeller(DotGenLabeller):
 
     def visit_VhdlBinaryOp(self, node):
         op_decode = {0: "Add", 1 : "Sub", 2: "Mul"}
-        return op_decode[node.op] + " ; " + "d=" + str(node.d)
+        return op_decode[node.op] "\n" + "d=" + str(node.d) + " | " + "dprev=" + str(node.dprev)
 
     def visit_VhdlComponent(self, node):
         return node.name + "\n" + "d=" + str(node.d) + " | " + "dprev=" + str(node.dprev)
