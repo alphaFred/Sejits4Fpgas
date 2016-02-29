@@ -94,7 +94,10 @@ class VhdlCodegen(ast.NodeVisitor):
 
     def visit_VhdlModule(self, node):
         self.src_code += self._generate_libs(node) + "\n\n"
-        port_src = self._port_block((node.entity,[]))
+        #
+        self._generate_ports(node)
+        #
+        port_src = self._port_block((node.in_port, node.out_port))
         self.src_code += self.ENTITY_noG.format(entity_name=node.name,
                                                 port_declarations=port_src) + "\n\n"
         self.visit(node.architecture)
@@ -216,8 +219,8 @@ class VhdlCodegen(ast.NodeVisitor):
         block_indent = " " * len("port(")
         #
         port_block = []
-        port_block.extend([p.name + " : " + "in" + " " + str(p.vhdl_type) for p in ports[0]])
-        port_block.extend([p.name + " : " + "out" + " " + str(p.vhdl_type) for p in ports[1]])
+        port_block.extend([p.name + " : " + p.direction + " " + str(p.value.vhdl_type) for p in ports[0]])
+        port_block.extend([p.name + " : " + p.direction + " " + str(p.value.vhdl_type) for p in ports[1]])
         join_statement = ";\n" + self._tab() + block_indent
         #
         s = "\n"
