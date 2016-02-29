@@ -279,12 +279,9 @@ class BB_ConvolveTransformer(BB_BaseFuncTransformer):
         inport_info = [("CONV_IN", "in")]
         outport_info = [("CONV_OUT", "out")]
         defn = VhdlComponent(name="bb_convolve",
-                             prev=[],
                              generic_slice=None,
                              delay=10,
-                             in_port=[],
                              inport_info=inport_info,
-                             out_port=[],
                              outport_info=outport_info)
         return defn
 
