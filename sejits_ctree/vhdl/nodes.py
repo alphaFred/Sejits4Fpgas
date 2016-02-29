@@ -87,10 +87,9 @@ class VhdlFile(VhdlBaseNode, File):
     generated = True
     file_path = ""
 
-    def __init__(self, name="generated", libraries=[], body=[], path=""):
+    def __init__(self, name="generated", body=[], path=""):
         VhdlBaseNode.__init__(self)
         File.__init__(self, name, body, path)
-        self.libraries = libraries
 
     @property
     def file_path(self):
@@ -121,8 +120,8 @@ class VhdlFile(VhdlBaseNode, File):
         return VhdlCodegen(indent).visit(self)
 
     @classmethod
-    def fromPrebuilt(cls, name="prebuilt", libraries=[], path=""):
-        vhdlfile = VhdlFile(name, libraries, [], "")
+    def fromPrebuilt(cls, name="prebuilt", path=""):
+        vhdlfile = VhdlFile(name, [], "")
         vhdlfile.generated = False
         vhdlfile.file_path = path
         return vhdlfile
@@ -201,7 +200,7 @@ class VhdlProject(Project):
         inport_slice = slice(0, len(in_sigs))
         params = in_sigs + out_sigs
         module = VhdlModule("accel_wrapper", libraries, inport_slice, params, ret_component)
-        return VhdlFile("accel_wrapper", [], [module])
+        return VhdlFile("accel_wrapper", [module])
 
     @property
     def module(self):
