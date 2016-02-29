@@ -28,6 +28,7 @@ class VhdlDotGenVisitor(ast.NodeVisitor):
         """ Format Dot nodes. """
         formats = {"VhdlModule": ', style=filled, fillcolor="#00EB5E"',
                    "VhdlBinaryOp": ', style=filled, fillcolor="#C2FF66"',
+                   "VhdlComponent": ', style=filled, fillcolor="#C2FF66"',
                    "VhdlReturn": ', style=filled, fillcolor="#C2FF66"',
                    "VhdlDReg": ', style=filled, shape=rect, fillcolor="#99CCFF"',
                    "VhdlSource": ', style=filled, fillcolor="#FFF066"',
@@ -90,6 +91,9 @@ class VhdlDotGenLabeller(DotGenLabeller):
     def visit_VhdlBinaryOp(self, node):
         op_decode = {0: "Add", 1 : "Sub", 2: "Mul"}
         return op_decode[node.op] + " ; " + "d=" + str(node.d)
+
+    def visit_VhdlComponent(self, node):
+        return node.name + "\n" + "d=" + str(node.d) + " | " + "dprev=" + str(node.dprev)
 
     def visit_VhdlConstant(self, node):
         return node.value
