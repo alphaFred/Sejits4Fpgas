@@ -127,6 +127,13 @@ class VhdlFile(VhdlBaseNode, File):
         vhdlfile.file_path = path
         return vhdlfile
 
+    def component(self):
+        comp = VhdlComponent(name=self.name,
+                             delay=self.body[0].architecture.dprev,
+                             inport_info=self.body[0].inport_info,
+                             outport_info=self.body[0].outport_info)
+        return comp
+
 
 class VhdlProject(Project):
 
@@ -183,17 +190,18 @@ class VhdlProject(Project):
         component = self.files[0].component()
         component.in_port = [m_axis_mm2s_tdata]
 
-        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(7, "0"))
+        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
         component.out_port = [ret_sig]
         #
-        ret_component = Return([component], [ret_sig], [out_sigs[0]])
+        ret_component = VhdlReturn([component], [ret_sig], [out_sigs[0]])
 
         libraries = [VhdlLibrary("ieee",["ieee.std_logic_1164.all"]),
                      VhdlLibrary(None,["work.the_filter_package.all"])]
         #
         inport_slice = slice(0, len(in_sigs))
         params = in_sigs + out_sigs
-        return VhdlModule("accel_wrapper", libraries, params, ret_component)
+        module = VhdlModule("accel_wrapper", libraries, inport_slice, params, ret_component)
+        return VhdlFile("accel_wrapper", [], [module])
 
     @property
     def module(self):
@@ -562,16 +570,23 @@ class VhdlModule(VhdlNode):
             architecture
         """
         if inport_slice:
-            pass
+            in_port_info = [(port.name, "in") for port in entity[inport_slice]]
+            in_port = entity[inport_slice]
+            #
+            out_port_info = [(port.name, "out") for port in entity[inport_slice.stop:]]
+            out_port = entity[inport_slice.stop:]
         else:
             in_port_info = [(port.name, "in") for port in entity[:-1]]
+            in_port = entity[:-1]
+            #
             out_port_info = [(port.name, "out") for port in entity[-1:]]
+            out_port = entity[-1:]
 
-            super(VhdlModule, self).__init__([],
-                                             entity[:-1],
-                                             in_port_info,
-                                             entity[-1:],
-                                             out_port_info)
+        super(VhdlModule, self).__init__([],
+                                         in_port,
+                                         in_port_info,
+                                         out_port,
+                                         out_port_info)
         self.name = name
         self.libraries = libraries
         self.entity = entity
