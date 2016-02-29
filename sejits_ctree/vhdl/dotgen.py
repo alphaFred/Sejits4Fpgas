@@ -31,6 +31,7 @@ class VhdlDotGenVisitor(ast.NodeVisitor):
                    "VhdlReturn": ', style=filled, fillcolor="#C2FF66"',
                    "VhdlDReg": ', style=filled, shape=rect, fillcolor="#99CCFF"',
                    "VhdlSource": ', style=filled, fillcolor="#FFF066"',
+                   "VhdlSink": ', style=filled, fillcolor="#FFF066"',
                    "VhdlConstant": ', style=filled, fillcolor="#FFF066"'
                    }
         return formats.get(type(node).__name__, "")
@@ -95,6 +96,9 @@ class VhdlDotGenLabeller(DotGenLabeller):
 
     def visit_VhdlDReg(self, node):
         return "d=" + str(node.d)
+
+    def visit_VhdlSink(self, node):
+        return node.name
 
     def visit_VhdlSource(self, node):
         return node.name

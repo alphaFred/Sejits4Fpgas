@@ -436,6 +436,15 @@ class VhdlSource(VhdlSymbol):
         self.name = name
         self.vhdl_type = vhdl_type
 
+class VhdlSink(VhdlSymbol):
+    """Base class for kernel sink signal."""
+
+    _fields = ["name", "vhdl_type"]
+
+    def __init__(self, name="", vhdl_type=None):
+        self.name = name
+        self.vhdl_type = vhdl_type
+
 
 class VhdlSignal(VhdlSymbol):
     """Base class for vhdl signal."""

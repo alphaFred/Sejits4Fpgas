@@ -10,7 +10,7 @@ from collections import namedtuple
 from nodes import VhdlType
 #
 from nodes import VhdlBinaryOp, VhdlComponent, VhdlConstant, VhdlModule
-from nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal, VhdlDReg
+from nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal, VhdlSink, VhdlDReg
 from nodes import VhdlLibrary
 from ctree.c.nodes import Op
 
@@ -147,7 +147,7 @@ class VhdlTransformer(ast.NodeTransformer):
         value = self.visit(node.value)
 
         con_sig = self._connect(value)
-        ret_signal = VhdlSignal("MODULE_OUT", con_sig.vhdl_type)
+        ret_signal = VhdlSink("MODULE_OUT", con_sig.vhdl_type)
         self.symbols[ret_signal.name] = ret_signal
         #
         vhdl_node = VhdlReturn(prev=[value],
