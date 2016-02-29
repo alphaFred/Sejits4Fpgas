@@ -139,6 +139,8 @@ class VhdlProject(Project):
         from sejits_ctree.vhdl.jit_synth import VhdlSynthModule
         self._module = VhdlSynthModule()
 
+        self.files.append(self._generate_wrapper())
+
         for f in self.files:
             submodule = f._compile(f.codegen(self.indent))
             if submodule:
@@ -189,10 +191,9 @@ class VhdlProject(Project):
         libraries = [VhdlLibrary("ieee",["ieee.std_logic_1164.all"]),
                      VhdlLibrary(None,["work.the_filter_package.all"])]
         #
-        return VhdlModule(node.name, libraries, params, ret_component)
-
-
-
+        inport_slice = slice(0, len(in_sigs))
+        params = in_sigs + out_sigs
+        return VhdlModule("accel_wrapper", libraries, params, ret_component)
 
     @property
     def module(self):
