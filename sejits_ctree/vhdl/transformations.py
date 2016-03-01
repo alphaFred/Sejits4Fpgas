@@ -282,7 +282,8 @@ class BB_ConvolveTransformer(BB_BaseFuncTransformer):
                              generic_slice=None,
                              delay=10,
                              inport_info=inport_info,
-                             outport_info=outport_info)
+                             outport_info=outport_info,
+                             library="work.Convolve")
         return defn
 
 
