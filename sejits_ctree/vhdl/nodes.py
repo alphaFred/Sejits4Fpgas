@@ -336,7 +336,7 @@ class VhdlNode(VhdlBaseNode):
     _fields = ["prev"]
 
     def __init__(self, prev=[], in_port=[], inport_info=None, out_port=[],
-                 outport_info=None):
+                 outport_info=None, library=""):
         """Initialize VhdlNode node.
 
         :param prev: list of previous nodes in DAG
@@ -360,6 +360,7 @@ class VhdlNode(VhdlBaseNode):
         self.outport_info = outport_info
         # initialize generic list
         self.generic = []
+        self.library = library
 
 
 class VhdlSource(VhdlSymbol):
@@ -496,7 +497,8 @@ class VhdlBinaryOp(VhdlNode):
                                            in_port,
                                            in_port_info,
                                            out_port,
-                                           out_port_info)
+                                           out_port_info,
+                                           "work.BasicArith")
 
         # operation decoder with (Operation ID, Delay)
         op_decoder = {Op.Add:(0, 4),
@@ -547,7 +549,7 @@ class VhdlComponent(VhdlNode):
     _fields = ["prev"]
 
     def __init__(self, name="", prev=[], generic_slice=None, delay=-1, in_port=[],
-                 inport_info=None, out_port=[], outport_info=None):
+                 inport_info=None, out_port=[], outport_info=None, library=""):
         """Initialize VhdlComponent node.
 
         :param prev: list of previous nodes in DAG
@@ -569,7 +571,8 @@ class VhdlComponent(VhdlNode):
                                             in_port,
                                             inport_info,
                                             out_port,
-                                            outport_info)
+                                            outport_info,
+                                            library)
 
         if generic_slice:
             self.generic = in_port[generic_slice]
@@ -609,7 +612,8 @@ class VhdlDReg(VhdlNode):
                                        in_port,
                                        inport_info,
                                        out_port,
-                                       outport_info)
+                                       outport_info,
+                                       "work.DReg")
         if delay >= 0:
             self.d = delay
         else:

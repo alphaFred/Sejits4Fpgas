@@ -86,12 +86,12 @@ class VhdlCodegen(ast.NodeVisitor):
         port_src = self._port_map((node.in_port, node.out_port))
         if node.generic:
             self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
-                                                            component_lib="work.BasicArith",
+                                                            component_lib=node.library,
                                                             generic_map=generic_src,
                                                             port_map=port_src) + "\n"
         else:
             self.architecture_body += self.COMPONENT_noG.format(instance_name=self._generate_name(node),
-                                                                component_lib="work.BasicArith",
+                                                                component_lib=node.library,
                                                                 port_map=port_src) + "\n"
 
     def visit_VhdlReturn(self, node):
@@ -107,12 +107,12 @@ class VhdlCodegen(ast.NodeVisitor):
         port_src = self._port_map((node.in_port, node.out_port))
         if node.generic:
             self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
-                                                            component_lib="work.BasicArith",
+                                                            component_lib=node.library,
                                                             generic_map=generic_src,
                                                             port_map=port_src) + "\n"
         else:
             self.architecture_body += self.COMPONENT_noG.format(instance_name=self._generate_name(node),
-                                                                component_lib="work.BasicArith",
+                                                                component_lib=node.library,
                                                                 port_map=port_src) + "\n"
 
     def visit_VhdlDReg(self, node):
@@ -124,12 +124,12 @@ class VhdlCodegen(ast.NodeVisitor):
         port_src = self._port_map((node.in_port, node.out_port))
         if node.generic:
             self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
-                                                            component_lib="work.BasicArith",
+                                                            component_lib=node.library,
                                                             generic_map=generic_src,
                                                             port_map=port_src) + "\n"
         else:
             self.architecture_body += self.COMPONENT_noG.format(instance_name=self._generate_name(node),
-                                                                component_lib="work.BasicArith",
+                                                                component_lib=node.library,
                                                                 port_map=port_src) + "\n"
 
     def visit_VhdlFile(self, node):
