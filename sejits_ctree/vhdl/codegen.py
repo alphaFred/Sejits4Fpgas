@@ -211,15 +211,17 @@ class VhdlCodegen(ast.NodeVisitor):
             #
             generic_info = node.generic_info
             generic_port = node.generic
-        except:
-            raise TransformationError("msg0")
+        except AttributeError as ae:
+            raise TransformationError(ae.message)
 
         if all([type(port) is Port for port in in_port]):
             # continue if node already has ports
             pass
         else:
             if len(inport_info) != len(in_port):
-                raise TransformationError("msg1")
+                error_msg = "Number of in ports does not match inport" +\
+                    " information of node %s" % node.name
+                raise TransformationError(error_msg)
 
             cmd_info = [("CLK", "in"), ("EN", "in"), ("RST", "in")]
             cmd_symb = [VhdlSignal("CLK", VhdlType.VhdlStdLogic()),
@@ -233,7 +235,7 @@ class VhdlCodegen(ast.NodeVisitor):
             pass
         else:
             if len(outport_info) != len(out_port):
-                raise TransformationError("msg2")
+                raise TransformationError("Number of out ports does not match outport information of node %s" % node.name)
 
             node.out_port = [Port(info[0], info[1], port) for info,port in zip(outport_info, out_port)]
 
@@ -242,7 +244,7 @@ class VhdlCodegen(ast.NodeVisitor):
             pass
         else:
             if len(generic_info) != len(generic_port):
-                raise TransformationError("msg3")
+                raise TransformationError("Number of generic ports does not match generic information of node %s" % node.name)
 
             node.generic = [Generic(info[0], info[1], port) for info,port in zip(generic_info, generic_port)]
 
