@@ -32,7 +32,7 @@ UNARY_OP = namedtuple("UNARY_OP", ["i_args", "out_arg"])
 
 class VhdlKeywordTransformer(ast.NodeTransformer):
 
-    """ Transform Name nodes with VHDL keywords. """
+    """Transform Name nodes with VHDL keywords."""
 
     # Vhdl keyword set; change every occurence in pyhton AST
     VHDL_Keywords = ({"abs", "access", "after", "alias", "all", "and",
@@ -56,7 +56,7 @@ class VhdlKeywordTransformer(ast.NodeTransformer):
                       "with", "xnor", "xor"})
 
     def visit_Name(self, node):
-        """ Change id of Name node if it is a VHDL keyword. """
+        """Change id of Name node if it is a VHDL keyword."""
         if node.id.lower() in self.VHDL_Keywords:
             node.id = "sig_" + node.id
         return node
@@ -70,6 +70,7 @@ class VhdlTransformer(ast.NodeTransformer):
         self.assignments = set()
         self.n_con_signals = 0
 
+        # TODO: implement direct parameter processing
         for source in ["n"]:
             source_node = VhdlSource(source, VhdlType.VhdlStdLogicVector(8))
             self.symbols[source] = source_node
@@ -243,12 +244,12 @@ class BB_BaseFuncTransformer(ast.NodeTransformer):
             error_msg = "No function definition provided for %s backend"\
                 % self.backend
             raise TransformationError(error_msg)
+
         func_def = func_def_getter()
-
+        # add function definition to class variable lifted_functions
         BB_BaseFuncTransformer.lifted_functions.append(func_def)
-
-        c_node = FunctionCall(SymbolRef(func_def.name), node.args)
-        return c_node
+        # return C node FunctionCall
+        return FunctionCall(SymbolRef(func_def.name), node.args)
 
     @property
     def gen_func_name(self):
