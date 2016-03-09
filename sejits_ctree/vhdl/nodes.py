@@ -282,7 +282,9 @@ class VhdlType(object):
                    and default in self.std_logic_dvalues:
                     self.default = ["'" + ditm + "'" for ditm in default]
                 else:
-                    raise ValueError
+                    error_msg = "Illegal default value for {0}".\
+                        format(self.__class__.__name__)
+                    raise TransformationError(error_msg)
             else:
                 self.default = "'0'"
 
@@ -293,7 +295,9 @@ class VhdlType(object):
             if size > 1:
                 self.len = size
             else:
-                raise ValueError
+                error_msg = "Parameter size of {0} must be > 1".\
+                    format(self.__class__.__name__)
+                raise TransformationError(error_msg)
 
             # update vhdl_type to include (self.len-1 downto 0)
             self.vhdl_type = self.vhdl_type + "({} downto 0)"\
@@ -312,10 +316,10 @@ class VhdlType(object):
                     else:
                         error_msg = "Length of default = {0}; " + \
                                     "should be {1} or {2}".format(len(temp_default), 1, self.len)
-                        raise ValueError(error_msg)
+                        raise TransformationError(error_msg)
                 else:
                     error_msg = "Values of default not in std_logic_dvalues"
-                    raise ValueError(error_msg)
+                    raise TransformationError(error_msg)
             else:
                 self.default = "'" + "0" * self.len + "'"
 
@@ -336,7 +340,7 @@ class VhdlNode(VhdlBaseNode):
     _fields = ["prev"]
 
     def __init__(self, prev=[], in_port=[], inport_info=None, out_port=[],
-                 outport_info=None, library=""):
+                 outport_info=None):
         """Initialize VhdlNode node.
 
         :param prev: list of previous nodes in DAG
@@ -360,7 +364,6 @@ class VhdlNode(VhdlBaseNode):
         self.outport_info = outport_info
         # initialize generic list
         self.generic = []
-        self.library = library
 
 
 class VhdlSource(VhdlSymbol):
@@ -447,10 +450,12 @@ class VhdlModule(VhdlNode):
             architecture
         """
         if inport_slice:
-            in_port_info = [(port.name, "in") for port in entity[inport_slice]]
+            in_port_info = [(port.name, "in") for port in
+                entity[inport_slice]]
             in_port = entity[inport_slice]
             #
-            out_port_info = [(port.name, "out") for port in entity[inport_slice.stop:]]
+            out_port_info = [(port.name, "out") for port in
+                entity[inport_slice.stop:]]
             out_port = entity[inport_slice.stop:]
         else:
             in_port_info = [(port.name, "in") for port in entity[:-1]]
@@ -497,9 +502,8 @@ class VhdlBinaryOp(VhdlNode):
                                            in_port,
                                            in_port_info,
                                            out_port,
-                                           out_port_info,
-                                           "work.BasicArith")
-
+                                           out_port_info)
+        self.library = "work.BasicArith"
         # operation decoder with (Operation ID, Delay)
         op_decoder = {Op.Add:(0, 4),
                       Op.Sub:(1, 4),
@@ -548,8 +552,9 @@ class VhdlComponent(VhdlNode):
 
     _fields = ["prev"]
 
-    def __init__(self, name="", prev=[], generic_slice=None, delay=-1, in_port=[],
-                 inport_info=None, out_port=[], outport_info=None, library=""):
+    def __init__(self, name="", prev=[], generic_slice=None, delay=-1,
+                 in_port=[], inport_info=None, out_port=[], outport_info=None,
+                 library=""):
         """Initialize VhdlComponent node.
 
         :param prev: list of previous nodes in DAG
@@ -571,8 +576,9 @@ class VhdlComponent(VhdlNode):
                                             in_port,
                                             inport_info,
                                             out_port,
-                                            outport_info,
-                                            library)
+                                            outport_info)
+
+        self.library = library
 
         if generic_slice:
             self.generic = in_port[generic_slice]
@@ -612,8 +618,9 @@ class VhdlDReg(VhdlNode):
                                        in_port,
                                        inport_info,
                                        out_port,
-                                       outport_info,
-                                       "work.DReg")
+                                       outport_info)
+        self.library = "work.DReg"
+
         if delay >= 0:
             self.d = delay
         else:
