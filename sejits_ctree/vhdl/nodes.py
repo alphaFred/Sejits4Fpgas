@@ -375,6 +375,7 @@ class VhdlSource(VhdlSymbol):
         self.name = name
         self.vhdl_type = vhdl_type
 
+
 class VhdlSink(VhdlSymbol):
     """Base class for kernel sink signal."""
 
@@ -431,7 +432,6 @@ class Generic(VhdlSymbol):
         self.name = name
         self.vhdl_type = vhdl_type
         self.value = value
-
 
 
 class VhdlModule(VhdlNode):
