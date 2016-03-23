@@ -277,10 +277,16 @@ class BB_ConvolveTransformer(BB_BaseFuncTransformer):
         return FunctionDecl(return_type, self.func_name, params, defn)
 
     def get_func_def_vhdl(self):
-        inport_info = [("CONV_IN", "in")]
-        outport_info = [("CONV_OUT", "out")]
+        inport_info = [("FILTERMATRIX", "filtMASK"),
+                       ("FILTER_SCALE", VhdlType.VhdlInteger()),
+                       ("IMG_WIDTH", VhdlType.VhdlPositive()),
+                       ("IMG_HEIGHT", VhdlType.VhdlPositive()),
+                       ("IN_BITWIDTH", VhdlType.VhdlPositive()),
+                       ("OUT_BITWIDTH", VhdlType.VhdlPositive()),
+                       ("DATA_IN", "in")]
+        outport_info = [("DATA_OUT", "out")]
         defn = VhdlComponent(name="bb_convolve",
-                             generic_slice=None,
+                             generic_slice=slice(0,5),
                              delay=10,
                              inport_info=inport_info,
                              outport_info=outport_info,
