@@ -241,6 +241,9 @@ class VhdlType(object):
             self.vhdl_type = self.vhdl_type + "({} downto 0)"\
                 .format(self.len - 1)
 
+    class VhdlPositive(_VhdlType):
+        vhdl_type = "positive"
+
     class VhdlInteger(_VhdlType):
         vhdl_type = "integer"
 
@@ -511,7 +514,7 @@ class VhdlBinaryOp(VhdlNode):
 
         if type(op) in op_decoder:
             self.op, self.d = op_decoder[type(op)]
-            self.generic_info = [("OP", VhdlType.VhdlInteger)]
+            self.generic_info = [("OP", VhdlType.VhdlInteger())]
             self.generic = [self.op]
         else:
             raise TransformationError("Unsupported binary operation %s" % op)
