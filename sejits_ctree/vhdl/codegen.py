@@ -263,3 +263,55 @@ class VhdlCodegen(ast.NodeVisitor):
             for sublib in lib.sublib:
                 src += "use " + sublib + ";\n"
         return src
+
+
+def type_conversion(source, sink):
+    type_conv = {"integer": {"integer":
+                             ("{}", lambda src, snk: (src.name)),
+                             "signed":
+                             ("to_signed({0}, {1}'length)",
+                                 lambda src, snk: (src.name, snk.name)),
+                             "unsigned":
+                             ("to_unsigned({0}, {1}'length)",
+                                 lambda src, snk: (src.name, snk.name)),
+                             "std_logic_vector":
+                             ("std_logic_vector(to_signed({0}, {1}'length))",
+                                 lambda src, snk: (src.name, snk.name))},
+                 "signed": {"integer":
+                            ("to_integer({})",
+                                lambda src, snk: (src.name)),
+                            "signed":
+                            ("{}",
+                                lambda src, snk: (src.name)),
+                            "unsigned":
+                            ("unsigned(std_logic_vector({}))",
+                                lambda src, snk: (src.name)),
+                            "std_logic_vector":
+                            ("std_logic_vector({})",
+                                lambda src, snk: (src.name))},
+                 "unsigned": {"integer":
+                              ("to_integer({})",
+                                  lambda src, snk: (src.name)),
+                              "signed":
+                              ("{}",
+                                  lambda src, snk: (src.name)),
+                              "unsigned":
+                              ("unsigned(std_logic_vector({}))",
+                                  lambda src, snk: (src.name)),
+                              "std_logic_vector":
+                              ("std_logic_vector({})",
+                                  lambda src, snk: (src.name))},
+                 "std_logic_vector": {"integer":
+                                      ("to_integer(signed({}))",
+                                          lambda src, snk: (src.name)),
+                                      "signed":
+                                      ("signed({})",
+                                          lambda src, snk: (src.name)),
+                                      "unsigned":
+                                      ("unsigned({})",
+                                          lambda src, snk: (src.name)),
+                                      "std_logic_vector":
+                                      ("{}",
+                                          lambda src, snk: (src.name))}}
+    frmt_string, lambda_func = type_conv[source][sink]
+    return frmt_string.format(*lambda_func(source, sink))
