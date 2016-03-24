@@ -416,12 +416,13 @@ class VhdlConstant(VhdlSymbol):
 class Port(VhdlSymbol):
     """Base class of Vhld Port item."""
 
-    _fields = ["name", "direction", "value"]
+    _fields = ["name", "direction", "vhdl_type", "value"]
 
-    def __init__(self, name="", direction="", value=None):
+    def __init__(self, name="", direction="", vhdl_type=None, value=None):
         """ Initialize name, direction and value of Port. """
         self.name = name
         self.direction = direction
+        self.vhdl_type = vhdl_type
         self.value = value
 
 
