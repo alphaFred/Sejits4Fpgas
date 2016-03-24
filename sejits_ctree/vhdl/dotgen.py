@@ -2,6 +2,7 @@
 __author__ = 'philipp ebensberger'
 
 import ast
+import nodes
 from ctree.util import enumerate_flatten
 from ctree.dotgen import DotGenLabeller
 
@@ -95,7 +96,10 @@ class VhdlDotGenLabeller(DotGenLabeller):
         return "dprev=" + str(node.dprev)
 
     def visit_VhdlConstant(self, node):
-        return node.value
+        if isinstance(node.vhdl_type, nodes.VhdlType.VhdlArray):
+            return str(node.vhdl_type)
+        else:
+            return str(node.value)
 
     def visit_VhdlDReg(self, node):
         return "d=" + str(node.d)
