@@ -203,6 +203,8 @@ class VhdlCodegen(ast.NodeVisitor):
     def _generate_ports(self, node):
         # TODO add exception handling
         try:
+            node.finalize_ports()
+            #
             inport_info = node.inport_info
             in_port = node.in_port
             #
@@ -223,12 +225,14 @@ class VhdlCodegen(ast.NodeVisitor):
                     " information of node %s" % node.name
                 raise TransformationError(error_msg)
 
-            cmd_info = [("CLK", "in"), ("EN", "in"), ("RST", "in")]
+            cmd_info = [("CLK", "in", VhdlType.VhdlStdLogic()),
+                        ("EN", "in", VhdlType.VhdlStdLogic()),
+                        ("RST", "in", VhdlType.VhdlStdLogic())]
             cmd_symb = [VhdlSignal("CLK", VhdlType.VhdlStdLogic()),
                         VhdlSignal("EN", VhdlType.VhdlStdLogic()),
                         VhdlSignal("RST", VhdlType.VhdlStdLogic())]
-            cmd_port = [Port(info[0], info[1], port) for info,port in zip(cmd_info, cmd_symb)]
-            node.in_port = cmd_port + [Port(info[0], info[1], port) for info,port in zip(inport_info, in_port)]
+            cmd_port = [Port(info[0], info[1], info[2], port) for info,port in zip(cmd_info, cmd_symb)]
+            node.in_port = cmd_port + [Port(info[0], info[1], None, port) for info,port in zip(inport_info, in_port)]
 
         if all([type(port) is Port for port in out_port]):
             # continue if node already has ports
@@ -237,7 +241,7 @@ class VhdlCodegen(ast.NodeVisitor):
             if len(outport_info) != len(out_port):
                 raise TransformationError("Number of out ports does not match outport information of node %s" % node.name)
 
-            node.out_port = [Port(info[0], info[1], port) for info,port in zip(outport_info, out_port)]
+            node.out_port = [Port(info[0], info[1], None, port) for info,port in zip(outport_info, out_port)]
 
         if all([type(port) is Generic for port in generic_port]):
             # continue if node already has generics
