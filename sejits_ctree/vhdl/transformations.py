@@ -149,6 +149,15 @@ class VhdlTransformer(ast.NodeTransformer):
         else:
             raise TransformationError("All elements of array must be constant")
 
+    def visit_Tuple(self, node):
+        body = map(self.visit, node.elts)
+        if all([isinstance(bdy_elem, VhdlConstant) for bdy_elem in body]):
+            return VhdlConstant(name="",
+                                vhdl_type=VhdlType.VhdlArray.from_list(body),
+                                value=body)
+        else:
+            raise TransformationError("All elements of array must be constant")
+
     def visit_Constant(self, node):
         vhdl_sym = VhdlConstant(name="",
                                 vhdl_type=VhdlType.VhdlStdLogicVector(8),
@@ -283,10 +292,10 @@ class BB_ConvolveTransformer(BB_BaseFuncTransformer):
                        ("IMG_HEIGHT", VhdlType.VhdlPositive()),
                        ("IN_BITWIDTH", VhdlType.VhdlPositive()),
                        ("OUT_BITWIDTH", VhdlType.VhdlPositive()),
-                       ("DATA_IN", "in")]
-        outport_info = [("DATA_OUT", "out")]
+                       ("DATA_IN", "in", VhdlType.VhdlStdLogicVector(8))]
+        outport_info = [("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
         defn = VhdlComponent(name="bb_convolve",
-                             generic_slice=slice(0,5),
+                             generic_slice=slice(0,6),
                              delay=10,
                              inport_info=inport_info,
                              outport_info=outport_info,
