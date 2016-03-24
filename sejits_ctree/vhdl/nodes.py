@@ -368,6 +368,9 @@ class VhdlNode(VhdlBaseNode):
         # initialize generic list
         self.generic = []
 
+    def finalize_ports(self):
+        pass
+
 
 class VhdlSource(VhdlSymbol):
     """Base class for kernel source signal."""
@@ -576,26 +579,26 @@ class VhdlComponent(VhdlNode):
         :raises TransformationError: raised if delay is not >= 0
         """
         self.name = name
+        self.generic_slice = generic_slice
         super(VhdlComponent, self).__init__(prev,
                                             in_port,
                                             inport_info,
                                             out_port,
                                             outport_info)
-
         self.library = library
-
-        if generic_slice:
-            self.generic = in_port[generic_slice]
-            self.generic_info = inport_info[generic_slice]
-            #
-            self.in_port = in_port[generic_slice.stop:]
-            self.inport_info = inport_info[generic_slice.stop:]
 
         if delay >= 0:
             self.d = delay
         else:
             error_msg = "Delay of Component must be >= 0"
             raise TransformationError(error_msg)
+
+    def finalize_ports(self):
+        if self.generic_slice:
+            self.generic = self.in_port[self.generic_slice]
+            self.in_port = self.in_port[self.generic_slice.stop:]
+            self.generic_info = self.inport_info[self.generic_slice]
+            self.inport_info = self.inport_info[self.generic_slice.stop:]
 
 
 class VhdlDReg(VhdlNode):
