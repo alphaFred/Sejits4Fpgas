@@ -225,6 +225,9 @@ class VhdlType(object):
         def __str__(self):
             return self.vhdl_type
 
+        def format(self, value):
+            return str(value)
+
     class VhdlSigned(_VhdlType):
         vhdl_type = "signed"
 
@@ -264,6 +267,9 @@ class VhdlType(object):
 
         def __len__(self):
             return self.len
+
+        def format(self, value):
+            return "(" + ",".join([str(itm) for itm in value]) + ")"
 
         @classmethod
         def from_list(cls, itms):
@@ -415,6 +421,9 @@ class VhdlConstant(VhdlSymbol):
         self.vhdl_type = vhdl_type
         self.value = value
 
+    def __str__(self):
+        return str(self.value)
+
 
 class Port(VhdlSymbol):
     """Base class of Vhld Port item."""
@@ -439,6 +448,12 @@ class Generic(VhdlSymbol):
         self.name = name
         self.vhdl_type = vhdl_type
         self.value = value
+
+    def gmap(self):
+        if isinstance(self.value, VhdlConstant):
+            return self.name + " => " + self.vhdl_type.format(self.value.value)
+        else:
+            raise TransformationError("Generic value must be constant")
 
 
 class VhdlModule(VhdlNode):
@@ -519,7 +534,7 @@ class VhdlBinaryOp(VhdlNode):
         if type(op) in op_decoder:
             self.op, self.d = op_decoder[type(op)]
             self.generic_info = [("OP", VhdlType.VhdlInteger())]
-            self.generic = [self.op]
+            self.generic = [VhdlConstant(VhdlType.VhdlInteger(), self.op)]
         else:
             raise TransformationError("Unsupported binary operation %s" % op)
 
