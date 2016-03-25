@@ -141,7 +141,7 @@ class VhdlCodegen(ast.NodeVisitor):
     def _generic_map(self, generics):
         block_indent = " " * len("generic map(")
         #
-        generic_map = [g.name + " => " + str(g.value) for g in generics]
+        generic_map = [g.gmap() for g in generics]
         join_statement = ",\n" + self._tab() + block_indent
         #
         s = "\n"
