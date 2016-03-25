@@ -225,9 +225,6 @@ class VhdlType(object):
         def __str__(self):
             return self.vhdl_type
 
-        def format(self, value):
-            return str(value)
-
     class VhdlSigned(_VhdlType):
         vhdl_type = "signed"
 
@@ -267,9 +264,6 @@ class VhdlType(object):
 
         def __len__(self):
             return self.len
-
-        def format(self, value):
-            return "(" + ",".join([str(itm) for itm in value]) + ")"
 
         @classmethod
         def from_list(cls, itms):
@@ -451,7 +445,7 @@ class Generic(VhdlSymbol):
 
     def gmap(self):
         if isinstance(self.value, VhdlConstant):
-            return self.name + " => " + self.vhdl_type.format(self.value.value)
+            return self.name + " => " + str(self.value)
         else:
             raise TransformationError("Generic value must be constant")
 

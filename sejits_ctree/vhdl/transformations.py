@@ -145,7 +145,7 @@ class VhdlTransformer(ast.NodeTransformer):
         if all([isinstance(bdy_elem, VhdlConstant) for bdy_elem in body]):
             return VhdlConstant(name="",
                                 vhdl_type=VhdlType.VhdlArray.from_list(body),
-                                value=body)
+                                value=tuple([elem.value for elem in body]))
         else:
             raise TransformationError("All elements of array must be constant")
 
@@ -154,7 +154,7 @@ class VhdlTransformer(ast.NodeTransformer):
         if all([isinstance(bdy_elem, VhdlConstant) for bdy_elem in body]):
             return VhdlConstant(name="",
                                 vhdl_type=VhdlType.VhdlArray.from_list(body),
-                                value=body)
+                                value=tuple([elem.value for elem in body]))
         else:
             raise TransformationError("All elements of array must be constant")
 

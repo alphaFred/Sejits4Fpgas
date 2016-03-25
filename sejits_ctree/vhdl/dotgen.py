@@ -96,10 +96,7 @@ class VhdlDotGenLabeller(DotGenLabeller):
         return "dprev=" + str(node.dprev)
 
     def visit_VhdlConstant(self, node):
-        if isinstance(node.vhdl_type, nodes.VhdlType.VhdlArray):
-            return str(node.vhdl_type)
-        else:
-            return str(node.value)
+        return str(node.value)
 
     def visit_VhdlDReg(self, node):
         return "d=" + str(node.d)
