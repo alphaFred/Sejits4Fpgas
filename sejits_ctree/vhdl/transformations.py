@@ -286,7 +286,7 @@ class BB_ConvolveTransformer(BB_BaseFuncTransformer):
         return FunctionDecl(return_type, self.func_name, params, defn)
 
     def get_func_def_vhdl(self):
-        inport_info = [("FILTERMATRIX", "filtMASK"),
+        inport_info = [("FILTERMATRIX", VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
                        ("FILTER_SCALE", VhdlType.VhdlInteger()),
                        ("IMG_WIDTH", VhdlType.VhdlPositive()),
                        ("IMG_HEIGHT", VhdlType.VhdlPositive()),
