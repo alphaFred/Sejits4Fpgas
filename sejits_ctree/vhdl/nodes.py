@@ -328,6 +328,9 @@ class VhdlType(object):
         def __len__(self):
             return self.len
 
+    class DummyType(_VhdlType):
+        pass
+
 
 class VhdlSymbol(VhdlBaseNode):
     """Base class for vhdl symbols."""
@@ -433,6 +436,8 @@ class VhdlConstant(VhdlSymbol):
     def __str__(self):
         return str(self.value)
 
+port_info = namedtuple("port_info", ("name", "direction", "vhdl_type"))
+
 
 class Port(VhdlSymbol):
     """Base class of Vhld Port item."""
@@ -526,8 +531,16 @@ class VhdlBinaryOp(VhdlNode):
 
         :raises TransformationError: raised if type of op is not supported
         """
-        in_port_info = [("LEFT", "in"), ("RIGHT", "in")]
-        out_port_info = [("BINOP_OUT", "out")]
+        in_port_info = [port_info("LEFT",
+                                  "in",
+                                  VhdlType.VhdlStdLogicVector(8)
+                                  ),
+                        port_info("RIGHT",
+                                  "in",
+                                  VhdlType.VhdlStdLogicVector(8))]
+        out_port_info = [port_info("BINOP_OUT",
+                                   "out",
+                                   VhdlType.VhdlStdLogicVector(8))]
 
         super(VhdlBinaryOp, self).__init__(prev,
                                            in_port,
@@ -567,8 +580,12 @@ class VhdlReturn(VhdlNode):
             error_msg = "VhdlReturn node supports only 1 in- and output"
             raise TransformationError(error_msg)
 
-        in_port_info = [("RETURN_IN", "in")]
-        out_port_info = [("RETURN_OUT", "out")]
+        in_port_info = [port_info("RETURN_IN",
+                                  "in",
+                                  VhdlType.VhdlStdLogicVector(8))]
+        out_port_info = [port_info("RETURN_OUT",
+                                   "out",
+                                   VhdlType.VhdlStdLogicVector(8))]
 
         super(VhdlReturn, self).__init__(prev,
                                          in_port,
@@ -642,8 +659,8 @@ class VhdlDReg(VhdlNode):
             and/or len(out_port) != 1
         :raises TransformationError: raised if delay is not >= 0
         """
-        inport_info = [("DREG_IN", "in")]
-        outport_info = [("DREG_OUT", "out")]
+        inport_info = [port_info("DREG_IN", "in", VhdlType.DummyType())]
+        outport_info = [port_info("DREG_OUT", "out", VhdlType.DummyType())]
 
         super(VhdlDReg, self).__init__(prev,
                                        in_port,
