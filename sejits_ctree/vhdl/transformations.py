@@ -11,7 +11,7 @@ from nodes import VhdlType
 #
 from nodes import VhdlBinaryOp, VhdlComponent, VhdlConstant, VhdlModule
 from nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal, VhdlSink, VhdlDReg
-from nodes import VhdlLibrary
+from nodes import VhdlLibrary, VhdlAnd, port_info, Port, Generic
 from ctree.c.nodes import *
 
 logger = logging.getLogger(__name__)
@@ -92,7 +92,9 @@ class VhdlTransformer(ast.NodeTransformer):
         libraries = [VhdlLibrary("ieee",["ieee.std_logic_1164.all"]),
                      VhdlLibrary(None,["work.the_filter_package.all"])]
         #
-        return VhdlModule(node.name, libraries, None, params, body[-1])
+        ret = VhdlModule(node.name, libraries, None, params, body[-1])
+        PortFinalizer().visit(ret)
+        return ret
 
     def visit_FunctionCall(self, node):
         args = map(self.visit, node.args)
@@ -236,148 +238,94 @@ class PortFinalizer(ast.NodeVisitor):
 
     def __init__(self):
         # ICP - Input Command Ports
-        self.icps = [VhdlSignal("CLK", VhdlType.VhdlStdLogic()),
-                    VhdlSignal("RST", VhdlType.VhdlStdLogic())]
-        self.icps_info = [("CLK", "in", VhdlType.VhdlStdLogic()),
-                         ("RST", "in", VhdlType.VhdlStdLogic())]
+        self.icps_info = [port_info("CLK", "in", VhdlType.VhdlStdLogic()),
+                          port_info("RST", "in", VhdlType.VhdlStdLogic())]
 
         # ICCP - Input Cascading Command Ports
-        self.iccps = [VhdlSignal("VALID_IN", VhdlType.VhdlStdLogic())]
-        self.iccps_info = [("VALID_IN", "in", VhdlType.VhdlStdLogic())]
+        self.iccps_info = [port_info("VALID_IN", "in", VhdlType.VhdlStdLogic())]
 
         # OCCP - Output Cascading Command Ports
-        self.occps = [VhdlSignal("VALID_OUT", VhdlType.VhdlStdLogic())]
-        self.occps_info = [("VALID_OUT", "out", VhdlType.VhdlStdLogic())]
+        self.occps_info = [port_info("VALID_OUT", "out", VhdlType.VhdlStdLogic())]
 
-        cpe_id = 0  # command port edge ID
+        self.cpe_id = 0  # command port edge ID
+
+        # generate Ports
+        self.icps = [Port(*info, value=VhdlSignal(info.name, info.vhdl_type))
+                     for info in self.icps_info]
+        self.iccps = [Port(*info, value=VhdlSignal(info.name, info.vhdl_type))
+                      for info in self.iccps_info]
+        self.occps = [Port(*info, value=VhdlSignal(info.name, info.vhdl_type))
+                      for info in self.occps_info]
+
+        #
+        self.visited_nodes = set()
+
+    def visit_VhdlModule(self, node):
+        self.visit(node.architecture)
+        self.finalize_ports(node)
 
     def visit_VhdlReturn(self, node):
-        pass
+        map(self.visit, node.prev)
+        self.finalize_ports(node)
 
     def visit_VhdlBinaryOp(self, node):
-        pass
+        map(self.visit, node.prev)
+        self.finalize_ports(node)
 
     def visit_VhdlComponent(self, node):
-        pass
+        map(self.visit, node.prev)
+        self.finalize_ports(node)
 
     def visit_VhdlDReg(self, node):
-        pass
-
-
-
-
-
-
+        map(self.visit, node.prev)
+        self.finalize_ports(node)
 
     def finalize_ports(self, node):
-        # add command ports
-        # add cascading command ports
-        _finalize_ports(node)
-        _finalize_cascades(nodes, [self.casc_cmd_port(2, 0)])
-
-    def _finalize_ports(self, node):
-        try:
-            inport_info = node.inport_info
-            in_port = node.in_port
-            #
-            outport_info = node.outport_info
-            out_port = node.out_port
-            #
-            generic_info = node.generic_info
-            generic_port = node.generic
-        except AttributeError as ae:
-            raise TransformationError(ae.message)
+        iccps = []
+        idxs = range(len(self.iccps_info))
+        #
+        node.finalize_ports()
+        #
+        if isinstance(node, VhdlModule):
+            node.in_port = self.icps + self.iccps + node.in_port
+            node.out_port = self.occps + node.out_port
         else:
-            # finalize in port
-            final_inport = self._finalize_port(self.cmd_iport,
-                                               self.cmd_iinfo,
-                                               in_port,
-                                               inport_info)
-            if final_inport:
-                node.in_port = final_inport
-
-            # finalize out port
-            final_outport = self._finalize_port(self.cmd_oport,
-                                                self.cmd_oinfo,
-                                                out_port,
-                                                outport_info)
-            if final_outport:
-                node.out_port = final_outport
-
-            # finalize generic port
-            final_generic = self._finalize_generic([],
-                                                   [],
-                                                   generic_port,
-                                                   generic_info)
-            if final_generic:
-                node.generic = final_generic
-
-    def _finalize_port(self, cmd_port, cmd_info, port, port_info):
-        """Add command ports to port."""
-        if all([type(p) is Port for p in port]):
-            # continue if node already has ports
-            return None
-        else:
-            if len(port_info) != len(port):
-                error_msg = "Number of ports does not match port" +\
-                    " information of node: %s" % node.name
-                raise TransformationError(error_msg)
-
-            cmd_port = [Port(*info, value=val)
-                        for info, val in zip(cmd_info, cmd_port)]
-            return cmd_port + [Port(*info, value=val)
-                               for info, val in zip(port_info, port)]
-
-    def _finalize_generic(self, cmd_generic, cmd_info, generic, generic_info):
-        """Add command ports to port."""
-        if all([type(g) is Generic for g in generic]):
-            # continue if node already has generics
-            return None
-        else:
-            if len(generic_info) != len(generic):
-                error_msg = "Number of generic ports does not match generic"\
-                            + " information of node %s" % node.name
-                raise TransformationError(error_msg)
-
-            cmd_generic = [Generic(*info, value=val)
-                           for info, val in zip(cmd_info, cmd_generic)]
-
-            return cmd_generic + [Generic(*info, value=val)
-                                  for info, val in zip(generic_info, generic)]
-
-    def _finalize_cascades(self, node, casc_ports):
-        if all([isinstance(p_node, (VhdlSource, VhdlConstant))
-               for p_node in node.prev]):
-            # no cascading
-            pass
-        else:
-            for casc_port in casc_ports:
-                ncmd_iport = []  # new command in port
-                for p_node in node.prev:
-                    if isinstance(p_node, VhdlConstant):
-                        pass
-                    elif isinstance(p_node, VhdlSource):
-                        # connect to modules cascading in port
-                        ncmd_iport.append(self.cmd_iport[casc_port.iport_idx])
-                    else:
-                        # connect to previous components cascading out port
-
-                        # generate connection edge
-                        ce_name = p_node.name + "_CASC_" + \
-                            p_node.o_port[casc_port.oport_idx].name + \
-                            str(c_id)
-                        ce_type = p_node.o_port[casc_port.iport_idx].vhdl_type
-                        c_edge = VhdlSignal(name=ce_name,
-                                            vhdl_type=ce_type)
-                        # connect to previous out port
-                        p_node.o_port[casc_port.oport_idx] = c_edge
-                        # add to new command in port
-                        ncmd_iport.append(casc_edge)
-                        #
-                        self.c_id += 1
-                # finalize connection
-                if len(ncmd_iport) > 1:
-                    pass
+            for iccp, occp, idx in zip(self.iccps_info, self.occps_info, idxs):
+                cc_edges = VhdlAnd()
+                for pnode in node.prev:
+                    poccps = []
+                    if hasattr(pnode, "out_port"):  # VhdlNode Class
+                        # pnode already finalized
+                        if hash(pnode) in self.visited_nodes:
+                            # get cascading connection edge
+                            cc_edge = pnode.out_port[idx].value
+                        else:
+                            n = pnode.__class__.__name__ + "_" + occp.name + "_" + str(self.cpe_id)
+                            self.cpe_id += 1
+                            cc_edge = VhdlSignal(name=n,
+                                                 vhdl_type=occp.vhdl_type)
+                            poccps.append(Port(occp.name,
+                                               occp.direction,
+                                               occp.vhdl_type,
+                                               cc_edge))
+                            cc_edges.append(cc_edge)
+                        # finalize previous nodes out_port
+                        pnode.out_port = poccps + pnode.out_port
+                    else:  # VhdlSymbol Class
+                        if isinstance(pnode, VhdlSource):
+                            # add vhdl modules command port
+                            cc_edge = VhdlSignal(iccp.name, iccp.vhdl_type)
+                            cc_edges.append(cc_edge)
+                    self.visited_nodes.add(hash(pnode))
+                # finalize nodes in_port
+                iccps.append(Port(iccp.name,
+                                  iccp.direction,
+                                  iccp.vhdl_type,
+                                  cc_edges))
+            # finalize nodes in_port
+            node.in_port = self.icps + iccps + node.in_port
+            if isinstance(node, VhdlReturn):
+                node.out_port = self.occps + node.out_port
 
 
 class BB_BaseFuncTransformer(ast.NodeTransformer):
