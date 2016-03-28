@@ -336,6 +336,9 @@ class VhdlSymbol(VhdlBaseNode):
     d = 0
     dprev = 0
 
+    def __str__(self):
+        return self.name
+
 
 class VhdlNode(VhdlBaseNode):
     """Base class for vhdl node."""
@@ -370,6 +373,18 @@ class VhdlNode(VhdlBaseNode):
 
     def finalize_ports(self):
         pass
+
+
+class VhdlSignalCollection(VhdlBaseNode, list):
+    """Base class for signal collections."""
+
+
+class VhdlAnd(VhdlSignalCollection):
+    """Bool signal connection AND."""
+    def __init__(self, *args):
+        super(VhdlAnd, self).__init__(*args)
+
+
 
 
 class VhdlSource(VhdlSymbol):
