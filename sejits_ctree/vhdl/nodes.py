@@ -2,16 +2,15 @@
 __author__ = "philipp ebensberger"
 
 import os
-import ast
 import logging
 
-from sejits_ctree.vhdl import STDLIBS
-from sejits_ctree.vhdl import TransformationError
-from collections import defaultdict, namedtuple
-from sejits_ctree.vhdl.dotgen import VhdlDotGenVisitor
+from utils import STDLIBS
+from utils import TransformationError
+from dotgen import VhdlDotGenVisitor
+from collections import namedtuple
 from ctree.nodes import File, Project, CtreeNode
 from ctree.c.nodes import Op
-from sejits_ctree.vhdl.utils import CONFIG
+from utils import CONFIG
 
 
 # set up module-level logger
@@ -375,7 +374,7 @@ class VhdlNode(VhdlBaseNode):
         pass
 
 
-class VhdlSignalCollection(VhdlBaseNode, list):
+class VhdlSignalCollection(list, VhdlBaseNode):
     """Base class for signal collections."""
 
 
@@ -384,7 +383,8 @@ class VhdlAnd(VhdlSignalCollection):
     def __init__(self, *args):
         super(VhdlAnd, self).__init__(*args)
 
-
+    def __str__(self):
+        return " AND ".join(self)
 
 
 class VhdlSource(VhdlSymbol):
@@ -657,3 +657,13 @@ class VhdlDReg(VhdlNode):
         else:
             error_msg = "Delay of Component must be >= 0"
             raise TransformationError(error_msg)
+
+
+if __name__ == "__main__":
+    test_obj = VhdlAnd(["a", "b", "c"])
+    test_obj.append("abc")
+    test_obj.append("def")
+    test_obj.append("ghi")
+    test_obj.append("jkl")
+    print "str: ", str(test_obj)
+    print "repr: ", repr(test_obj)
