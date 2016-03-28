@@ -160,6 +160,7 @@ class VhdlCodegen(ast.NodeVisitor):
         join_statement = ",\n" + self._tab() + block_indent
         #
         for port in ports[1]:
+            # add support for collections
             if port.value.name not in self.used_symbols:
                 self.symbols += self._tab() + self.SIGNAL.format(name=port.value.name,
                                                                  type=port.value.vhdl_type,
@@ -189,8 +190,8 @@ class VhdlCodegen(ast.NodeVisitor):
         block_indent = " " * len("port(")
         #
         port_block = []
-        port_block.extend([p.name + " : " + p.direction + " " + str(p.value.vhdl_type) for p in ports[0]])
-        port_block.extend([p.name + " : " + p.direction + " " + str(p.value.vhdl_type) for p in ports[1]])
+        port_block.extend([p.name + " : " + p.direction + " " + str(p.vhdl_type) for p in ports[0]])
+        port_block.extend([p.name + " : " + p.direction + " " + str(p.vhdl_type) for p in ports[1]])
         join_statement = ";\n" + self._tab() + block_indent
         #
         s = "\n"
@@ -231,8 +232,8 @@ class VhdlCodegen(ast.NodeVisitor):
             cmd_symb = [VhdlSignal("CLK", VhdlType.VhdlStdLogic()),
                         VhdlSignal("EN", VhdlType.VhdlStdLogic()),
                         VhdlSignal("RST", VhdlType.VhdlStdLogic())]
-            cmd_port = [Port(info[0], info[1], info[2], port) for info, port in zip(cmd_info, cmd_symb)]
-            node.in_port = cmd_port + [Port(info[0], info[1], None, port) for info,port in zip(inport_info, in_port)]
+            cmd_port = [Port(*info, value=val) for info, val in zip(cmd_info, cmd_symb)]
+            node.in_port = cmd_port + [Port(*info, value=val) for info, val in zip(inport_info, in_port)]
 
         if all([type(port) is Port for port in out_port]):
             # continue if node already has ports
@@ -245,7 +246,7 @@ class VhdlCodegen(ast.NodeVisitor):
             cmd_symb = [VhdlSignal("VALID_OUT", VhdlType.VhdlStdLogic())]
             cmd_port = [Port(info[0], info[1], info[2], port) for info, port in zip(cmd_info, cmd_symb)]
 
-            node.out_port = cmd_port + [Port(info[0], info[1], None, port) for info,port in zip(outport_info, out_port)]
+            node.out_port = cmd_port + [Port(info[0], info[1], info[2], port) for info, port in zip(outport_info, out_port)]
 
         if all([type(port) is Generic for port in generic_port]):
             # continue if node already has generics
