@@ -2,7 +2,6 @@
 __author__ = 'philipp ebensberger'
 
 import ast
-import nodes
 from ctree.util import enumerate_flatten
 from ctree.dotgen import DotGenLabeller
 
