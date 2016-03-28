@@ -65,7 +65,7 @@ class VhdlCodegen(ast.NodeVisitor):
     def visit_VhdlModule(self, node):
         self.src_code += self._generate_libs(node) + "\n\n"
         #
-        self._generate_ports(node)
+        # self._generate_ports(node)
         #
         port_src = self._port_block((node.in_port, node.out_port))
         self.src_code += self.ENTITY_noG.format(entity_name=node.name,
@@ -79,8 +79,9 @@ class VhdlCodegen(ast.NodeVisitor):
 
     def visit_VhdlBinaryOp(self, node):
         map(self.visit, node.prev)
+        self.architecture_body += "\n"
         #
-        self._generate_ports(node)
+        # self._generate_ports(node)
         #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
@@ -96,12 +97,15 @@ class VhdlCodegen(ast.NodeVisitor):
 
     def visit_VhdlReturn(self, node):
         map(self.visit, node.prev)
-        self.architecture_body += node.out_port[0].name + " <= " + node.in_port[0].name
+        self.architecture_body += "\n-- RETURN\n"
+        for o, i in zip(node.out_port, node.in_port[2:]):
+            self.architecture_body += str(o.name) + " <= " + str(i.value) + ";\n"
 
     def visit_VhdlComponent(self, node):
         map(self.visit, node.prev)
+        self.architecture_body += "\n"
         #
-        self._generate_ports(node)
+        # self._generate_ports(node)
         #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
@@ -117,8 +121,9 @@ class VhdlCodegen(ast.NodeVisitor):
 
     def visit_VhdlDReg(self, node):
         map(self.visit, node.prev)
+        self.architecture_body += "\n"
         #
-        self._generate_ports(node)
+        # self._generate_ports(node)
         #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
