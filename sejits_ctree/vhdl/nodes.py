@@ -353,12 +353,12 @@ class VhdlNode(VhdlBaseNode):
 
         :param prev: list of previous nodes in DAG
         :param in_port: list of input signals
-        :param inport_info: list of tuples describing port name and
-            direction ("PORTNAME", "direction") or
+        :param inport_info: list of tuples describing port name,
+            direction and vhdl type ("PORTNAME", "direction", VhdlType) or
             generic name and vhdl type ("GENERICNAME", VhdlType)
         :param out_port: list of output signals
-        :param outport_info: list of tuples describing port name and
-            direction ("PORTNAME", "direction")
+        :param outport_info: list of tuples describing port name,
+            direction and vhdl type("PORTNAME", "direction", VhdlType)
         """
         self.prev = prev
         self.in_port = in_port
