@@ -155,8 +155,8 @@ class VhdlCodegen(ast.NodeVisitor):
         block_indent = " " * len("port map(")
         #
         port_map = []
-        port_map.extend([p.name + " => " + p.value.name for p in ports[0]])
-        port_map.extend([p.name + " => " + p.value.name for p in ports[1]])
+        port_map.extend([p.name + " => " + str(p.value) for p in ports[0]])
+        port_map.extend([p.name + " => " + str(p.value) for p in ports[1]])
         join_statement = ",\n" + self._tab() + block_indent
         #
         for port in ports[1]:
