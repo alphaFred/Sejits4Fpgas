@@ -243,6 +243,8 @@ class VhdlDag(ast.NodeTransformer):
                 node.in_port[idx] = con_edge
         node.dprev = max_d
 
+class PortFinalizer(ast.NodeVisitor):
+
     def finalize_ports(self, node):
         # add command ports
         # add cascading command ports
@@ -303,10 +305,10 @@ class VhdlDag(ast.NodeTransformer):
                     " information of node: %s" % node.name
                 raise TransformationError(error_msg)
 
-            cmd_port = [Port(info[0], info[1], info[2], p)
-                        for info, p in zip(cmd_info, cmd_port)]
-            return cmd_port + [Port(info[0], info[1], info[2], p)
-                               for info, p in zip(port_info, port)]
+            cmd_port = [Port(*info, value=val)
+                        for info, val in zip(cmd_info, cmd_port)]
+            return cmd_port + [Port(*info, value=val)
+                               for info, val in zip(port_info, port)]
 
     def _finalize_generic(self, cmd_generic, cmd_info, generic, generic_info):
         """Add command ports to port."""
@@ -319,11 +321,11 @@ class VhdlDag(ast.NodeTransformer):
                             + " information of node %s" % node.name
                 raise TransformationError(error_msg)
 
-            cmd_generic = [Generic(info[0], info[1], info[2], g)
-                           for info, g in zip(cmd_info, cmd_generic)]
+            cmd_generic = [Generic(*info, value=val)
+                           for info, val in zip(cmd_info, cmd_generic)]
 
-            return cmd_generic + [Generic(info[0], info[1], g)
-                                  for info, g in zip(generic_info, generic)]
+            return cmd_generic + [Generic(*info, value=val)
+                                  for info, val in zip(generic_info, generic)]
 
     def _finalize_cascades(self, node, casc_ports):
         if all([isinstance(p_node, (VhdlSource, VhdlConstant))
@@ -332,43 +334,32 @@ class VhdlDag(ast.NodeTransformer):
             pass
         else:
             for casc_port in casc_ports:
-                new_cmd_iport = []
+                ncmd_iport = []  # new command in port
                 for p_node in node.prev:
                     if isinstance(p_node, VhdlConstant):
                         pass
-                    else if isinstance(p_node, VhdlSource):
-                        new_cmd_iport.append(self.cmd_iport[casc_port.iport_idx])
+                    elif isinstance(p_node, VhdlSource):
+                        # connect to modules cascading in port
+                        ncmd_iport.append(self.cmd_iport[casc_port.iport_idx])
                     else:
-                        if p_node.o_port[casc_port.oport_idx].name == self.
+                        # connect to previous components cascading out port
+
+                        # generate connection edge
                         ce_name = p_node.name + "_CASC_" + \
                             p_node.o_port[casc_port.oport_idx].name + \
                             str(c_id)
                         ce_type = p_node.o_port[casc_port.iport_idx].vhdl_type
-                        casc_edge = VhdlSignal(name=ce_name,
-                                               vhdl_type=ce_type)
-                        #
-                        p_node.o_port[casc_port.oport_idx] = casc_edge
-                        new_cmd_iport.append(casc_edge)
+                        c_edge = VhdlSignal(name=ce_name,
+                                            vhdl_type=ce_type)
+                        # connect to previous out port
+                        p_node.o_port[casc_port.oport_idx] = c_edge
+                        # add to new command in port
+                        ncmd_iport.append(casc_edge)
                         #
                         self.c_id += 1
-                if len(new_cmd_iport) > 1:
-
-
-
-        for p_node in node.prev:
-            if isinstance(p_node, (VhdlSource, VhdlConstant)):
-
-            else:
-                # analyze iport
-                for c_iport_idx in c_iport_idxs:
+                # finalize connection
+                if len(ncmd_iport) > 1:
                     pass
-                # analyze oport
-                for c_oport_idx in c_oport_idxs:
-                    pass
-
-
-
-        pass
 
 
 class BB_BaseFuncTransformer(ast.NodeTransformer):
