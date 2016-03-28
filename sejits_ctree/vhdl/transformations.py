@@ -193,20 +193,8 @@ class VhdlTransformer(ast.NodeTransformer):
 
 class VhdlDag(ast.NodeTransformer):
 
-    casc_cmd_port = namedtuple("casc_cmd_port", ("iport_idx", "oport_idx"))
-
     def __init__(self):
         self.con_edge_id = 0
-        # finalization parameter
-        self.cmd_iinfo = [("CLK", "in", VhdlType.VhdlStdLogic()),
-                          ("RST", "in", VhdlType.VhdlStdLogic()),
-                          ("VALID_IN", "in", VhdlType.VhdlStdLogic())]
-        self.cmd_iport = [VhdlSignal("CLK", VhdlType.VhdlStdLogic()),
-                          VhdlSignal("RST", VhdlType.VhdlStdLogic()),
-                          VhdlSignal("VALID_IN", VhdlType.VhdlStdLogic())]
-        self.cmd_oinfo = [("VALID_OUT", "out", VhdlType.VhdlStdLogic())]
-        self.cmd_oport = [VhdlSignal("VALID_OUT", VhdlType.VhdlStdLogic())]
-        c_id = 0
 
     def visit_VhdlReturn(self, node):
         map(self.visit, node.prev)
@@ -243,7 +231,43 @@ class VhdlDag(ast.NodeTransformer):
                 node.in_port[idx] = con_edge
         node.dprev = max_d
 
+
 class PortFinalizer(ast.NodeVisitor):
+
+    def __init__(self):
+        # ICP - Input Command Ports
+        self.icps = [VhdlSignal("CLK", VhdlType.VhdlStdLogic()),
+                    VhdlSignal("RST", VhdlType.VhdlStdLogic())]
+        self.icps_info = [("CLK", "in", VhdlType.VhdlStdLogic()),
+                         ("RST", "in", VhdlType.VhdlStdLogic())]
+
+        # ICCP - Input Cascading Command Ports
+        self.iccps = [VhdlSignal("VALID_IN", VhdlType.VhdlStdLogic())]
+        self.iccps_info = [("VALID_IN", "in", VhdlType.VhdlStdLogic())]
+
+        # OCCP - Output Cascading Command Ports
+        self.occps = [VhdlSignal("VALID_OUT", VhdlType.VhdlStdLogic())]
+        self.occps_info = [("VALID_OUT", "out", VhdlType.VhdlStdLogic())]
+
+        cpe_id = 0  # command port edge ID
+
+    def visit_VhdlReturn(self, node):
+        pass
+
+    def visit_VhdlBinaryOp(self, node):
+        pass
+
+    def visit_VhdlComponent(self, node):
+        pass
+
+    def visit_VhdlDReg(self, node):
+        pass
+
+
+
+
+
+
 
     def finalize_ports(self, node):
         # add command ports
@@ -252,12 +276,6 @@ class PortFinalizer(ast.NodeVisitor):
         _finalize_cascades(nodes, [self.casc_cmd_port(2, 0)])
 
     def _finalize_ports(self, node):
-        # TODO add exception handling
-        try:
-            node.finalize_ports()
-        except:
-            raise TransformationError("error while finalizing ports")
-
         try:
             inport_info = node.inport_info
             in_port = node.in_port
