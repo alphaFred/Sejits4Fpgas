@@ -29,6 +29,11 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
+VhdlLibrary = namedtuple("VhdlLibrary", ["mainlib_name", "sublib"])
+Interface = namedtuple("Interface", ["iports", "oport"])
+PortInfo = namedtuple("PortInfo", ("name", "direction", "vhdl_type"))
+
+
 class VhdlTreeNode(CtreeNode):
     """Base class for all Vhdl AST nodes in sejits_ctree."""
 
@@ -76,9 +81,6 @@ class VhdlBaseNode(VhdlTreeNode):
         """
         from dotgen import VhdlDotGenLabeller
         return VhdlDotGenLabeller().visit(self)
-
-
-Interface = namedtuple("Interface", ["iports", "oport"])
 
 
 class VhdlFile(VhdlBaseNode, File):
@@ -209,9 +211,6 @@ class VhdlProject(Project):
         if self._module:
             return self._module
         return self.codegen(indent=self.indent)
-
-
-VhdlLibrary = namedtuple("VhdlLibrary", ["mainlib_name", "sublib"])
 
 
 class VhdlType(object):
@@ -439,7 +438,7 @@ class VhdlConstant(VhdlSymbol):
     def __str__(self):
         return str(self.value)
 
-port_info = namedtuple("port_info", ("name", "direction", "vhdl_type"))
+
 
 
 class Port(VhdlSymbol):
@@ -541,16 +540,16 @@ class VhdlBinaryOp(VhdlNode):
 
         :raises TransformationError: raised if type of op is not supported
         """
-        in_port_info = [port_info("LEFT",
-                                  "in",
-                                  VhdlType.VhdlStdLogicVector(8)
-                                  ),
-                        port_info("RIGHT",
-                                  "in",
+        in_port_info = [PortInfo("LEFT",
+                                 "in",
+                                 VhdlType.VhdlStdLogicVector(8)
+                                 ),
+                        PortInfo("RIGHT",
+                                 "in",
+                                 VhdlType.VhdlStdLogicVector(8))]
+        out_port_info = [PortInfo("BINOP_OUT",
+                                  "out",
                                   VhdlType.VhdlStdLogicVector(8))]
-        out_port_info = [port_info("BINOP_OUT",
-                                   "out",
-                                   VhdlType.VhdlStdLogicVector(8))]
 
         super(VhdlBinaryOp, self).__init__(prev,
                                            in_port,
@@ -598,12 +597,12 @@ class VhdlReturn(VhdlNode):
             error_msg = "VhdlReturn node supports only 1 in- and output"
             raise TransformationError(error_msg)
 
-        in_port_info = [port_info("RETURN_IN",
-                                  "in",
+        in_port_info = [PortInfo("RETURN_IN",
+                                 "in",
+                                 VhdlType.VhdlStdLogicVector(8))]
+        out_port_info = [PortInfo("RETURN_OUT",
+                                  "out",
                                   VhdlType.VhdlStdLogicVector(8))]
-        out_port_info = [port_info("RETURN_OUT",
-                                   "out",
-                                   VhdlType.VhdlStdLogicVector(8))]
 
         super(VhdlReturn, self).__init__(prev,
                                          in_port,
@@ -690,8 +689,8 @@ class VhdlDReg(VhdlNode):
             and/or len(out_port) != 1
         :raises TransformationError: raised if delay is not >= 0
         """
-        inport_info = [port_info("DREG_IN", "in", in_port[0].vhdl_type)]
-        outport_info = [port_info("DREG_OUT", "out", in_port[0].vhdl_type)]
+        inport_info = [PortInfo("DREG_IN", "in", in_port[0].vhdl_type)]
+        outport_info = [PortInfo("DREG_OUT", "out", in_port[0].vhdl_type)]
 
         super(VhdlDReg, self).__init__(prev,
                                        in_port,
