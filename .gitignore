@@ -360,3 +360,6 @@
 /src/dotgen.pyc
 /vhdl_sejits.sublime-project
 /vhdl_sejits.sublime-workspace
+/src/vivado/template_project/template_project.srcs/sources_1/new/BasicArith.vhd
+/src/vivado/template_project/template_project.srcs/sources_1/new/Convolve.vhd
+/vhdl_tests.log
