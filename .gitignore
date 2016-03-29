@@ -358,3 +358,5 @@
 /src/hw/BasicArith.vhd
 /src/hw/Convolve.vhd
 /src/dotgen.pyc
+/vhdl_sejits.sublime-project
+/vhdl_sejits.sublime-workspace
