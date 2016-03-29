@@ -136,6 +136,7 @@ class VhdlFile(VhdlBaseNode, File):
         return vhdlfile
 
     def component(self):
+        """Return VhdlComponent class for file."""
         comp = VhdlComponent(name=self.name,
                              delay=self.body[0].architecture.dprev,
                              inport_info=self.body[0].inport_info,
@@ -144,13 +145,16 @@ class VhdlFile(VhdlBaseNode, File):
 
 
 class VhdlProject(Project):
+    """VhdlProject class representing one vhdl project."""
 
     def __init__(self, files=None, indent=4, synthesis_dir=""):
+        """Initialize VhdlProject."""
         self.files = files if files else []
         self.synthesis_dir = synthesis_dir
         self.indent = indent
 
     def codegen(self):
+        """Generate vhdl code of wrapper and files in project."""
         from sejits_ctree.vhdl.jit_synth import VhdlSynthModule
         self._module = VhdlSynthModule()
 
@@ -164,11 +168,10 @@ class VhdlProject(Project):
 
     def _generate_wrapper(self):
         logger.info("Generate project wrapper")
-
-        AXI_STREAM_WIDTH = 32
+        axi_stream_width = 32
         # input signals
         m_axis_mm2s_tdata = VhdlSignal("m_axis_mm2s_tdata",
-                                       VhdlType.VhdlStdLogicVector(AXI_STREAM_WIDTH, "0"))
+                                       VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
         m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep",
                                    VhdlType.VhdlStdLogicVector(4, "0"))
         m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast",
@@ -182,7 +185,7 @@ class VhdlProject(Project):
 
         # output signals
         s_axis_s2mm_tdata = VhdlSignal("s_axis_s2mm_tdata",
-                                   VhdlType.VhdlStdLogicVector(AXI_STREAM_WIDTH, "0"))
+                                   VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
         s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep",
                                    VhdlType.VhdlStdLogicVector(4, "0"))
         s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast",
@@ -215,6 +218,7 @@ class VhdlProject(Project):
 
     @property
     def module(self):
+        """Return JIT module if available else create it."""
         if self._module:
             return self._module
         return self.codegen(indent=self.indent)
