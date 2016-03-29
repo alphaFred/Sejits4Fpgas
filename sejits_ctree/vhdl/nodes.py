@@ -187,6 +187,7 @@ class VhdlProject(Project):
                     s_axis_s2mm_tvalid]
 
         component = self.files[0].component()
+        component.library = "work.generated"
         component.in_port = [m_axis_mm2s_tdata]
 
         ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
