@@ -11,7 +11,7 @@ from nodes import VhdlType
 #
 from nodes import VhdlBinaryOp, VhdlComponent, VhdlConstant, VhdlModule
 from nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal, VhdlSink, VhdlDReg
-from nodes import VhdlLibrary, VhdlAnd, port_info, Port, Generic
+from nodes import VhdlLibrary, VhdlAnd, PortInfo, Port, Generic
 from ctree.c.nodes import *
 
 logger = logging.getLogger(__name__)
@@ -238,14 +238,14 @@ class PortFinalizer(ast.NodeVisitor):
 
     def __init__(self):
         # ICP - Input Command Ports
-        self.icps_info = [port_info("CLK", "in", VhdlType.VhdlStdLogic()),
-                          port_info("RST", "in", VhdlType.VhdlStdLogic())]
+        self.icps_info = [PortInfo("CLK", "in", VhdlType.VhdlStdLogic()),
+                          PortInfo("RST", "in", VhdlType.VhdlStdLogic())]
 
         # ICCP - Input Cascading Command Ports
-        self.iccps_info = [port_info("VALID_IN", "in", VhdlType.VhdlStdLogic())]
+        self.iccps_info = [PortInfo("VALID_IN", "in", VhdlType.VhdlStdLogic())]
 
         # OCCP - Output Cascading Command Ports
-        self.occps_info = [port_info("VALID_OUT", "out", VhdlType.VhdlStdLogic())]
+        self.occps_info = [PortInfo("VALID_OUT", "out", VhdlType.VhdlStdLogic())]
 
         self.cpe_id = 0  # command port edge ID
 
