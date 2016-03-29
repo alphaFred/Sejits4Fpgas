@@ -84,26 +84,31 @@ class VhdlBaseNode(VhdlTreeNode):
 
 
 class VhdlFile(VhdlBaseNode, File):
+    """Vhdl File Class representing one vhdl source file."""
 
     _ext = "vhd"
     generated = True
     file_path = ""
 
     def __init__(self, name="generated", body=[], path=""):
+        """Initialize Vhdl File."""
         VhdlBaseNode.__init__(self)
         File.__init__(self, name, body, path)
 
     @property
     def file_path(self):
+        """Return path of source file."""
         return self._filepath
 
     @file_path.setter
     def file_path(self, value):
+        """Set and create file path."""
         self._filepath = value
         if not os.path.exists(self._filepath):
             os.makedirs(self._filepath)
 
     def get_filename(self):
+        """Return file name with file extensions."""
         return "%s.%s" % (self.name, self._ext)
 
     def _compile(self, program_text):
@@ -118,11 +123,13 @@ class VhdlFile(VhdlBaseNode, File):
             return vhdl_src_file
 
     def codegen(self, indent=4):
+        """Run code generation of file."""
         from sejits_ctree.vhdl.codegen import VhdlCodegen
         return VhdlCodegen(indent).visit(self)
 
     @classmethod
-    def fromPrebuilt(cls, name="prebuilt", path=""):
+    def from_prebuilt(cls, name="prebuilt", path=""):
+        """Generate Vhdl File from prebuilt source file."""
         vhdlfile = VhdlFile(name, body=[],path= "")
         vhdlfile.generated = False
         vhdlfile.file_path = path
