@@ -168,36 +168,42 @@ class VhdlProject(Project):
         logger.info("Generate project wrapper")
         axi_stream_width = 32
         # input signals
-        m_axis_mm2s_tdata = VhdlSignal("m_axis_mm2s_tdata",
-                                       VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
+        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata",
+                                       VhdlType.VhdlStdLogicVector(
+                                           axi_stream_width,
+                                           "0"))
         m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep",
-                                   VhdlType.VhdlStdLogicVector(4, "0"))
+                                       VhdlType.VhdlStdLogicVector(4, "0"))
         m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast",
-                                   VhdlType.VhdlStdLogic("0"))
+                                       VhdlType.VhdlStdLogic("0"))
         m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready",
-                                    VhdlType.VhdlStdLogic("0"))
+                                        VhdlType.VhdlStdLogic("0"))
         m_axis_mm2s_tvalid = VhdlSignal("m_axis_mm2s_tvalid",
-                                    VhdlType.VhdlStdLogic("0"))
+                                        VhdlType.VhdlStdLogic("0"))
         in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast,
                    m_axis_mm2s_tready, m_axis_mm2s_tvalid]
 
         # output signals
         s_axis_s2mm_tdata = VhdlSignal("s_axis_s2mm_tdata",
-                                   VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
+                                       VhdlType.VhdlStdLogicVector(
+                                           axi_stream_width,
+                                           "0"))
         s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep",
-                                   VhdlType.VhdlStdLogicVector(4, "0"))
+                                       VhdlType.VhdlStdLogicVector(4, "0"))
         s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast",
-                                   VhdlType.VhdlStdLogic("0"))
+                                       VhdlType.VhdlStdLogic("0"))
         s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready",
-                                    VhdlType.VhdlStdLogic("0"))
+                                        VhdlType.VhdlStdLogic("0"))
         s_axis_s2mm_tvalid = VhdlSignal("s_axis_s2mm_tvalid",
-                                    VhdlType.VhdlStdLogic("0"))
+                                        VhdlType.VhdlStdLogic("0"))
         out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep,
                     s_axis_s2mm_tlast, s_axis_s2mm_tready,
                     s_axis_s2mm_tvalid]
 
         component = self.files[0].component()
-        component.library = "work.generated"
+        component.delay = 5
+        component.library = "work.apply"
+        component.prev = [m_axis_mm2s_tdata]
         component.in_port = [m_axis_mm2s_tdata]
 
         ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
@@ -205,12 +211,18 @@ class VhdlProject(Project):
         #
         ret_component = VhdlReturn([component], [ret_sig], [out_sigs[0]])
 
-        libraries = [VhdlLibrary("ieee",["ieee.std_logic_1164.all"]),
-                     VhdlLibrary(None,["work.the_filter_package.all"])]
+        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all"]),
+                     VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
         inport_slice = slice(0, len(in_sigs))
         params = in_sigs + out_sigs
-        module = VhdlModule("accel_wrapper", libraries, inport_slice, params, ret_component)
+        module = VhdlModule("accel_wrapper",
+                            libraries,
+                            inport_slice,
+                            params,
+                            ret_component)
+        #
+        transformations.VhdlDag().visit(module)
         transformations.PortFinalizer().visit(module)
         return VhdlFile("accel_wrapper", [module])
 
@@ -323,9 +335,10 @@ class VhdlType(object):
                 val_checked = all([ditm in self.std_logic_dvalues for ditm in temp_default])
 
                 if val_checked is True:
-                    if len(temp_default) == self.len\
-                       or len(temp_default) == 1:
-                        self.default = temp_default
+                    if len(temp_default) == self.len:
+                        self.default = "#" + "".join(temp_default) + "'"
+                    elif len(temp_default) == 1:
+                        self.default = "(others=>"+str(temp_default[0])+")"
                     else:
                         error_msg = "Length of default = {0}; " + \
                                     "should be {1} or {2}".format(len(temp_default), 1, self.len)
@@ -334,7 +347,7 @@ class VhdlType(object):
                     error_msg = "Values of default not in std_logic_dvalues"
                     raise TransformationError(error_msg)
             else:
-                self.default = "'" + "0" * self.len + "'"
+                self.default = "(others=>0)"
 
         def __len__(self):
             return self.len
@@ -448,8 +461,6 @@ class VhdlConstant(VhdlSymbol):
         return str(self.value)
 
 
-
-
 class Port(VhdlSymbol):
     """Base class of Vhld Port item."""
 
@@ -461,6 +472,10 @@ class Port(VhdlSymbol):
         self.direction = direction
         self.vhdl_type = vhdl_type
         self.value = value
+        self._type_check()
+
+    def _type_check(self):
+        pass
 
 
 class Generic(VhdlSymbol):
@@ -574,7 +589,7 @@ class VhdlBinaryOp(VhdlNode):
         if type(op) in op_decoder:
             self.op, self.d = op_decoder[type(op)]
             self.generic_info = [("OP", VhdlType.VhdlInteger())]
-            self.generic = [VhdlConstant(VhdlType.VhdlInteger(), self.op)]
+            self.generic = [VhdlConstant("", VhdlType.VhdlInteger(), self.op)]
         else:
             raise TransformationError("Unsupported binary operation %s" % op)
 
@@ -708,26 +723,24 @@ class VhdlDReg(VhdlNode):
                                        outport_info)
         self.library = "work.DReg"
 
-        if delay >= 0:
+        if delay > 1:
             self.d = delay
         else:
-            error_msg = "Delay of Component must be >= 0"
+            error_msg = "Delay of Component must be >= 1"
             raise TransformationError(error_msg)
 
     def finalize_ports(self):
+        #
+        self.generic_info = [("WIDTH", VhdlType.VhdlPositive()),
+                             ("LENGTH", VhdlType.VhdlPositive())]
+        self.generic = [VhdlConstant("", VhdlType.VhdlPositive(),
+                                     len(self.in_port[0].vhdl_type)),
+                        VhdlConstant("", VhdlType.VhdlPositive(),
+                                     self.d)]
+        #
         self.generic = [Generic(*i, value=g)
                         for i, g in zip(self.generic_info, self.generic)]
         self.in_port = [Port(*i, value=g)
                         for i, g in zip(self.inport_info, self.in_port)]
         self.out_port = [Port(*i, value=g)
                          for i, g in zip(self.outport_info, self.out_port)]
-
-
-if __name__ == "__main__":
-    test_obj = VhdlAnd(["a", "b", "c"])
-    test_obj.append("abc")
-    test_obj.append("def")
-    test_obj.append("ghi")
-    test_obj.append("jkl")
-    print "str: ", str(test_obj)
-    print "repr: ", repr(test_obj)
