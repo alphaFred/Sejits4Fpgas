@@ -363,3 +363,5 @@
 /src/vivado/template_project/template_project.srcs/sources_1/new/BasicArith.vhd
 /src/vivado/template_project/template_project.srcs/sources_1/new/Convolve.vhd
 /vhdl_tests.log
+/src/hw/DReg.vhd
+/src/vivado/template_project/template_project.srcs/sources_1/new/DReg.vhd
