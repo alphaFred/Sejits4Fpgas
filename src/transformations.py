@@ -86,13 +86,14 @@ class VhdlTransformer(ast.NodeTransformer):
         body = map(self.visit, node.defn)
         # add return signal
         params.append(self.symbols["MODULE_OUT"])
-        # retime, beginning with Return node
-        VhdlDag().visit(body[-1])
         #
-        libraries = [VhdlLibrary("ieee",["ieee.std_logic_1164.all"]),
-                     VhdlLibrary(None,["work.the_filter_package.all"])]
+        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all"]),
+                     VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
         ret = VhdlModule(node.name, libraries, None, params, body[-1])
+        # retime
+        VhdlDag().visit(ret)
+        # finalize ports
         PortFinalizer().visit(ret)
         return ret
 
@@ -198,6 +199,9 @@ class VhdlDag(ast.NodeTransformer):
     def __init__(self):
         self.con_edge_id = 0
 
+    def visit_VhdlModule(self, node):
+        self.visit(node.architecture)
+
     def visit_VhdlReturn(self, node):
         map(self.visit, node.prev)
         self.retime(node)
@@ -232,6 +236,11 @@ class VhdlDag(ast.NodeTransformer):
                 node.prev[idx] = dreg
                 node.in_port[idx] = con_edge
         node.dprev = max_d
+
+
+class TypeChecker(ast.NodeVisitor):
+    def __init__(self):
+        pass
 
 
 class PortFinalizer(ast.NodeVisitor):
@@ -377,22 +386,30 @@ class BB_ConvolveTransformer(BB_BaseFuncTransformer):
     func_name = "bb_convolve"
 
     def get_func_def_c(self):
+        """Return C interpretation of the BasicBlock."""
         params = [SymbolRef("inpt", ctypes.c_long())]
         return_type = ctypes.c_long()
         defn = [Return(BinaryOp(SymbolRef("inpt"), Op.Mul(), Constant(2)))]
         return FunctionDecl(return_type, self.func_name, params, defn)
 
     def get_func_def_vhdl(self):
-        inport_info = [("FILTERMATRIX", VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
+        """Return VHDL interpretation of the BasicBlock."""
+        inport_info = [("FILTERMATRIX",
+                        VhdlType.VhdlArray(9,
+                                           VhdlType.VhdlInteger,
+                                           -20,
+                                           20,
+                                           type_def="filtMASK")),
                        ("FILTER_SCALE", VhdlType.VhdlInteger()),
                        ("IMG_WIDTH", VhdlType.VhdlPositive()),
                        ("IMG_HEIGHT", VhdlType.VhdlPositive()),
                        ("IN_BITWIDTH", VhdlType.VhdlPositive()),
                        ("OUT_BITWIDTH", VhdlType.VhdlPositive()),
                        ("DATA_IN", "in", VhdlType.VhdlStdLogicVector(8))]
+        #
         outport_info = [("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
         defn = VhdlComponent(name="bb_convolve",
-                             generic_slice=slice(0,6),
+                             generic_slice=slice(0, 6),
                              delay=10,
                              inport_info=inport_info,
                              outport_info=outport_info,
@@ -401,16 +418,21 @@ class BB_ConvolveTransformer(BB_BaseFuncTransformer):
 
 
 class BB_FuncTransformer(object):
+    """Transformer for all basic block transformer."""
+
     transformers = [BB_ConvolveTransformer]
 
     def __init__(self, backend="C"):
+        """Initialize transformation target backend."""
         self.backend = backend
 
     def visit(self, tree):
+        """Enable all basic block Transformations."""
         for transformer in self.transformers:
             transformer(self.backend).visit(tree)
         return tree
 
     @staticmethod
     def lifted_functions():
+        """Return all basic block transformer functions."""
         return BB_BaseFuncTransformer.lifted_functions
