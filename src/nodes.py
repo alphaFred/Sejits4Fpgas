@@ -184,10 +184,10 @@ class VhdlProject(Project):
                    m_axis_mm2s_tready, m_axis_mm2s_tvalid]
 
         # output signals
-        s_axis_s2mm_tdata = VhdlSignal("s_axis_s2mm_tdata",
-                                       VhdlType.VhdlStdLogicVector(
-                                           axi_stream_width,
-                                           "0"))
+        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata",
+                                     VhdlType.VhdlStdLogicVector(
+                                         axi_stream_width,
+                                         "0"))
         s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep",
                                        VhdlType.VhdlStdLogicVector(4, "0"))
         s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast",
