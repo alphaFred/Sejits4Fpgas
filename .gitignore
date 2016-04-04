@@ -365,3 +365,4 @@
 /vhdl_tests.log
 /src/hw/DReg.vhd
 /src/vivado/template_project/template_project.srcs/sources_1/new/DReg.vhd
+/src/vhdl_sejits.log
