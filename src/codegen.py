@@ -96,7 +96,7 @@ class VhdlCodegen(ast.NodeVisitor):
         map(self.visit, node.prev)
         self.architecture_body += "\n-- RETURN\n"
         for o, i in zip(node.out_port, node.in_port[2:]):
-            self.architecture_body += str(o.name) + " <= " + str(i.value) + ";\n"
+            self.architecture_body += str(o.value.name) + " <= " + str(i.value) + ";\n"
 
     def visit_VhdlComponent(self, node):
         map(self.visit, node.prev)
