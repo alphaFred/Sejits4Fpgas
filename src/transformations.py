@@ -1,5 +1,6 @@
 """Transformations."""
 import ast
+import copy
 import logging
 from collections import namedtuple
 #
@@ -66,7 +67,9 @@ class VhdlTransformer(ast.NodeTransformer):
 
     def __init__(self, lifted_functions=[]):
         self.symbols = {}
-        self.lifted_functions = {f.name: f for f in lifted_functions}
+        self.lifted_function_names = {f.name for f in lifted_functions}
+        self.lifted_functions = lifted_functions
+        self.lifted_functions.reverse()
         self.assignments = set()
         self.n_con_signals = 0
 
@@ -87,7 +90,8 @@ class VhdlTransformer(ast.NodeTransformer):
         # add return signal
         params.append(self.symbols["MODULE_OUT"])
         #
-        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all"]),
+        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
+                                          "ieee.numeric_std.all"]),
                      VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
         ret = VhdlModule(node.name, libraries, None, params, body[-1])
@@ -99,8 +103,8 @@ class VhdlTransformer(ast.NodeTransformer):
 
     def visit_FunctionCall(self, node):
         args = map(self.visit, node.args)
-        if node.func.name in self.lifted_functions:
-            vhdl_node = self.lifted_functions[node.func.name]
+        if node.func.name in self.lifted_function_names:
+            vhdl_node = self.lifted_functions.pop()
             vhdl_node.prev = args
             vhdl_node.in_port = [self._connect(arg) for arg in args]
             return vhdl_node
@@ -163,7 +167,7 @@ class VhdlTransformer(ast.NodeTransformer):
 
     def visit_Constant(self, node):
         vhdl_sym = VhdlConstant(name="",
-                                vhdl_type=VhdlType.VhdlStdLogicVector(8),
+                                vhdl_type=VhdlType.VhdlInteger(),
                                 value=node.value)
         return vhdl_sym
 
