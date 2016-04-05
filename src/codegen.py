@@ -38,7 +38,7 @@ class VhdlCodegen(ast.NodeVisitor):
                       \rbegin\
                           \r{architecture_body}\
                       \rend {architecture_name};"""
-    SIGNAL = "signal {name} : {type} := {default};"
+    SIGNAL = "signal {name} : {type};"
     CONSTANT = "constant {name} : {type} := {value};"
     COMPONENT = """{instance_name} : entity {component_lib}\
                        \r{generic_map}\
@@ -62,8 +62,6 @@ class VhdlCodegen(ast.NodeVisitor):
     def visit_VhdlModule(self, node):
         self.src_code += self._generate_libs(node) + "\n\n"
         #
-        # self._generate_ports(node)
-        #
         port_src = self._port_block((node.in_port, node.out_port))
         self.src_code += self.ENTITY_noG.format(entity_name=node.name,
                                                 port_declarations=port_src) + "\n\n"
@@ -77,8 +75,6 @@ class VhdlCodegen(ast.NodeVisitor):
     def visit_VhdlBinaryOp(self, node):
         map(self.visit, node.prev)
         self.architecture_body += "\n"
-        #
-        # self._generate_ports(node)
         #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
@@ -102,8 +98,6 @@ class VhdlCodegen(ast.NodeVisitor):
         map(self.visit, node.prev)
         self.architecture_body += "\n"
         #
-        # self._generate_ports(node)
-        #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
         if node.generic:
@@ -119,8 +113,6 @@ class VhdlCodegen(ast.NodeVisitor):
     def visit_VhdlDReg(self, node):
         map(self.visit, node.prev)
         self.architecture_body += "\n"
-        #
-        # self._generate_ports(node)
         #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
@@ -157,7 +149,11 @@ class VhdlCodegen(ast.NodeVisitor):
         block_indent = " " * len("port map(")
         #
         port_map = []
-        port_map.extend([p.name + " => " + str(p.value) for p in ports[0]])
+        for p in ports[0]:
+            frmt, lfunc = self.type_conversion(str(p.value.vhdl_type),
+                                               str(p.vhdl_type))
+            port_map.append(p.name + " => " + frmt.format(*lfunc(p.value, p)))
+        #port_map.extend([p.name + " => " + str(p.value) for p in ports[0]])
         port_map.extend([p.name + " => " + str(p.value) for p in ports[1]])
         join_statement = ",\n" + self._tab() + block_indent
         #
@@ -165,8 +161,7 @@ class VhdlCodegen(ast.NodeVisitor):
             # add support for collections
             if port.value.name not in self.used_symbols:
                 self.symbols += self._tab() + self.SIGNAL.format(name=port.value.name,
-                                                                 type=port.value.vhdl_type,
-                                                                 default=port.value.vhdl_type.default) + "\n"
+                                                                 type=repr(port.value.vhdl_type)) + "\n"
                 self.used_symbols.add(port.value.name)
         #
         s = "\n"
@@ -192,8 +187,8 @@ class VhdlCodegen(ast.NodeVisitor):
         block_indent = " " * len("port(")
         #
         port_block = []
-        port_block.extend([p.name + " : " + p.direction + " " + str(p.vhdl_type) for p in ports[0]])
-        port_block.extend([p.name + " : " + p.direction + " " + str(p.vhdl_type) for p in ports[1]])
+        port_block.extend([p.name + " : " + p.direction + " " + repr(p.vhdl_type) for p in ports[0]])
+        port_block.extend([p.name + " : " + p.direction + " " + repr(p.vhdl_type) for p in ports[1]])
         join_statement = ";\n" + self._tab() + block_indent
         #
         s = "\n"
@@ -202,62 +197,6 @@ class VhdlCodegen(ast.NodeVisitor):
         s += ");"
         #
         return s
-
-    def _generate_ports(self, node):
-        # TODO add exception handling
-        try:
-            node.finalize_ports()
-            #
-            inport_info = node.inport_info
-            in_port = node.in_port
-            #
-            outport_info = node.outport_info
-            out_port = node.out_port
-            #
-            generic_info = node.generic_info
-            generic_port = node.generic
-        except AttributeError as ae:
-            raise TransformationError(ae.message)
-
-        if all([type(port) is Port for port in in_port]):
-            # continue if node already has ports
-            pass
-        else:
-            if len(inport_info) != len(in_port):
-                error_msg = "Number of in ports does not match inport" +\
-                    " information of node %s" % node.name
-                raise TransformationError(error_msg)
-
-            cmd_info = [("CLK", "in", VhdlType.VhdlStdLogic()),
-                        ("RST", "in", VhdlType.VhdlStdLogic()),
-                        ("VALID_IN", "in", VhdlType.VhdlStdLogic())]
-            cmd_symb = [VhdlSignal("CLK", VhdlType.VhdlStdLogic()),
-                        VhdlSignal("EN", VhdlType.VhdlStdLogic()),
-                        VhdlSignal("RST", VhdlType.VhdlStdLogic())]
-            cmd_port = [Port(*info, value=val) for info, val in zip(cmd_info, cmd_symb)]
-            node.in_port = cmd_port + [Port(*info, value=val) for info, val in zip(inport_info, in_port)]
-
-        if all([type(port) is Port for port in out_port]):
-            # continue if node already has ports
-            pass
-        else:
-            if len(outport_info) != len(out_port):
-                raise TransformationError("Number of out ports does not match outport information of node %s" % node.name)
-
-            cmd_info = [("VALID_OUT", "out", VhdlType.VhdlStdLogic())]
-            cmd_symb = [VhdlSignal("VALID_OUT", VhdlType.VhdlStdLogic())]
-            cmd_port = [Port(info[0], info[1], info[2], port) for info, port in zip(cmd_info, cmd_symb)]
-
-            node.out_port = cmd_port + [Port(info[0], info[1], info[2], port) for info, port in zip(outport_info, out_port)]
-
-        if all([type(port) is Generic for port in generic_port]):
-            # continue if node already has generics
-            pass
-        else:
-            if len(generic_info) != len(generic_port):
-                raise TransformationError("Number of generic ports does not match generic information of node %s" % node.name)
-
-            node.generic = [Generic(info[0], info[1], port) for info,port in zip(generic_info, generic_port)]
 
     def _generate_name(self, node):
         c_id = self.component_ids[node.__class__.__name__]
@@ -275,54 +214,54 @@ class VhdlCodegen(ast.NodeVisitor):
                 src += "use " + sublib + ";\n"
         return src
 
-
-def type_conversion(source, sink):
-    type_conv = {"integer": {"integer":
-                             ("{}", lambda src, snk: (src.name)),
-                             "signed":
-                             ("to_signed({0}, {1}'length)",
-                                 lambda src, snk: (src.name, snk.name)),
-                             "unsigned":
-                             ("to_unsigned({0}, {1}'length)",
-                                 lambda src, snk: (src.name, snk.name)),
-                             "std_logic_vector":
-                             ("std_logic_vector(to_signed({0}, {1}'length))",
-                                 lambda src, snk: (src.name, snk.name))},
-                 "signed": {"integer":
-                            ("to_integer({})",
-                                lambda src, snk: (src.name)),
-                            "signed":
-                            ("{}",
-                                lambda src, snk: (src.name)),
-                            "unsigned":
-                            ("unsigned(std_logic_vector({}))",
-                                lambda src, snk: (src.name)),
-                            "std_logic_vector":
-                            ("std_logic_vector({})",
-                                lambda src, snk: (src.name))},
-                 "unsigned": {"integer":
-                              ("to_integer({})",
-                                  lambda src, snk: (src.name)),
-                              "signed":
-                              ("{}",
-                                  lambda src, snk: (src.name)),
-                              "unsigned":
-                              ("unsigned(std_logic_vector({}))",
-                                  lambda src, snk: (src.name)),
-                              "std_logic_vector":
-                              ("std_logic_vector({})",
-                                  lambda src, snk: (src.name))},
-                 "std_logic_vector": {"integer":
-                                      ("to_integer(signed({}))",
-                                          lambda src, snk: (src.name)),
-                                      "signed":
-                                      ("signed({})",
-                                          lambda src, snk: (src.name)),
-                                      "unsigned":
-                                      ("unsigned({})",
-                                          lambda src, snk: (src.name)),
-                                      "std_logic_vector":
-                                      ("{}",
-                                          lambda src, snk: (src.name))}}
-    frmt_string, lambda_func = type_conv[source][sink]
-    return frmt_string.format(*lambda_func(source, sink))
+    def type_conversion(self, source, sink):
+        type_conv = {"integer": {"integer":
+                                 ("{}", lambda src, snk: (str(src),)),
+                                 "signed":
+                                 ("to_signed({0}, {1})",
+                                     lambda src, snk: (str(src), len(snk.vhdl_type))),
+                                 "unsigned":
+                                 ("to_unsigned({0}, {1})",
+                                     lambda src, snk: (str(src), len(snk.vhdl_type))),
+                                 "std_logic_vector":
+                                 ("std_logic_vector(to_signed({0}, {1}))",
+                                     lambda src, snk: (str(src), len(snk.vhdl_type)))},
+                     "signed": {"integer":
+                                ("to_integer({})",
+                                    lambda src, snk: (src,)),
+                                "signed":
+                                ("{}",
+                                    lambda src, snk: (src,)),
+                                "unsigned":
+                                ("unsigned(std_logic_vector({}))",
+                                    lambda src, snk: (src,)),
+                                "std_logic_vector":
+                                ("std_logic_vector({})",
+                                    lambda src, snk: (src,))},
+                     "unsigned": {"integer":
+                                  ("to_integer({})",
+                                      lambda src, snk: (src,)),
+                                  "signed":
+                                  ("{}",
+                                      lambda src, snk: (src,)),
+                                  "unsigned":
+                                  ("unsigned(std_logic_vector({}))",
+                                      lambda src, snk: (src,)),
+                                  "std_logic_vector":
+                                  ("std_logic_vector({})",
+                                      lambda src, snk: (src,))},
+                     "std_logic_vector": {"integer":
+                                          ("to_integer(signed({}))",
+                                              lambda src, snk: (src,)),
+                                          "signed":
+                                          ("signed({})",
+                                              lambda src, snk: (src,)),
+                                          "unsigned":
+                                          ("unsigned({})",
+                                              lambda src, snk: (src,)),
+                                          "std_logic_vector":
+                                          ("{}",
+                                              lambda src, snk: (src,))},
+                     "std_logic": {"std_logic":("{}", lambda src, snk: (src,))}}
+        frmt_string, lambda_func = type_conv[source][sink]
+        return (frmt_string, lambda_func)
