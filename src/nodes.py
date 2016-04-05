@@ -1,6 +1,7 @@
 """Nodes."""
 import os
 import logging
+import collections
 import transformations
 #
 from utils import TransformationError
@@ -247,6 +248,9 @@ class VhdlType(object):
         def __str__(self):
             return self.vhdl_type
 
+        def __repr__(self):
+            return self.vhdl_type
+
     class VhdlSigned(_VhdlType):
         vhdl_type = "signed"
 
@@ -324,10 +328,6 @@ class VhdlType(object):
                     format(self.__class__.__name__)
                 raise TransformationError(error_msg)
 
-            # update vhdl_type to include (self.len-1 downto 0)
-            self.vhdl_type = self.vhdl_type + "({} downto 0)"\
-                .format(self.len - 1)
-
             if default:
                 temp_default = list(default)
 
@@ -352,6 +352,9 @@ class VhdlType(object):
         def __len__(self):
             return self.len
 
+        def __repr__(self):
+            return self.vhdl_type + "({} downto 0)".format(self.len - 1)
+
     class DummyType(_VhdlType):
         pass
 
@@ -361,6 +364,7 @@ class VhdlSymbol(VhdlBaseNode):
 
     d = 0
     dprev = 0
+    vhdl_type = None
 
     def __str__(self):
         return self.name
@@ -401,8 +405,39 @@ class VhdlNode(VhdlBaseNode):
         pass
 
 
-class VhdlSignalCollection(list, VhdlBaseNode):
+class VhdlSignalCollection(collections.MutableSequence, VhdlSymbol):
     """Base class for signal collections."""
+    def __init__(self, *args):
+        self.list = list()
+        self.extend(list(args))
+
+    def check(self, v):
+        if self.vhdl_type is None:
+            self.vhdl_type = v.vhdl_type
+        else:
+            if self.vhdl_type != v.vhdl_type:
+                error_msg = "All types of AND must be equal"
+                raise TransformationError(error_msg)
+
+    def __len__(self):
+        return len(self.list)
+
+    def __getitem__(self, i):
+        return self.list[i]
+
+    def __delitem__(self, i):
+        del self.list[i]
+
+    def __setitem__(self, i, v):
+        self.check(v)
+        self.list[i] = v
+
+    def insert(self, i, v):
+        self.check(v)
+        self.list.insert(i, v)
+
+    def __str__(self):
+        return str(self.list)
 
 
 class VhdlAnd(VhdlSignalCollection):
