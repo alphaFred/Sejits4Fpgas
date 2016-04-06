@@ -75,7 +75,7 @@ class VhdlTransformer(ast.NodeTransformer):
 
         # TODO: implement direct parameter processing
         for source in ["n"]:
-            source_node = VhdlSource(source, VhdlType.VhdlStdLogicVector(8))
+            source_node = VhdlSource(source, VhdlType.VhdlUnsigned(9))
             self.symbols[source] = source_node
             # add sources to assignments to prevent reassignment
             self.assignments.add(source)
