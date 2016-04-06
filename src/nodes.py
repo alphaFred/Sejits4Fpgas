@@ -256,16 +256,18 @@ class VhdlType(object):
 
         def __init__(self, size):
             self.len = size
-            self.vhdl_type = self.vhdl_type + "({} downto 0)"\
-                .format(self.len - 1)
+
+        def __repr__(self):
+            return self.vhdl_type + "({} downto 0)".format(self.len - 1)
 
     class VhdlUnsigned(_VhdlType):
         vhdl_type = "unsigned"
 
         def __init__(self, size):
             self.len = size
-            self.vhdl_type = self.vhdl_type + "({} downto 0)"\
-                .format(self.len - 1)
+
+        def __repr__(self):
+            return self.vhdl_type + "({} downto 0)".format(self.len - 1)
 
     class VhdlPositive(_VhdlType):
         vhdl_type = "positive"
@@ -547,18 +549,18 @@ class VhdlModule(VhdlNode):
             architecture
         """
         if inport_slice:
-            in_port_info = [(port.name, "in", VhdlType.VhdlStdLogicVector(8)) for port in
+            in_port_info = [(port.name, "in", port.vhdl_type) for port in
                 entity[inport_slice]]
             in_port = entity[inport_slice]
             #
-            out_port_info = [(port.name, "out", VhdlType.VhdlStdLogicVector(8)) for port in
+            out_port_info = [(port.name, "out", port.vhdl_type) for port in
                 entity[inport_slice.stop:]]
             out_port = entity[inport_slice.stop:]
         else:
-            in_port_info = [(port.name, "in", VhdlType.VhdlStdLogicVector(8)) for port in entity[:-1]]
+            in_port_info = [(port.name, "in", port.vhdl_type) for port in entity[:-1]]
             in_port = entity[:-1]
             #
-            out_port_info = [(port.name, "out", VhdlType.VhdlStdLogicVector(8)) for port in entity[-1:]]
+            out_port_info = [(port.name, "out", port.vhdl_type) for port in entity[-1:]]
             out_port = entity[-1:]
 
         super(VhdlModule, self).__init__([],
