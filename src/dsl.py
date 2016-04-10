@@ -1,14 +1,15 @@
 import ast
+import numpy as np
 import ctypes
 
 from ctree.c.nodes import FunctionCall, SymbolRef, Return, BinaryOp, Op, Constant, FunctionDecl
 
-from src.nodes import VhdlComponent
+from src.nodes import VhdlComponent, VhdlSource
 from src.types import VhdlType
 from src.utils import TransformationError
 
 
-class DSLBaseTransformer(ast.NodeTransformer):
+class BasicBlockBaseTransformer(ast.NodeTransformer):
     lifted_functions = []
     func_count = 0
 
@@ -33,7 +34,7 @@ class DSLBaseTransformer(ast.NodeTransformer):
 
         func_def = func_def_getter()
         # add function definition to class variable lifted_functions
-        DSLBaseTransformer.lifted_functions.append(func_def)
+        BasicBlockBaseTransformer.lifted_functions.append(func_def)
         # return C node FunctionCall
         return FunctionCall(SymbolRef(func_def.name), node.args)
 
@@ -53,7 +54,7 @@ class DSLBaseTransformer(ast.NodeTransformer):
                                   % type(self))
 
 
-class ConvolveTransformer(DSLBaseTransformer):
+class ConvolveTransformer(BasicBlockBaseTransformer):
     func_name = "bb_convolve"
 
     def get_func_def_c(self):
@@ -65,12 +66,7 @@ class ConvolveTransformer(DSLBaseTransformer):
 
     def get_func_def_vhdl(self):
         """Return VHDL interpretation of the BasicBlock."""
-        inport_info = [("FILTERMATRIX",
-                        VhdlType.VhdlArray(9,
-                                           VhdlType.VhdlInteger,
-                                           -20,
-                                           20,
-                                           type_def="filtMASK")),
+        inport_info = [("FILTERMATRIX", VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
                        ("FILTER_SCALE", VhdlType.VhdlInteger()),
                        ("IMG_WIDTH", VhdlType.VhdlPositive()),
                        ("IMG_HEIGHT", VhdlType.VhdlPositive()),
@@ -88,7 +84,7 @@ class ConvolveTransformer(DSLBaseTransformer):
         return defn
 
 
-class VhdlDSLTransformer(object):
+class DSLTransformer(object):
     """Transformer for all basic block transformer."""
 
     transformers = [ConvolveTransformer]
@@ -106,4 +102,52 @@ class VhdlDSLTransformer(object):
     @staticmethod
     def lifted_functions():
         """Return all basic block transformer functions."""
-        return DSLBaseTransformer.lifted_functions
+        return BasicBlockBaseTransformer.lifted_functions
+
+
+def get_dsl_type(params=None):
+    #
+    MAX_IPT_BYTEWIDTH = 1
+    #
+    def _get_vhdltype(dtype):
+        if isinstance(dtype.type(), np.integer):
+            if dtype.itemsize <= MAX_IPT_BYTEWIDTH:
+                return VhdlType.VhdlStdLogicVector(8 * dtype.itemsize)
+            else:
+                raise TransformationError("Input data of width {}bit not supported".format(dtype.itemsize * 8))
+        else:
+            raise TransformationError("Invalid parameter type: {}".format(type(dtype)))
+
+    def process_2darray(param):
+        return _get_vhdltype(param.dtype)
+
+    def process_3darray(param):
+        raise NotImplementedError()
+
+    def dispatch(param):
+        if param.ndim == 2:
+            return process_2darray(param)
+        elif param.ndim == 3:
+            return process_3darray(param)
+        else:
+            raise TransformationError("Processing of {}dim arrays not supported".format(param.ndim))
+
+    _params = params if params is not None else []
+    #
+    if len(_params) == 1:
+        if not isinstance(_params[0], np.ndarray):
+            raise TransformationError("All input parameter must be of type np.ndarray")
+        return [dispatch(_params[0])]
+    elif len(_params) > 1:
+        if not all([isinstance(p, np.ndarray) for p in _params]):
+            raise TransformationError("All input parameter must be of type np.ndarray")
+        return map(dispatch, _params)
+    else:
+        raise TransformationError("DSL kernel must have at least one input parameter")
+
+
+
+class DSLWrapper(object):
+    def __init__(self):
+        pass
+
