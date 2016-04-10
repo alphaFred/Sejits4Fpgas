@@ -674,8 +674,8 @@ class VhdlProject(Project):
                             params,
                             ret_component)
         #
-        transformations.VhdlDag().visit(module)
-        transformations.PortFinalizer().visit(module)
+        transformations.VhdlGraphTransformer().visit(module)
+        transformations.VhdlPortTransformer().visit(module)
         return VhdlFile("accel_wrapper", [module])
 
     @property

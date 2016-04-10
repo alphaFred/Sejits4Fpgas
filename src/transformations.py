@@ -66,7 +66,7 @@ class VhdlKeywordTransformer(ast.NodeTransformer):
         return node
 
 
-class VhdlTransformer(ast.NodeTransformer):
+class VhdlBaseTransformer(ast.NodeTransformer):
 
     def __init__(self, args_type, lifted_functions=[]):
         self.symbols = {}
@@ -132,9 +132,9 @@ class VhdlTransformer(ast.NodeTransformer):
         #
         ret = VhdlModule(node.name, libraries, None, params, body[-1])
         # retime
-        VhdlDag().visit(ret)
+        VhdlGraphTransformer().visit(ret)
         # finalize ports
-        PortFinalizer().visit(ret)
+        VhdlPortTransformer().visit(ret)
         return ret
 
     def visit_FunctionCall(self, node):
@@ -234,7 +234,7 @@ class VhdlTransformer(ast.NodeTransformer):
             return node
 
 
-class VhdlDag(ast.NodeTransformer):
+class VhdlGraphTransformer(ast.NodeTransformer):
 
     def __init__(self):
         self.con_edge_id = 0
@@ -283,7 +283,7 @@ class TypeChecker(ast.NodeVisitor):
         pass
 
 
-class PortFinalizer(ast.NodeVisitor):
+class VhdlPortTransformer(ast.NodeVisitor):
 
     def __init__(self):
         # ICP - Input Command Ports
@@ -377,7 +377,7 @@ class PortFinalizer(ast.NodeVisitor):
                 node.out_port = self.occps + node.out_port
 
 
-class BB_BaseFuncTransformer(ast.NodeTransformer):
+class DSLBaseTransformer(ast.NodeTransformer):
     lifted_functions = []
     func_count = 0
 
@@ -402,7 +402,7 @@ class BB_BaseFuncTransformer(ast.NodeTransformer):
 
         func_def = func_def_getter()
         # add function definition to class variable lifted_functions
-        BB_BaseFuncTransformer.lifted_functions.append(func_def)
+        DSLBaseTransformer.lifted_functions.append(func_def)
         # return C node FunctionCall
         return FunctionCall(SymbolRef(func_def.name), node.args)
 
@@ -422,7 +422,7 @@ class BB_BaseFuncTransformer(ast.NodeTransformer):
                                   % type(self))
 
 
-class BB_ConvolveTransformer(BB_BaseFuncTransformer):
+class ConvolveTransformer(DSLBaseTransformer):
     func_name = "bb_convolve"
 
     def get_func_def_c(self):
@@ -457,10 +457,10 @@ class BB_ConvolveTransformer(BB_BaseFuncTransformer):
         return defn
 
 
-class BB_FuncTransformer(object):
+class VhdlDSLTransformer(object):
     """Transformer for all basic block transformer."""
 
-    transformers = [BB_ConvolveTransformer]
+    transformers = [ConvolveTransformer]
 
     def __init__(self, backend="C"):
         """Initialize transformation target backend."""
@@ -475,4 +475,4 @@ class BB_FuncTransformer(object):
     @staticmethod
     def lifted_functions():
         """Return all basic block transformer functions."""
-        return BB_BaseFuncTransformer.lifted_functions
+        return DSLBaseTransformer.lifted_functions
