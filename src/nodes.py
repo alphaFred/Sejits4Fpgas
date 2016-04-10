@@ -180,7 +180,7 @@ class VhdlSignalMerge(VhdlSymbol):
         self.fill_bitval = "0" if fill_bitval == "" else fill_bitval
 
     def __str__(self):
-        return "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + " => '" + self.fill_bitval + "')" + self.sig.name
+        return "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + " => '" + self.fill_bitval + "') & " + self.sig.name
 
 
 class VhdlAnd(VhdlSignalCollection):
@@ -660,7 +660,7 @@ class VhdlProject(Project):
         ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
         component.out_port = [ret_sig]
         #
-        ret_component = VhdlReturn([component], [ret_sig], [out_sigs[0]])
+        ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(8, 32), "0")], [out_sigs[0]])
 
         libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
                                           "ieee.numeric_std.all"]),
