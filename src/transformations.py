@@ -34,7 +34,7 @@ UNARY_OP = namedtuple("UNARY_OP", ["i_args", "out_arg"])
 
 MAX_IPT_BYTEWIDTH = 1
 
-class VhdlKeywordTransformer(ast.NodeTransformer):
+class VhdlKwdTransformer(ast.NodeTransformer):
 
     """Transform Name nodes with VHDL keywords."""
 
@@ -276,11 +276,6 @@ class VhdlGraphTransformer(ast.NodeTransformer):
                 node.prev[idx] = dreg
                 node.in_port[idx] = con_edge
         node.dprev = max_d
-
-
-class TypeChecker(ast.NodeVisitor):
-    def __init__(self):
-        pass
 
 
 class VhdlPortTransformer(ast.NodeVisitor):
