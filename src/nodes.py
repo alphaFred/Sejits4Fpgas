@@ -3,7 +3,7 @@ import collections
 import logging
 import os
 
-import src.transformations
+import transformations
 #
 from src.types import VhdlType
 from src.utils import TransformationError
@@ -82,160 +82,6 @@ class VhdlBaseNode(VhdlTreeNode):
         """
         from dotgen import VhdlDotGenLabeller
         return VhdlDotGenLabeller().visit(self)
-
-
-class VhdlFile(VhdlBaseNode, File):
-    """Vhdl File Class representing one vhdl source file."""
-
-    _ext = "vhd"
-    generated = True
-    file_path = ""
-
-    def __init__(self, name="generated", body=[], path=""):
-        """Initialize Vhdl File."""
-        VhdlBaseNode.__init__(self)
-        File.__init__(self, name, body, path)
-
-    @property
-    def file_path(self):
-        """Return path of source file."""
-        return self._filepath
-
-    @file_path.setter
-    def file_path(self, value):
-        """Set and create file path."""
-        self._filepath = value
-        if not os.path.exists(self._filepath):
-            os.makedirs(self._filepath)
-
-    def get_filename(self):
-        """Return file name with file extensions."""
-        return "%s.%s" % (self.name, self._ext)
-
-    def _compile(self, program_text):
-        if not self.generated:
-            return self.file_path
-        else:
-            vhdl_src_file = os.path.join(self.path, self.get_filename())
-            with open(vhdl_src_file, 'w') as vhdl_file:
-                vhdl_file.write(program_text)
-            logger.info("file for generated VHDL: %s", vhdl_src_file)
-            logger.info("generated VHDL program: (((\n%s\n)))", program_text)
-            return vhdl_src_file
-
-    def codegen(self, indent=4):
-        """Run code generation of file."""
-        from codegen import VhdlCodegen
-        return VhdlCodegen(indent).visit(self)
-
-    @classmethod
-    def from_prebuilt(cls, name="prebuilt", path=""):
-        """Generate Vhdl File from prebuilt source file."""
-        vhdlfile = VhdlFile(name, body=[],path= "")
-        vhdlfile.generated = False
-        vhdlfile.file_path = path
-        return vhdlfile
-
-    def component(self):
-        """Return VhdlComponent class for file."""
-        comp = VhdlComponent(name=self.name,
-                             delay=self.body[0].architecture.dprev,
-                             inport_info=self.body[0].inport_info,
-                             outport_info=self.body[0].outport_info)
-        return comp
-
-
-class VhdlProject(Project):
-    """VhdlProject class representing one vhdl project."""
-
-    def __init__(self, files=None, indent=4, synthesis_dir=""):
-        """Initialize VhdlProject."""
-        self.files = files if files else []
-        self.synthesis_dir = synthesis_dir
-        self.indent = indent
-
-    def codegen(self):
-        """Generate vhdl code of wrapper and files in project."""
-        from jit_synth import VhdlSynthModule
-        self._module = VhdlSynthModule()
-
-        self.files.append(self._generate_wrapper())
-
-        for f in self.files:
-            submodule = f._compile(f.codegen(self.indent))
-            if submodule:
-                self._module._link_in(submodule)
-        return self._module
-
-    def _generate_wrapper(self):
-        logger.info("Generate project wrapper")
-        axi_stream_width = 32
-        # input signals
-        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata",
-                                       VhdlType.VhdlStdLogicVector(
-                                           axi_stream_width,
-                                           "0"))
-        m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep",
-                                       VhdlType.VhdlStdLogicVector(4, "0"))
-        m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast",
-                                       VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready",
-                                        VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tvalid = VhdlSignal("m_axis_mm2s_tvalid",
-                                        VhdlType.VhdlStdLogic("0"))
-        in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast,
-                   m_axis_mm2s_tready, m_axis_mm2s_tvalid]
-
-        # output signals
-        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata",
-                                     VhdlType.VhdlStdLogicVector(
-                                         axi_stream_width,
-                                         "0"))
-        s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep",
-                                       VhdlType.VhdlStdLogicVector(4, "0"))
-        s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast",
-                                       VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready",
-                                        VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tvalid = VhdlSignal("s_axis_s2mm_tvalid",
-                                        VhdlType.VhdlStdLogic("0"))
-        out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep,
-                    s_axis_s2mm_tlast, s_axis_s2mm_tready,
-                    s_axis_s2mm_tvalid]
-
-        component = self.files[0].component()
-        component.delay = 5
-        component.library = "work.apply"
-        component.prev = [m_axis_mm2s_tdata]
-        component.in_port = [VhdlSplit(m_axis_mm2s_tdata, slice(0,8))]
-
-        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
-        component.out_port = [ret_sig]
-        #
-        ret_component = VhdlReturn([component], [ret_sig], [out_sigs[0]])
-
-        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
-                                          "ieee.numeric_std.all"]),
-                     VhdlLibrary(None, ["work.the_filter_package.all"])]
-        #
-        inport_slice = slice(0, len(in_sigs))
-        params = in_sigs + out_sigs
-        module = VhdlModule("accel_wrapper",
-                            libraries,
-                            inport_slice,
-                            params,
-                            ret_component)
-        #
-        transformations.VhdlDag().visit(module)
-        transformations.PortFinalizer().visit(module)
-        return VhdlFile("accel_wrapper", [module])
-
-    @property
-    def module(self):
-        """Return JIT module if available else create it."""
-        if self._module:
-            return self._module
-        return self.codegen(indent=self.indent)
 
 
 class VhdlSymbol(VhdlBaseNode):
@@ -684,3 +530,157 @@ class VhdlDReg(VhdlNode):
                         for i, g in zip(self.inport_info, self.in_port)]
         self.out_port = [Port(*i, value=g)
                          for i, g in zip(self.outport_info, self.out_port)]
+
+
+class VhdlFile(VhdlBaseNode, File):
+    """Vhdl File Class representing one vhdl source file."""
+
+    _ext = "vhd"
+    generated = True
+    file_path = ""
+
+    def __init__(self, name="generated", body=[], path=""):
+        """Initialize Vhdl File."""
+        VhdlBaseNode.__init__(self)
+        File.__init__(self, name, body, path)
+
+    @property
+    def file_path(self):
+        """Return path of source file."""
+        return self._filepath
+
+    @file_path.setter
+    def file_path(self, value):
+        """Set and create file path."""
+        self._filepath = value
+        if not os.path.exists(self._filepath):
+            os.makedirs(self._filepath)
+
+    def get_filename(self):
+        """Return file name with file extensions."""
+        return "%s.%s" % (self.name, self._ext)
+
+    def _compile(self, program_text):
+        if not self.generated:
+            return self.file_path
+        else:
+            vhdl_src_file = os.path.join(self.path, self.get_filename())
+            with open(vhdl_src_file, 'w') as vhdl_file:
+                vhdl_file.write(program_text)
+            logger.info("file for generated VHDL: %s", vhdl_src_file)
+            logger.info("generated VHDL program: (((\n%s\n)))", program_text)
+            return vhdl_src_file
+
+    def codegen(self, indent=4):
+        """Run code generation of file."""
+        from codegen import VhdlCodegen
+        return VhdlCodegen(indent).visit(self)
+
+    @classmethod
+    def from_prebuilt(cls, name="prebuilt", path=""):
+        """Generate Vhdl File from prebuilt source file."""
+        vhdlfile = VhdlFile(name, body=[],path= "")
+        vhdlfile.generated = False
+        vhdlfile.file_path = path
+        return vhdlfile
+
+    def component(self):
+        """Return VhdlComponent class for file."""
+        comp = VhdlComponent(name=self.name,
+                             delay=self.body[0].architecture.dprev,
+                             inport_info=self.body[0].inport_info,
+                             outport_info=self.body[0].outport_info)
+        return comp
+
+
+class VhdlProject(Project):
+    """VhdlProject class representing one vhdl project."""
+
+    def __init__(self, files=None, indent=4, synthesis_dir=""):
+        """Initialize VhdlProject."""
+        self.files = files if files else []
+        self.synthesis_dir = synthesis_dir
+        self.indent = indent
+
+    def codegen(self):
+        """Generate vhdl code of wrapper and files in project."""
+        from jit_synth import VhdlSynthModule
+        self._module = VhdlSynthModule()
+
+        self.files.append(self._generate_wrapper())
+
+        for f in self.files:
+            submodule = f._compile(f.codegen(self.indent))
+            if submodule:
+                self._module._link_in(submodule)
+        return self._module
+
+    def _generate_wrapper(self):
+        logger.info("Generate project wrapper")
+        axi_stream_width = 32
+        # input signals
+        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata",
+                                       VhdlType.VhdlStdLogicVector(
+                                           axi_stream_width,
+                                           "0"))
+        m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep",
+                                       VhdlType.VhdlStdLogicVector(4, "0"))
+        m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast",
+                                       VhdlType.VhdlStdLogic("0"))
+        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready",
+                                        VhdlType.VhdlStdLogic("0"))
+        m_axis_mm2s_tvalid = VhdlSignal("m_axis_mm2s_tvalid",
+                                        VhdlType.VhdlStdLogic("0"))
+        in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast,
+                   m_axis_mm2s_tready, m_axis_mm2s_tvalid]
+
+        # output signals
+        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata",
+                                     VhdlType.VhdlStdLogicVector(
+                                         axi_stream_width,
+                                         "0"))
+        s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep",
+                                       VhdlType.VhdlStdLogicVector(4, "0"))
+        s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast",
+                                       VhdlType.VhdlStdLogic("0"))
+        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready",
+                                        VhdlType.VhdlStdLogic("0"))
+        s_axis_s2mm_tvalid = VhdlSignal("s_axis_s2mm_tvalid",
+                                        VhdlType.VhdlStdLogic("0"))
+        out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep,
+                    s_axis_s2mm_tlast, s_axis_s2mm_tready,
+                    s_axis_s2mm_tvalid]
+
+        component = self.files[0].component()
+        component.delay = 5
+        component.library = "work.apply"
+        component.prev = [m_axis_mm2s_tdata]
+        component.in_port = [VhdlSignalSplit(m_axis_mm2s_tdata, slice(0,8))]
+
+        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
+        component.out_port = [ret_sig]
+        #
+        ret_component = VhdlReturn([component], [ret_sig], [out_sigs[0]])
+
+        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
+                                          "ieee.numeric_std.all"]),
+                     VhdlLibrary(None, ["work.the_filter_package.all"])]
+        #
+        inport_slice = slice(0, len(in_sigs))
+        params = in_sigs + out_sigs
+        module = VhdlModule("accel_wrapper",
+                            libraries,
+                            inport_slice,
+                            params,
+                            ret_component)
+        #
+        transformations.VhdlDag().visit(module)
+        transformations.PortFinalizer().visit(module)
+        return VhdlFile("accel_wrapper", [module])
+
+    @property
+    def module(self):
+        """Return JIT module if available else create it."""
+        if self._module:
+            return self._module
+        return self.codegen(indent=self.indent)
