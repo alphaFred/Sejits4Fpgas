@@ -208,7 +208,6 @@ class VhdlBaseTransformer(ast.NodeTransformer):
 
     def visit_Return(self, node):
         value = self.visit(node.value)
-
         con_sig = self._connect(value)
         ret_signal = VhdlSink("MODULE_OUT", con_sig.vhdl_type)
         self.symbols[ret_signal.name] = ret_signal

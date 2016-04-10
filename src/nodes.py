@@ -433,9 +433,9 @@ class VhdlComponent(VhdlNode):
 
     _fields = ["prev"]
 
-    def __init__(self, name="", prev=[], generic_slice=None, delay=-1,
-                 in_port=[], inport_info=None, out_port=[], outport_info=None,
-                 library=""):
+    def __init__(self, name=None, prev=None, generic_slice=None, delay=-1,
+                 in_port=None, inport_info=None, out_port=None, outport_info=None,
+                 library=None):
         """Initialize VhdlComponent node.
 
         :param prev: list of previous nodes in DAG
@@ -452,14 +452,14 @@ class VhdlComponent(VhdlNode):
 
         :raises TransformationError: raised if delay is not >= 0
         """
-        self.name = name
+        self.name = name if not None else ""
         self.generic_slice = generic_slice
-        super(VhdlComponent, self).__init__(prev,
-                                            in_port,
+        super(VhdlComponent, self).__init__(prev if not None else [],
+                                            in_port if not None else [],
                                             inport_info,
-                                            out_port,
+                                            out_port if not None else [],
                                             outport_info)
-        self.library = library
+        self.library = library if not None else ""
 
         if delay >= 0:
             self.d = delay
