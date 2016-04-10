@@ -2,7 +2,7 @@
 import ast
 import logging
 #
-from nodes import VhdlType
+from src.types import VhdlType
 from nodes import Port, Generic, VhdlSignal
 from utils import TransformationError
 from utils import CONFIG

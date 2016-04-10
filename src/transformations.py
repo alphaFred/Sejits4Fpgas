@@ -2,11 +2,12 @@
 import ast
 import copy
 import logging
+import numpy as np
 from collections import namedtuple
 #
 from utils import TransformationError
 from utils import CONFIG
-from nodes import VhdlType
+from src.types import VhdlType
 from nodes import VhdlBinaryOp, VhdlComponent, VhdlConstant, VhdlModule
 from nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal
 from nodes import VhdlSink, VhdlDReg
@@ -30,6 +31,8 @@ logger.addHandler(ch)
 
 
 UNARY_OP = namedtuple("UNARY_OP", ["i_args", "out_arg"])
+
+MAX_IPT_BYTEWIDTH = 1
 
 class VhdlKeywordTransformer(ast.NodeTransformer):
 
@@ -65,7 +68,7 @@ class VhdlKeywordTransformer(ast.NodeTransformer):
 
 class VhdlTransformer(ast.NodeTransformer):
 
-    def __init__(self, lifted_functions=[]):
+    def __init__(self, args_type, lifted_functions=[]):
         self.symbols = {}
         self.lifted_function_names = {f.name for f in lifted_functions}
         self.lifted_functions = lifted_functions
@@ -74,11 +77,41 @@ class VhdlTransformer(ast.NodeTransformer):
         self.n_con_signals = 0
 
         # TODO: implement direct parameter processing
-        for source in ["n"]:
-            source_node = VhdlSource(source, VhdlType.VhdlUnsigned(9))
-            self.symbols[source] = source_node
-            # add sources to assignments to prevent reassignment
-            self.assignments.add(source)
+        self.source_types = args_type if type(args_type) is list else [args_type]
+        # for source in ["a", "b"]:
+        #     source_node = VhdlSource(source, VhdlType.VhdlUnsigned(8))
+        #     self.symbols[source] = source_node
+        #     # add sources to assignments to prevent reassignment
+        #     self.assignments.add(source)
+
+    def _process_params(self, params=[]):
+        pparams = []
+        for param, source_t in zip(params, self.source_types):
+            if type(source_t) is np.ndarray:
+                if source_t.ndim == 2:
+                    self.symbols[param.name] = VhdlSource(param.name,
+                                                          self._get_type(source_t.dtype))
+                    pparams.append(self.symbols[param.name])
+                elif source_t.ndim == 3:
+                    pass
+                else:
+                    raise TransformationError("Input data with {} dimensions is not supported".format(source_t.ndim))
+            else:
+                raise TransformationError("Input data must be of type ndarray")
+        return pparams
+
+    def _get_type(self, np_ctype):
+        if isinstance(np_ctype.type(), np.integer):
+            if np_ctype.itemsize <= MAX_IPT_BYTEWIDTH:
+                if isinstance(np_ctype.type(), np.unsignedinteger):
+                    return VhdlType.VhdlUnsigned(8 * np_ctype.itemsize)
+                else:
+                    return VhdlType.VhdlSigned(8 * np_ctype.itemsize)
+            else:
+                raise TransformationError("Input data width not supported")
+        else:
+            raise TransformationError("Invalid parameter type")
+
 
     def visit_MultiNode(self, node):
         module = map(self.visit, node.body)
@@ -86,6 +119,9 @@ class VhdlTransformer(ast.NodeTransformer):
 
     def visit_FunctionDecl(self, node):
         params = map(self.visit, node.params)
+        #
+        params = self._process_params(params)
+        #
         body = map(self.visit, node.defn)
         # add return signal
         params.append(self.symbols["MODULE_OUT"])
