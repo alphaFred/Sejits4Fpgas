@@ -1,6 +1,7 @@
 """Transformations."""
 import ast
 from collections import namedtuple
+from itertools import izip_longest
 
 import numpy as np
 #
@@ -31,7 +32,23 @@ logger.addHandler(ch)
 
 UNARY_OP = namedtuple("UNARY_OP", ["i_args", "out_arg"])
 
-MAX_IPT_BYTEWIDTH = 1
+
+class VhdlBaseTransformer(object):
+    """Run all DSL independant transformations."""
+
+    def __init__(self, ipt_params=None, lifted_functions=None):
+        """Initialize transform parameters."""
+        self.ipt_params = ipt_params if ipt_params is not None else []
+        self.lifted_functions = lifted_functions if lifted_functions is not None else []
+
+    def visit(self, tree):
+        """Visit all transformation classes sequentially."""
+        tree = VhdlKwdTransformer().visit(tree)
+        tree = VhdlIRTransformer(self.ipt_params, self.lifted_functions).visit(tree)
+        tree = VhdlGraphTransformer().visit(tree)
+        tree = VhdlPortTransformer().visit(tree)
+        return tree
+
 
 class VhdlKwdTransformer(ast.NodeTransformer):
 
@@ -65,52 +82,31 @@ class VhdlKwdTransformer(ast.NodeTransformer):
         return node
 
 
-class VhdlBaseTransformer(ast.NodeTransformer):
+class VhdlIRTransformer(ast.NodeTransformer):
 
-    def __init__(self, args_type, lifted_functions=[]):
+    def __init__(self, ipt_param_types=None, lifted_functions=None):
         self.symbols = {}
-        self.lifted_function_names = {f.name for f in lifted_functions}
-        self.lifted_functions = lifted_functions
-        self.lifted_functions.reverse()
         self.assignments = set()
         self.n_con_signals = 0
+        #
+        self.lifted_functions = lifted_functions if lifted_functions is not None else []
+        self.lifted_function_names = {f.name for f in lifted_functions}
+        self.lifted_functions.reverse()
+        #
+        self.ipt_param_types = ipt_param_types if ipt_param_types is not None else []
 
-        # TODO: implement direct parameter processing
-        self.source_types = args_type if type(args_type) is list else [args_type]
-        # for source in ["a", "b"]:
-        #     source_node = VhdlSource(source, VhdlType.VhdlUnsigned(8))
-        #     self.symbols[source] = source_node
-        #     # add sources to assignments to prevent reassignment
-        #     self.assignments.add(source)
 
     def _process_params(self, params=[]):
         pparams = []
-        for param, source_t in zip(params, self.source_types):
-            if type(source_t) is np.ndarray:
-                if source_t.ndim == 2:
-                    self.symbols[param.name] = VhdlSource(param.name,
-                                                          self._get_type(source_t.dtype))
-                    pparams.append(self.symbols[param.name])
-                elif source_t.ndim == 3:
-                    pass
-                else:
-                    raise TransformationError("Input data with {} dimensions is not supported".format(source_t.ndim))
-            else:
-                raise TransformationError("Input data must be of type ndarray")
+        #
+        if len(self.ipt_param_types) > len(params):
+            raise TransformationError("Too many input parameter types: {0} expected, got {1}".
+                                      format(len(params), len(self.ipt_param_types)))
+        #
+        for param, p_type in izip_longest(params, self.ipt_param_types):
+            self.symbols[param.name] = VhdlSource(param.name, p_type if p_type is not None else param.vhdl_type)
+            pparams.append(self.symbols[param.name])
         return pparams
-
-    def _get_type(self, np_ctype):
-        if isinstance(np_ctype.type(), np.integer):
-            if np_ctype.itemsize <= MAX_IPT_BYTEWIDTH:
-                if isinstance(np_ctype.type(), np.unsignedinteger):
-                    return VhdlType.VhdlUnsigned(8 * np_ctype.itemsize)
-                else:
-                    return VhdlType.VhdlSigned(8 * np_ctype.itemsize)
-            else:
-                raise TransformationError("Input data width not supported")
-        else:
-            raise TransformationError("Invalid parameter type")
-
 
     def visit_MultiNode(self, node):
         module = map(self.visit, node.body)
@@ -118,7 +114,6 @@ class VhdlBaseTransformer(ast.NodeTransformer):
 
     def visit_FunctionDecl(self, node):
         params = map(self.visit, node.params)
-        #
         params = self._process_params(params)
         #
         body = map(self.visit, node.defn)
@@ -129,12 +124,7 @@ class VhdlBaseTransformer(ast.NodeTransformer):
                                           "ieee.numeric_std.all"]),
                      VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
-        ret = VhdlModule(node.name, libraries, None, params, body[-1])
-        # retime
-        VhdlGraphTransformer().visit(ret)
-        # finalize ports
-        VhdlPortTransformer().visit(ret)
-        return ret
+        return VhdlModule(node.name, libraries, None, params, body[-1])
 
     def visit_FunctionCall(self, node):
         args = map(self.visit, node.args)
@@ -239,6 +229,7 @@ class VhdlGraphTransformer(ast.NodeTransformer):
 
     def visit_VhdlModule(self, node):
         self.visit(node.architecture)
+        return node
 
     def visit_VhdlReturn(self, node):
         map(self.visit, node.prev)
@@ -305,6 +296,7 @@ class VhdlPortTransformer(ast.NodeVisitor):
     def visit_VhdlModule(self, node):
         self.visit(node.architecture)
         self.finalize_ports(node)
+        return node
 
     def visit_VhdlReturn(self, node):
         map(self.visit, node.prev)
