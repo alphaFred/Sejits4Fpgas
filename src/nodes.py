@@ -100,8 +100,7 @@ class VhdlNode(VhdlBaseNode):
 
     _fields = ["prev"]
 
-    def __init__(self, prev=[], in_port=[], inport_info=None, out_port=[],
-                 outport_info=None):
+    def __init__(self, prev, in_port=None, inport_info=None, out_port=None, outport_info=None):
         """Initialize VhdlNode node.
 
         :param prev: list of previous nodes in DAG
@@ -113,16 +112,16 @@ class VhdlNode(VhdlBaseNode):
         :param outport_info: list of tuples describing port name,
             direction and vhdl type("PORTNAME", "direction", VhdlType)
         """
-        self.prev = prev
-        self.in_port = in_port
-        self.out_port = out_port
+        self.prev = prev if prev is not None else []
+        self.in_port = in_port if in_port is not None else []
+        self.out_port = out_port if out_port is not None else []
         # initalize delay and cumulative previous delay
         self.d = -1
         self.dprev = -1
         # save in/outport information, initialize generic_info
         self.generic_info = []
-        self.inport_info = inport_info
-        self.outport_info = outport_info
+        self.inport_info = inport_info if inport_info is not None else []
+        self.outport_info = outport_info if outport_info is not None else []
         # initialize generic list
         self.generic = []
 
@@ -452,14 +451,14 @@ class VhdlComponent(VhdlNode):
 
         :raises TransformationError: raised if delay is not >= 0
         """
-        self.name = name if not None else ""
+        self.name = name if name is not None else ""
         self.generic_slice = generic_slice
-        super(VhdlComponent, self).__init__(prev if not None else [],
-                                            in_port if not None else [],
+        super(VhdlComponent, self).__init__(prev,
+                                            in_port,
                                             inport_info,
-                                            out_port if not None else [],
+                                            out_port,
                                             outport_info)
-        self.library = library if not None else ""
+        self.library = library if library is not None else ""
 
         if delay >= 0:
             self.d = delay
