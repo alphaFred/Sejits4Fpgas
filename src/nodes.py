@@ -1,10 +1,12 @@
 """Nodes."""
-import os
-import logging
 import collections
-import transformations
+import logging
+import os
+
+import src.transformations
 #
-from utils import TransformationError
+from src.types import VhdlType
+from src.utils import TransformationError
 from dotgen import VhdlDotGenVisitor
 from collections import namedtuple
 from utils import CONFIG
@@ -205,14 +207,15 @@ class VhdlProject(Project):
         component.delay = 5
         component.library = "work.apply"
         component.prev = [m_axis_mm2s_tdata]
-        component.in_port = [m_axis_mm2s_tdata]
+        component.in_port = [VhdlSplit(m_axis_mm2s_tdata, slice(0,8))]
 
         ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
         component.out_port = [ret_sig]
         #
         ret_component = VhdlReturn([component], [ret_sig], [out_sigs[0]])
 
-        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all"]),
+        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
+                                          "ieee.numeric_std.all"]),
                      VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
         inport_slice = slice(0, len(in_sigs))
@@ -233,132 +236,6 @@ class VhdlProject(Project):
         if self._module:
             return self._module
         return self.codegen(indent=self.indent)
-
-
-class VhdlType(object):
-
-    class _VhdlType(object):
-
-        _fields = []
-
-        bit_dvalues = ()
-        std_logic_dvalues = ("U", "X", "0", "1", "Z", "W", "L", "H", "-")
-        generated = True
-
-        def __str__(self):
-            return self.vhdl_type
-
-        def __repr__(self):
-            return self.vhdl_type
-
-    class VhdlSigned(_VhdlType):
-        vhdl_type = "signed"
-
-        def __init__(self, size):
-            self.len = size
-
-        def __repr__(self):
-            return self.vhdl_type + "({} downto 0)".format(self.len - 1)
-
-    class VhdlUnsigned(_VhdlType):
-        vhdl_type = "unsigned"
-
-        def __init__(self, size):
-            self.len = size
-
-        def __repr__(self):
-            return self.vhdl_type + "({} downto 0)".format(self.len - 1)
-
-    class VhdlPositive(_VhdlType):
-        vhdl_type = "positive"
-
-    class VhdlInteger(_VhdlType):
-        vhdl_type = "integer"
-
-    class VhdlString(_VhdlType):
-        vhdl_type = "string"
-
-    class VhdlArray(_VhdlType):
-        vhdl_type = "array"
-        type_def = ""
-
-        def __init__(self, size, itm_type, itm_min, itm_max, type_def=""):
-            self.len = size
-            self.item_vhdl_type = itm_type
-            self.min = itm_min
-            self.max = itm_max
-            #
-            self.type_def = type_def
-
-        def __len__(self):
-            return self.len
-
-        @classmethod
-        def from_list(cls, itms):
-            itms = list(itms)
-            size = len(itms)
-            item_vhdl_type = itms[0].vhdl_type
-            itm_min = min([itm.value for itm in itms])
-            itm_max = max([itm.value for itm in itms])
-            #
-            return cls(size, item_vhdl_type, itm_min, itm_max)
-
-    class VhdlStdLogic(_VhdlType):
-        vhdl_type = "std_logic"
-
-        def __init__(self, default=None):
-            if default:
-                if hasattr(default, "__len__")\
-                   and len(default) == 1\
-                   and default in self.std_logic_dvalues:
-                    self.default = ["'" + ditm + "'" for ditm in default]
-                else:
-                    error_msg = "Illegal default value for {0}".\
-                        format(self.__class__.__name__)
-                    raise TransformationError(error_msg)
-            else:
-                self.default = "'0'"
-
-    class VhdlStdLogicVector(_VhdlType):
-        vhdl_type = "std_logic_vector"
-
-        def __init__(self, size, default=None):
-            if size > 1:
-                self.len = size
-            else:
-                error_msg = "Parameter size of {0} must be > 1".\
-                    format(self.__class__.__name__)
-                raise TransformationError(error_msg)
-
-            if default:
-                temp_default = list(default)
-
-                # check if every item in default is a valid std_logic value
-                val_checked = all([ditm in self.std_logic_dvalues for ditm in temp_default])
-
-                if val_checked is True:
-                    if len(temp_default) == self.len:
-                        self.default = "#" + "".join(temp_default) + "'"
-                    elif len(temp_default) == 1:
-                        self.default = "(others=>"+str(temp_default[0])+")"
-                    else:
-                        error_msg = "Length of default = {0}; " + \
-                                    "should be {1} or {2}".format(len(temp_default), 1, self.len)
-                        raise TransformationError(error_msg)
-                else:
-                    error_msg = "Values of default not in std_logic_dvalues"
-                    raise TransformationError(error_msg)
-            else:
-                self.default = "(others=>0)"
-
-        def __len__(self):
-            return self.len
-
-        def __repr__(self):
-            return self.vhdl_type + "({} downto 0)".format(self.len - 1)
-
-    class DummyType(_VhdlType):
-        pass
 
 
 class VhdlSymbol(VhdlBaseNode):
@@ -413,13 +290,8 @@ class VhdlSignalCollection(collections.MutableSequence, VhdlSymbol):
         self.list = list()
         self.extend(list(args))
 
-    def check(self, v):
-        if self.vhdl_type is None:
-            self.vhdl_type = v.vhdl_type
-        else:
-            if self.vhdl_type != v.vhdl_type:
-                error_msg = "All types of AND must be equal"
-                raise TransformationError(error_msg)
+    def check(self, arg):
+        raise NotImplementedError()
 
     def __len__(self):
         return len(self.list)
@@ -442,10 +314,41 @@ class VhdlSignalCollection(collections.MutableSequence, VhdlSymbol):
         return str(self.list)
 
 
+class VhdlSignalSplit(VhdlSymbol):
+    def __init__(self, sig, sig_slice):
+        self.sig = sig
+        self.sig_slice = sig_slice
+        if hasattr(sig.vhdl_type, "size"):
+            self.vhdl_type = sig.vhdl_type.__class__(sig_slice.stop - sig_slice.start)
+        else:
+            raise TransformationError()
+
+
+    def __str__(self):
+        return self.sig.name + "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + ")"
+
+class VhdlSignalMerge(VhdlSymbol):
+    def __init__(self, sig, sig_slice, fill_bitval=""):
+        self.sig = sig
+        self.sig_slice = sig_slice
+        self.fill_bitval = "0" if fill_bitval == "" else fill_bitval
+
+    def __str__(self):
+        return "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + " => '" + self.fill_bitval + "')" + self.sig.name
+
+
 class VhdlAnd(VhdlSignalCollection):
     """Bool signal connection AND."""
     def __init__(self, *args):
         super(VhdlAnd, self).__init__(*args)
+
+    def check(self, v):
+        if self.vhdl_type is None:
+            self.vhdl_type = v.vhdl_type
+        else:
+            if self.vhdl_type != v.vhdl_type:
+                error_msg = "All types of AND must be equal"
+                raise TransformationError(error_msg)
 
     def __str__(self):
         return " AND ".join([str(i) for i in self])
