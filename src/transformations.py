@@ -218,7 +218,7 @@ class VhdlBaseTransformer(ast.NodeTransformer):
                                out_port=[ret_signal])
         return vhdl_node
 
-    def _connect(self, node, target=None):
+    def _connect(self, node):
         if isinstance(node, VhdlNode):
             if len(node.out_port) == 0:
                 con_signal = VhdlSignal(name=node.__class__.__name__.upper() + "_OUT_" + str(self.n_con_signals),
