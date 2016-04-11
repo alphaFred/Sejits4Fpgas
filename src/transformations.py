@@ -234,14 +234,17 @@ class VhdlGraphTransformer(ast.NodeTransformer):
     def visit_VhdlReturn(self, node):
         map(self.visit, node.prev)
         self.retime(node)
+        return node
 
     def visit_VhdlBinaryOp(self, node):
         map(self.visit, node.prev)
         self.retime(node)
+        return node
 
     def visit_VhdlComponent(self, node):
         map(self.visit, node.prev)
         self.retime(node)
+        return node
 
     def retime(self, node):
         prev_d = [prev.d + prev.dprev for prev in node.prev]
@@ -301,18 +304,22 @@ class VhdlPortTransformer(ast.NodeVisitor):
     def visit_VhdlReturn(self, node):
         map(self.visit, node.prev)
         self.finalize_ports(node)
+        return node
 
     def visit_VhdlBinaryOp(self, node):
         map(self.visit, node.prev)
         self.finalize_ports(node)
+        return node
 
     def visit_VhdlComponent(self, node):
         map(self.visit, node.prev)
         self.finalize_ports(node)
+        return node
 
     def visit_VhdlDReg(self, node):
         map(self.visit, node.prev)
         self.finalize_ports(node)
+        return node
 
     def finalize_ports(self, node):
         iccps = []
