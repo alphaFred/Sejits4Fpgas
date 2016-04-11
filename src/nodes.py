@@ -185,7 +185,7 @@ class VhdlSignalMerge(VhdlSymbol):
 
 class VhdlToArray(VhdlSignalCollection):
     def __init__(self, *args):
-        super(VhdlAnd, self).__init__(*args)
+        super(VhdlToArray, self).__init__(*args)
 
     def __str__(self):
         return "(" + " & ".join([str(i) for i in self]) + ")"
@@ -193,7 +193,7 @@ class VhdlToArray(VhdlSignalCollection):
 
 class VhdlFromArray(VhdlSignalCollection):
     def __init__(self, *args):
-        super(VhdlAnd, self).__init__(*args)
+        super(VhdlFromArray, self).__init__(*args)
 
     def __str__(self):
         return "(" + " & ".join([str(i) for i in self]) + ")"
@@ -596,37 +596,20 @@ class VhdlProject(Project):
         logger.info("Generate project wrapper")
         axi_stream_width = 32
         # input signals
-        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata",
-                                       VhdlType.VhdlStdLogicVector(
-                                           axi_stream_width,
-                                           "0"))
-        m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep",
-                                       VhdlType.VhdlStdLogicVector(4, "0"))
-        m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast",
-                                       VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready",
-                                        VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tvalid = VhdlSignal("m_axis_mm2s_tvalid",
-                                        VhdlType.VhdlStdLogic("0"))
-        in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast,
-                   m_axis_mm2s_tready, m_axis_mm2s_tvalid]
+        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector( axi_stream_width, "0"))
+        m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep", VhdlType.VhdlStdLogicVector(4, "0"))
+        m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast", VhdlType.VhdlStdLogic("0"))
+        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready", VhdlType.VhdlStdLogic("0"))
+        m_axis_mm2s_tvalid = VhdlSignal("m_axis_mm2s_tvalid", VhdlType.VhdlStdLogic("0"))
+        in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast, m_axis_mm2s_tready, m_axis_mm2s_tvalid]
 
         # output signals
-        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata",
-                                     VhdlType.VhdlStdLogicVector(
-                                         axi_stream_width,
-                                         "0"))
-        s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep",
-                                       VhdlType.VhdlStdLogicVector(4, "0"))
-        s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast",
-                                       VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready",
-                                        VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tvalid = VhdlSignal("s_axis_s2mm_tvalid",
-                                        VhdlType.VhdlStdLogic("0"))
-        out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep,
-                    s_axis_s2mm_tlast, s_axis_s2mm_tready,
-                    s_axis_s2mm_tvalid]
+        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector( axi_stream_width, "0"))
+        s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep", VhdlType.VhdlStdLogicVector(4, "0"))
+        s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast", VhdlType.VhdlStdLogic("0"))
+        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready", VhdlType.VhdlStdLogic("0"))
+        s_axis_s2mm_tvalid = VhdlSignal("s_axis_s2mm_tvalid", VhdlType.VhdlStdLogic("0"))
+        out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep, s_axis_s2mm_tlast, s_axis_s2mm_tready, s_axis_s2mm_tvalid]
 
         component = self.files[0].component()
         component.delay = 5
@@ -639,17 +622,12 @@ class VhdlProject(Project):
         #
         ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(8, 32), "0")], [out_sigs[0]])
 
-        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
-                                          "ieee.numeric_std.all"]),
+        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all", "ieee.numeric_std.all"]),
                      VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
         inport_slice = slice(0, len(in_sigs))
         params = in_sigs + out_sigs
-        module = VhdlModule("accel_wrapper",
-                            libraries,
-                            inport_slice,
-                            params,
-                            ret_component)
+        module = VhdlModule("accel_wrapper", libraries, inport_slice, params, ret_component)
         #
         transformations.VhdlGraphTransformer().visit(module)
         transformations.VhdlPortTransformer().visit(module)
