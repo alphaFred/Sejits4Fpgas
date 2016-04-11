@@ -576,7 +576,7 @@ class VhdlProject(Project):
         self.files = files if files else []
         self.synthesis_dir = synthesis_dir
         self.indent = indent
-        self.gen_wrapper = gen_wrapper
+        self.gen_wrapper = gen_wrapper  # generate wrapper
 
     def codegen(self):
         """Generate vhdl code of wrapper and files in project."""
