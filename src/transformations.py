@@ -124,7 +124,8 @@ class VhdlIRTransformer(ast.NodeTransformer):
                                           "ieee.numeric_std.all"]),
                      VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
-        return VhdlModule(node.name, libraries, None, params, [body[-1]])
+        architecture = body[-1]  # add VhdlReturn component to architecture
+        return VhdlModule(node.name, libraries, None, params, [architecture])
 
     def visit_FunctionCall(self, node):
         args = map(self.visit, node.args)
