@@ -65,66 +65,109 @@ class VhdlCodegen(ast.NodeVisitor):
         port_src = self._port_block((node.in_port, node.out_port))
         self.src_code += self.ENTITY_noG.format(entity_name=node.name,
                                                 port_declarations=port_src) + "\n\n"
-        self.visit(node.architecture)
+        map(self.visit, node.architecture)
+        #
         self.src_code += self.ARCHITECTURE.format(architecture_name="BEHAVE",
                                                   entity_name=node.name,
                                                   architecture_declarations=self.symbols.strip("\n"),
                                                   architecture_body=self.architecture_body)
         return self.src_code
 
+    def visit_VhdlAssignment(self, node):
+        self.architecture_body += "\n" + node.target.name + " <= " + node.source.name + ";"
+
     def visit_VhdlBinaryOp(self, node):
-        map(self.visit, node.prev)
-        self.architecture_body += "\n"
+        temp_prev_component = [p for p in map(self.visit, node.prev) if p is not None]
+        prev_component = []
+        for i in temp_prev_component:
+            if isinstance(i, list):
+                prev_component.extend(i)
+            else:
+                prev_component.append(i)
         #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
         if node.generic:
-            self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
-                                                            component_lib=node.library,
-                                                            generic_map=generic_src,
-                                                            port_map=port_src) + "\n"
+            component = self.COMPONENT.format(instance_name=self._generate_name(node),
+                                              component_lib=node.library,
+                                              generic_map=generic_src,
+                                              port_map=port_src) + "\n"
         else:
-            self.architecture_body += self.COMPONENT_noG.format(instance_name=self._generate_name(node),
-                                                                component_lib=node.library,
-                                                                port_map=port_src) + "\n"
+            component = self.COMPONENT_noG.format(instance_name=self._generate_name(node),
+                                                  component_lib=node.library,
+                                                  port_map=port_src) + "\n"
+        self.architecture_body += "\n" + component
+        #
+        prev_component.append(component)
+        return prev_component
 
     def visit_VhdlReturn(self, node):
-        map(self.visit, node.prev)
-        self.architecture_body += "\n-- RETURN\n"
+        temp_prev_component = [p for p in map(self.visit, node.prev) if p is not None]
+        prev_component = []
+        for i in temp_prev_component:
+            if isinstance(i, list):
+                prev_component.extend(i)
+            else:
+                prev_component.append(i)
+        component = ["-- RETURN"]
         for o, i in zip(node.out_port, node.in_port[2:]):
-            self.architecture_body += str(o.value.name) + " <= " + str(i.value) + ";\n"
+            component.append(str(o.value.name) + " <= " + str(i.value) + ";")
+        #
+        self.architecture_body += "\n" + "\n".join(component)
+        prev_component.extend(component)
+        return prev_component
 
     def visit_VhdlComponent(self, node):
-        map(self.visit, node.prev)
+        temp_prev_component = [p for p in map(self.visit, node.prev) if p is not None]
+        prev_component = []
+        for i in temp_prev_component:
+            if isinstance(i, list):
+                prev_component.extend(i)
+            else:
+                prev_component.append(i)
         self.architecture_body += "\n"
         #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
         if node.generic:
-            self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
-                                                            component_lib=node.library,
-                                                            generic_map=generic_src,
-                                                            port_map=port_src) + "\n"
+            component = self.COMPONENT.format(instance_name=self._generate_name(node),
+                                              component_lib=node.library,
+                                              generic_map=generic_src,
+                                              port_map=port_src) + "\n"
         else:
-            self.architecture_body += self.COMPONENT_noG.format(instance_name=self._generate_name(node),
-                                                                component_lib=node.library,
-                                                                port_map=port_src) + "\n"
+            component = self.COMPONENT_noG.format(instance_name=self._generate_name(node),
+                                                  component_lib=node.library,
+                                                  port_map=port_src) + "\n"
+        self.architecture_body += "\n" + component
+        #
+        prev_component.append(component)
+        return prev_component
 
     def visit_VhdlDReg(self, node):
-        map(self.visit, node.prev)
+        temp_prev_component = [p for p in map(self.visit, node.prev) if p is not None]
+        prev_component = []
+        for i in temp_prev_component:
+            if isinstance(i, list):
+                prev_component.extend(i)
+            else:
+                prev_component.append(i)
         self.architecture_body += "\n"
         #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
         if node.generic:
-            self.architecture_body += self.COMPONENT.format(instance_name=self._generate_name(node),
-                                                            component_lib=node.library,
-                                                            generic_map=generic_src,
-                                                            port_map=port_src) + "\n"
+            component = self.COMPONENT.format(instance_name=self._generate_name(node),
+                                              component_lib=node.library,
+                                              generic_map=generic_src,
+                                              port_map=port_src) + "\n"
         else:
-            self.architecture_body += self.COMPONENT_noG.format(instance_name=self._generate_name(node),
-                                                                component_lib=node.library,
-                                                                port_map=port_src) + "\n"
+            component = self.COMPONENT_noG.format(instance_name=self._generate_name(node),
+                                                  component_lib=node.library,
+                                                  port_map=port_src) + "\n"
+        self.architecture_body += "\n" + component
+        #
+        prev_component.append(component)
+        return prev_component
 
     def visit_VhdlFile(self, node):
         if node.body:
