@@ -139,7 +139,7 @@ def get_dsl_type(params=None):
         return _get_vhdltype(param.dtype)
 
     def process_3darray(param):
-        raise NotImplementedError()
+        return VhdlType.VhdlArray(3, _get_vhdltype(param.dtype), itm_max=param.max, itm_min=param.min)
 
     def dispatch(param):
         if param.ndim == 2:
@@ -174,7 +174,12 @@ class DSLWrapper(object):
         except AttributeError:
             raise TransformationError("File to wrap must provide component() method")
         else:
-            return self._generate_wrapper_2d(component)
+            if type(self.ipt_params[0]) is VhdlType.VhdlStdLogicVector:
+                return self._generate_wrapper_2d(component)
+            elif type(self.ipt_params[0]) is VhdlType.VhdlArray:
+                return self._generate_wrapper_3d(component)
+            else:
+                raise TransformationError("Invalid parameter type {}".format(type(self.ipt_params[0])))
 
 
     def _generate_wrapper_2d(self, component):
@@ -212,6 +217,7 @@ class DSLWrapper(object):
                      VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
         module = VhdlModule("accel_wrapper", libraries, slice(0, len(in_sigs)), in_sigs + out_sigs, ret_component)
+        #
         module = transformations.VhdlGraphTransformer().visit(module)
         module = transformations.VhdlPortTransformer().visit(module)
         return VhdlFile("accel_wrapper", [module])
