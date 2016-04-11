@@ -172,6 +172,7 @@ class VhdlSignalSplit(VhdlSymbol):
     def __str__(self):
         return self.sig.name + "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + ")"
 
+
 class VhdlSignalMerge(VhdlSymbol):
     def __init__(self, sig, sig_slice, fill_bitval=""):
         self.sig = sig
@@ -180,6 +181,22 @@ class VhdlSignalMerge(VhdlSymbol):
 
     def __str__(self):
         return "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + " => '" + self.fill_bitval + "') & " + self.sig.name
+
+
+class VhdlToArray(VhdlSignalCollection):
+    def __init__(self, *args):
+        super(VhdlAnd, self).__init__(*args)
+
+    def __str__(self):
+        return "(" + " & ".join([str(i) for i in self]) + ")"
+
+
+class VhdlFromArray(VhdlSignalCollection):
+    def __init__(self, *args):
+        super(VhdlAnd, self).__init__(*args)
+
+    def __str__(self):
+        return "(" + " & ".join([str(i) for i in self]) + ")"
 
 
 class VhdlAnd(VhdlSignalCollection):
@@ -297,25 +314,19 @@ class VhdlModule(VhdlNode):
             architecture
         """
         if inport_slice:
-            in_port_info = [(port.name, "in", port.vhdl_type) for port in
-                entity[inport_slice]]
+            in_port_info = [PortInfo(port.name, "in", port.vhdl_type) for port in entity[inport_slice]]
             in_port = entity[inport_slice]
             #
-            out_port_info = [(port.name, "out", port.vhdl_type) for port in
-                entity[inport_slice.stop:]]
+            out_port_info = [PortInfo(port.name, "out", port.vhdl_type) for port in entity[inport_slice.stop:]]
             out_port = entity[inport_slice.stop:]
         else:
-            in_port_info = [(port.name, "in", port.vhdl_type) for port in entity[:-1]]
+            in_port_info = [PortInfo(port.name, "in", port.vhdl_type) for port in entity[:-1]]
             in_port = entity[:-1]
             #
-            out_port_info = [(port.name, "out", port.vhdl_type) for port in entity[-1:]]
+            out_port_info = [PortInfo(port.name, "out", port.vhdl_type) for port in entity[-1:]]
             out_port = entity[-1:]
 
-        super(VhdlModule, self).__init__([],
-                                         in_port,
-                                         in_port_info,
-                                         out_port,
-                                         out_port_info)
+        super(VhdlModule, self).__init__([], in_port, in_port_info, out_port, out_port_info)
         self.name = name
         self.libraries = libraries
         self.entity = entity
@@ -326,12 +337,9 @@ class VhdlModule(VhdlNode):
         return VhdlDotGenLabeller().visit(self)
 
     def finalize_ports(self):
-        self.generic = [Generic(*i, value=g)
-                        for i, g in zip(self.generic_info, self.generic)]
-        self.in_port = [Port(*i, value=g)
-                        for i, g in zip(self.inport_info, self.in_port)]
-        self.out_port = [Port(*i, value=g)
-                         for i, g in zip(self.outport_info, self.out_port)]
+        self.generic = [Generic(*i, value=g) for i, g in zip(self.generic_info, self.generic)]
+        self.in_port = [Port(*i, value=g) for i, g in zip(self.inport_info, self.in_port)]
+        self.out_port = [Port(*i, value=g) for i, g in zip(self.outport_info, self.out_port)]
 
 
 class VhdlBinaryOp(VhdlNode):
@@ -349,22 +357,11 @@ class VhdlBinaryOp(VhdlNode):
 
         :raises TransformationError: raised if type of op is not supported
         """
-        in_port_info = [PortInfo("LEFT",
-                                 "in",
-                                 VhdlType.VhdlStdLogicVector(8)
-                                 ),
-                        PortInfo("RIGHT",
-                                 "in",
-                                 VhdlType.VhdlStdLogicVector(8))]
-        out_port_info = [PortInfo("BINOP_OUT",
-                                  "out",
-                                  VhdlType.VhdlStdLogicVector(8))]
+        in_port_info = [PortInfo("LEFT", "in", VhdlType.VhdlStdLogicVector(8)),
+                        PortInfo("RIGHT", "in", VhdlType.VhdlStdLogicVector(8))]
+        out_port_info = [PortInfo("BINOP_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
 
-        super(VhdlBinaryOp, self).__init__(prev,
-                                           in_port,
-                                           in_port_info,
-                                           out_port,
-                                           out_port_info)
+        super(VhdlBinaryOp, self).__init__(prev, in_port, in_port_info, out_port, out_port_info)
         self.library = "work.BasicArith"
         # operation decoder with (Operation ID, Delay)
         op_decoder = {Op.Add:(0, 4),
@@ -379,12 +376,9 @@ class VhdlBinaryOp(VhdlNode):
             raise TransformationError("Unsupported binary operation %s" % op)
 
     def finalize_ports(self):
-        self.generic = [Generic(*i, value=g)
-                        for i, g in zip(self.generic_info, self.generic)]
-        self.in_port = [Port(*i, value=g)
-                        for i, g in zip(self.inport_info, self.in_port)]
-        self.out_port = [Port(*i, value=g)
-                         for i, g in zip(self.outport_info, self.out_port)]
+        self.generic = [Generic(*i, value=g) for i, g in zip(self.generic_info, self.generic)]
+        self.in_port = [Port(*i, value=g) for i, g in zip(self.inport_info, self.in_port)]
+        self.out_port = [Port(*i, value=g) for i, g in zip(self.outport_info, self.out_port)]
 
 
 class VhdlReturn(VhdlNode):
@@ -406,25 +400,15 @@ class VhdlReturn(VhdlNode):
             error_msg = "VhdlReturn node supports only 1 in- and output"
             raise TransformationError(error_msg)
 
-        in_port_info = [PortInfo("RETURN_IN",
-                                 "in",
-                                 VhdlType.VhdlStdLogicVector(8))]
-        out_port_info = [PortInfo("RETURN_OUT",
-                                  "out",
-                                  VhdlType.VhdlStdLogicVector(8))]
+        in_port_info = [PortInfo("RETURN_IN", "in", VhdlType.VhdlStdLogicVector(8))]
+        out_port_info = [PortInfo("RETURN_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
 
-        super(VhdlReturn, self).__init__(prev,
-                                         in_port,
-                                         in_port_info,
-                                         out_port,
-                                         out_port_info)
+        super(VhdlReturn, self).__init__(prev, in_port, in_port_info, out_port, out_port_info)
         self.d = 0
 
     def finalize_ports(self):
-        self.in_port = [Port(*i, value=g)
-                        for i, g in zip(self.inport_info, self.in_port)]
-        self.out_port = [Port(*i, value=g)
-                         for i, g in zip(self.outport_info, self.out_port)]
+        self.in_port = [Port(*i, value=g) for i, g in zip(self.inport_info, self.in_port)]
+        self.out_port = [Port(*i, value=g) for i, g in zip(self.outport_info, self.out_port)]
 
 
 class VhdlComponent(VhdlNode):
@@ -432,9 +416,8 @@ class VhdlComponent(VhdlNode):
 
     _fields = ["prev"]
 
-    def __init__(self, name=None, prev=None, generic_slice=None, delay=-1,
-                 in_port=None, inport_info=None, out_port=None, outport_info=None,
-                 library=None):
+    def __init__(self, name=None, prev=None, generic_slice=None, delay=-1, in_port=None, inport_info=None,
+                 out_port=None, outport_info=None, library=None):
         """Initialize VhdlComponent node.
 
         :param prev: list of previous nodes in DAG
@@ -453,11 +436,7 @@ class VhdlComponent(VhdlNode):
         """
         self.name = name if name is not None else ""
         self.generic_slice = generic_slice
-        super(VhdlComponent, self).__init__(prev,
-                                            in_port,
-                                            inport_info,
-                                            out_port,
-                                            outport_info)
+        super(VhdlComponent, self).__init__(prev, in_port, inport_info, out_port, outport_info)
         self.library = library if library is not None else ""
 
         if delay >= 0:
@@ -473,12 +452,9 @@ class VhdlComponent(VhdlNode):
             self.generic_info = self.inport_info[self.generic_slice]
             self.inport_info = self.inport_info[self.generic_slice.stop:]
             #
-        self.generic = [Generic(*i, value=g)
-                        for i, g in zip(self.generic_info, self.generic)]
-        self.in_port = [Port(*i, value=g)
-                        for i, g in zip(self.inport_info, self.in_port)]
-        self.out_port = [Port(*i, value=g)
-                         for i, g in zip(self.outport_info, self.out_port)]
+        self.generic = [Generic(*i, value=g) for i, g in zip(self.generic_info, self.generic)]
+        self.in_port = [Port(*i, value=g) for i, g in zip(self.inport_info, self.in_port)]
+        self.out_port = [Port(*i, value=g) for i, g in zip(self.outport_info, self.out_port)]
 
 
 class VhdlDReg(VhdlNode):
@@ -595,18 +571,20 @@ class VhdlFile(VhdlBaseNode, File):
 class VhdlProject(Project):
     """VhdlProject class representing one vhdl project."""
 
-    def __init__(self, files=None, indent=4, synthesis_dir=""):
+    def __init__(self, files=None, indent=4, synthesis_dir="", gen_wrapper=True):
         """Initialize VhdlProject."""
         self.files = files if files else []
         self.synthesis_dir = synthesis_dir
         self.indent = indent
+        self.gen_wrapper = gen_wrapper
 
     def codegen(self):
         """Generate vhdl code of wrapper and files in project."""
         from jit_synth import VhdlSynthModule
         self._module = VhdlSynthModule()
 
-        self.files.append(self._generate_wrapper())
+        if self.gen_wrapper is True:
+            self.files.append(self._generate_wrapper())
 
         for f in self.files:
             submodule = f._compile(f.codegen(self.indent))
@@ -654,9 +632,9 @@ class VhdlProject(Project):
         component.delay = 5
         component.library = "work.apply"
         component.prev = [m_axis_mm2s_tdata]
-        component.in_port = [VhdlSignalSplit(m_axis_mm2s_tdata, slice(0,8))]
+        component.in_port = [VhdlSignalSplit(m_axis_mm2s_tdata, slice(0, 8))]
 
-        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
+        ret_sig = VhdlSignal("ret_tdata", component.outport_info[0].vhdl_type)
         component.out_port = [ret_sig]
         #
         ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(8, 32), "0")], [out_sigs[0]])
