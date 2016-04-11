@@ -124,7 +124,7 @@ class VhdlIRTransformer(ast.NodeTransformer):
                                           "ieee.numeric_std.all"]),
                      VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
-        return VhdlModule(node.name, libraries, None, params, body[-1])
+        return VhdlModule(node.name, libraries, None, params, [body[-1]])
 
     def visit_FunctionCall(self, node):
         args = map(self.visit, node.args)
@@ -228,7 +228,7 @@ class VhdlGraphTransformer(ast.NodeTransformer):
         self.con_edge_id = 0
 
     def visit_VhdlModule(self, node):
-        self.visit(node.architecture)
+        map(self.visit, node.architecture)
         return node
 
     def visit_VhdlReturn(self, node):
@@ -272,16 +272,25 @@ class VhdlGraphTransformer(ast.NodeTransformer):
 
 class VhdlPortTransformer(ast.NodeVisitor):
 
-    def __init__(self):
+    def __init__(self, icps_info=None, iccps_info=None, occps_info=None):
         # ICP - Input Command Ports
-        self.icps_info = [PortInfo("CLK", "in", VhdlType.VhdlStdLogic()),
-                          PortInfo("RST", "in", VhdlType.VhdlStdLogic())]
+        if icps_info is not None:
+            self.icps_info = icps_info
+        else:
+            self.icps_info = [PortInfo("CLK", "in", VhdlType.VhdlStdLogic()),
+                              PortInfo("RST", "in", VhdlType.VhdlStdLogic())]
 
         # ICCP - Input Cascading Command Ports
-        self.iccps_info = [PortInfo("VALID_IN", "in", VhdlType.VhdlStdLogic())]
+        if iccps_info is not None:
+            self.iccps_info = iccps_info
+        else:
+            self.iccps_info = [PortInfo("VALID_IN", "in", VhdlType.VhdlStdLogic())]
 
         # OCCP - Output Cascading Command Ports
-        self.occps_info = [PortInfo("VALID_OUT", "out", VhdlType.VhdlStdLogic())]
+        if occps_info is not None:
+            self.occps_info = occps_info
+        else:
+            self.occps_info = [PortInfo("VALID_OUT", "out", VhdlType.VhdlStdLogic())]
 
         self.cpe_id = 0  # command port edge ID
 
@@ -297,7 +306,7 @@ class VhdlPortTransformer(ast.NodeVisitor):
         self.visited_nodes = set()
 
     def visit_VhdlModule(self, node):
-        self.visit(node.architecture)
+        map(self.visit, node.architecture)
         self.finalize_ports(node)
         return node
 
@@ -345,10 +354,7 @@ class VhdlPortTransformer(ast.NodeVisitor):
                             self.cpe_id += 1
                             cc_edge = VhdlSignal(name=n,
                                                  vhdl_type=occp.vhdl_type)
-                            poccps.append(Port(occp.name,
-                                               occp.direction,
-                                               occp.vhdl_type,
-                                               cc_edge))
+                            poccps.append(Port(occp.name, occp.direction, occp.vhdl_type, cc_edge))
                             cc_edges.append(cc_edge)
                         # finalize previous nodes out_port
                         pnode.out_port = poccps + pnode.out_port
@@ -359,10 +365,7 @@ class VhdlPortTransformer(ast.NodeVisitor):
                             cc_edges.append(cc_edge)
                     self.visited_nodes.add(hash(pnode))
                 # finalize nodes in_port
-                iccps.append(Port(iccp.name,
-                                  iccp.direction,
-                                  iccp.vhdl_type,
-                                  cc_edges))
+                iccps.append(Port(iccp.name, iccp.direction, iccp.vhdl_type, cc_edges))
             # finalize nodes in_port
             node.in_port = self.icps + iccps + node.in_port
             if isinstance(node, VhdlReturn):

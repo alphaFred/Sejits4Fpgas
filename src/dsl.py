@@ -7,7 +7,7 @@ from ctree.c.nodes import FunctionCall, SymbolRef, Return, BinaryOp, Op, Constan
 
 from src import transformations
 from src.nodes import VhdlComponent, VhdlSource, VhdlSignal, VhdlSink, VhdlSignalSplit, VhdlReturn, VhdlSignalMerge, \
-    VhdlLibrary, VhdlModule, VhdlFile, VhdlToArray
+    VhdlLibrary, VhdlModule, VhdlFile, VhdlToArray, VhdlAssignment
 from src.types import VhdlType
 from src.utils import TransformationError, CONFIG
 
@@ -189,18 +189,16 @@ class DSLWrapper(object):
         m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep", VhdlType.VhdlStdLogicVector(4, "0"))
         m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast", VhdlType.VhdlStdLogic("0"))
         m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready", VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tvalid = VhdlSignal("m_axis_mm2s_tvalid", VhdlType.VhdlStdLogic("0"))
         #
-        in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast, m_axis_mm2s_tready, m_axis_mm2s_tvalid]
+        in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast, m_axis_mm2s_tready]
 
         # output signals
         s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector(self.axi_stream_width, "0"))
         s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep", VhdlType.VhdlStdLogicVector(4, "0"))
         s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast", VhdlType.VhdlStdLogic("0"))
         s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready", VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tvalid = VhdlSignal("s_axis_s2mm_tvalid", VhdlType.VhdlStdLogic("0"))
         #
-        out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep, s_axis_s2mm_tlast, s_axis_s2mm_tready, s_axis_s2mm_tvalid]
+        out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep, s_axis_s2mm_tlast, s_axis_s2mm_tready]
 
         ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
         #
@@ -216,7 +214,8 @@ class DSLWrapper(object):
                                           "ieee.numeric_std.all"]),
                      VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
-        module = VhdlModule("accel_wrapper", libraries, slice(0, len(in_sigs)), in_sigs + out_sigs, ret_component)
+        architecture = [ret_component] + [VhdlAssignment(t, s) for t,s in zip(out_sigs[1:], in_sigs[1:])]
+        module = VhdlModule("accel_wrapper", libraries, slice(0, len(in_sigs)), in_sigs + out_sigs, architecture)
         #
         module = transformations.VhdlGraphTransformer().visit(module)
         module = transformations.VhdlPortTransformer().visit(module)

@@ -216,6 +216,12 @@ class VhdlAnd(VhdlSignalCollection):
         return " AND ".join([str(i) for i in self])
 
 
+class VhdlAssignment(VhdlBaseNode):
+    def __init__(self, target_signal, source_signal):
+        self.target = target_signal
+        self.source = source_signal
+
+
 class VhdlSource(VhdlSymbol):
     """Base class for kernel source signal."""
 
@@ -554,15 +560,17 @@ class VhdlFile(VhdlBaseNode, File):
     @classmethod
     def from_prebuilt(cls, name="prebuilt", path=""):
         """Generate Vhdl File from prebuilt source file."""
-        vhdlfile = VhdlFile(name, body=[],path= "")
+        vhdlfile = VhdlFile(name, body=[], path="")
         vhdlfile.generated = False
         vhdlfile.file_path = path
         return vhdlfile
 
     def component(self):
         """Return VhdlComponent class for file."""
+        # TODO: Check architecture for only 1 component tree
+        # TODO: Create Component from that component tree element
         comp = VhdlComponent(name=self.name,
-                             delay=self.body[0].architecture.dprev,
+                             delay=self.body[0].architecture[0].dprev,
                              inport_info=self.body[0].inport_info,
                              outport_info=self.body[0].outport_info)
         return comp
