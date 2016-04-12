@@ -150,6 +150,7 @@ class VhdlIRTransformer(ast.NodeTransformer):
 
             if isinstance(right, VhdlNode):
                 vhdl_node = right
+                left.vhdl_type = vhdl_node.outport_info[0].vhdl_type
                 vhdl_node.out_port = [left]
             elif isinstance(right, VhdlConstant):
                 vhdl_node = right
@@ -211,8 +212,8 @@ class VhdlIRTransformer(ast.NodeTransformer):
     def _connect(self, node):
         if isinstance(node, VhdlNode):
             if len(node.out_port) == 0:
-                con_signal = VhdlSignal(name=node.__class__.__name__.upper() + "_OUT_" + str(self.n_con_signals),
-                                        vhdl_type=VhdlType.VhdlStdLogicVector(8))
+                con_signal = VhdlSignal(name=node.__class__.__name__ + "_OUT_" + str(self.n_con_signals),
+                                        vhdl_type=node.outport_info[0].vhdl_type)
                 self.n_con_signals += 1
                 node.out_port.append(con_signal)
                 self.symbols[con_signal.name] = con_signal
@@ -260,12 +261,8 @@ class VhdlGraphTransformer(ast.NodeTransformer):
                 c_id = self.con_edge_id
                 self.con_edge_id += 1
                 #
-                con_edge = VhdlSignal(name=edge.name + "_DREG_" + str(c_id),
-                                      vhdl_type=edge.vhdl_type)
-                dreg = VhdlDReg(prev=[prev],
-                                delay=d,
-                                in_port=[edge],
-                                out_port=[con_edge])
+                con_edge = VhdlSignal(name=edge.name + "_DREG_" + str(c_id), vhdl_type=edge.vhdl_type)
+                dreg = VhdlDReg(prev=[prev], delay=d, in_port=[edge], out_port=[con_edge])
                 node.prev[idx] = dreg
                 node.in_port[idx] = con_edge
         node.dprev = max_d
@@ -353,8 +350,7 @@ class VhdlPortTransformer(ast.NodeVisitor):
                         else:
                             n = pnode.__class__.__name__ + "_" + occp.name + "_" + str(self.cpe_id)
                             self.cpe_id += 1
-                            cc_edge = VhdlSignal(name=n,
-                                                 vhdl_type=occp.vhdl_type)
+                            cc_edge = VhdlSignal(name=n, vhdl_type=occp.vhdl_type)
                             poccps.append(Port(occp.name, occp.direction, occp.vhdl_type, cc_edge))
                             cc_edges.append(cc_edge)
                         # finalize previous nodes out_port
