@@ -7,7 +7,7 @@ from ctree.c.nodes import FunctionCall, SymbolRef, Return, BinaryOp, Op, Constan
 
 from src import transformations
 from src.nodes import VhdlComponent, VhdlSource, VhdlSignal, VhdlSink, VhdlSignalSplit, VhdlReturn, VhdlSignalMerge, \
-    VhdlLibrary, VhdlModule, VhdlFile, VhdlToArray, VhdlAssignment, PortInfo
+    VhdlLibrary, VhdlModule, VhdlFile, VhdlToArray, VhdlFromArray, VhdlAssignment, PortInfo, GenericInfo
 from src.types import VhdlType
 from src.utils import TransformationError, CONFIG
 
@@ -83,13 +83,13 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
 
     def get_func_def_vhdl(self):
         """Return VHDL interpretation of the BasicBlock."""
-        inport_info = [PortInfo("FILTERMATRIX",
+        inport_info = [GenericInfo("FILTERMATRIX",
                                 VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
-                       PortInfo("FILTER_SCALE", VhdlType.VhdlInteger()),
-                       PortInfo("IMG_WIDTH", VhdlType.VhdlPositive()),
-                       PortInfo("IMG_HEIGHT", VhdlType.VhdlPositive()),
-                       PortInfo("IN_BITWIDTH", VhdlType.VhdlPositive()),
-                       PortInfo("OUT_BITWIDTH", VhdlType.VhdlPositive()),
+                       GenericInfo("FILTER_SCALE", VhdlType.VhdlInteger()),
+                       GenericInfo("IMG_WIDTH", VhdlType.VhdlPositive()),
+                       GenericInfo("IMG_HEIGHT", VhdlType.VhdlPositive()),
+                       GenericInfo("IN_BITWIDTH", VhdlType.VhdlPositive()),
+                       GenericInfo("OUT_BITWIDTH", VhdlType.VhdlPositive()),
                        PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(8))]
         #
         outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
@@ -291,7 +291,7 @@ class DSLWrapper(object):
         #
         out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep, s_axis_s2mm_tlast, s_axis_s2mm_tready, s_axis_s2mm_tvalid]
 
-        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
+        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlArray(3, VhdlType.VhdlStdLogicVector(8)))
         #
         component.library = "work.apply"
         component.delay = 5
@@ -302,7 +302,7 @@ class DSLWrapper(object):
                                           VhdlSignalSplit(m_axis_mm2s_tdata, slice(16, 24))])]
         component.out_port = [ret_sig]
         #
-        ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(8, 32), "0")], [out_sigs[0]])
+        ret_component = VhdlReturn([component], [VhdlFromArray(ret_sig)], [out_sigs[0]])
 
         libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
                                           "ieee.numeric_std.all"]),
