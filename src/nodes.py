@@ -132,7 +132,11 @@ class VhdlSignalCollection(collections.MutableSequence, VhdlSymbol):
     """Base class for signal collections."""
     def __init__(self, *args):
         self.list = list()
-        self.extend(list(args))
+        for arg in args:
+            if hasattr(arg, "__iter__"):
+                self.extend(arg)
+            else:
+                self.append(arg)
 
     def check(self, arg):
         raise NotImplementedError()
@@ -151,10 +155,7 @@ class VhdlSignalCollection(collections.MutableSequence, VhdlSymbol):
         self.list[i] = v
 
     def insert(self, i, v):
-        if hasattr(v, "__iter__"):
-            [self.check(iv) for iv in v]
-        else:
-            self.check(v)
+        self.check(v)
         self.list.insert(i, v)
 
     def __str__(self):
@@ -200,7 +201,7 @@ class VhdlToArray(VhdlSignalCollection):
 
     @property
     def vhdl_type(self):
-        return VhdlType.VhdlArray(len(self), self._vhdl_type, 0, 0)
+        return VhdlType.VhdlArray(len(self), self._vhdl_type)
 
     def __str__(self):
         return "(" + " & ".join([str(i) for i in self]) + ")"
