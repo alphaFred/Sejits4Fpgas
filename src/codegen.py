@@ -257,8 +257,16 @@ class VhdlCodegen(ast.NodeVisitor):
         return src
 
     def type_conversion(self, source, sink):
+        def check_equal_len(src, snk):
+            if len(src.vhdl_type) == len(snk.vhdl_type):
+                return str(src)
+            else:
+                error_msg = "Can not assign {0} of size {1} to {0} of size {2}".\
+                            format(src.vhdl_type, len(src.vhdl_type), len(snk.vhdl_type))
+                raise TransformationError(error_msg)
+
         type_conv = {"integer": {"integer":
-                                 ("{}", lambda src, snk: (str(src),)),
+                                 ("{}", lambda src, snk: (check_equal_len(src, snk),)),
                                  "signed":
                                  ("to_signed({0}, {1})",
                                      lambda src, snk: (str(src), len(snk.vhdl_type))),
@@ -273,7 +281,7 @@ class VhdlCodegen(ast.NodeVisitor):
                                     lambda src, snk: (src,)),
                                 "signed":
                                 ("{}",
-                                    lambda src, snk: (src,)),
+                                    lambda src, snk: (check_equal_len(src, snk),)),
                                 "unsigned":
                                 ("unsigned(std_logic_vector({}))",
                                     lambda src, snk: (src,)),
@@ -284,11 +292,11 @@ class VhdlCodegen(ast.NodeVisitor):
                                   ("to_integer({})",
                                       lambda src, snk: (src,)),
                                   "signed":
-                                  ("{}",
+                                  ("signed(std_logic_vector({}))",
                                       lambda src, snk: (src,)),
                                   "unsigned":
-                                  ("unsigned(std_logic_vector({}))",
-                                      lambda src, snk: (src,)),
+                                  ("{}",
+                                      lambda src, snk: (check_equal_len(src, snk),)),
                                   "std_logic_vector":
                                   ("std_logic_vector({})",
                                       lambda src, snk: (src,))},
@@ -303,7 +311,7 @@ class VhdlCodegen(ast.NodeVisitor):
                                               lambda src, snk: (src,)),
                                           "std_logic_vector":
                                           ("{}",
-                                              lambda src, snk: (src,))},
+                                              lambda src, snk: (check_equal_len(src, snk),))},
                      "std_logic": {"std_logic":("{}", lambda src, snk: (src,))},
                      "array": {"array":("{}", lambda src, snk: (src,))}}
         try:

@@ -95,7 +95,6 @@ class VhdlIRTransformer(ast.NodeTransformer):
         #
         self.ipt_param_types = ipt_param_types if ipt_param_types is not None else []
 
-
     def _process_params(self, params=[]):
         pparams = []
         #
