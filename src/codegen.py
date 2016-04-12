@@ -125,7 +125,6 @@ class VhdlCodegen(ast.NodeVisitor):
                 prev_component.extend(i)
             else:
                 prev_component.append(i)
-        self.architecture_body += "\n"
         #
         generic_src = self._generic_map(node.generic)
         port_src = self._port_map((node.in_port, node.out_port))
@@ -305,6 +304,7 @@ class VhdlCodegen(ast.NodeVisitor):
                                           "std_logic_vector":
                                           ("{}",
                                               lambda src, snk: (src,))},
-                     "std_logic": {"std_logic":("{}", lambda src, snk: (src,))}}
+                     "std_logic": {"std_logic":("{}", lambda src, snk: (src,))},
+                     "array": {"array":("{}", lambda src, snk: (src,))}}
         frmt_string, lambda_func = type_conv[source][sink]
         return (frmt_string, lambda_func)
