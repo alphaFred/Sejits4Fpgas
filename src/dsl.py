@@ -100,11 +100,41 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
                              library="work.Convolve")
         return defn
 
+class SplitTransformer(BasicBlockBaseTransformer):
+    func_name = "bb_split"
+
+    def get_func_def_c(self):
+        """Return C interpretation of the BasicBlock."""
+        params = [SymbolRef("inpt", ctypes.c_long())]
+        return_type = ctypes.c_long()
+        defn = [Return(BinaryOp(SymbolRef("inpt"), Op.Mul(), Constant(2)))]
+        return FunctionDecl(return_type, self.func_name, params, defn)
+
+    def get_func_def_vhdl(self):
+        """Return VHDL interpretation of the BasicBlock."""
+        inport_info = [("ARRAY_IN", "in", VhdlType.VhdlArray(3, VhdlType.VhdlStdLogicVector(8))),
+                       ("INDEX", "in", VhdlType.VhdlUnsigned(8))]
+        #
+        outport_info = [("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
+        defn = VhdlComponent(name="bb_split",
+                             generic_slice=None,
+                             delay=0,
+                             inport_info=inport_info,
+                             outport_info=outport_info,
+                             library="work.split")
+        defn.generate_ports = False
+        def __str__(self):
+            return self.in_port[0].name
+
+        def.__str__ = __str__
+
+        return defn
+
 
 class DSLTransformer(object):
     """Transformer for all basic block transformer."""
 
-    transformers = [ConvolveTransformer]
+    transformers = [ConvolveTransformer, SplitTransformer]
 
     def __init__(self, backend="C"):
         """Initialize transformation target backend."""
@@ -246,6 +276,7 @@ class DSLWrapper(object):
         component.library = "work.apply"
         component.delay = 5
         component.prev = [m_axis_mm2s_tdata]
+        #
         component.in_port = [VhdlToArray([VhdlSignalSplit(m_axis_mm2s_tdata, slice(0, 8)),
                                           VhdlSignalSplit(m_axis_mm2s_tdata, slice(8, 16)),
                                           VhdlSignalSplit(m_axis_mm2s_tdata, slice(16, 24))])]
@@ -257,7 +288,7 @@ class DSLWrapper(object):
                                           "ieee.numeric_std.all"]),
                      VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
-        module = VhdlModule("accel_wrapper", libraries, slice(0, len(in_sigs)), in_sigs + out_sigs, ret_component)
+        module = VhdlModule("accel_wrapper", libraries, slice(0, len(in_sigs)), in_sigs + out_sigs, [ret_component])
         module = transformations.VhdlGraphTransformer().visit(module)
         module = transformations.VhdlPortTransformer().visit(module)
         return VhdlFile("accel_wrapper", [module])
