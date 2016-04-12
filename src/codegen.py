@@ -312,8 +312,8 @@ class VhdlCodegen(ast.NodeVisitor):
                                           "std_logic_vector":
                                           ("{}",
                                               lambda src, snk: (check_equal_len(src, snk),))},
-                     "std_logic": {"std_logic":("{}", lambda src, snk: (src,))},
-                     "array": {"array":("{}", lambda src, snk: (src,))}}
+                     "std_logic": {"std_logic": ("{}", lambda src, snk: (src,))},
+                     "array": {"array": ("{}", lambda src, snk: (src,))}}
         try:
             frmt_string, lambda_func = type_conv[source][sink]
         except KeyError:
