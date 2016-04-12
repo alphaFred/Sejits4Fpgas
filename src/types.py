@@ -75,6 +75,9 @@ class VhdlType(object):
             #
             return cls(size, item_vhdl_type, itm_min, itm_max)
 
+        def __repr__(self):
+            return self.vhdl_type
+
     class VhdlStdLogic(_VhdlType):
         vhdl_type = "std_logic"
 
