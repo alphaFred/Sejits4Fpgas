@@ -82,6 +82,8 @@ class VhdlSynthModule(object):
             with open(mod_tcl_file_path, "w") as new_tcl:
                 line = old_tcl.readline()
 
+                # TODO: find better way than with while loops
+
                 # read till set origin_dir
                 while "set origin_dir" not in line:
                     new_tcl.write(line)
