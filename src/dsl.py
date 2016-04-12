@@ -7,7 +7,7 @@ from ctree.c.nodes import FunctionCall, SymbolRef, Return, BinaryOp, Op, Constan
 
 from src import transformations
 from src.nodes import VhdlComponent, VhdlSource, VhdlSignal, VhdlSink, VhdlSignalSplit, VhdlReturn, VhdlSignalMerge, \
-    VhdlLibrary, VhdlModule, VhdlFile, VhdlToArray, VhdlFromArray, VhdlAssignment, PortInfo, GenericInfo
+    VhdlLibrary, VhdlModule, VhdlFile, VhdlConcatenation, VhdlFromArray, VhdlAssignment, PortInfo, GenericInfo
 from src.types import VhdlType
 from src.utils import TransformationError, CONFIG
 
@@ -51,7 +51,7 @@ class BasicBlockBaseTransformer(ast.NodeTransformer):
 
         func_def = func_def_getter()
         # add function definition to class variable lifted_functions
-        BasicBlockBaseTransformer.lifted_functions.append(func_def)
+        BasicBlockBaseTransformer.lifted_functions.append((node.lineno, func_def))
         # return C node FunctionCall
         return FunctionCall(SymbolRef(func_def.name), node.args)
 
@@ -84,7 +84,7 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
     def get_func_def_vhdl(self):
         """Return VHDL interpretation of the BasicBlock."""
         inport_info = [GenericInfo("FILTERMATRIX",
-                                VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
+                                   VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
                        GenericInfo("FILTER_SCALE", VhdlType.VhdlInteger()),
                        GenericInfo("IMG_WIDTH", VhdlType.VhdlPositive()),
                        GenericInfo("IMG_HEIGHT", VhdlType.VhdlPositive()),
@@ -113,7 +113,7 @@ class SplitTransformer(BasicBlockBaseTransformer):
 
     def get_func_def_vhdl(self):
         """Return VHDL interpretation of the BasicBlock."""
-        inport_info = [PortInfo("ARRAY_IN", "in", VhdlType.VhdlArray(3, VhdlType.VhdlStdLogicVector(8))),
+        inport_info = [PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(24)),
                        PortInfo("INDEX", "in", VhdlType.VhdlUnsigned(8))]
         #
         outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
@@ -141,7 +141,7 @@ class MergeTransformer(BasicBlockBaseTransformer):
                        PortInfo("G_IN", "in", VhdlType.VhdlStdLogicVector(8)),
                        PortInfo("B_IN", "in", VhdlType.VhdlStdLogicVector(8))]
         #
-        outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlArray(3, VhdlType.VhdlStdLogicVector(8)))]
+        outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(24))]
         defn = VhdlComponent(name="bb_merge",
                              generic_slice=None,
                              delay=0,
@@ -169,17 +169,20 @@ class DSLTransformer(object):
     @staticmethod
     def lifted_functions():
         """Return all basic block transformer functions."""
-        return BasicBlockBaseTransformer.lifted_functions
+        lf = BasicBlockBaseTransformer.lifted_functions
+        lf.sort()
+        lf = [i[1] for i in lf]
+        return lf
 
 
 def get_dsl_type(params=None):
     #
     MAX_IPT_BYTEWIDTH = 1
     #
-    def _get_vhdltype(dtype):
+    def _get_vhdltype(dtype, len=1):
         if isinstance(dtype.type(), np.integer):
             if dtype.itemsize <= MAX_IPT_BYTEWIDTH:
-                return VhdlType.VhdlStdLogicVector(8 * dtype.itemsize)
+                return VhdlType.VhdlStdLogicVector(8 * dtype.itemsize * len)
             else:
                 raise TransformationError("Input data of width {}bit not supported".format(dtype.itemsize * 8))
         else:
@@ -189,7 +192,8 @@ def get_dsl_type(params=None):
         return _get_vhdltype(param.dtype)
 
     def process_3darray(param):
-        return VhdlType.VhdlArray(3, _get_vhdltype(param.dtype), itm_max=param.max, itm_min=param.min)
+        # TODO: make len 3=RGB) dynamic; e.g. for RGBA
+        return _get_vhdltype(param.dtype, 3)
 
     def dispatch(param):
         if param.ndim == 2:
@@ -225,9 +229,10 @@ class DSLWrapper(object):
             raise TransformationError("File to wrap must provide component() method")
         else:
             if type(self.ipt_params[0]) is VhdlType.VhdlStdLogicVector:
-                return self._generate_wrapper_2d(component)
-            elif type(self.ipt_params[0]) is VhdlType.VhdlArray:
-                return self._generate_wrapper_3d(component)
+                if len(self.ipt_params[0]) == 8:
+                    return self._generate_wrapper_2d(component)
+                else:
+                    return self._generate_wrapper_3d(component)
             else:
                 raise TransformationError("Invalid parameter type {}".format(type(self.ipt_params[0])))
 
@@ -291,18 +296,18 @@ class DSLWrapper(object):
         #
         out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep, s_axis_s2mm_tlast, s_axis_s2mm_tready, s_axis_s2mm_tvalid]
 
-        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlArray(3, VhdlType.VhdlStdLogicVector(8)))
+        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(24))
         #
         component.library = "work.apply"
         component.delay = 5
         component.prev = [m_axis_mm2s_tdata]
         #
-        component.in_port = [VhdlToArray([VhdlSignalSplit(m_axis_mm2s_tdata, slice(0, 8)),
-                                          VhdlSignalSplit(m_axis_mm2s_tdata, slice(8, 16)),
-                                          VhdlSignalSplit(m_axis_mm2s_tdata, slice(16, 24))])]
+        component.in_port = [VhdlConcatenation([VhdlSignalSplit(m_axis_mm2s_tdata, slice(0, 8)),
+                                                VhdlSignalSplit(m_axis_mm2s_tdata, slice(8, 16)),
+                                                VhdlSignalSplit(m_axis_mm2s_tdata, slice(16, 24))])]
         component.out_port = [ret_sig]
         #
-        ret_component = VhdlReturn([component], [VhdlFromArray(ret_sig)], [out_sigs[0]])
+        ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(24, 32))], [out_sigs[0]])
 
         libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
                                           "ieee.numeric_std.all"]),
