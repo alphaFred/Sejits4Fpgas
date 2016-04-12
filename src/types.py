@@ -23,6 +23,9 @@ class VhdlType(object):
         def __init__(self, size):
             self.size = size
 
+        def __len__(self):
+            return self.size
+
         def __repr__(self):
             return self.vhdl_type + "({} downto 0)".format(self.size - 1)
 
@@ -31,6 +34,9 @@ class VhdlType(object):
 
         def __init__(self, size):
             self.size = size
+
+        def __len__(self):
+            return self.size
 
         def __repr__(self):
             return self.vhdl_type + "({} downto 0)".format(self.size - 1)
@@ -48,7 +54,7 @@ class VhdlType(object):
         vhdl_type = "array"
         type_def = ""
 
-        def __init__(self, size, itm_type, itm_min, itm_max, type_def=""):
+        def __init__(self, size, itm_type, itm_min=None, itm_max=None, type_def=""):
             self.len = size
             self.item_vhdl_type = itm_type
             self.min = itm_min
