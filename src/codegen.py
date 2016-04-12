@@ -306,5 +306,9 @@ class VhdlCodegen(ast.NodeVisitor):
                                               lambda src, snk: (src,))},
                      "std_logic": {"std_logic":("{}", lambda src, snk: (src,))},
                      "array": {"array":("{}", lambda src, snk: (src,))}}
-        frmt_string, lambda_func = type_conv[source][sink]
+        try:
+            frmt_string, lambda_func = type_conv[source][sink]
+        except KeyError:
+            error_msg = "Invalid conversion from {0} to {1}".format(source, sink)
+            raise TransformationError(error_msg)
         return (frmt_string, lambda_func)
