@@ -32,6 +32,7 @@ logger.addHandler(ch)
 VhdlLibrary = namedtuple("VhdlLibrary", ["mainlib_name", "sublib"])
 Interface = namedtuple("Interface", ["iports", "oport"])
 PortInfo = namedtuple("PortInfo", ("name", "direction", "vhdl_type"))
+GenericInfo = namedtuple("PortInfo", ("name", "vhdl_type"))
 
 
 class VhdlTreeNode(CtreeNode):
@@ -207,20 +208,13 @@ class VhdlToArray(VhdlSignalCollection):
         return "(" + " & ".join([str(i) for i in self]) + ")"
 
 
-class VhdlFromArray(VhdlSignalCollection):
-    def __init__(self, *args):
-        super(VhdlFromArray, self).__init__(*args)
-
-    def check(self, v):
-        if self.vhdl_type is None:
-            self.vhdl_type = v.vhdl_type
-        else:
-            if self.vhdl_type != v.vhdl_type:
-                error_msg = "All types of Array must be equal"
-                raise TransformationError(error_msg)
+class VhdlFromArray(VhdlSymbol):
+    def __init__(self, sig):
+        self.sig = sig
+        self.vhdl_type = VhdlType.VhdlStdLogicVector(len(sig.vhdl_type) * len(sig.vhdl_type.item_vhdl_type))
 
     def __str__(self):
-        return "(" + " & ".join([str(i) for i in self]) + ")"
+        return "(" + " & ".join([self.sig.name + "({})".format(i) for i in reversed(range(len(self.sig.vhdl_type)))]) + ")"
 
 
 class VhdlAnd(VhdlSignalCollection):
@@ -430,8 +424,8 @@ class VhdlReturn(VhdlNode):
             error_msg = "VhdlReturn node supports only 1 in- and output"
             raise TransformationError(error_msg)
 
-        in_port_info = [PortInfo("RETURN_IN", "in", VhdlType.VhdlStdLogicVector(8))]
-        out_port_info = [PortInfo("RETURN_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
+        in_port_info = [PortInfo("RETURN_IN", "in", in_port[0].vhdl_type)]
+        out_port_info = [PortInfo("RETURN_OUT", "out", out_port[0].vhdl_type)]
 
         super(VhdlReturn, self).__init__(prev, in_port, in_port_info, out_port, out_port_info)
         self.d = 0
