@@ -7,7 +7,7 @@ from ctree.c.nodes import FunctionCall, SymbolRef, Return, BinaryOp, Op, Constan
 
 from src import transformations
 from src.nodes import VhdlComponent, VhdlSource, VhdlSignal, VhdlSink, VhdlSignalSplit, VhdlReturn, VhdlSignalMerge, \
-    VhdlLibrary, VhdlModule, VhdlFile, VhdlToArray, VhdlAssignment
+    VhdlLibrary, VhdlModule, VhdlFile, VhdlToArray, VhdlAssignment, PortInfo
 from src.types import VhdlType
 from src.utils import TransformationError, CONFIG
 
@@ -83,15 +83,16 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
 
     def get_func_def_vhdl(self):
         """Return VHDL interpretation of the BasicBlock."""
-        inport_info = [("FILTERMATRIX", VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
-                       ("FILTER_SCALE", VhdlType.VhdlInteger()),
-                       ("IMG_WIDTH", VhdlType.VhdlPositive()),
-                       ("IMG_HEIGHT", VhdlType.VhdlPositive()),
-                       ("IN_BITWIDTH", VhdlType.VhdlPositive()),
-                       ("OUT_BITWIDTH", VhdlType.VhdlPositive()),
-                       ("DATA_IN", "in", VhdlType.VhdlStdLogicVector(8))]
+        inport_info = [PortInfo("FILTERMATRIX",
+                                VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
+                       PortInfo("FILTER_SCALE", VhdlType.VhdlInteger()),
+                       PortInfo("IMG_WIDTH", VhdlType.VhdlPositive()),
+                       PortInfo("IMG_HEIGHT", VhdlType.VhdlPositive()),
+                       PortInfo("IN_BITWIDTH", VhdlType.VhdlPositive()),
+                       PortInfo("OUT_BITWIDTH", VhdlType.VhdlPositive()),
+                       PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(8))]
         #
-        outport_info = [("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
+        outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
         defn = VhdlComponent(name="bb_convolve",
                              generic_slice=slice(0, 6),
                              delay=10,
@@ -112,29 +113,48 @@ class SplitTransformer(BasicBlockBaseTransformer):
 
     def get_func_def_vhdl(self):
         """Return VHDL interpretation of the BasicBlock."""
-        inport_info = [("ARRAY_IN", "in", VhdlType.VhdlArray(3, VhdlType.VhdlStdLogicVector(8))),
-                       ("INDEX", "in", VhdlType.VhdlUnsigned(8))]
+        inport_info = [PortInfo("ARRAY_IN", "in", VhdlType.VhdlArray(3, VhdlType.VhdlStdLogicVector(8))),
+                       PortInfo("INDEX", "in", VhdlType.VhdlUnsigned(8))]
         #
-        outport_info = [("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
+        outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
         defn = VhdlComponent(name="bb_split",
                              generic_slice=None,
                              delay=0,
                              inport_info=inport_info,
                              outport_info=outport_info,
                              library="work.split")
-        defn.generate_ports = False
-        def __str__(self):
-            return self.in_port[0].name
+        return defn
 
-        def.__str__ = __str__
+class MergeTransformer(BasicBlockBaseTransformer):
+    func_name = "bb_merge"
 
+    def get_func_def_c(self):
+        """Return C interpretation of the BasicBlock."""
+        params = [SymbolRef("inpt", ctypes.c_long())]
+        return_type = ctypes.c_long()
+        defn = [Return(BinaryOp(SymbolRef("inpt"), Op.Mul(), Constant(2)))]
+        return FunctionDecl(return_type, self.func_name, params, defn)
+
+    def get_func_def_vhdl(self):
+        """Return VHDL interpretation of the BasicBlock."""
+        inport_info = [PortInfo("R_IN", "in", VhdlType.VhdlStdLogicVector(8)),
+                       PortInfo("G_IN", "in", VhdlType.VhdlStdLogicVector(8)),
+                       PortInfo("B_IN", "in", VhdlType.VhdlStdLogicVector(8))]
+        #
+        outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlArray(3, VhdlType.VhdlStdLogicVector(8)))]
+        defn = VhdlComponent(name="bb_merge",
+                             generic_slice=None,
+                             delay=0,
+                             inport_info=inport_info,
+                             outport_info=outport_info,
+                             library="work.merge")
         return defn
 
 
 class DSLTransformer(object):
     """Transformer for all basic block transformer."""
 
-    transformers = [ConvolveTransformer, SplitTransformer]
+    transformers = [ConvolveTransformer, SplitTransformer, MergeTransformer]
 
     def __init__(self, backend="C"):
         """Initialize transformation target backend."""
