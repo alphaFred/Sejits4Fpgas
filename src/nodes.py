@@ -6,10 +6,9 @@ import os
 import transformations
 #
 from src.types import VhdlType
-from src.utils import TransformationError
+from src.utils import TransformationError, CONFIG
 from dotgen import VhdlDotGenVisitor
 from collections import namedtuple
-from utils import CONFIG
 #
 from ctree.nodes import File, Project, CtreeNode
 from ctree.c.nodes import Op
@@ -152,7 +151,10 @@ class VhdlSignalCollection(collections.MutableSequence, VhdlSymbol):
         self.list[i] = v
 
     def insert(self, i, v):
-        self.check(v)
+        if hasattr(v, "__iter__"):
+            [self.check(iv) for iv in v]
+        else:
+            self.check(v)
         self.list.insert(i, v)
 
     def __str__(self):
@@ -185,7 +187,20 @@ class VhdlSignalMerge(VhdlSymbol):
 
 class VhdlToArray(VhdlSignalCollection):
     def __init__(self, *args):
+        self._vhdl_type = None
         super(VhdlToArray, self).__init__(*args)
+
+    def check(self, v):
+        if self._vhdl_type is None:
+            self._vhdl_type = v.vhdl_type
+        else:
+            if type(self._vhdl_type) != type(v.vhdl_type):
+                error_msg = "All types of Array must be equal"
+                raise TransformationError(error_msg)
+
+    @property
+    def vhdl_type(self):
+        return VhdlType.VhdlArray(len(self), self._vhdl_type, 0, 0)
 
     def __str__(self):
         return "(" + " & ".join([str(i) for i in self]) + ")"
@@ -194,6 +209,14 @@ class VhdlToArray(VhdlSignalCollection):
 class VhdlFromArray(VhdlSignalCollection):
     def __init__(self, *args):
         super(VhdlFromArray, self).__init__(*args)
+
+    def check(self, v):
+        if self.vhdl_type is None:
+            self.vhdl_type = v.vhdl_type
+        else:
+            if self.vhdl_type != v.vhdl_type:
+                error_msg = "All types of Array must be equal"
+                raise TransformationError(error_msg)
 
     def __str__(self):
         return "(" + " & ".join([str(i) for i in self]) + ")"
