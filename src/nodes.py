@@ -208,36 +208,6 @@ class VhdlConcatenation(VhdlSignalCollection):
         return "(" + " & ".join([str(i) for i in self]) + ")"
 
 
-class VhdlToArray(VhdlSignalCollection):
-    def __init__(self, *args):
-        self._vhdl_type = None
-        super(VhdlToArray, self).__init__(*args)
-
-    def check(self, v):
-        if self._vhdl_type is None:
-            self._vhdl_type = v.vhdl_type
-        else:
-            if type(self._vhdl_type) != type(v.vhdl_type):
-                error_msg = "All types of Array must be equal"
-                raise TransformationError(error_msg)
-
-    @property
-    def vhdl_type(self):
-        return VhdlType.VhdlArray(len(self), self._vhdl_type)
-
-    def __str__(self):
-        return "(" + " & ".join([str(i) for i in self]) + ")"
-
-
-class VhdlFromArray(VhdlSymbol):
-    def __init__(self, sig):
-        self.sig = sig
-        self.vhdl_type = VhdlType.VhdlStdLogicVector(len(sig.vhdl_type) * len(sig.vhdl_type.item_vhdl_type))
-
-    def __str__(self):
-        return "(" + " & ".join([self.sig.name + "({})".format(i) for i in reversed(range(len(self.sig.vhdl_type)))]) + ")"
-
-
 class VhdlAnd(VhdlSignalCollection):
     """Bool signal connection AND."""
     def __init__(self, *args):
