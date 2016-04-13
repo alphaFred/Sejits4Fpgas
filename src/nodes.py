@@ -129,7 +129,7 @@ class VhdlNode(VhdlBaseNode):
         pass
 
 
-class VhdlSignalCollection(collections.MutableSequence, VhdlSymbol):
+class VhdlSymbolCollection(collections.MutableSequence, VhdlSymbol):
     """Base class for signal collections."""
     def __init__(self, *args):
         self.list = list()
@@ -187,7 +187,7 @@ class VhdlSignalMerge(VhdlSymbol):
         return "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + " => '" + self.fill_bitval + "') & " + self.sig.name
 
 
-class VhdlConcatenation(VhdlSignalCollection):
+class VhdlConcatenation(VhdlSymbolCollection):
     def __init__(self, *args):
         self._vhdl_type = None
         super(VhdlConcatenation, self).__init__(*args)
@@ -208,7 +208,7 @@ class VhdlConcatenation(VhdlSignalCollection):
         return "(" + " & ".join([str(i) for i in self]) + ")"
 
 
-class VhdlAnd(VhdlSignalCollection):
+class VhdlAnd(VhdlSymbolCollection):
     """Bool signal connection AND."""
     def __init__(self, *args):
         super(VhdlAnd, self).__init__(*args)
