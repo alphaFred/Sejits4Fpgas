@@ -7,7 +7,7 @@ from ctree.c.nodes import FunctionCall, SymbolRef, Return, BinaryOp, Op, Constan
 
 from src import transformations
 from src.nodes import VhdlComponent, VhdlSource, VhdlSignal, VhdlSink, VhdlSignalSplit, VhdlReturn, VhdlSignalMerge, \
-    VhdlLibrary, VhdlModule, VhdlFile, VhdlConcatenation, VhdlFromArray, VhdlAssignment, PortInfo, GenericInfo
+    VhdlLibrary, VhdlModule, VhdlFile, VhdlConcatenation, VhdlAssignment, PortInfo, GenericInfo
 from src.types import VhdlType
 from src.utils import TransformationError, CONFIG
 
@@ -235,7 +235,6 @@ class DSLWrapper(object):
                     return self._generate_wrapper_3d(component)
             else:
                 raise TransformationError("Invalid parameter type {}".format(type(self.ipt_params[0])))
-
 
     def _generate_wrapper_2d(self, component):
         logger.info("Generate project wrapper")
