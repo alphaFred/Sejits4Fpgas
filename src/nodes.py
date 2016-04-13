@@ -2,7 +2,7 @@
 import collections
 import logging
 import os
-
+import new
 import transformations
 #
 from src.types import VhdlType
@@ -556,7 +556,6 @@ class VhdlFile(VhdlBaseNode, File):
     """Vhdl File Class representing one vhdl source file."""
 
     _ext = "vhd"
-    generated = True
     file_path = ""
 
     def __init__(self, name="generated", body=[], path=""):
@@ -581,15 +580,12 @@ class VhdlFile(VhdlBaseNode, File):
         return "%s.%s" % (self.name, self._ext)
 
     def _compile(self, program_text):
-        if not self.generated:
-            return self.file_path
-        else:
-            vhdl_src_file = os.path.join(self.path, self.get_filename())
-            with open(vhdl_src_file, 'w') as vhdl_file:
-                vhdl_file.write(program_text)
-            logger.info("file for generated VHDL: %s", vhdl_src_file)
-            logger.info("generated VHDL program: (((\n%s\n)))", program_text)
-            return vhdl_src_file
+        vhdl_src_file = os.path.join(self.path, self.get_filename())
+        with open(vhdl_src_file, 'w') as vhdl_file:
+            vhdl_file.write(program_text)
+        logger.info("file for generated VHDL: %s", vhdl_src_file)
+        logger.info("generated VHDL program: (((\n%s\n)))", program_text)
+        return vhdl_src_file
 
     def codegen(self, indent=4):
         """Run code generation of file."""
@@ -600,8 +596,12 @@ class VhdlFile(VhdlBaseNode, File):
     def from_prebuilt(cls, name="prebuilt", path=""):
         """Generate Vhdl File from prebuilt source file."""
         vhdlfile = VhdlFile(name, body=[], path="")
-        vhdlfile.generated = False
         vhdlfile.file_path = path
+        #
+        def _compile(self, program_text):
+            return self.file_path
+        vhdlfile._compile = new.instancemethod(_compile, vhdlfile, None)
+        #
         return vhdlfile
 
     def component(self):
