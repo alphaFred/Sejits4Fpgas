@@ -160,7 +160,7 @@ def bb_merge(n_0, n_1, n_2):
 #     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
 
 def test_func(a):
-    return a * -1 + 255
+    return 255 - a
 
 transformed_func = BasicTranslator.from_function(test_func)
 print type(transformed_func)
