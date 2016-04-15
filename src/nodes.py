@@ -126,7 +126,7 @@ class VhdlNode(VhdlBaseNode):
         self.generic = []
 
     def finalize_ports(self):
-        pass
+        raise NotImplementedError()
 
 
 class VhdlSymbolCollection(collections.MutableSequence, VhdlSymbol):
