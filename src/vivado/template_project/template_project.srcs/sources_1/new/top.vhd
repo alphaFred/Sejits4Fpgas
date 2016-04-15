@@ -75,18 +75,16 @@ architecture STRUCTURE of top is
     RST : out std_logic
   );
   end component template_design_wrapper;
-   
+
   signal CLK : std_logic;
   signal RST : std_logic;
 
   signal m_axis_tdata  :  STD_LOGIC_VECTOR ( 31 downto 0 );
-  signal m_axis_tkeep  :  STD_LOGIC_VECTOR ( 3 downto 0 ) :=(others => '0');
   signal m_axis_tlast  :  STD_LOGIC;
   signal m_axis_tready :  STD_LOGIC;
   signal m_axis_tvalid :  STD_LOGIC;
   --
   signal s_axis_tdata  :  STD_LOGIC_VECTOR ( 31 downto 0 );
-  signal s_axis_tkeep  :  STD_LOGIC_VECTOR ( 3 downto 0 ):=(others => '0');
   signal s_axis_tlast  :  STD_LOGIC;
   signal s_axis_tready :  STD_LOGIC;
   signal s_axis_tvalid :  STD_LOGIC;
@@ -118,12 +116,10 @@ template_design_wrapper_i: component template_design_wrapper
       FIXED_IO_ps_porb => FIXED_IO_ps_porb,
       FIXED_IO_ps_srstb => FIXED_IO_ps_srstb,
       m_axis_tdata(31 downto 0) => m_axis_tdata(31 downto 0),
-  --    m_axis_tkeep(3 downto 0) => m_axis_tkeep(3 downto 0),
       m_axis_tlast => m_axis_tlast,
       m_axis_tready => m_axis_tready,
       m_axis_tvalid => m_axis_tvalid,
       s_axis_tdata(31 downto 0) => s_axis_tdata(31 downto 0),
-  --    s_axis_tkeep(3 downto 0) => s_axis_tkeep(3 downto 0),
       s_axis_tlast => s_axis_tlast,
       s_axis_tready => s_axis_tready,
       s_axis_tvalid => s_axis_tvalid,
@@ -137,12 +133,10 @@ accel_wrapper :  entity work.accel_wrapper
       RST                             => RST,
       VALID_IN                        => m_axis_tvalid,
       M_AXIS_MM2S_tdata(31 downto 0)  => m_axis_tdata(31 downto 0),
-      M_AXIS_MM2S_tkeep(3 downto 0)   => m_axis_tkeep(3 downto 0),
       M_AXIS_MM2S_tlast               => m_axis_tlast,
       M_AXIS_MM2S_tready              => m_axis_tready,
       VALID_OUT                       => s_axis_tvalid,
       S_AXIS_S2MM_tdata(31 downto 0)  => s_axis_tdata(31 downto 0),
-      S_AXIS_S2MM_tkeep(3 downto 0)   => s_axis_tkeep(3 downto 0),
       S_AXIS_S2MM_tlast               => s_axis_tlast,
       S_AXIS_S2MM_tready              => s_axis_tready
     );
