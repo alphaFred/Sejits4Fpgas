@@ -258,8 +258,8 @@ class DSLWrapper(object):
         #
         component.library = "work.apply"
         component.delay = 5
-        component.prev = [m_axis_mm2s_tdata]
-        component.in_port = [VhdlSignalSplit(m_axis_mm2s_tdata, slice(0, 8))]
+        component.prev = [self.in_sigs[0]]
+        component.in_port = [VhdlSignalSplit(self.in_sigs[0], slice(0, 8))]
         component.out_port = [ret_sig]
         #
         ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(8, 32), "0")], [self.out_sigs[0]])
@@ -282,11 +282,11 @@ class DSLWrapper(object):
         #
         component.library = "work.apply"
         component.delay = 5
-        component.prev = [m_axis_mm2s_tdata]
+        component.prev = [self.in_sigs[0]]
         #
-        component.in_port = [VhdlConcatenation([VhdlSignalSplit(m_axis_mm2s_tdata, slice(0, 8)),
-                                                VhdlSignalSplit(m_axis_mm2s_tdata, slice(8, 16)),
-                                                VhdlSignalSplit(m_axis_mm2s_tdata, slice(16, 24))])]
+        component.in_port = [VhdlConcatenation([VhdlSignalSplit(self.in_sigs[0], slice(0, 8)),
+                                                VhdlSignalSplit(self.in_sigs[0], slice(8, 16)),
+                                                VhdlSignalSplit(self.in_sigs[0], slice(16, 24))])]
         component.out_port = [ret_sig]
         #
         ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(24, 32))], [self.out_sigs[0]])
