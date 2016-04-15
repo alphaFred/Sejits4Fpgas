@@ -285,21 +285,21 @@ BEGIN
     end generate validReg_MUL;
 
 
-    IF OP = 0 GENERATE
+    OP0:IF OP = 0 GENERATE
     -- OP = 0 => Add
         INMODE_DSP1 <= "00000";
         OPMODE_DSP1 <= "0110011";   -- (Z=C | Y=0 | X=A:B)
         ALUMODE_DSP1 <= "0000";     --  Z + X + Y + CIN
     END GENERATE;
 
-    IF OP = 1 GENERATE
+    OP1:IF OP = 1 GENERATE
     -- OP = 1 => Substract
         INMODE_DSP1 <= "00000";
         OPMODE_DSP1 <= "0110011";   -- (Z=C | Y=0 | X=A:B)
         ALUMODE_DSP1 <= "0011";     --  Z – (X + Y + CIN)
     END GENERATE;
 
-    IF OP = 2 GENERATE
+    OP2:IF OP = 2 GENERATE
         -- OP = 2 => Multiply
         INMODE_DSP1 <= "10001";     -- Multiplyer Inport: B1 | A1
         OPMODE_DSP1 <= "0000101";   -- (Z=0 | Y=M | X=M)
