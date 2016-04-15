@@ -221,6 +221,20 @@ class DSLWrapper(object):
     def __init__(self, ipt_params=None):
         self.axi_stream_width = 32
         self.ipt_params = ipt_params if ipt_params is not None else []
+        #
+        # input signals
+        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector(self.axi_stream_width, "0"))
+        m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast", VhdlType.VhdlStdLogic("0"))
+        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready", VhdlType.VhdlStdLogic("0"))
+        #
+        self.in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tlast, m_axis_mm2s_tready]
+
+        # output signals
+        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector(self.axi_stream_width, "0"))
+        s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast", VhdlType.VhdlStdLogic("0"))
+        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready", VhdlType.VhdlStdLogic("0"))
+        #
+        self.out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tlast, s_axis_s2mm_tready]
 
     def generate_wrapper(self, file2wrap=None):
         try:
@@ -238,21 +252,7 @@ class DSLWrapper(object):
 
     def _generate_wrapper_2d(self, component):
         logger.info("Generate project wrapper")
-        # input signals
-        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector(self.axi_stream_width, "0"))
-        m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep", VhdlType.VhdlStdLogicVector(4, "0"))
-        m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast", VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready", VhdlType.VhdlStdLogic("0"))
-        #
-        in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast, m_axis_mm2s_tready]
 
-        # output signals
-        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector(self.axi_stream_width, "0"))
-        s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep", VhdlType.VhdlStdLogicVector(4, "0"))
-        s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast", VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready", VhdlType.VhdlStdLogic("0"))
-        #
-        out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep, s_axis_s2mm_tlast, s_axis_s2mm_tready]
 
         ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
         #
@@ -262,14 +262,14 @@ class DSLWrapper(object):
         component.in_port = [VhdlSignalSplit(m_axis_mm2s_tdata, slice(0, 8))]
         component.out_port = [ret_sig]
         #
-        ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(8, 32), "0")], [out_sigs[0]])
+        ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(8, 32), "0")], [self.out_sigs[0]])
 
         libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
                                           "ieee.numeric_std.all"]),
                      VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
-        architecture = [ret_component] + [VhdlAssignment(t, s) for t,s in zip(out_sigs[1:], in_sigs[1:])]
-        module = VhdlModule("accel_wrapper", libraries, slice(0, len(in_sigs)), in_sigs + out_sigs, architecture)
+        architecture = [ret_component] + [VhdlAssignment(t, s) for t,s in zip(self.out_sigs[1:], self.in_sigs[1:])]
+        module = VhdlModule("accel_wrapper", libraries, slice(0, len(self.in_sigs)), self.in_sigs + self.out_sigs, architecture)
         #
         module = transformations.VhdlGraphTransformer().visit(module)
         module = transformations.VhdlPortTransformer().visit(module)
@@ -277,23 +277,6 @@ class DSLWrapper(object):
 
     def _generate_wrapper_3d(self, component):
         logger.info("Generate project wrapper")
-        # input signals
-        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector(self.axi_stream_width, "0"))
-        m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep", VhdlType.VhdlStdLogicVector(4, "0"))
-        m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast", VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready", VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tvalid = VhdlSignal("m_axis_mm2s_tvalid", VhdlType.VhdlStdLogic("0"))
-        #
-        in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast, m_axis_mm2s_tready, m_axis_mm2s_tvalid]
-
-        # output signals
-        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector(self.axi_stream_width, "0"))
-        s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep", VhdlType.VhdlStdLogicVector(4, "0"))
-        s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast", VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready", VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tvalid = VhdlSignal("s_axis_s2mm_tvalid", VhdlType.VhdlStdLogic("0"))
-        #
-        out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep, s_axis_s2mm_tlast, s_axis_s2mm_tready, s_axis_s2mm_tvalid]
 
         ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(24))
         #
@@ -306,13 +289,13 @@ class DSLWrapper(object):
                                                 VhdlSignalSplit(m_axis_mm2s_tdata, slice(16, 24))])]
         component.out_port = [ret_sig]
         #
-        ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(24, 32))], [out_sigs[0]])
+        ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(24, 32))], [self.out_sigs[0]])
 
         libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
                                           "ieee.numeric_std.all"]),
                      VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
-        module = VhdlModule("accel_wrapper", libraries, slice(0, len(in_sigs)), in_sigs + out_sigs, [ret_component])
+        module = VhdlModule("accel_wrapper", libraries, slice(0, len(self.in_sigs)), self.in_sigs + self.out_sigs, [ret_component])
         module = transformations.VhdlGraphTransformer().visit(module)
         module = transformations.VhdlPortTransformer().visit(module)
         return VhdlFile("accel_wrapper", [module])
