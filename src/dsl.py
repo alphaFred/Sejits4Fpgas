@@ -225,16 +225,16 @@ class DSLWrapper(object):
         # input signals
         m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector(self.axi_stream_width, "0"))
         m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast", VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready", VhdlType.VhdlStdLogic("0"))
+        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready", VhdlType.VhdlStdLogic("0"))
         #
-        self.in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tlast, m_axis_mm2s_tready]
+        self.in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tlast, s_axis_s2mm_tready]
 
         # output signals
         s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector(self.axi_stream_width, "0"))
         s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast", VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready", VhdlType.VhdlStdLogic("0"))
+        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready", VhdlType.VhdlStdLogic("0"))
         #
-        self.out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tlast, s_axis_s2mm_tready]
+        self.out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tlast, m_axis_mm2s_tready]
 
     def generate_wrapper(self, file2wrap=None):
         try:
