@@ -221,7 +221,9 @@ class DSLWrapper(object):
     def __init__(self, ipt_params=None):
         self.axi_stream_width = 32
         self.ipt_params = ipt_params if ipt_params is not None else []
-        #
+        # TODO: Change to support multiple input params
+        if len(self.ipt_params) > 1:
+            raise TransformationError("Multiple inputs currently not supported by the hardware!")
         # input signals
         m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector(self.axi_stream_width, "0"))
         m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast", VhdlType.VhdlStdLogic("0"))
