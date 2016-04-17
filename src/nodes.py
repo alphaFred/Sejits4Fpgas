@@ -550,6 +550,11 @@ class VhdlFile(VhdlBaseNode, File):
         return "%s.%s" % (self.name, self._ext)
 
     def _compile(self, program_text):
+        """
+        Write program_text to file.
+
+        !!!Changed in prebuilt instances!!!.
+        """
         vhdl_src_file = os.path.join(self.path, self.get_filename())
         with open(vhdl_src_file, 'w') as vhdl_file:
             vhdl_file.write(program_text)
