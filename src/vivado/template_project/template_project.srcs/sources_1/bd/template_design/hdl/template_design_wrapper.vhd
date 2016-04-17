@@ -1,8 +1,8 @@
 --Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
---Date        : Fri Apr 15 11:14:32 2016
---Host        : philipp-ThinkPad-X250 running 64-bit Ubuntu 15.04
+--Date        : Fri Apr 15 18:21:56 2016
+--Host        : codesigns45 running 64-bit Ubuntu 14.04.4 LTS
 --Command     : generate_target template_design_wrapper.bd
 --Design      : template_design_wrapper
 --Purpose     : IP block netlist
@@ -35,7 +35,7 @@ entity template_design_wrapper is
     FIXED_IO_ps_clk : inout STD_LOGIC;
     FIXED_IO_ps_porb : inout STD_LOGIC;
     FIXED_IO_ps_srstb : inout STD_LOGIC;
-    RST : out STD_LOGIC;
+    RST : out STD_LOGIC_VECTOR ( 0 to 0 );
     m_axis_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
     m_axis_tlast : out STD_LOGIC;
     m_axis_tready : in STD_LOGIC;
@@ -71,8 +71,6 @@ architecture STRUCTURE of template_design_wrapper is
     FIXED_IO_ps_srstb : inout STD_LOGIC;
     FIXED_IO_ps_clk : inout STD_LOGIC;
     FIXED_IO_ps_porb : inout STD_LOGIC;
-    CLK : out STD_LOGIC;
-    RST : out STD_LOGIC;
     m_axis_tlast : out STD_LOGIC;
     m_axis_tvalid : out STD_LOGIC;
     m_axis_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
@@ -80,7 +78,9 @@ architecture STRUCTURE of template_design_wrapper is
     s_axis_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
     s_axis_tvalid : in STD_LOGIC;
     s_axis_tlast : in STD_LOGIC;
-    s_axis_tready : out STD_LOGIC
+    s_axis_tready : out STD_LOGIC;
+    CLK : out STD_LOGIC;
+    RST : out STD_LOGIC_VECTOR ( 0 to 0 )
   );
   end component template_design;
 begin
@@ -108,7 +108,7 @@ template_design_i: component template_design
       FIXED_IO_ps_clk => FIXED_IO_ps_clk,
       FIXED_IO_ps_porb => FIXED_IO_ps_porb,
       FIXED_IO_ps_srstb => FIXED_IO_ps_srstb,
-      RST => RST,
+      RST(0) => RST(0),
       m_axis_tdata(31 downto 0) => m_axis_tdata(31 downto 0),
       m_axis_tlast => m_axis_tlast,
       m_axis_tready => m_axis_tready,
