@@ -1,0 +1,2149 @@
+15:35:59 INFO  : Processing command line option -hwspec /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf.
+15:36:01 INFO  : Launching XSDB server: xsdb -n -s /local/eda/xilinx/sdk/2015.2/scripts/xsdb/xsdb/xsdb-server.tcl
+15:36:02 INFO  : XSDB server has started successfully.
+15:36:32 INFO  : BSP Project P/standalone_accel_test_0 has been successfully migrated.
+15:39:47 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:39:47 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+15:39:50 INFO  : FPGA configured successfully with bitstream "/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/top.bit"
+15:40:27 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:40:27 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+15:40:27 INFO  : 'fpga -state' command is executed.
+15:40:27 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:40:27 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+15:40:31 INFO  : Mermory regions for PS have been updated.
+15:40:31 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+15:40:31 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+15:40:31 INFO  : 'ps7_init' command is executed.
+15:40:32 INFO  : 'ps7_post_config' command is executed.
+15:40:32 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+15:40:32 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+15:40:32 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+15:40:32 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+15:40:32 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+15:40:32 INFO  : Memory regions updated for context APU
+15:40:33 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+15:40:33 INFO  : 'con' command is executed.
+15:40:33 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+15:40:53 INFO  : Disconnected from the channel tcfchan#1.
+15:40:54 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:40:54 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+15:40:54 INFO  : 'fpga -state' command is executed.
+15:40:54 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:40:54 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+15:40:58 INFO  : Mermory regions for PS have been updated.
+15:40:58 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+15:40:58 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+15:40:58 ERROR : AP transaction timeout
+15:40:58 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+----------------End of Script----------------
+
+15:41:07 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:41:11 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+15:41:17 INFO  : FPGA configured successfully with bitstream "/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/top.bit"
+15:45:42 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:45:46 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+15:45:51 INFO  : FPGA configured successfully with bitstream "/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/top.bit"
+15:45:59 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:46:04 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+15:46:05 INFO  : 'fpga -state' command is executed.
+15:46:05 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:46:09 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+15:46:53 INFO  : Mermory regions for PS have been updated.
+15:46:53 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+15:46:57 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+15:46:58 ERROR : 'ps7_init' is cancelled.
+15:46:58 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+----------------End of Script----------------
+
+15:48:06 ERROR : Unexpected error while launching program.
+java.lang.RuntimeException: Error while running ps7_init method.
+Cannot write to target
+
+
+    AP transaction error (DP CTRL_STAT=0xf0000021)
+    Error Address = 0xf8000008
+
+
+	at com.xilinx.sdk.targetmanager.internal.TM.run_ps7_init(TM.java:1073)
+	at com.xilinx.sdk.debug.core.XilinxAppLaunchConfigurationDelegate.runTargetSetup(XilinxAppLaunchConfigurationDelegate.java:486)
+	at com.xilinx.sdk.debug.core.XilinxAppLaunchConfigurationDelegate.debugApplication(XilinxAppLaunchConfigurationDelegate.java:673)
+	at com.xilinx.sdk.debug.core.XilinxAppLaunchConfigurationDelegate.launch(XilinxAppLaunchConfigurationDelegate.java:298)
+	at com.xilinx.sdk.debug.ui.XilinxAppLaunchDelegateWrapper.launch(XilinxAppLaunchDelegateWrapper.java:31)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:858)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:707)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1018)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$8.run(DebugUIPlugin.java:1222)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+15:48:13 ERROR : Unexpected error while parsing XMD response ?: com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: invalid number or unquoted string near 
+15:48:45 INFO  : Launching XSDB server: xsdb -n -s /local/eda/xilinx/sdk/2015.2/scripts/xsdb/xsdb/xsdb-server.tcl
+15:48:46 INFO  : Processing command line option -hwspec /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf.
+15:48:46 INFO  : XSDB server has started successfully.
+15:48:47 INFO  : Checking for hwspec changes in the project top_hw_platform_0.
+15:49:11 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:49:11 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+15:49:11 INFO  : 'fpga -state' command is executed.
+15:49:11 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:49:11 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+15:49:15 INFO  : Mermory regions for PS have been updated.
+15:49:15 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+15:49:15 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+15:49:16 INFO  : 'ps7_init' command is executed.
+15:49:16 INFO  : 'ps7_post_config' command is executed.
+15:49:16 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+15:49:16 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+15:49:16 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+15:49:17 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+15:49:17 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+15:49:17 INFO  : Memory regions updated for context APU
+15:49:17 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+15:49:17 INFO  : 'con' command is executed.
+15:49:17 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+15:53:57 INFO  : Disconnected from the channel tcfchan#1.
+15:53:57 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:53:58 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+15:53:58 INFO  : 'fpga -state' command is executed.
+15:53:58 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+15:53:58 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+15:54:01 INFO  : Mermory regions for PS have been updated.
+15:54:02 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+15:54:02 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+15:54:02 INFO  : 'ps7_init' command is executed.
+15:54:02 INFO  : 'ps7_post_config' command is executed.
+15:54:02 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+15:54:03 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+15:54:03 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+15:54:03 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+15:54:03 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+15:54:03 INFO  : Memory regions updated for context APU
+15:54:03 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+15:54:03 INFO  : 'con' command is executed.
+15:54:03 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+16:17:51 INFO  : SDK has detected change in the last modified timestamps for source hardware specification file Source:1460729152000,  Project:1460727277000
+16:17:51 INFO  : Project top_hw_platform_0's source hardware specification located at /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf is now different from the local copy.
+		 The local copy will be replaced with the source specification and your workspace will be updated.
+16:18:10 INFO  : Disconnected from the channel tcfchan#2.
+16:18:14 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+16:18:14 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+16:18:17 INFO  : FPGA configured successfully with bitstream "/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/top.bit"
+16:18:44 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+16:18:44 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+16:18:44 INFO  : 'fpga -state' command is executed.
+16:18:44 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+16:18:44 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+16:18:48 INFO  : Mermory regions for PS have been updated.
+16:18:48 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+16:18:48 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+16:18:48 INFO  : 'ps7_init' command is executed.
+16:18:49 INFO  : 'ps7_post_config' command is executed.
+16:18:49 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+16:18:49 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+16:18:49 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+16:18:49 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+16:18:49 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+16:18:49 INFO  : Memory regions updated for context APU
+16:18:50 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+16:18:50 INFO  : 'con' command is executed.
+16:18:50 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+16:38:51 INFO  : Disconnected from the channel tcfchan#3.
+16:39:02 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+16:39:03 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+16:39:03 INFO  : 'fpga -state' command is executed.
+16:39:03 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+16:39:03 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+16:39:06 INFO  : Mermory regions for PS have been updated.
+16:39:07 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+16:39:07 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+16:39:07 INFO  : 'ps7_init' command is executed.
+16:39:07 INFO  : 'ps7_post_config' command is executed.
+16:39:07 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+16:39:08 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+16:39:08 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+16:39:08 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+16:39:08 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+16:39:08 INFO  : Memory regions updated for context APU
+16:39:08 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+16:39:08 INFO  : 'con' command is executed.
+16:39:08 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+16:56:31 INFO  : Disconnected from the channel tcfchan#4.
+16:56:44 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+16:56:45 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+16:56:45 INFO  : 'fpga -state' command is executed.
+16:56:45 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+16:56:45 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+16:56:48 INFO  : Mermory regions for PS have been updated.
+16:56:49 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+16:56:49 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+16:56:49 INFO  : 'ps7_init' command is executed.
+16:56:49 INFO  : 'ps7_post_config' command is executed.
+16:56:50 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+16:56:50 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+16:56:50 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+16:56:50 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+16:56:50 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+16:56:50 INFO  : Memory regions updated for context APU
+16:56:50 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+16:56:50 INFO  : 'con' command is executed.
+16:56:50 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+16:59:34 INFO  : Disconnected from the channel tcfchan#5.
+17:00:46 INFO  : Project top_hw_platform_0's source hardware specification location will not be monitored anymore.
+17:00:48 ERROR : Unexpected error while parsing XMD response ?: com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: invalid number or unquoted string near 
+17:02:01 INFO  : Launching XSDB server: xsdb -n -s /local/eda/xilinx/sdk/2015.2/scripts/xsdb/xsdb/xsdb-server.tcl
+17:02:02 INFO  : Processing command line option -hwspec /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf.
+17:02:03 INFO  : XSDB server has started successfully.
+17:02:29 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:02:30 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+17:02:30 INFO  : 'fpga -state' command is executed.
+17:02:30 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:02:30 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:02:33 INFO  : Mermory regions for PS have been updated.
+17:02:34 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+17:02:34 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:02:34 INFO  : 'ps7_init' command is executed.
+17:02:34 INFO  : 'ps7_post_config' command is executed.
+17:02:34 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:02:35 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+17:02:35 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:02:35 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:02:35 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+17:02:35 INFO  : Memory regions updated for context APU
+17:02:35 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:02:35 INFO  : 'con' command is executed.
+17:02:35 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+17:05:38 INFO  : Disconnected from the channel tcfchan#1.
+17:05:43 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:05:43 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+17:05:43 INFO  : 'fpga -state' command is executed.
+17:05:43 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:05:44 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:05:47 INFO  : Mermory regions for PS have been updated.
+17:05:47 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+17:05:48 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:05:48 INFO  : 'ps7_init' command is executed.
+17:05:48 INFO  : 'ps7_post_config' command is executed.
+17:05:48 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:05:48 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+17:05:49 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:05:49 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:05:49 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+17:05:49 INFO  : Memory regions updated for context APU
+17:05:49 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:05:49 INFO  : 'con' command is executed.
+17:05:49 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+17:10:23 INFO  : Disconnected from the channel tcfchan#2.
+17:12:59 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:12:59 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+17:12:59 INFO  : 'fpga -state' command is executed.
+17:12:59 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:12:59 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:13:03 INFO  : Mermory regions for PS have been updated.
+17:13:03 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+17:13:03 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:13:03 INFO  : 'ps7_init' command is executed.
+17:13:03 INFO  : 'ps7_post_config' command is executed.
+17:13:04 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:13:04 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+17:13:04 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:13:04 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:13:04 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+17:13:04 INFO  : Memory regions updated for context APU
+17:13:04 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:13:05 INFO  : 'con' command is executed.
+17:13:05 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+17:24:15 INFO  : Disconnected from the channel tcfchan#3.
+17:24:26 ERROR : Unexpected error while parsing XMD response ?: com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: invalid number or unquoted string near 
+17:24:37 INFO  : Launching XSDB server: xsdb -n -s /local/eda/xilinx/sdk/2015.2/scripts/xsdb/xsdb/xsdb-server.tcl
+17:24:38 INFO  : Processing command line option -hwspec /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf.
+17:24:38 INFO  : XSDB server has started successfully.
+17:24:39 INFO  : Checking for hwspec changes in the project top_hw_platform_1.
+17:24:48 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:24:48 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+17:24:48 INFO  : 'fpga -state' command is executed.
+17:24:48 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:24:48 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:24:52 INFO  : Mermory regions for PS have been updated.
+17:24:52 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+17:24:52 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:24:52 INFO  : 'ps7_init' command is executed.
+17:24:52 INFO  : 'ps7_post_config' command is executed.
+17:24:53 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:24:53 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+17:24:53 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:24:53 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:24:53 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+17:24:53 INFO  : Memory regions updated for context APU
+17:24:53 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:24:53 INFO  : 'con' command is executed.
+17:24:53 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+17:26:05 INFO  : Disconnected from the channel tcfchan#1.
+17:27:20 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:27:20 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+17:27:20 INFO  : 'fpga -state' command is executed.
+17:27:20 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:27:20 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:27:24 INFO  : Mermory regions for PS have been updated.
+17:27:24 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+17:27:24 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:27:24 INFO  : 'ps7_init' command is executed.
+17:27:24 INFO  : 'ps7_post_config' command is executed.
+17:27:25 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:27:25 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+17:27:25 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:27:25 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:27:25 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+17:27:25 INFO  : Memory regions updated for context APU
+17:27:25 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:27:25 INFO  : 'con' command is executed.
+17:27:25 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+17:34:22 INFO  : Disconnected from the channel tcfchan#2.
+17:34:27 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:34:27 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+17:34:27 INFO  : 'fpga -state' command is executed.
+17:34:27 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:34:28 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:34:31 INFO  : Mermory regions for PS have been updated.
+17:34:31 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+17:34:31 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:34:32 INFO  : 'ps7_init' command is executed.
+17:34:32 INFO  : 'ps7_post_config' command is executed.
+17:34:32 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:34:32 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+17:34:33 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:34:33 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:34:33 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+17:34:33 INFO  : Memory regions updated for context APU
+17:34:33 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:34:33 INFO  : 'con' command is executed.
+17:34:33 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+17:36:26 INFO  : Disconnected from the channel tcfchan#3.
+17:36:29 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:36:29 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+17:36:29 INFO  : 'fpga -state' command is executed.
+17:36:29 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:36:30 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:36:33 INFO  : Mermory regions for PS have been updated.
+17:36:33 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+17:36:34 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:36:34 INFO  : 'ps7_init' command is executed.
+17:36:34 INFO  : 'ps7_post_config' command is executed.
+17:36:34 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:36:34 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+17:36:35 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:36:35 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:36:35 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+17:36:35 INFO  : Memory regions updated for context APU
+17:36:35 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:36:35 INFO  : 'con' command is executed.
+17:36:35 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+17:37:37 INFO  : Disconnected from the channel tcfchan#4.
+17:37:51 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:37:51 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+17:37:52 INFO  : 'fpga -state' command is executed.
+17:37:52 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:37:52 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:37:55 INFO  : Mermory regions for PS have been updated.
+17:37:55 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+17:37:56 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:37:56 INFO  : 'ps7_init' command is executed.
+17:37:56 INFO  : 'ps7_post_config' command is executed.
+17:37:56 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:37:57 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+17:37:57 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:37:57 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:37:57 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+17:37:57 INFO  : Memory regions updated for context APU
+17:37:57 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:37:57 INFO  : 'con' command is executed.
+17:37:57 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+17:48:22 INFO  : Disconnected from the channel tcfchan#5.
+17:48:22 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:48:22 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+17:48:23 INFO  : 'fpga -state' command is executed.
+17:48:23 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:48:23 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:48:26 INFO  : Mermory regions for PS have been updated.
+17:48:26 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+17:48:27 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:48:27 INFO  : 'ps7_init' command is executed.
+17:48:27 INFO  : 'ps7_post_config' command is executed.
+17:48:27 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:48:28 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+17:48:28 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:48:28 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:48:28 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+17:48:28 INFO  : Memory regions updated for context APU
+17:48:28 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:48:28 INFO  : 'con' command is executed.
+17:48:28 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+17:50:19 INFO  : Disconnected from the channel tcfchan#6.
+17:50:19 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:50:20 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+17:50:20 INFO  : 'fpga -state' command is executed.
+17:50:20 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:50:20 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:50:23 INFO  : Mermory regions for PS have been updated.
+17:50:24 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+17:50:24 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:50:24 INFO  : 'ps7_init' command is executed.
+17:50:24 INFO  : 'ps7_post_config' command is executed.
+17:50:24 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:50:25 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+17:50:25 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:50:25 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:50:25 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+17:50:25 INFO  : Memory regions updated for context APU
+17:50:25 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:50:25 INFO  : 'con' command is executed.
+17:50:25 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+17:54:15 INFO  : Disconnected from the channel tcfchan#7.
+17:54:33 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:54:33 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+17:54:33 INFO  : 'fpga -state' command is executed.
+17:54:33 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:54:33 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:54:37 INFO  : Mermory regions for PS have been updated.
+17:54:37 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+17:54:37 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:54:38 INFO  : 'ps7_init' command is executed.
+17:54:38 INFO  : 'ps7_post_config' command is executed.
+17:54:38 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:54:38 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+17:54:38 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:54:39 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:54:39 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+17:54:39 INFO  : Memory regions updated for context APU
+17:54:39 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:54:39 INFO  : 'con' command is executed.
+17:54:39 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+17:55:54 INFO  : Disconnected from the channel tcfchan#8.
+17:56:23 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:56:23 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+17:56:23 INFO  : 'fpga -state' command is executed.
+17:56:23 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:56:23 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:56:27 INFO  : Mermory regions for PS have been updated.
+17:56:27 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+17:56:27 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+17:56:27 INFO  : 'ps7_init' command is executed.
+17:56:27 INFO  : 'ps7_post_config' command is executed.
+17:56:28 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:56:28 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+17:56:28 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:56:28 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:56:28 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+17:56:28 INFO  : Memory regions updated for context APU
+17:56:28 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:56:28 INFO  : 'con' command is executed.
+17:56:28 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+18:08:32 INFO  : Disconnected from the channel tcfchan#9.
+18:08:56 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:08:56 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+18:08:56 INFO  : 'fpga -state' command is executed.
+18:08:56 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:08:57 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:09:00 INFO  : Mermory regions for PS have been updated.
+18:09:00 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+18:09:00 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:09:01 INFO  : 'ps7_init' command is executed.
+18:09:01 INFO  : 'ps7_post_config' command is executed.
+18:09:01 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:09:01 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+18:09:02 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:09:02 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+18:09:02 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+18:09:02 INFO  : Memory regions updated for context APU
+18:09:02 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:09:02 INFO  : 'con' command is executed.
+18:09:02 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+18:12:32 INFO  : Disconnected from the channel tcfchan#10.
+18:26:02 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:26:02 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+18:26:03 INFO  : 'fpga -state' command is executed.
+18:26:03 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:26:03 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:26:06 INFO  : Mermory regions for PS have been updated.
+18:26:06 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+18:26:07 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:26:07 INFO  : 'ps7_init' command is executed.
+18:26:07 INFO  : 'ps7_post_config' command is executed.
+18:26:07 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:26:08 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+18:26:08 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:26:08 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+18:26:08 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+18:26:08 INFO  : Memory regions updated for context APU
+18:26:08 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:26:08 INFO  : 'con' command is executed.
+18:26:08 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+18:29:43 INFO  : Disconnected from the channel tcfchan#11.
+18:29:44 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:29:44 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+18:29:44 INFO  : 'fpga -state' command is executed.
+18:29:44 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:29:44 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:29:48 INFO  : Mermory regions for PS have been updated.
+18:29:48 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+18:29:48 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:29:48 INFO  : 'ps7_init' command is executed.
+18:29:48 INFO  : 'ps7_post_config' command is executed.
+18:29:49 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:29:49 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+18:29:49 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:29:49 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+18:29:49 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+18:29:49 INFO  : Memory regions updated for context APU
+18:29:49 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:29:49 INFO  : 'con' command is executed.
+18:29:49 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+18:32:47 INFO  : Disconnected from the channel tcfchan#12.
+18:35:29 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:35:29 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+18:35:29 INFO  : 'fpga -state' command is executed.
+18:35:29 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:35:29 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:35:33 INFO  : Mermory regions for PS have been updated.
+18:35:33 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+18:35:33 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:35:33 INFO  : 'ps7_init' command is executed.
+18:35:33 INFO  : 'ps7_post_config' command is executed.
+18:35:34 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:35:34 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+18:35:34 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:35:34 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+18:35:34 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+18:35:34 INFO  : Memory regions updated for context APU
+18:35:34 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:35:34 INFO  : 'con' command is executed.
+18:35:34 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+18:38:51 INFO  : Disconnected from the channel tcfchan#13.
+18:38:54 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:38:54 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+18:38:54 INFO  : 'fpga -state' command is executed.
+18:38:54 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:38:54 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:38:58 INFO  : Mermory regions for PS have been updated.
+18:38:58 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+18:38:58 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:38:59 INFO  : 'ps7_init' command is executed.
+18:38:59 INFO  : 'ps7_post_config' command is executed.
+18:38:59 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:38:59 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+18:38:59 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:39:00 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+18:39:00 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+18:39:00 INFO  : Memory regions updated for context APU
+18:39:00 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:39:00 INFO  : 'con' command is executed.
+18:39:00 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+18:43:23 INFO  : Disconnected from the channel tcfchan#14.
+18:43:23 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:43:24 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+18:43:24 INFO  : 'fpga -state' command is executed.
+18:43:24 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:43:24 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:43:27 INFO  : Mermory regions for PS have been updated.
+18:43:28 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+18:43:28 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:43:28 INFO  : 'ps7_init' command is executed.
+18:43:28 INFO  : 'ps7_post_config' command is executed.
+18:43:28 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:43:29 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+18:43:29 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:43:29 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+18:43:29 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+18:43:29 INFO  : Memory regions updated for context APU
+18:43:29 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:43:29 INFO  : 'con' command is executed.
+18:43:29 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+18:46:49 INFO  : Disconnected from the channel tcfchan#15.
+18:46:54 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:46:54 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+18:46:54 INFO  : 'fpga -state' command is executed.
+18:46:54 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:46:54 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:46:58 INFO  : Mermory regions for PS have been updated.
+18:46:58 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+18:46:58 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:46:58 INFO  : 'ps7_init' command is executed.
+18:46:58 INFO  : 'ps7_post_config' command is executed.
+18:46:59 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:46:59 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+18:46:59 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:46:59 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+18:46:59 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+18:46:59 INFO  : Memory regions updated for context APU
+18:46:59 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:46:59 INFO  : 'con' command is executed.
+18:46:59 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+18:48:03 INFO  : Disconnected from the channel tcfchan#16.
+18:48:26 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:48:26 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+18:48:26 INFO  : 'fpga -state' command is executed.
+18:48:26 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:48:26 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:48:30 INFO  : Mermory regions for PS have been updated.
+18:48:30 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+18:48:30 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:48:30 INFO  : 'ps7_init' command is executed.
+18:48:30 INFO  : 'ps7_post_config' command is executed.
+18:48:31 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:48:31 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+18:48:31 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:48:31 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+18:48:31 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+18:48:31 INFO  : Memory regions updated for context APU
+18:48:31 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:48:31 INFO  : 'con' command is executed.
+18:48:31 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+18:49:41 INFO  : Disconnected from the channel tcfchan#17.
+18:49:46 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:49:46 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+18:49:46 INFO  : 'fpga -state' command is executed.
+18:49:46 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:49:47 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:49:50 INFO  : Mermory regions for PS have been updated.
+18:49:50 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+18:49:51 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:49:51 INFO  : 'ps7_init' command is executed.
+18:49:51 INFO  : 'ps7_post_config' command is executed.
+18:49:51 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:49:51 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+18:49:52 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:49:52 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+18:49:52 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+18:49:52 INFO  : Memory regions updated for context APU
+18:49:52 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:49:52 INFO  : 'con' command is executed.
+18:49:52 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+18:56:31 INFO  : Disconnected from the channel tcfchan#18.
+18:56:35 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:56:35 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248518355" && level==0} -index 1' command is executed.
+18:56:35 INFO  : 'fpga -state' command is executed.
+18:56:35 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+18:56:36 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:56:39 INFO  : Mermory regions for PS have been updated.
+18:56:39 INFO  : Sourcing of '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl' is done.
+18:56:39 INFO  : 'targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0' command is executed.
+18:56:40 INFO  : 'ps7_init' command is executed.
+18:56:40 INFO  : 'ps7_post_config' command is executed.
+18:56:40 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:56:40 INFO  : Processor reset is completed for 'ps7_cortexa9_0'.
+18:56:41 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:56:41 INFO  : The application '/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf' is downloaded to processor 'ps7_cortexa9_0'.
+18:56:41 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+memmap -addr 1136656384 -size 65536 -flags 3
+memmap -addr 4160782336 -size 4096 -flags 3
+memmap -addr 4160786432 -size 4096 -flags 3
+memmap -addr 4160790528 -size 4096 -flags 3
+memmap -addr 4160794624 -size 4096 -flags 3
+memmap -addr 4169138176 -size 1048576 -flags 3
+memmap -addr 1048576 -size 535822336 -flags 3
+memmap -addr 4160774144 -size 4096 -flags 3
+memmap -addr 4160778240 -size 256 -flags 3
+memmap -addr 4160765952 -size 4096 -flags 3
+memmap -addr 4160761856 -size 4096 -flags 3
+memmap -addr 3758141440 -size 4096 -flags 3
+memmap -addr 4176478720 -size 256 -flags 3
+memmap -addr 3758137344 -size 4096 -flags 3
+memmap -addr 4170186752 -size 1048576 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 3760193536 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4160798720 -size 4096 -flags 3
+memmap -addr 4176486400 -size 4096 -flags 3
+memmap -addr 4169732096 -size 4096 -flags 3
+memmap -addr 3758149632 -size 4096 -flags 3
+memmap -addr 4227858432 -size 16777216 -flags 3
+memmap -addr 0 -size 196608 -flags 3
+memmap -addr 4294901760 -size 65024 -flags 3
+memmap -addr 4176478208 -size 253 -flags 3
+memmap -addr 4176482304 -size 4096 -flags 3
+memmap -addr 4176479744 -size 32 -flags 3
+memmap -addr 4176479776 -size 224 -flags 3
+memmap -addr 3759144960 -size 4096 -flags 3
+memmap -addr 4160749568 -size 4096 -flags 3
+memmap -addr 4160753664 -size 4096 -flags 3
+memmap -addr 3758100480 -size 4096 -flags 3
+memmap -addr 3758104576 -size 4096 -flags 3
+memmap -addr 4160778496 -size 33 -flags 3
+source /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.tcl
+targets -set -filter {name =~"APU" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+rst -processor
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+dow /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/accel_test.elf
+----------------End of Script----------------
+
+18:56:41 INFO  : Memory regions updated for context APU
+18:56:41 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+18:56:41 INFO  : 'con' command is executed.
+18:56:41 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "ARM*#0" && jtag_cable_name =~ "Digilent Zed 210248518355"} -index 0
+con
+----------------End of Script----------------
+
+18:58:13 INFO  : Disconnected from the channel tcfchan#19.
+18:58:31 INFO  : ps7_init is completed.
+18:58:31 INFO  : ps7_post_config is completed.
+18:58:31 INFO  : Processor reset is completed for ps7_cortexa9_0
+19:00:33 ERROR : Unexpected error while parsing XMD response ?: com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: invalid number or unquoted string near 
