@@ -43,38 +43,70 @@ if { [get_projects -quiet] eq "" } {
 # CHANGE DESIGN NAME HERE
 set design_name template_design
 
-# This script was generated for a remote BD.
-set str_bd_folder /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd
-set str_bd_filepath ${str_bd_folder}/${design_name}/${design_name}.bd
+# If you do not already have an existing IP Integrator design open,
+# you can create a design using the following command:
+#    create_bd_design $design_name
 
-# Check if remote design exists on disk
-if { [file exists $str_bd_filepath ] == 1 } {
-   puts "ERROR: The remote BD file path <$str_bd_filepath> already exists!"
-   return 1
+# Creating design if needed
+set errMsg ""
+set nRet 0
+
+set cur_design [current_bd_design -quiet]
+set list_cells [get_bd_cells -quiet]
+
+if { ${design_name} eq "" } {
+   # USE CASES:
+   #    1) Design_name not set
+
+   set errMsg "ERROR: Please set the variable <design_name> to a non-empty value."
+   set nRet 1
+
+} elseif { ${cur_design} ne "" && ${list_cells} eq "" } {
+   # USE CASES:
+   #    2): Current design opened AND is empty AND names same.
+   #    3): Current design opened AND is empty AND names diff; design_name NOT in project.
+   #    4): Current design opened AND is empty AND names diff; design_name exists in project.
+
+   if { $cur_design ne $design_name } {
+      puts "INFO: Changing value of <design_name> from <$design_name> to <$cur_design> since current design is empty."
+      set design_name [get_property NAME $cur_design]
+   }
+   puts "INFO: Constructing design in IPI design <$cur_design>..."
+
+} elseif { ${cur_design} ne "" && $list_cells ne "" && $cur_design eq $design_name } {
+   # USE CASES:
+   #    5) Current design opened AND has components AND same names.
+
+   set errMsg "ERROR: Design <$design_name> already exists in your project, please set the variable <design_name> to another value."
+   set nRet 1
+} elseif { [get_files -quiet ${design_name}.bd] ne "" } {
+   # USE CASES: 
+   #    6) Current opened design, has components, but diff names, design_name exists in project.
+   #    7) No opened design, design_name exists in project.
+
+   set errMsg "ERROR: Design <$design_name> already exists in your project, please set the variable <design_name> to another value."
+   set nRet 2
+
+} else {
+   # USE CASES:
+   #    8) No opened design, design_name not in project.
+   #    9) Current opened design, has components, but diff names, design_name not in project.
+
+   puts "INFO: Currently there is no design <$design_name> in project, so creating one..."
+
+   create_bd_design $design_name
+
+   puts "INFO: Making design <$design_name> as current_bd_design."
+   current_bd_design $design_name
+
 }
 
-# Check if design exists in memory
-set list_existing_designs [get_bd_designs -quiet $design_name]
-if { $list_existing_designs ne "" } {
-   puts "ERROR: The design <$design_name> already exists in this project!"
-   puts "ERROR: Will not create the remote BD <$design_name> at the folder <$str_bd_folder>."
+puts "INFO: Currently the variable <design_name> is equal to \"$design_name\"."
 
-   return 1
+if { $nRet != 0 } {
+   puts $errMsg
+   return $nRet
 }
-
-# Check if design exists on disk within project
-set list_existing_designs [get_files */${design_name}.bd]
-if { $list_existing_designs ne "" } {
-   puts "ERROR: The design <$design_name> already exists in this project at location:"
-   puts "   $list_existing_designs"
-   puts "ERROR: Will not create the remote BD <$design_name> at the folder <$str_bd_folder>."
-
-   return 1
-}
-
-# Now can create the remote BD
-create_bd_design -dir $str_bd_folder $design_name
-current_bd_design $design_name
 
 ##################################################################
 # DESIGN PROCs
@@ -122,7 +154,7 @@ proc create_root_design { parentCell } {
   # Create ports
   set CLK [ create_bd_port -dir O -type clk CLK ]
   set_property -dict [ list CONFIG.ASSOCIATED_BUSIF {s_axis:m_axis}  ] $CLK
-  set RST [ create_bd_port -dir O -type rst RST ]
+  set RST [ create_bd_port -dir O -from 0 -to 0 -type rst RST ]
 
   # Create instance: MINIMAL_DMA_0, and set properties
   set MINIMAL_DMA_0 [ create_bd_cell -type ip -vlnv fau.de:user:MINIMAL_DMA:1.0 MINIMAL_DMA_0 ]
@@ -136,6 +168,10 @@ proc create_root_design { parentCell } {
   set axi_mem_intercon [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_mem_intercon ]
   set_property -dict [ list CONFIG.NUM_MI {1} CONFIG.NUM_SI {1}  ] $axi_mem_intercon
 
+  # Create instance: axis_data_fifo_0, and set properties
+  set axis_data_fifo_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_data_fifo:1.1 axis_data_fifo_0 ]
+  set_property -dict [ list CONFIG.HAS_TLAST {1} CONFIG.TDATA_NUM_BYTES {4}  ] $axis_data_fifo_0
+
   # Create instance: processing_system7_0, and set properties
   set processing_system7_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0 ]
   set_property -dict [ list CONFIG.PCW_S_AXI_HP0_DATA_WIDTH {32} CONFIG.PCW_USE_S_AXI_HP0 {1} CONFIG.preset {ZedBoard}  ] $processing_system7_0
@@ -147,25 +183,34 @@ proc create_root_design { parentCell } {
   # Create instance: rst_processing_system7_0_102M, and set properties
   set rst_processing_system7_0_102M [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 rst_processing_system7_0_102M ]
 
+  # Create instance: util_vector_logic_0, and set properties
+  set util_vector_logic_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_vector_logic:2.0 util_vector_logic_0 ]
+  set_property -dict [ list CONFIG.C_OPERATION {not} CONFIG.C_SIZE {1}  ] $util_vector_logic_0
+
   # Create interface connections
   connect_bd_intf_net -intf_net MINIMAL_DMA_0_M_AXI [get_bd_intf_pins MINIMAL_DMA_0/M_AXI] [get_bd_intf_pins axi_mem_intercon/S00_AXI]
   connect_bd_intf_net -intf_net MINIMAL_DMA_0_data_out [get_bd_intf_pins MINIMAL_DMA_0/data_out] [get_bd_intf_pins MINIMAL_DMA_CONTROL_0/in_data]
   connect_bd_intf_net -intf_net MINIMAL_DMA_CONTROL_0_dma_control [get_bd_intf_pins MINIMAL_DMA_0/dma_control] [get_bd_intf_pins MINIMAL_DMA_CONTROL_0/dma_control]
   connect_bd_intf_net -intf_net MINIMAL_DMA_CONTROL_0_m_axis [get_bd_intf_ports m_axis] [get_bd_intf_pins MINIMAL_DMA_CONTROL_0/m_axis]
+  set_property -dict [ list HDL_ATTRIBUTE.MARK_DEBUG {true}  ] [get_bd_intf_nets MINIMAL_DMA_CONTROL_0_m_axis]
   connect_bd_intf_net -intf_net MINIMAL_DMA_CONTROL_0_out_data [get_bd_intf_pins MINIMAL_DMA_0/data_in] [get_bd_intf_pins MINIMAL_DMA_CONTROL_0/out_data]
   connect_bd_intf_net -intf_net axi_mem_intercon_M00_AXI [get_bd_intf_pins axi_mem_intercon/M00_AXI] [get_bd_intf_pins processing_system7_0/S_AXI_HP0]
+  connect_bd_intf_net -intf_net axis_data_fifo_0_M_AXIS [get_bd_intf_pins MINIMAL_DMA_CONTROL_0/s_axis] [get_bd_intf_pins axis_data_fifo_0/M_AXIS]
+  set_property -dict [ list HDL_ATTRIBUTE.MARK_DEBUG {true}  ] [get_bd_intf_nets axis_data_fifo_0_M_AXIS]
   connect_bd_intf_net -intf_net processing_system7_0_DDR [get_bd_intf_ports DDR] [get_bd_intf_pins processing_system7_0/DDR]
   connect_bd_intf_net -intf_net processing_system7_0_FIXED_IO [get_bd_intf_ports FIXED_IO] [get_bd_intf_pins processing_system7_0/FIXED_IO]
   connect_bd_intf_net -intf_net processing_system7_0_M_AXI_GP0 [get_bd_intf_pins processing_system7_0/M_AXI_GP0] [get_bd_intf_pins processing_system7_0_axi_periph/S00_AXI]
   connect_bd_intf_net -intf_net processing_system7_0_axi_periph_M00_AXI [get_bd_intf_pins MINIMAL_DMA_CONTROL_0/S_AXI] [get_bd_intf_pins processing_system7_0_axi_periph/M00_AXI]
-  connect_bd_intf_net -intf_net s_axis_1 [get_bd_intf_ports s_axis] [get_bd_intf_pins MINIMAL_DMA_CONTROL_0/s_axis]
+  connect_bd_intf_net -intf_net s_axis_1 [get_bd_intf_ports s_axis] [get_bd_intf_pins axis_data_fifo_0/S_AXIS]
+  set_property -dict [ list HDL_ATTRIBUTE.MARK_DEBUG {true}  ] [get_bd_intf_nets s_axis_1]
 
   # Create port connections
-  connect_bd_net -net MINIMAL_DMA_CONTROL_0_axis_rst [get_bd_ports RST] [get_bd_pins MINIMAL_DMA_CONTROL_0/axis_rst]
-  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_ports CLK] [get_bd_pins MINIMAL_DMA_0/m_axi_aclk] [get_bd_pins MINIMAL_DMA_CONTROL_0/s_axi_aclk] [get_bd_pins axi_mem_intercon/ACLK] [get_bd_pins axi_mem_intercon/M00_ACLK] [get_bd_pins axi_mem_intercon/S00_ACLK] [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins processing_system7_0/S_AXI_HP0_ACLK] [get_bd_pins processing_system7_0_axi_periph/ACLK] [get_bd_pins processing_system7_0_axi_periph/M00_ACLK] [get_bd_pins processing_system7_0_axi_periph/S00_ACLK] [get_bd_pins rst_processing_system7_0_102M/slowest_sync_clk]
+  connect_bd_net -net MINIMAL_DMA_CONTROL_0_axis_rst [get_bd_pins MINIMAL_DMA_CONTROL_0/axis_rst] [get_bd_pins util_vector_logic_0/Op1]
+  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_ports CLK] [get_bd_pins MINIMAL_DMA_0/m_axi_aclk] [get_bd_pins MINIMAL_DMA_CONTROL_0/s_axi_aclk] [get_bd_pins axi_mem_intercon/ACLK] [get_bd_pins axi_mem_intercon/M00_ACLK] [get_bd_pins axi_mem_intercon/S00_ACLK] [get_bd_pins axis_data_fifo_0/s_axis_aclk] [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins processing_system7_0/S_AXI_HP0_ACLK] [get_bd_pins processing_system7_0_axi_periph/ACLK] [get_bd_pins processing_system7_0_axi_periph/M00_ACLK] [get_bd_pins processing_system7_0_axi_periph/S00_ACLK] [get_bd_pins rst_processing_system7_0_102M/slowest_sync_clk]
   connect_bd_net -net processing_system7_0_FCLK_RESET0_N [get_bd_pins processing_system7_0/FCLK_RESET0_N] [get_bd_pins rst_processing_system7_0_102M/ext_reset_in]
   connect_bd_net -net rst_processing_system7_0_102M_interconnect_aresetn [get_bd_pins axi_mem_intercon/ARESETN] [get_bd_pins processing_system7_0_axi_periph/ARESETN] [get_bd_pins rst_processing_system7_0_102M/interconnect_aresetn]
   connect_bd_net -net rst_processing_system7_0_102M_peripheral_aresetn [get_bd_pins MINIMAL_DMA_0/m_axi_aresetn] [get_bd_pins MINIMAL_DMA_CONTROL_0/s_axi_aresetn] [get_bd_pins axi_mem_intercon/M00_ARESETN] [get_bd_pins axi_mem_intercon/S00_ARESETN] [get_bd_pins processing_system7_0_axi_periph/M00_ARESETN] [get_bd_pins processing_system7_0_axi_periph/S00_ARESETN] [get_bd_pins rst_processing_system7_0_102M/peripheral_aresetn]
+  connect_bd_net -net util_vector_logic_0_Res [get_bd_ports RST] [get_bd_pins axis_data_fifo_0/s_axis_aresetn] [get_bd_pins util_vector_logic_0/Res]
 
   # Create address segments
   create_bd_addr_seg -range 0x20000000 -offset 0x0 [get_bd_addr_spaces MINIMAL_DMA_0/M_AXI] [get_bd_addr_segs processing_system7_0/S_AXI_HP0/HP0_DDR_LOWOCM] SEG_processing_system7_0_HP0_DDR_LOWOCM

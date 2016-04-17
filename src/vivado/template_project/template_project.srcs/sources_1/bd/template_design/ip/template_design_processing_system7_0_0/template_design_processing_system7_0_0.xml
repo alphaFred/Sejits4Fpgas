@@ -5714,7 +5714,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>FREQ_HZ</spirit:name>
-          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.FCLK_CLK0.FREQ_HZ" spirit:dependency="(spirit:decode(id(PARAM_VALUE.PCW_CLK0_FREQ)))" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">102000000</spirit:value>
+          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.FCLK_CLK0.FREQ_HZ" spirit:dependency="(spirit:decode(id(PARAM_VALUE.PCW_CLK0_FREQ)))" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">100000000</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>ASSOCIATED_RESET</spirit:name>
@@ -5761,7 +5761,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>FREQ_HZ</spirit:name>
-          <spirit:value spirit:format="float" spirit:resolve="dependent" spirit:id="BUSIFPARAM_VALUE.FCLK_CLK1.FREQ_HZ" spirit:dependency="(spirit:decode(id(PARAM_VALUE.PCW_CLK1_FREQ)))" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">140250000</spirit:value>
+          <spirit:value spirit:format="float" spirit:resolve="dependent" spirit:id="BUSIFPARAM_VALUE.FCLK_CLK1.FREQ_HZ" spirit:dependency="(spirit:decode(id(PARAM_VALUE.PCW_CLK1_FREQ)))" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">142857132</spirit:value>
         </spirit:parameter>
       </spirit:parameters>
       <spirit:vendorExtensions>
@@ -5792,7 +5792,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>FREQ_HZ</spirit:name>
-          <spirit:value spirit:format="float" spirit:resolve="dependent" spirit:id="BUSIFPARAM_VALUE.FCLK_CLK2.FREQ_HZ" spirit:dependency="(spirit:decode(id(PARAM_VALUE.PCW_CLK2_FREQ)))" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">51000000</spirit:value>
+          <spirit:value spirit:format="float" spirit:resolve="dependent" spirit:id="BUSIFPARAM_VALUE.FCLK_CLK2.FREQ_HZ" spirit:dependency="(spirit:decode(id(PARAM_VALUE.PCW_CLK2_FREQ)))" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">50000000</spirit:value>
         </spirit:parameter>
       </spirit:parameters>
       <spirit:vendorExtensions>
@@ -5823,7 +5823,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>FREQ_HZ</spirit:name>
-          <spirit:value spirit:format="float" spirit:resolve="dependent" spirit:id="BUSIFPARAM_VALUE.FCLK_CLK3.FREQ_HZ" spirit:dependency="(spirit:decode(id(PARAM_VALUE.PCW_CLK3_FREQ)))" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">51000000</spirit:value>
+          <spirit:value spirit:format="float" spirit:resolve="dependent" spirit:id="BUSIFPARAM_VALUE.FCLK_CLK3.FREQ_HZ" spirit:dependency="(spirit:decode(id(PARAM_VALUE.PCW_CLK3_FREQ)))" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">50000000</spirit:value>
         </spirit:parameter>
       </spirit:parameters>
       <spirit:vendorExtensions>
@@ -10062,7 +10062,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>customizationCRC</spirit:name>
-            <spirit:value>b48625dc</spirit:value>
+            <spirit:value>8d089e8e</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>customizationCRCversion</spirit:name>
@@ -10070,7 +10070,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>boundaryCRC</spirit:name>
-            <spirit:value>51632b30</spirit:value>
+            <spirit:value>85459e1b</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>boundaryCRCversion</spirit:name>
@@ -10078,7 +10078,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Apr 15 09:14:31 UTC 2016</spirit:value>
+            <spirit:value>Fri Apr 15 13:59:10 UTC 2016</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>StaleAtRelink</spirit:name>
@@ -10097,7 +10097,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>customizationCRC</spirit:name>
-            <spirit:value>b48625dc</spirit:value>
+            <spirit:value>8d089e8e</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>customizationCRCversion</spirit:name>
@@ -10105,7 +10105,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>boundaryCRC</spirit:name>
-            <spirit:value>51632b30</spirit:value>
+            <spirit:value>85459e1b</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>boundaryCRCversion</spirit:name>
@@ -10113,7 +10113,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Apr 15 09:14:31 UTC 2016</spirit:value>
+            <spirit:value>Fri Apr 15 13:59:10 UTC 2016</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>StaleAtRelink</spirit:name>
@@ -30896,7 +30896,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_BANK_ADDR_COUNT</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR BANK ADDR COUNT</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_BANK_ADDR_COUNT" spirit:order="14100" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">3</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_BANK_ADDR_COUNT" spirit:order="14100" spirit:minimum="2.000000" spirit:maximum="3.000000" spirit:rangeType="float">3</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -30908,7 +30908,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_ROW_ADDR_COUNT</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR ROW ADDR COUNT</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_ROW_ADDR_COUNT" spirit:order="14200" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">14</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_ROW_ADDR_COUNT" spirit:order="14200" spirit:minimum="12.000000" spirit:maximum="15.000000" spirit:rangeType="float">14</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -30920,7 +30920,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_COL_ADDR_COUNT</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR COL ADDR COUNT</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_COL_ADDR_COUNT" spirit:order="14300" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">10</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_COL_ADDR_COUNT" spirit:order="14300" spirit:minimum="8.000000" spirit:maximum="13.000000" spirit:rangeType="float">10</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -30932,7 +30932,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CL</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CL</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CL" spirit:order="14400" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">7</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CL" spirit:order="14400" spirit:minimum="5.000000" spirit:maximum="16.000000" spirit:rangeType="float">7</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -30944,7 +30944,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CWL</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CWL</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CWL" spirit:order="14500" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">6</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CWL" spirit:order="14500" spirit:minimum="5.000000" spirit:maximum="16.000000" spirit:rangeType="float">6</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -30956,7 +30956,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_T_RCD</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR T RCD</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_T_RCD" spirit:order="14600" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">7</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_T_RCD" spirit:order="14600" spirit:minimum="0.000000" spirit:maximum="16.000000" spirit:rangeType="float">7</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -30968,7 +30968,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_T_RP</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR T RP</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_T_RP" spirit:order="14700" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">7</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_T_RP" spirit:order="14700" spirit:minimum="0.000000" spirit:maximum="16.000000" spirit:rangeType="float">7</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31016,7 +31016,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_AL</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR AL</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_AL" spirit:order="15100" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_AL" spirit:order="15100" spirit:minimum="0.000000" spirit:maximum="20.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31124,7 +31124,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQS_0_LENGTH_MM</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQS 0 LENGTH MM</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_0_LENGTH_MM" spirit:order="16500" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_0_LENGTH_MM" spirit:order="16500" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31136,7 +31136,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQS_1_LENGTH_MM</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQS 1 LENGTH MM</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_1_LENGTH_MM" spirit:order="16600" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_1_LENGTH_MM" spirit:order="16600" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31148,7 +31148,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQS_2_LENGTH_MM</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQS 2 LENGTH MM</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_2_LENGTH_MM" spirit:order="16700" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_2_LENGTH_MM" spirit:order="16700" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31160,7 +31160,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQS_3_LENGTH_MM</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQS 3 LENGTH MM</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_3_LENGTH_MM" spirit:order="16800" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_3_LENGTH_MM" spirit:order="16800" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31172,7 +31172,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQ_0_LENGTH_MM</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQ 0 LENGTH MM</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_0_LENGTH_MM" spirit:order="16900" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_0_LENGTH_MM" spirit:order="16900" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31184,7 +31184,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQ_1_LENGTH_MM</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQ 1 LENGTH MM</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_1_LENGTH_MM" spirit:order="17000" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_1_LENGTH_MM" spirit:order="17000" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31196,7 +31196,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQ_2_LENGTH_MM</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQ 2 LENGTH MM</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_2_LENGTH_MM" spirit:order="17100" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_2_LENGTH_MM" spirit:order="17100" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31208,7 +31208,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQ_3_LENGTH_MM</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQ 3 LENGTH MM</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_3_LENGTH_MM" spirit:order="17200" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_3_LENGTH_MM" spirit:order="17200" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31220,7 +31220,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CLOCK_0_LENGTH_MM</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CLOCK 0 LENGTH MM</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_0_LENGTH_MM" spirit:order="17300" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_0_LENGTH_MM" spirit:order="17300" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31232,7 +31232,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CLOCK_1_LENGTH_MM</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CLOCK 1 LENGTH MM</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_1_LENGTH_MM" spirit:order="17400" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_1_LENGTH_MM" spirit:order="17400" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31244,7 +31244,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CLOCK_2_LENGTH_MM</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CLOCK 2 LENGTH MM</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_2_LENGTH_MM" spirit:order="17500" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_2_LENGTH_MM" spirit:order="17500" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31256,7 +31256,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CLOCK_3_LENGTH_MM</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CLOCK 3 LENGTH MM</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_3_LENGTH_MM" spirit:order="17600" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_3_LENGTH_MM" spirit:order="17600" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31268,7 +31268,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQS_0_PACKAGE_LENGTH</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQS 0 PACKAGE LENGTH</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_0_PACKAGE_LENGTH" spirit:order="17700" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">68.4725</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_0_PACKAGE_LENGTH" spirit:order="17700" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">68.4725</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31280,7 +31280,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQS_1_PACKAGE_LENGTH</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQS 1 PACKAGE LENGTH</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_1_PACKAGE_LENGTH" spirit:order="17800" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">71.086</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_1_PACKAGE_LENGTH" spirit:order="17800" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">71.086</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31292,7 +31292,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQS_2_PACKAGE_LENGTH</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQS 2 PACKAGE LENGTH</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_2_PACKAGE_LENGTH" spirit:order="17900" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">66.794</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_2_PACKAGE_LENGTH" spirit:order="17900" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">66.794</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31304,7 +31304,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQS_3_PACKAGE_LENGTH</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQS 3 PACKAGE LENGTH</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_3_PACKAGE_LENGTH" spirit:order="18000" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">108.7385</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_3_PACKAGE_LENGTH" spirit:order="18000" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">108.7385</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31316,7 +31316,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQ_0_PACKAGE_LENGTH</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQ 0 PACKAGE LENGTH</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_0_PACKAGE_LENGTH" spirit:order="18100" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">64.1705</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_0_PACKAGE_LENGTH" spirit:order="18100" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">64.1705</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31328,7 +31328,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQ_1_PACKAGE_LENGTH</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQ 1 PACKAGE LENGTH</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_1_PACKAGE_LENGTH" spirit:order="18200" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">63.686</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_1_PACKAGE_LENGTH" spirit:order="18200" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">63.686</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31340,7 +31340,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQ_2_PACKAGE_LENGTH</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQ 2 PACKAGE LENGTH</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_2_PACKAGE_LENGTH" spirit:order="18300" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">68.46</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_2_PACKAGE_LENGTH" spirit:order="18300" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">68.46</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31352,7 +31352,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQ_3_PACKAGE_LENGTH</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQ 3 PACKAGE LENGTH</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_3_PACKAGE_LENGTH" spirit:order="18400" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">105.4895</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_3_PACKAGE_LENGTH" spirit:order="18400" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">105.4895</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31364,7 +31364,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CLOCK_0_PACKAGE_LENGTH</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CLOCK 0 PACKAGE LENGTH</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_0_PACKAGE_LENGTH" spirit:order="18500" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">61.0905</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_0_PACKAGE_LENGTH" spirit:order="18500" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">61.0905</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31376,7 +31376,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CLOCK_1_PACKAGE_LENGTH</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CLOCK 1 PACKAGE LENGTH</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_1_PACKAGE_LENGTH" spirit:order="18600" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">61.0905</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_1_PACKAGE_LENGTH" spirit:order="18600" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">61.0905</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31388,7 +31388,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CLOCK_2_PACKAGE_LENGTH</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CLOCK 2 PACKAGE LENGTH</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_2_PACKAGE_LENGTH" spirit:order="18700" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">61.0905</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_2_PACKAGE_LENGTH" spirit:order="18700" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">61.0905</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31400,7 +31400,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CLOCK_3_PACKAGE_LENGTH</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CLOCK 3 PACKAGE LENGTH</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_3_PACKAGE_LENGTH" spirit:order="18800" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">61.0905</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_3_PACKAGE_LENGTH" spirit:order="18800" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">61.0905</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31412,7 +31412,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQS_0_PROPOGATION_DELAY</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQS 0 PROPOGATION DELAY</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_0_PROPOGATION_DELAY" spirit:order="18900" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">160</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_0_PROPOGATION_DELAY" spirit:order="18900" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">160</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31424,7 +31424,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQS_1_PROPOGATION_DELAY</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQS 1 PROPOGATION DELAY</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_1_PROPOGATION_DELAY" spirit:order="19000" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">160</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_1_PROPOGATION_DELAY" spirit:order="19000" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">160</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31436,7 +31436,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQS_2_PROPOGATION_DELAY</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQS 2 PROPOGATION DELAY</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_2_PROPOGATION_DELAY" spirit:order="19100" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">160</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_2_PROPOGATION_DELAY" spirit:order="19100" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">160</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31448,7 +31448,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQS_3_PROPOGATION_DELAY</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQS 3 PROPOGATION DELAY</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_3_PROPOGATION_DELAY" spirit:order="19200" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">160</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQS_3_PROPOGATION_DELAY" spirit:order="19200" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">160</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31460,7 +31460,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQ_0_PROPOGATION_DELAY</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQ 0 PROPOGATION DELAY</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_0_PROPOGATION_DELAY" spirit:order="19300" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">160</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_0_PROPOGATION_DELAY" spirit:order="19300" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">160</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31472,7 +31472,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQ_1_PROPOGATION_DELAY</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQ 1 PROPOGATION DELAY</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_1_PROPOGATION_DELAY" spirit:order="19400" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">160</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_1_PROPOGATION_DELAY" spirit:order="19400" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">160</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31484,7 +31484,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQ_2_PROPOGATION_DELAY</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQ 2 PROPOGATION DELAY</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_2_PROPOGATION_DELAY" spirit:order="19500" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">160</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_2_PROPOGATION_DELAY" spirit:order="19500" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">160</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31496,7 +31496,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_DQ_3_PROPOGATION_DELAY</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR DQ 3 PROPOGATION DELAY</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_3_PROPOGATION_DELAY" spirit:order="19600" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">160</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_DQ_3_PROPOGATION_DELAY" spirit:order="19600" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">160</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31508,7 +31508,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CLOCK_0_PROPOGATION_DELAY</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CLOCK 0 PROPOGATION DELAY</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_0_PROPOGATION_DELAY" spirit:order="19700" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">160</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_0_PROPOGATION_DELAY" spirit:order="19700" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">160</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31520,7 +31520,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CLOCK_1_PROPOGATION_DELAY</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CLOCK 1 PROPOGATION DELAY</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_1_PROPOGATION_DELAY" spirit:order="19800" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">160</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_1_PROPOGATION_DELAY" spirit:order="19800" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">160</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31532,7 +31532,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CLOCK_2_PROPOGATION_DELAY</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CLOCK 2 PROPOGATION DELAY</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_2_PROPOGATION_DELAY" spirit:order="19900" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">160</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_2_PROPOGATION_DELAY" spirit:order="19900" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">160</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31544,7 +31544,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_DDR_CLOCK_3_PROPOGATION_DELAY</spirit:name>
       <spirit:displayName>PCW UIPARAM DDR CLOCK 3 PROPOGATION DELAY</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_3_PROPOGATION_DELAY" spirit:order="20000" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">160</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_DDR_CLOCK_3_PROPOGATION_DELAY" spirit:order="20000" spirit:minimum="0.000000" spirit:maximum="10000.000000" spirit:rangeType="float">160</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31556,7 +31556,7 @@
     <spirit:parameter>
       <spirit:name>PCW_PACKAGE_DDR_DQS_TO_CLK_DELAY_0</spirit:name>
       <spirit:displayName>PCW PACKAGE DDR DQS TO CLK DELAY 0</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_DQS_TO_CLK_DELAY_0" spirit:order="20100" spirit:minimum="-0.1" spirit:maximum="100" spirit:rangeType="float">-0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_DQS_TO_CLK_DELAY_0" spirit:order="20100" spirit:minimum="-0.100000" spirit:maximum="100.000000" spirit:rangeType="float">-0.007</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31568,7 +31568,7 @@
     <spirit:parameter>
       <spirit:name>PCW_PACKAGE_DDR_DQS_TO_CLK_DELAY_1</spirit:name>
       <spirit:displayName>PCW PACKAGE DDR DQS TO CLK DELAY 1</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_DQS_TO_CLK_DELAY_1" spirit:order="20200" spirit:minimum="-0.1" spirit:maximum="100" spirit:rangeType="float">-0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_DQS_TO_CLK_DELAY_1" spirit:order="20200" spirit:minimum="-0.100000" spirit:maximum="100.000000" spirit:rangeType="float">-0.010</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31580,7 +31580,7 @@
     <spirit:parameter>
       <spirit:name>PCW_PACKAGE_DDR_DQS_TO_CLK_DELAY_2</spirit:name>
       <spirit:displayName>PCW PACKAGE DDR DQS TO CLK DELAY 2</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_DQS_TO_CLK_DELAY_2" spirit:order="20300" spirit:minimum="-0.1" spirit:maximum="100" spirit:rangeType="float">-0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_DQS_TO_CLK_DELAY_2" spirit:order="20300" spirit:minimum="-0.100000" spirit:maximum="100.000000" spirit:rangeType="float">-0.006</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31592,7 +31592,7 @@
     <spirit:parameter>
       <spirit:name>PCW_PACKAGE_DDR_DQS_TO_CLK_DELAY_3</spirit:name>
       <spirit:displayName>PCW PACKAGE DDR DQS TO CLK DELAY 3</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_DQS_TO_CLK_DELAY_3" spirit:order="20400" spirit:minimum="-0.1" spirit:maximum="100" spirit:rangeType="float">-0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_DQS_TO_CLK_DELAY_3" spirit:order="20400" spirit:minimum="-0.100000" spirit:maximum="100.000000" spirit:rangeType="float">-0.048</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31604,7 +31604,7 @@
     <spirit:parameter>
       <spirit:name>PCW_PACKAGE_DDR_BOARD_DELAY0</spirit:name>
       <spirit:displayName>PCW PACKAGE DDR BOARD DELAY0</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_BOARD_DELAY0" spirit:order="20500" spirit:minimum="0" spirit:maximum="100" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_BOARD_DELAY0" spirit:order="20500" spirit:minimum="0.000000" spirit:maximum="100.000000" spirit:rangeType="float">0.063</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31616,7 +31616,7 @@
     <spirit:parameter>
       <spirit:name>PCW_PACKAGE_DDR_BOARD_DELAY1</spirit:name>
       <spirit:displayName>PCW PACKAGE DDR BOARD DELAY1</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_BOARD_DELAY1" spirit:order="20600" spirit:minimum="0" spirit:maximum="100" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_BOARD_DELAY1" spirit:order="20600" spirit:minimum="0.000000" spirit:maximum="100.000000" spirit:rangeType="float">0.062</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31628,7 +31628,7 @@
     <spirit:parameter>
       <spirit:name>PCW_PACKAGE_DDR_BOARD_DELAY2</spirit:name>
       <spirit:displayName>PCW PACKAGE DDR BOARD DELAY2</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_BOARD_DELAY2" spirit:order="20700" spirit:minimum="0" spirit:maximum="100" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_BOARD_DELAY2" spirit:order="20700" spirit:minimum="0.000000" spirit:maximum="100.000000" spirit:rangeType="float">0.065</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31640,7 +31640,7 @@
     <spirit:parameter>
       <spirit:name>PCW_PACKAGE_DDR_BOARD_DELAY3</spirit:name>
       <spirit:displayName>PCW PACKAGE DDR BOARD DELAY3</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_BOARD_DELAY3" spirit:order="20800" spirit:minimum="0" spirit:maximum="100" spirit:rangeType="float">0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PACKAGE_DDR_BOARD_DELAY3" spirit:order="20800" spirit:minimum="0.000000" spirit:maximum="100.000000" spirit:rangeType="float">0.083</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31652,7 +31652,7 @@
     <spirit:parameter>
       <spirit:name>PCW_CPU_CPU_6X4X_MAX_RANGE</spirit:name>
       <spirit:displayName>PCW CPU CPU 6X4X MAX RANGE</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CPU_CPU_6X4X_MAX_RANGE" spirit:order="234000" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">667</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CPU_CPU_6X4X_MAX_RANGE" spirit:order="234000" spirit:minimum="-9999.990000" spirit:maximum="9999.990000" spirit:rangeType="float">667</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31664,7 +31664,7 @@
     <spirit:parameter>
       <spirit:name>PCW_CRYSTAL_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW CRYSTAL PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CRYSTAL_PERIPHERAL_FREQMHZ" spirit:order="23200" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">33.333333</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CRYSTAL_PERIPHERAL_FREQMHZ" spirit:order="23200" spirit:minimum="30.000000" spirit:maximum="60.000000" spirit:rangeType="float">33.333333</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31688,7 +31688,7 @@
     <spirit:parameter>
       <spirit:name>PCW_DCI_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW DCI PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_DCI_PERIPHERAL_FREQMHZ" spirit:order="23600" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">10.159</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_DCI_PERIPHERAL_FREQMHZ" spirit:order="23600" spirit:minimum="0.100000" spirit:maximum="177.000000" spirit:rangeType="float">10.159</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31700,7 +31700,7 @@
     <spirit:parameter>
       <spirit:name>PCW_QSPI_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW QSPI PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_QSPI_PERIPHERAL_FREQMHZ" spirit:order="23700" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">200</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_QSPI_PERIPHERAL_FREQMHZ" spirit:order="23700" spirit:minimum="10.000000" spirit:maximum="200.000000" spirit:rangeType="float">200</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31712,7 +31712,7 @@
     <spirit:parameter>
       <spirit:name>PCW_SMC_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW SMC PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_SMC_PERIPHERAL_FREQMHZ" spirit:order="23800" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">100</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_SMC_PERIPHERAL_FREQMHZ" spirit:order="23800" spirit:minimum="10.000000" spirit:maximum="100.000000" spirit:rangeType="float">100</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31724,7 +31724,7 @@
     <spirit:parameter>
       <spirit:name>PCW_USB0_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW USB0 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_USB0_PERIPHERAL_FREQMHZ" spirit:order="24100" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">60</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_USB0_PERIPHERAL_FREQMHZ" spirit:order="24100" spirit:minimum="5.000000" spirit:maximum="60.000000" spirit:rangeType="float">60</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31736,7 +31736,7 @@
     <spirit:parameter>
       <spirit:name>PCW_USB1_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW USB1 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_USB1_PERIPHERAL_FREQMHZ" spirit:order="24200" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">60</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_USB1_PERIPHERAL_FREQMHZ" spirit:order="24200" spirit:minimum="5.000000" spirit:maximum="60.000000" spirit:rangeType="float">60</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31772,7 +31772,7 @@
     <spirit:parameter>
       <spirit:name>PCW_SPI_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW SPI PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_SPI_PERIPHERAL_FREQMHZ" spirit:order="24500" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">166.666666</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_SPI_PERIPHERAL_FREQMHZ" spirit:order="24500" spirit:minimum="0.000000" spirit:maximum="200.000000" spirit:rangeType="float">166.666666</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31784,7 +31784,7 @@
     <spirit:parameter>
       <spirit:name>PCW_CAN_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW CAN PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CAN_PERIPHERAL_FREQMHZ" spirit:order="24600" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">100</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CAN_PERIPHERAL_FREQMHZ" spirit:order="24600" spirit:minimum="0.100000" spirit:maximum="100.000000" spirit:rangeType="float">100</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31820,7 +31820,7 @@
     <spirit:parameter>
       <spirit:name>PCW_I2C_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW I2C PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_I2C_PERIPHERAL_FREQMHZ" spirit:order="24900" spirit:minimum="0.1" spirit:maximum="200" spirit:rangeType="float">25</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_I2C_PERIPHERAL_FREQMHZ" spirit:order="24900" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">25</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31832,7 +31832,7 @@
     <spirit:parameter>
       <spirit:name>PCW_WDT_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW WDT PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_WDT_PERIPHERAL_FREQMHZ" spirit:order="25000" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">133.333333</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_WDT_PERIPHERAL_FREQMHZ" spirit:order="25000" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">133.333333</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31844,7 +31844,7 @@
     <spirit:parameter>
       <spirit:name>PCW_TTC_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW TTC PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC_PERIPHERAL_FREQMHZ" spirit:order="25100" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">50</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC_PERIPHERAL_FREQMHZ" spirit:order="25100" spirit:minimum="0.100000" spirit:maximum="100.000000" spirit:rangeType="float">50</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31856,7 +31856,7 @@
     <spirit:parameter>
       <spirit:name>PCW_TTC0_CLK0_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW TTC0 CLK0 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC0_CLK0_PERIPHERAL_FREQMHZ" spirit:order="25200" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">133.333333</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC0_CLK0_PERIPHERAL_FREQMHZ" spirit:order="25200" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">133.333333</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31868,7 +31868,7 @@
     <spirit:parameter>
       <spirit:name>PCW_TTC0_CLK1_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW TTC0 CLK1 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC0_CLK1_PERIPHERAL_FREQMHZ" spirit:order="25300" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">133.333333</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC0_CLK1_PERIPHERAL_FREQMHZ" spirit:order="25300" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">133.333333</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31880,7 +31880,7 @@
     <spirit:parameter>
       <spirit:name>PCW_TTC0_CLK2_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW TTC0 CLK2 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC0_CLK2_PERIPHERAL_FREQMHZ" spirit:order="25400" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">133.333333</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC0_CLK2_PERIPHERAL_FREQMHZ" spirit:order="25400" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">133.333333</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31892,7 +31892,7 @@
     <spirit:parameter>
       <spirit:name>PCW_TTC1_CLK0_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW TTC1 CLK0 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC1_CLK0_PERIPHERAL_FREQMHZ" spirit:order="25500" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">133.333333</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC1_CLK0_PERIPHERAL_FREQMHZ" spirit:order="25500" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">133.333333</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31904,7 +31904,7 @@
     <spirit:parameter>
       <spirit:name>PCW_TTC1_CLK1_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW TTC1 CLK1 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC1_CLK1_PERIPHERAL_FREQMHZ" spirit:order="25600" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">133.333333</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC1_CLK1_PERIPHERAL_FREQMHZ" spirit:order="25600" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">133.333333</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31916,7 +31916,7 @@
     <spirit:parameter>
       <spirit:name>PCW_TTC1_CLK2_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW TTC1 CLK2 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC1_CLK2_PERIPHERAL_FREQMHZ" spirit:order="25700" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">133.333333</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TTC1_CLK2_PERIPHERAL_FREQMHZ" spirit:order="25700" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">133.333333</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31928,7 +31928,7 @@
     <spirit:parameter>
       <spirit:name>PCW_PCAP_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW PCAP PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PCAP_PERIPHERAL_FREQMHZ" spirit:order="25800" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">200</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_PCAP_PERIPHERAL_FREQMHZ" spirit:order="25800" spirit:minimum="10.000000" spirit:maximum="300.000000" spirit:rangeType="float">200</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31940,7 +31940,7 @@
     <spirit:parameter>
       <spirit:name>PCW_TPIU_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW TPIU PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TPIU_PERIPHERAL_FREQMHZ" spirit:order="25900" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">200</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_TPIU_PERIPHERAL_FREQMHZ" spirit:order="25900" spirit:minimum="10.000000" spirit:maximum="300.000000" spirit:rangeType="float">200</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31976,7 +31976,7 @@
     <spirit:parameter>
       <spirit:name>PCW_FPGA2_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW FPGA2 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_FPGA2_PERIPHERAL_FREQMHZ" spirit:order="26200" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">50</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_FPGA2_PERIPHERAL_FREQMHZ" spirit:order="26200" spirit:minimum="0.100000" spirit:maximum="250.000000" spirit:rangeType="float">50</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -31988,7 +31988,7 @@
     <spirit:parameter>
       <spirit:name>PCW_FPGA3_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW FPGA3 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_FPGA3_PERIPHERAL_FREQMHZ" spirit:order="26300" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">50</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_FPGA3_PERIPHERAL_FREQMHZ" spirit:order="26300" spirit:minimum="0.100000" spirit:maximum="250.000000" spirit:rangeType="float">50</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32000,7 +32000,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_APU_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT APU PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_APU_PERIPHERAL_FREQMHZ" spirit:order="26400" spirit:minimum="50" spirit:maximum="800" spirit:rangeType="float">660</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_APU_PERIPHERAL_FREQMHZ" spirit:order="26400" spirit:minimum="50.000000" spirit:maximum="800.000000" spirit:rangeType="float">666.666687</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32012,7 +32012,7 @@
     <spirit:parameter>
       <spirit:name>PCW_UIPARAM_ACT_DDR_FREQ_MHZ</spirit:name>
       <spirit:displayName>PCW UIPARAM ACT DDR FREQ MHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_ACT_DDR_FREQ_MHZ" spirit:order="26500" spirit:minimum="200" spirit:maximum="667" spirit:rangeType="float">528</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_UIPARAM_ACT_DDR_FREQ_MHZ" spirit:order="26500" spirit:minimum="200.000000" spirit:maximum="534.000000" spirit:rangeType="float">533.333374</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32024,7 +32024,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_DCI_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT DCI PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_DCI_PERIPHERAL_FREQMHZ" spirit:order="26600" spirit:minimum="0.1" spirit:maximum="177" spirit:rangeType="float">9</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_DCI_PERIPHERAL_FREQMHZ" spirit:order="26600" spirit:minimum="0.100000" spirit:maximum="177.000000" spirit:rangeType="float">10.158731</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32036,7 +32036,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_QSPI_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT QSPI PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_QSPI_PERIPHERAL_FREQMHZ" spirit:order="26700" spirit:minimum="10" spirit:maximum="200" spirit:rangeType="float">187</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_QSPI_PERIPHERAL_FREQMHZ" spirit:order="26700" spirit:minimum="10.000000" spirit:maximum="200.000000" spirit:rangeType="float">200.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32048,7 +32048,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_SMC_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT SMC PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_SMC_PERIPHERAL_FREQMHZ" spirit:order="26800" spirit:minimum="0.01" spirit:maximum="100" spirit:rangeType="float">10</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_SMC_PERIPHERAL_FREQMHZ" spirit:order="26800" spirit:minimum="10.000000" spirit:maximum="100.000000" spirit:rangeType="float">10.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32060,7 +32060,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_ENET0_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT ENET0 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_ENET0_PERIPHERAL_FREQMHZ" spirit:order="26900" spirit:minimum="0.1" spirit:maximum="125" spirit:rangeType="float">124</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_ENET0_PERIPHERAL_FREQMHZ" spirit:order="26900" spirit:minimum="0.1" spirit:maximum="125" spirit:rangeType="float">125.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32072,7 +32072,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_ENET1_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT ENET1 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_ENET1_PERIPHERAL_FREQMHZ" spirit:order="27000" spirit:minimum="0.1" spirit:maximum="125" spirit:rangeType="float">10</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_ENET1_PERIPHERAL_FREQMHZ" spirit:order="27000" spirit:minimum="0.1" spirit:maximum="125" spirit:rangeType="float">10.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32084,7 +32084,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_USB0_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT USB0 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_USB0_PERIPHERAL_FREQMHZ" spirit:order="27100" spirit:minimum="5" spirit:maximum="60" spirit:rangeType="float">60</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_USB0_PERIPHERAL_FREQMHZ" spirit:order="27100" spirit:minimum="5.000000" spirit:maximum="60.000000" spirit:rangeType="float">60</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32096,7 +32096,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_USB1_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT USB1 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_USB1_PERIPHERAL_FREQMHZ" spirit:order="27200" spirit:minimum="5" spirit:maximum="60" spirit:rangeType="float">60</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_USB1_PERIPHERAL_FREQMHZ" spirit:order="27200" spirit:minimum="5.000000" spirit:maximum="60.000000" spirit:rangeType="float">60</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32108,7 +32108,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_SDIO_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT SDIO PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_SDIO_PERIPHERAL_FREQMHZ" spirit:order="27300" spirit:minimum="10" spirit:maximum="125" spirit:rangeType="float">51</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_SDIO_PERIPHERAL_FREQMHZ" spirit:order="27300" spirit:minimum="10.000000" spirit:maximum="125.000000" spirit:rangeType="float">50.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32120,7 +32120,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_UART_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT UART PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_UART_PERIPHERAL_FREQMHZ" spirit:order="27400" spirit:minimum="10" spirit:maximum="100" spirit:rangeType="float">51</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_UART_PERIPHERAL_FREQMHZ" spirit:order="27400" spirit:minimum="10.000000" spirit:maximum="100.000000" spirit:rangeType="float">50.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32132,7 +32132,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_SPI_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT SPI PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_SPI_PERIPHERAL_FREQMHZ" spirit:order="27500" spirit:minimum="10" spirit:maximum="200" spirit:rangeType="float">10</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_SPI_PERIPHERAL_FREQMHZ" spirit:order="27500" spirit:minimum="0.000000" spirit:maximum="200.000000" spirit:rangeType="float">10.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32144,7 +32144,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_CAN_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT CAN PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_CAN_PERIPHERAL_FREQMHZ" spirit:order="27600" spirit:minimum="0.1" spirit:maximum="100" spirit:rangeType="float">10</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_CAN_PERIPHERAL_FREQMHZ" spirit:order="27600" spirit:minimum="0.100000" spirit:maximum="100.000000" spirit:rangeType="float">10.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32178,7 +32178,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_WDT_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT WDT PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_WDT_PERIPHERAL_FREQMHZ" spirit:order="27800" spirit:minimum="0.1" spirit:maximum="200" spirit:rangeType="float">110</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_WDT_PERIPHERAL_FREQMHZ" spirit:order="27800" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">111.111115</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32190,7 +32190,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_TTC_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT TTC PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC_PERIPHERAL_FREQMHZ" spirit:order="27900" spirit:minimum="0.1" spirit:maximum="100" spirit:rangeType="float">50</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC_PERIPHERAL_FREQMHZ" spirit:order="27900" spirit:minimum="0.100000" spirit:maximum="100.000000" spirit:rangeType="float">50</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32202,7 +32202,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_PCAP_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT PCAP PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_PCAP_PERIPHERAL_FREQMHZ" spirit:order="28000" spirit:minimum="10" spirit:maximum="300" spirit:rangeType="float">187</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_PCAP_PERIPHERAL_FREQMHZ" spirit:order="28000" spirit:minimum="10.000000" spirit:maximum="300.000000" spirit:rangeType="float">200.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32214,7 +32214,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_TPIU_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT TPIU PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TPIU_PERIPHERAL_FREQMHZ" spirit:order="28100" spirit:minimum="10" spirit:maximum="300" spirit:rangeType="float">200</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TPIU_PERIPHERAL_FREQMHZ" spirit:order="28100" spirit:minimum="10.000000" spirit:maximum="300.000000" spirit:rangeType="float">200.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32226,7 +32226,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_FPGA0_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT FPGA0 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_FPGA0_PERIPHERAL_FREQMHZ" spirit:order="28200" spirit:minimum="0.1" spirit:maximum="333" spirit:rangeType="float">102</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_FPGA0_PERIPHERAL_FREQMHZ" spirit:order="28200" spirit:minimum="0.100000" spirit:maximum="250.000000" spirit:rangeType="float">100.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32238,7 +32238,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_FPGA1_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT FPGA1 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_FPGA1_PERIPHERAL_FREQMHZ" spirit:order="28300" spirit:minimum="0.1" spirit:maximum="333" spirit:rangeType="float">140</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_FPGA1_PERIPHERAL_FREQMHZ" spirit:order="28300" spirit:minimum="0.100000" spirit:maximum="250.000000" spirit:rangeType="float">142.857132</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32250,7 +32250,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_FPGA2_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT FPGA2 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_FPGA2_PERIPHERAL_FREQMHZ" spirit:order="28400" spirit:minimum="0.1" spirit:maximum="333" spirit:rangeType="float">51</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_FPGA2_PERIPHERAL_FREQMHZ" spirit:order="28400" spirit:minimum="0.100000" spirit:maximum="250.000000" spirit:rangeType="float">50.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32262,7 +32262,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_FPGA3_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT FPGA3 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_FPGA3_PERIPHERAL_FREQMHZ" spirit:order="28500" spirit:minimum="0.1" spirit:maximum="333" spirit:rangeType="float">51</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_FPGA3_PERIPHERAL_FREQMHZ" spirit:order="28500" spirit:minimum="0.100000" spirit:maximum="250.000000" spirit:rangeType="float">50.000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32274,7 +32274,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_TTC0_CLK0_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT TTC0 CLK0 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC0_CLK0_PERIPHERAL_FREQMHZ" spirit:order="28600" spirit:minimum="0.1" spirit:maximum="200" spirit:rangeType="float">110</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC0_CLK0_PERIPHERAL_FREQMHZ" spirit:order="28600" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">111.111115</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32286,7 +32286,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_TTC0_CLK1_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT TTC0 CLK1 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC0_CLK1_PERIPHERAL_FREQMHZ" spirit:order="28700" spirit:minimum="0.1" spirit:maximum="200" spirit:rangeType="float">110</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC0_CLK1_PERIPHERAL_FREQMHZ" spirit:order="28700" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">111.111115</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32298,7 +32298,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_TTC0_CLK2_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT TTC0 CLK2 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC0_CLK2_PERIPHERAL_FREQMHZ" spirit:order="28800" spirit:minimum="0.1" spirit:maximum="200" spirit:rangeType="float">110</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC0_CLK2_PERIPHERAL_FREQMHZ" spirit:order="28800" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">111.111115</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32310,7 +32310,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_TTC1_CLK0_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT TTC1 CLK0 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC1_CLK0_PERIPHERAL_FREQMHZ" spirit:order="28900" spirit:minimum="0.1" spirit:maximum="200" spirit:rangeType="float">110</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC1_CLK0_PERIPHERAL_FREQMHZ" spirit:order="28900" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">111.111115</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32322,7 +32322,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_TTC1_CLK1_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT TTC1 CLK1 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC1_CLK1_PERIPHERAL_FREQMHZ" spirit:order="29000" spirit:minimum="0.1" spirit:maximum="200" spirit:rangeType="float">110</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC1_CLK1_PERIPHERAL_FREQMHZ" spirit:order="29000" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">111.111115</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32334,7 +32334,7 @@
     <spirit:parameter>
       <spirit:name>PCW_ACT_TTC1_CLK2_PERIPHERAL_FREQMHZ</spirit:name>
       <spirit:displayName>PCW ACT TTC1 CLK2 PERIPHERAL FREQMHZ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC1_CLK2_PERIPHERAL_FREQMHZ" spirit:order="29100" spirit:minimum="0.1" spirit:maximum="200" spirit:rangeType="float">110</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_ACT_TTC1_CLK2_PERIPHERAL_FREQMHZ" spirit:order="29100" spirit:minimum="0.100000" spirit:maximum="200.000000" spirit:rangeType="float">111.111115</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32346,7 +32346,7 @@
     <spirit:parameter>
       <spirit:name>PCW_CLK0_FREQ</spirit:name>
       <spirit:displayName>PCW CLK0 FREQ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CLK0_FREQ" spirit:order="62600" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">102000000</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CLK0_FREQ" spirit:order="62600" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">100000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32358,7 +32358,7 @@
     <spirit:parameter>
       <spirit:name>PCW_CLK1_FREQ</spirit:name>
       <spirit:displayName>PCW CLK1 FREQ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CLK1_FREQ" spirit:order="62700" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">140250000</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CLK1_FREQ" spirit:order="62700" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">142857132</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32370,7 +32370,7 @@
     <spirit:parameter>
       <spirit:name>PCW_CLK2_FREQ</spirit:name>
       <spirit:displayName>PCW CLK2 FREQ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CLK2_FREQ" spirit:order="62800" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">51000000</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CLK2_FREQ" spirit:order="62800" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">50000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -32382,7 +32382,7 @@
     <spirit:parameter>
       <spirit:name>PCW_CLK3_FREQ</spirit:name>
       <spirit:displayName>PCW CLK3 FREQ</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CLK3_FREQ" spirit:order="62900" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">51000000</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_CLK3_FREQ" spirit:order="62900" spirit:minimum="100000" spirit:maximum="333000000" spirit:rangeType="float">50000000</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -33665,7 +33665,7 @@
         <xilinx:parameterInfo>
           <xilinx:enablement>
             <xilinx:presence>optional</xilinx:presence>
-            <xilinx:isEnabled xilinx:resolve="dependent" xilinx:dependency="(spirit:decode(id(PARAM_VALUE.PCW_EN_EMIO_GPIO)) = 1) ">true</xilinx:isEnabled>
+            <xilinx:isEnabled xilinx:resolve="dependent" xilinx:dependency="(spirit:decode(id(PARAM_VALUE.PCW_EN_EMIO_GPIO)) = 1) ">false</xilinx:isEnabled>
           </xilinx:enablement>
         </xilinx:parameterInfo>
       </spirit:vendorExtensions>
@@ -33679,7 +33679,7 @@
         <xilinx:parameterInfo>
           <xilinx:enablement>
             <xilinx:presence>optional</xilinx:presence>
-            <xilinx:isEnabled xilinx:resolve="dependent" xilinx:dependency="(spirit:decode(id(PARAM_VALUE.PCW_EN_UART0)) = 1)">true</xilinx:isEnabled>
+            <xilinx:isEnabled xilinx:resolve="dependent" xilinx:dependency="(spirit:decode(id(PARAM_VALUE.PCW_EN_UART0)) = 1)">false</xilinx:isEnabled>
           </xilinx:enablement>
         </xilinx:parameterInfo>
       </spirit:vendorExtensions>
@@ -35317,7 +35317,7 @@
     <spirit:parameter>
       <spirit:name>PCW_DDR_LPR_TO_CRITICAL_PRIORITY_LEVEL</spirit:name>
       <spirit:displayName>PCW DDR LPR TO CRITICAL PRIORITY LEVEL</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_DDR_LPR_TO_CRITICAL_PRIORITY_LEVEL" spirit:order="16000" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">2</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_DDR_LPR_TO_CRITICAL_PRIORITY_LEVEL" spirit:order="16000" spirit:minimum="0.000000" spirit:maximum="2047.000000" spirit:rangeType="float">2</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -35329,7 +35329,7 @@
     <spirit:parameter>
       <spirit:name>PCW_DDR_HPR_TO_CRITICAL_PRIORITY_LEVEL</spirit:name>
       <spirit:displayName>PCW DDR HPR TO CRITICAL PRIORITY LEVEL</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_DDR_HPR_TO_CRITICAL_PRIORITY_LEVEL" spirit:order="16000" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">15</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_DDR_HPR_TO_CRITICAL_PRIORITY_LEVEL" spirit:order="16000" spirit:minimum="0.000000" spirit:maximum="2047.000000" spirit:rangeType="float">15</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -35341,7 +35341,7 @@
     <spirit:parameter>
       <spirit:name>PCW_DDR_WRITE_TO_CRITICAL_PRIORITY_LEVEL</spirit:name>
       <spirit:displayName>PCW DDR WRITE TO CRITICAL PRIORITY LEVEL</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_DDR_WRITE_TO_CRITICAL_PRIORITY_LEVEL" spirit:order="16000" spirit:minimum="-2" spirit:maximum="-1" spirit:rangeType="float">2</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.PCW_DDR_WRITE_TO_CRITICAL_PRIORITY_LEVEL" spirit:order="16000" spirit:minimum="0.000000" spirit:maximum="2047.000000" spirit:rangeType="float">2</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>

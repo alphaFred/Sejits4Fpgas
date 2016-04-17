@@ -1,8 +1,8 @@
 --Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
---Date        : Fri Apr 15 11:14:32 2016
---Host        : philipp-ThinkPad-X250 running 64-bit Ubuntu 15.04
+--Date        : Fri Apr 15 18:21:55 2016
+--Host        : codesigns45 running 64-bit Ubuntu 14.04.4 LTS
 --Command     : generate_target template_design.bd
 --Design      : template_design
 --Purpose     : IP block netlist
@@ -1413,7 +1413,7 @@ entity template_design is
     FIXED_IO_ps_clk : inout STD_LOGIC;
     FIXED_IO_ps_porb : inout STD_LOGIC;
     FIXED_IO_ps_srstb : inout STD_LOGIC;
-    RST : out STD_LOGIC;
+    RST : out STD_LOGIC_VECTOR ( 0 to 0 );
     m_axis_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
     m_axis_tlast : out STD_LOGIC;
     m_axis_tready : in STD_LOGIC;
@@ -1424,7 +1424,7 @@ entity template_design is
     s_axis_tvalid : in STD_LOGIC
   );
   attribute CORE_GENERATION_INFO : string;
-  attribute CORE_GENERATION_INFO of template_design : entity is "template_design,IP_Integrator,{x_ipProduct=Vivado 2015.2,x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=template_design,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=10,numReposBlks=6,numNonXlnxBlks=2,numHierBlks=4,maxHierDepth=0,da_axi4_cnt=5,da_ps7_cnt=1,synth_mode=Global}";
+  attribute CORE_GENERATION_INFO of template_design : entity is "template_design,IP_Integrator,{x_ipProduct=Vivado 2015.2,x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=template_design,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=12,numReposBlks=8,numNonXlnxBlks=2,numHierBlks=4,maxHierDepth=0,da_axi4_cnt=5,da_ps7_cnt=1,synth_mode=Global}";
   attribute HW_HANDOFF : string;
   attribute HW_HANDOFF of template_design : entity is "template_design.hwdef";
 end template_design;
@@ -1688,6 +1688,29 @@ architecture STRUCTURE of template_design is
     s_axi_aresetn : in STD_LOGIC
   );
   end component template_design_MINIMAL_DMA_CONTROL_0_0;
+  component template_design_axis_data_fifo_0_0 is
+  port (
+    s_axis_aresetn : in STD_LOGIC;
+    s_axis_aclk : in STD_LOGIC;
+    s_axis_tvalid : in STD_LOGIC;
+    s_axis_tready : out STD_LOGIC;
+    s_axis_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axis_tlast : in STD_LOGIC;
+    m_axis_tvalid : out STD_LOGIC;
+    m_axis_tready : in STD_LOGIC;
+    m_axis_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_tlast : out STD_LOGIC;
+    axis_data_count : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    axis_wr_data_count : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    axis_rd_data_count : out STD_LOGIC_VECTOR ( 31 downto 0 )
+  );
+  end component template_design_axis_data_fifo_0_0;
+  component template_design_util_vector_logic_0_0 is
+  port (
+    Op1 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    Res : out STD_LOGIC_VECTOR ( 0 to 0 )
+  );
+  end component template_design_util_vector_logic_0_0;
   signal GND_1 : STD_LOGIC;
   signal MINIMAL_DMA_0_M_AXI_ARADDR : STD_LOGIC_VECTOR ( 31 downto 0 );
   signal MINIMAL_DMA_0_M_AXI_ARBURST : STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -1745,9 +1768,14 @@ architecture STRUCTURE of template_design is
   signal MINIMAL_DMA_CONTROL_0_dma_control_w_ready : STD_LOGIC;
   signal MINIMAL_DMA_CONTROL_0_dma_control_w_valid : STD_LOGIC;
   signal MINIMAL_DMA_CONTROL_0_m_axis_TDATA : STD_LOGIC_VECTOR ( 31 downto 0 );
+  attribute MARK_DEBUG : boolean;
+  attribute MARK_DEBUG of MINIMAL_DMA_CONTROL_0_m_axis_TDATA : signal is std.standard.true;
   signal MINIMAL_DMA_CONTROL_0_m_axis_TLAST : STD_LOGIC;
+  attribute MARK_DEBUG of MINIMAL_DMA_CONTROL_0_m_axis_TLAST : signal is std.standard.true;
   signal MINIMAL_DMA_CONTROL_0_m_axis_TREADY : STD_LOGIC;
+  attribute MARK_DEBUG of MINIMAL_DMA_CONTROL_0_m_axis_TREADY : signal is std.standard.true;
   signal MINIMAL_DMA_CONTROL_0_m_axis_TVALID : STD_LOGIC;
+  attribute MARK_DEBUG of MINIMAL_DMA_CONTROL_0_m_axis_TVALID : signal is std.standard.true;
   signal MINIMAL_DMA_CONTROL_0_out_data_data : STD_LOGIC_VECTOR ( 31 downto 0 );
   signal MINIMAL_DMA_CONTROL_0_out_data_last : STD_LOGIC;
   signal MINIMAL_DMA_CONTROL_0_out_data_ready : STD_LOGIC;
@@ -1791,6 +1819,14 @@ architecture STRUCTURE of template_design is
   signal axi_mem_intercon_M00_AXI_WREADY : STD_LOGIC;
   signal axi_mem_intercon_M00_AXI_WSTRB : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal axi_mem_intercon_M00_AXI_WVALID : STD_LOGIC;
+  signal axis_data_fifo_0_M_AXIS_TDATA : STD_LOGIC_VECTOR ( 31 downto 0 );
+  attribute MARK_DEBUG of axis_data_fifo_0_M_AXIS_TDATA : signal is std.standard.true;
+  signal axis_data_fifo_0_M_AXIS_TLAST : STD_LOGIC;
+  attribute MARK_DEBUG of axis_data_fifo_0_M_AXIS_TLAST : signal is std.standard.true;
+  signal axis_data_fifo_0_M_AXIS_TREADY : STD_LOGIC;
+  attribute MARK_DEBUG of axis_data_fifo_0_M_AXIS_TREADY : signal is std.standard.true;
+  signal axis_data_fifo_0_M_AXIS_TVALID : STD_LOGIC;
+  attribute MARK_DEBUG of axis_data_fifo_0_M_AXIS_TVALID : signal is std.standard.true;
   signal processing_system7_0_DDR_ADDR : STD_LOGIC_VECTOR ( 14 downto 0 );
   signal processing_system7_0_DDR_BA : STD_LOGIC_VECTOR ( 2 downto 0 );
   signal processing_system7_0_DDR_CAS_N : STD_LOGIC;
@@ -1874,10 +1910,18 @@ architecture STRUCTURE of template_design is
   signal rst_processing_system7_0_102M_interconnect_aresetn : STD_LOGIC_VECTOR ( 0 to 0 );
   signal rst_processing_system7_0_102M_peripheral_aresetn : STD_LOGIC_VECTOR ( 0 to 0 );
   signal s_axis_1_TDATA : STD_LOGIC_VECTOR ( 31 downto 0 );
+  attribute MARK_DEBUG of s_axis_1_TDATA : signal is std.standard.true;
   signal s_axis_1_TLAST : STD_LOGIC;
+  attribute MARK_DEBUG of s_axis_1_TLAST : signal is std.standard.true;
   signal s_axis_1_TREADY : STD_LOGIC;
+  attribute MARK_DEBUG of s_axis_1_TREADY : signal is std.standard.true;
   signal s_axis_1_TVALID : STD_LOGIC;
+  attribute MARK_DEBUG of s_axis_1_TVALID : signal is std.standard.true;
+  signal util_vector_logic_0_Res : STD_LOGIC_VECTOR ( 0 to 0 );
   signal NLW_MINIMAL_DMA_CONTROL_0_interrupt_UNCONNECTED : STD_LOGIC;
+  signal NLW_axis_data_fifo_0_axis_data_count_UNCONNECTED : STD_LOGIC_VECTOR ( 31 downto 0 );
+  signal NLW_axis_data_fifo_0_axis_rd_data_count_UNCONNECTED : STD_LOGIC_VECTOR ( 31 downto 0 );
+  signal NLW_axis_data_fifo_0_axis_wr_data_count_UNCONNECTED : STD_LOGIC_VECTOR ( 31 downto 0 );
   signal NLW_processing_system7_0_ENET0_PTP_DELAY_REQ_RX_UNCONNECTED : STD_LOGIC;
   signal NLW_processing_system7_0_ENET0_PTP_DELAY_REQ_TX_UNCONNECTED : STD_LOGIC;
   signal NLW_processing_system7_0_ENET0_PTP_PDELAY_REQ_RX_UNCONNECTED : STD_LOGIC;
@@ -1903,7 +1947,7 @@ architecture STRUCTURE of template_design is
 begin
   CLK <= processing_system7_0_FCLK_CLK0;
   MINIMAL_DMA_CONTROL_0_m_axis_TREADY <= m_axis_tready;
-  RST <= MINIMAL_DMA_CONTROL_0_axis_rst;
+  RST(0) <= util_vector_logic_0_Res(0);
   m_axis_tdata(31 downto 0) <= MINIMAL_DMA_CONTROL_0_m_axis_TDATA(31 downto 0);
   m_axis_tlast <= MINIMAL_DMA_CONTROL_0_m_axis_TLAST;
   m_axis_tvalid <= MINIMAL_DMA_CONTROL_0_m_axis_TVALID;
@@ -2021,10 +2065,10 @@ MINIMAL_DMA_CONTROL_0: component template_design_MINIMAL_DMA_CONTROL_0_0
       s_axi_wready => processing_system7_0_axi_periph_M00_AXI_WREADY,
       s_axi_wstrb(3 downto 0) => processing_system7_0_axi_periph_M00_AXI_WSTRB(3 downto 0),
       s_axi_wvalid => processing_system7_0_axi_periph_M00_AXI_WVALID,
-      s_axis_data(31 downto 0) => s_axis_1_TDATA(31 downto 0),
-      s_axis_last => s_axis_1_TLAST,
-      s_axis_ready => s_axis_1_TREADY,
-      s_axis_valid => s_axis_1_TVALID,
+      s_axis_data(31 downto 0) => axis_data_fifo_0_M_AXIS_TDATA(31 downto 0),
+      s_axis_last => axis_data_fifo_0_M_AXIS_TLAST,
+      s_axis_ready => axis_data_fifo_0_M_AXIS_TREADY,
+      s_axis_valid => axis_data_fifo_0_M_AXIS_TVALID,
       w_addr(31 downto 0) => MINIMAL_DMA_CONTROL_0_dma_control_w_addr(31 downto 0),
       w_len(19 downto 0) => MINIMAL_DMA_CONTROL_0_dma_control_w_len(19 downto 0),
       w_ready => MINIMAL_DMA_CONTROL_0_dma_control_w_ready,
@@ -2121,6 +2165,22 @@ axi_mem_intercon: entity work.template_design_axi_mem_intercon_0
       S00_AXI_wstrb(3 downto 0) => MINIMAL_DMA_0_M_AXI_WSTRB(3 downto 0),
       S00_AXI_wuser(0) => MINIMAL_DMA_0_M_AXI_WUSER(0),
       S00_AXI_wvalid => MINIMAL_DMA_0_M_AXI_WVALID
+    );
+axis_data_fifo_0: component template_design_axis_data_fifo_0_0
+     port map (
+      axis_data_count(31 downto 0) => NLW_axis_data_fifo_0_axis_data_count_UNCONNECTED(31 downto 0),
+      axis_rd_data_count(31 downto 0) => NLW_axis_data_fifo_0_axis_rd_data_count_UNCONNECTED(31 downto 0),
+      axis_wr_data_count(31 downto 0) => NLW_axis_data_fifo_0_axis_wr_data_count_UNCONNECTED(31 downto 0),
+      m_axis_tdata(31 downto 0) => axis_data_fifo_0_M_AXIS_TDATA(31 downto 0),
+      m_axis_tlast => axis_data_fifo_0_M_AXIS_TLAST,
+      m_axis_tready => axis_data_fifo_0_M_AXIS_TREADY,
+      m_axis_tvalid => axis_data_fifo_0_M_AXIS_TVALID,
+      s_axis_aclk => processing_system7_0_FCLK_CLK0,
+      s_axis_aresetn => util_vector_logic_0_Res(0),
+      s_axis_tdata(31 downto 0) => s_axis_1_TDATA(31 downto 0),
+      s_axis_tlast => s_axis_1_TLAST,
+      s_axis_tready => s_axis_1_TREADY,
+      s_axis_tvalid => s_axis_1_TVALID
     );
 processing_system7_0: component template_design_processing_system7_0_0
      port map (
@@ -2341,5 +2401,10 @@ rst_processing_system7_0_102M: component template_design_rst_processing_system7_
       peripheral_aresetn(0) => rst_processing_system7_0_102M_peripheral_aresetn(0),
       peripheral_reset(0) => NLW_rst_processing_system7_0_102M_peripheral_reset_UNCONNECTED(0),
       slowest_sync_clk => processing_system7_0_FCLK_CLK0
+    );
+util_vector_logic_0: component template_design_util_vector_logic_0_0
+     port map (
+      Op1(0) => MINIMAL_DMA_CONTROL_0_axis_rst,
+      Res(0) => util_vector_logic_0_Res(0)
     );
 end STRUCTURE;
