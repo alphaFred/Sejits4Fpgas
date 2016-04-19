@@ -179,7 +179,7 @@ begin
         wr_en => VALID,
         rd_en => todo, -- TODO
         dout => ipt_fifo_out,
-        valid => valid_out,
+        valid => valid_out, -- verzoegern
         prog_empty => run_flag
       );
 
