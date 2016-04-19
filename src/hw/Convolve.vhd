@@ -29,26 +29,26 @@ use UNISIM.VComponents.all;
 use work.the_filter_package.all;
 
 
-entity Convolve is
+entity Convolve_Filter is
     Generic (
         FILTERMATRIX    : filtMASK      := (0,0,0,0,1,0,0,0,0);
         FILTER_SCALE    : integer       := 1;
         IMG_WIDTH       : positive      := 640;
         IMG_HEIGHT      : positive      := 480;
-        IN_BITWIDTH     : positive      := 12;
-        OUT_BITWIDTH    : positive      := 16
+        IN_BITWIDTH     : positive      := 8;
+        OUT_BITWIDTH    : positive      := 8
         );
     Port (
         CLK             : in  std_logic;
         RST             : in  std_logic; -- low active
         VALID_IN        : in  std_logic; -- high active
-        DATA_IN         : in  std_logic_vector(IN_BITWIDTH-1 downto 0);
         VALID_OUT       : out std_logic; -- high active
+        DATA_IN         : in  std_logic_vector(IN_BITWIDTH-1 downto 0);
         DATA_OUT        : out std_logic_vector(OUT_BITWIDTH-1 downto 0)
         );
-end Convolve;
+end Convolve_Filter;
 
-architecture Behavioral of Convolve is
+architecture Behavioral of Convolve_Filter is
 
     -- ======================================================================
     -- COMPONENTS
@@ -76,99 +76,58 @@ architecture Behavioral of Convolve is
     );
     end component;
 
-    component STD_FIFO is
-        generic (
-            constant DATA_WIDTH  : positive := 8;
-            constant FIFO_DEPTH : positive := 256
-        );
-        port (
-            CLK     : in  STD_LOGIC;
-            RST     : in  STD_LOGIC;
-            WriteEn : in  STD_LOGIC;
-            DataIn  : in  STD_LOGIC_VECTOR (DATA_WIDTH - 1 downto 0);
-            ReadEn  : in  STD_LOGIC;
-            DataOut : out STD_LOGIC_VECTOR (DATA_WIDTH - 1 downto 0);
-            Empty   : out STD_LOGIC;
-            Full    : out STD_LOGIC
+    component filter_input_fifo is
+    port (
+        clk : IN STD_LOGIC;
+        rst : IN STD_LOGIC;
+        din : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+        wr_en : IN STD_LOGIC;
+        rd_en : IN STD_LOGIC;
+        dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+        full : OUT STD_LOGIC;
+        empty : OUT STD_LOGIC;
+        data_count : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
         );
     end component;
 
     -- ======================================================================
     -- SIGNALS | CONSTANTS
     -- ======================================================================
-
     signal ipt_fifo_ren     :   std_logic := '0';
-    signal ipt_fifo_ren_ctrl:   std_logic := '0';
-    signal ipt_fifo_wen     :   std_logic := '0';
-    signal ipt_fifo_wen_ctrl:   std_logic := '0';
     signal ipt_fifo_out     :   std_logic_vector(7 downto 0);
-    signal ipt_fifo_empty   :   std_logic;
-    signal ipt_fifo_full    :   std_logic;
+    signal ipt_fifo_data_count : std_logic_vector(11 DOWNTO 0);
 
-    signal opt_fifo_rst     :   std_logic := '0';
-    signal opt_fifo_ren     :   std_logic := '0';
-    signal opt_fifo_wen     :   std_logic := '0';
-    signal opt_fifo_in      :   std_logic_vector(7 downto 0);
-    signal opt_fifo_in_reg  :   std_logic_vector(7 downto 0);
-    signal opt_fifo_out     :   std_logic_vector(7 downto 0);
-    signal opt_fifo_full    :   std_logic;
-    signal opt_fifo_empty   :   std_logic;
-
-    signal filter_rst       :   std_logic := '0';
     signal filter_hsync     :   std_logic := '0';
     signal filter_vsync     :   std_logic := '0';
-    signal filter_valid_out :   std_logic;
-    signal filter_finished  :   std_logic := '0';
-
-    signal hsync_out        :   std_logic;
-    signal vsync_out        :   std_logic;
+    signal filter_valid     :   std_logic;
 
     -- ======================================================================
     -- FSM PARAMETERS
     -- ======================================================================
 
-    signal ipt_fifo_active  : std_logic := '0';
-
-    -- INPUT FIFO
-    type inputFIFO_type is ( IPT_FIFO_IDLE, IPT_FIFO_LOAD, IPT_FIFO_INIT, IPT_FIFO_WORK);
-    signal inputFIFO_state : inputFIFO_type := IPT_FIFO_IDLE;
-    constant ipt_fifo_lct   :   integer := 500; -- load count
-    signal   ipt_fifo_lctr  :   integer := 0; -- load counter
-
-    type FILTER_type is ( FILTER_IDLE, FILTER_INIT, FILTER_WORK, FILTER_STALL, FILTER_END_IMG);
+    type FILTER_type is ( FILTER_IDLE, FILTER_WORK, FILTER_STALL, FILTER_NLINE);
     signal FILTER_state : FILTER_type := FILTER_IDLE;
-    constant filter_i_ct  : integer := 2; -- filter init count
-    signal filter_i_ctr   : integer := 0; -- filter init counter
     signal filter_w_ctr     :   integer := 0; -- filter width counter
     signal filter_h_ctr     :   integer := 0; -- filter height counter
-    constant filter_stall_ct:   integer := 2; -- filter stall count
-    signal filter_stall_ctr :   integer := 0; -- filter stall counter
 
-    type outputFIFO_type is ( OPT_FIFO_IDLE, OPT_FIFO_LOAD, OPT_FIFO_INIT, OPT_FIFO_WORK, OPT_FIFO_FINISH);
-    signal outputFIFO_state : outputFIFO_type := OPT_FIFO_IDLE;
-    constant opt_fifo_lct   :   integer := 10000; -- load count
-    signal   opt_fifo_lctr  :   integer := 0; -- load counter
 begin
     -- ======================================================================
     -- COMPONENTS
     -- ======================================================================
-    input_fifo : component STD_FIFO
-    generic map (
-        DATA_WIDTH => 8,
-        FIFO_DEPTH => 20000
-    )
-    port map (
-        CLK => CLK,
-        RST => not RST,
-        WriteEn => VALID_IN or ipt_fifo_wen_ctrl,
-        DataIn => DATA_IN,
-        ReadEn => ipt_fifo_ren or ipt_fifo_ren_ctrl,
-        DataOut => ipt_fifo_out,
-        Empty => ipt_fifo_empty,
-        Full => ipt_fifo_full
+    input_fifo : component filter_input_fifo
+    port map(
+        clk => CLK,
+        rst => RST,
+        din => DATA_IN,
+        wr_en => VALID_IN,
+        rd_en => ipt_fifo_ren,
+        dout => ipt_fifo_out,
+        full => open,
+        empty => open,
+        data_count => ipt_fifo_data_count
     );
 
-    filter_unit : FILTER
+    filter_unit : filter
     generic map (
         FILTERMATRIX    => FILTERMATRIX,
         FILTER_SCALE    => FILTER_SCALE,
@@ -177,119 +136,53 @@ begin
     )
     port map (
         CLK => CLK,
-        RESET => not filter_rst,
-        IMG_WIDTH => 640,
-        IMG_HEIGHT => 480,
+        RESET => RST,
+        IMG_WIDTH => IMG_WIDTH,
+        IMG_HEIGHT => IMG_HEIGHT,
         DATA_IN => ipt_fifo_out,
         H_SYNC_IN => filter_hsync,
         V_SYNC_IN => filter_vsync,
-        DATA_OUT => opt_fifo_in,
-        H_SYNC_OUT => hsync_out,
-        V_SYNC_OUT => vsync_out,
-        VALID => filter_valid_out
+        DATA_OUT => DATA_OUT,
+        H_SYNC_OUT => open,
+        V_SYNC_OUT => open,
+        VALID => filter_valid
     );
 
-    -- VALID_OUT <= filter_valid_out;
-
-    output_fifo : component STD_FIFO
-    generic map (
-        DATA_WIDTH => 8,
-        FIFO_DEPTH => 20000
-    )
-    port map (
-        CLK => CLK,
-        RST => NOT RST,
-        WriteEn => filter_valid_out,
-        DataIn => opt_fifo_in,
-        ReadEn => opt_fifo_ren,
-        DataOut => DATA_OUT,
-        Empty => opt_fifo_empty,
-        Full => opt_fifo_full
-    );
+    VALID_OUT <= filter_valid;
 
     -- ======================================================================
     -- PROCESSES
     -- ======================================================================
-    INPUT_FIFO_FSM : process( CLK )
-    begin
-        if RST = '0' then
-            ipt_fifo_active <= '0';
-            ipt_fifo_wen <= '0';
-
-        elsif(rising_edge(CLK)) then
-            case inputFIFO_state is
-                when IPT_FIFO_IDLE =>
-                    -- wait for valid input data
-                    ipt_fifo_active <= '0';
-
-                    if VALID_IN = '1' then
-                        inputFIFO_state <= IPT_FIFO_LOAD;
-                    else
-                        inputFIFO_state <= IPT_FIFO_IDLE;
-                    end if;
-
-                when IPT_FIFO_LOAD =>
-                    -- buffer data to ensure valid output every clk cycle
-                    if ipt_fifo_lctr = ipt_fifo_lct then
-                        ipt_fifo_lctr <= 0;
-                        inputFIFO_state <= IPT_FIFO_INIT;
-                    else
-                        ipt_fifo_lctr <= ipt_fifo_lctr + 1;
-                        inputFIFO_state <= IPT_FIFO_LOAD;
-                    end if;
-
-                when IPT_FIFO_INIT =>
-                    -- cycle read once to get valid data in output signal
-                    if ipt_fifo_ren = '1' then
-                        ipt_fifo_ren <= '0';
-                        inputFIFO_state <= IPT_FIFO_WORK;
-                    else
-                        ipt_fifo_ren <= '1';
-                        inputFIFO_state <= IPT_FIFO_INIT;
-                    end if;
-
-                when IPT_FIFO_WORK =>
-                    -- read data ever clk cycle
-                    ipt_fifo_active <= '1';
-                    inputFIFO_state <= IPT_FIFO_WORK;
-
-                when others =>
-            end case;
-        end if;
-    end process; -- INPUT_FIFO_FSM
 
     FILTER_FSM : process( CLK )
     begin
-        if RST = '0' then
-
+        if RST = '1' then
+            FILTER_state <= FILTER_IDLE;
+            filter_hsync <= '0';
+            filter_vsync <= '0';
+            ipt_fifo_ren <= '0';
         elsif(rising_edge(CLK)) then
             case FILTER_state is
                 when FILTER_IDLE =>
-                    if ipt_fifo_active = '1' then
-                        FILTER_state <= FILTER_INIT;
+                    filter_hsync <= '0';
+                    filter_vsync <= '0';
+                    --
+                    if unsigned(ipt_fifo_data_count) >= IMG_WIDTH then
+                        FILTER_state <= FILTER_WORK;
                     else
                         FILTER_state <= FILTER_IDLE;
                     end if;
 
-                when FILTER_INIT =>
-                    filter_rst <= '1';
-                    if filter_i_ctr = filter_i_ct then
-                        FILTER_state <= FILTER_WORK;
-                    else
-                        filter_i_ctr <= filter_i_ctr + 1;
-                        FILTER_state <= FILTER_INIT;
-                    end if;
-
                 when FILTER_WORK =>
-                    ipt_fifo_ren_ctrl <= '1';
+                    ipt_fifo_ren <= '1';
+
                     filter_hsync <= '1';
                     filter_vsync <= '1';
 
                     filter_w_ctr <= filter_w_ctr + 1;
-
                     if filter_w_ctr = IMG_WIDTH then
                         filter_hsync <= '0';
-                        ipt_fifo_ren_ctrl <= '0';
+                        ipt_fifo_ren <= '0';
                         filter_h_ctr <= filter_h_ctr + 1;
                         FILTER_state <= FILTER_STALL;
                     else
@@ -298,101 +191,20 @@ begin
 
                 when FILTER_STALL =>
                     filter_w_ctr <= 0;
-                    -- ipt_fifo_ren_ctrl <= '0';
-                    if filter_stall_ctr < filter_stall_ct then
-                        filter_stall_ctr <= filter_stall_ctr + 1;
-                    else
-                        filter_stall_ctr <= 0;
-                    end if;
 
                     if filter_h_ctr = IMG_HEIGHT then
-                        filter_finished <= '1';
                         filter_vsync <= '0';
-                        FILTER_state <= FILTER_END_IMG;
-                    elsif filter_stall_ctr = filter_stall_ct then
-                        FILTER_state <= FILTER_WORK;
+                        FILTER_state <= FILTER_IDLE;
                     else
-                        FILTER_state <= FILTER_STALL;
+                        FILTER_state <= FILTER_NLINE;
                     end if;
 
-                when FILTER_END_IMG =>
+                when FILTER_NLINE =>
+                    FILTER_state <= FILTER_WORK;
 
                 when others =>
             end case;
         end if;
     end process; -- FILTER_FSM
-
-    DATA_REG_PROC : process (CLK)
-    begin
-        if RST = '0' then
-
-        elsif rising_edge(CLK) then
-            opt_fifo_in_reg <= opt_fifo_in;
-        end if;
-    end process; -- DATA_REG_PROC
-
-    OUTPUT_FIFO_FSM : process( CLK )
-    begin
-        if RST = '0' then
-
-        elsif(rising_edge(CLK)) then
-            case outputFIFO_state is
-                when OPT_FIFO_IDLE =>
-                    -- wait for valid input data
-                    if filter_valid_out = '1' then
-                        opt_fifo_rst <= '1';
-                        opt_fifo_wen <= '1';
-                        outputFIFO_state <= OPT_FIFO_LOAD;
-                    else
-                        opt_fifo_rst <= '0';
-                        opt_fifo_wen <= '0';
-                        outputFIFO_state <= OPT_FIFO_IDLE;
-                    end if;
-                when OPT_FIFO_LOAD =>
-                    -- buffer data to ensure valid output every clk cycle
-                    if opt_fifo_lctr = opt_fifo_lct then
-                        opt_fifo_lctr <= 0;
-                        outputFIFO_state <= OPT_FIFO_INIT;
-                    else
-                        opt_fifo_lctr <= opt_fifo_lctr + 1;
-                        outputFIFO_state <= OPT_FIFO_LOAD;
-                    end if;
-
-                when OPT_FIFO_INIT =>
-                    -- cycle read once to get valid data in output signal
-                    if opt_fifo_ren = '1' then
-                        opt_fifo_ren <= '0';
-                        outputFIFO_state <= OPT_FIFO_WORK;
-                    else
-                        opt_fifo_ren <= '1';
-                        outputFIFO_state <= OPT_FIFO_INIT;
-                    end if;
-
-                when OPT_FIFO_WORK =>
-                    -- read data ever clk cycle
-                    opt_fifo_ren <= '1';
-                    VALID_OUT <= '1';
-                    outputFIFO_state <= OPT_FIFO_WORK;
-
-                    if filter_finished = '1' and filter_valid_out = '0' then
-                        opt_fifo_wen <= '0';
-                        outputFIFO_state <= OPT_FIFO_FINISH;
-                    else
-                        opt_fifo_wen <= '1';
-                    end if;
-
-                when OPT_FIFO_FINISH =>
-                    if opt_fifo_empty = '0' then
-                        opt_fifo_ren <= '1';
-                        outputFIFO_state <= OPT_FIFO_FINISH;
-                    else
-                        opt_fifo_ren <= '0';
-                        VALID_OUT <= '0';
-                        outputFIFO_state <= OPT_FIFO_IDLE;
-                    end if;
-
-            end case;
-        end if;
-    end process ; -- OUTPUT_FIFO_FSM
 end Behavioral;
 
