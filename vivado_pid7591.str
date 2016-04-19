@@ -1,0 +1,49 @@
+/*
+
+Vivado v2015.2 (64-bit)
+SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
+Process ID: 7591
+
+Current time: 	4/18/16 8:42:34 AM CEST
+Time zone: 	Central European Time (Europe/Berlin)
+
+OS: NAME="Ubuntu"
+Version: 3.16.0-70-generic
+Architecture: amd64
+Available processors (cores): 8
+
+DISPLAY: :0
+Screen size: 3840x1200
+Screen resolution (DPI): 96
+Available screens: 2
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+
+Java version: 	1.8.0_25 64-bit
+Java home: 	/local/eda/xilinx/vivado/2015.2/tps/lnx64/jre
+
+User name: 	ebensberger
+User directory: /mnt/studproj/ebensberger/vhdl-sejits
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+Vivado preferences path: /home/ebensberger/.Xilinx/Vivado/2015.2/vivado.ini
+Vivado layouts directory: /home/ebensberger/.Xilinx/Vivado/2015.2/layouts/application
+
+GUI allocated memory:	137 MB
+GUI max memory:		3,052 MB
+Engine allocated memory: 4,843 MB
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// [GUI Memory]: 34 MB (+33286kb) [00:00:05]
+// [Engine Memory]: 4,843 MB (+4926913kb) [00:00:05]
+// HMemoryUtils.trashcanNow. Engine heap size: 4,848 MB. GUI used memory: 20 MB. Current time: 4/18/16 8:42:36 AM CEST
+closeMainWindow("Vivado 2015.2"); // cl:JFrame
+// ap:bI (cl:JFrame): Exit Vivado: addNotify
+// Elapsed time: 130 seconds
+closeMainWindow("Vivado 2015.2"); // cl:JFrame
+// ap:bI (cl:JFrame): Exit Vivado: addNotify
+dismissDialog("Exit Vivado"); // ap:bI (cl:JFrame)
