@@ -4,7 +4,7 @@
 --
 -- Create Date: 03/21/2016 02:04:20 PM
 -- Design Name:
--- Module Name: Convolve_Filter - Behavioral
+-- Module Name: Convolve - Behavioral
 -- Project Name:
 -- Target Devices:
 -- Tool Versions:
@@ -29,7 +29,7 @@ use UNISIM.VComponents.all;
 use work.the_filter_package.all;
 
 
-entity Convolve_Filter is
+entity Convolve is
     Generic (
         FILTERMATRIX    : filtMASK      := (0,0,0,0,1,0,0,0,0);
         FILTER_SCALE    : integer       := 1;
@@ -46,9 +46,9 @@ entity Convolve_Filter is
         DATA_IN         : in  std_logic_vector(IN_BITWIDTH-1 downto 0);
         DATA_OUT        : out std_logic_vector(OUT_BITWIDTH-1 downto 0)
         );
-end Convolve_Filter;
+end Convolve;
 
-architecture Behavioral of Convolve_Filter is
+architecture Behavioral of Convolve is
 
     -- ======================================================================
     -- COMPONENTS
