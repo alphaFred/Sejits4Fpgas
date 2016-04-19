@@ -127,15 +127,13 @@ def bb_split(n, i):
 def bb_merge(n_0, n_1, n_2):
     return [n_2, n_1, n_0]
 
-# def test_func(a):
-#     filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)  # Gauss
-#     filtMASK_Sobel_y = (-1, 0, 1, -2, 0, 2, -1, 0, 1)  # Sobel_y
-#     #
-#     a_1 = a * -1 + 255
-#     b_1 = a * 2 + 15
-#     c = a_1 + b_1
-#     #
-#     return bb_convolve(filtMASK_Sobel_y, 1, 640, 480, 8, 8, c)
+def test_func(a):
+    filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)  # Gauss
+    # filtMASK_Sobel_y = (-1, 0, 1, -2, 0, 2, -1, 0, 1)  # Sobel_y
+    #
+    c = 255 - a
+    #
+    return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, c)
 
 # def test_func(img):
 #     filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)  # Gauss
@@ -159,11 +157,10 @@ def bb_merge(n_0, n_1, n_2):
 #     a = img * 12
 #     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
 
-def test_func(a):
-    return 255 - a
+# def test_func(a):
+#     return 255 - a
 
 transformed_func = BasicTranslator.from_function(test_func)
-print type(transformed_func)
 
 image = data.coins()
 
