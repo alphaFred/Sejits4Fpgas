@@ -46,9 +46,6 @@ int wait_end_dma_to_dev(struct dma_control * dev);
 int start_dma_from_dev(void * buffer, u32 len, struct dma_control * dev);
 int wait_end_dma_from_dev(void * buffer, u32 len, struct dma_control * dev);
 
-//int rst_dma(struct dma_control *dev) { dev->global_control |= RST;}
-
-
-
+int rst_dma(struct dma_control *dev);
 
 #endif // MINIMAL_DMA_CONTROL_H

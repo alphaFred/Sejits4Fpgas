@@ -55,3 +55,7 @@ int wait_end_dma_from_dev(void * buffer, u32 len, struct dma_control * dev) {
 	Xil_DCacheInvalidateRange((u32) buffer, len);
 	return returnval;
 }
+
+int rst_dma(struct dma_control *dev) {
+	dev->global_control |= RST;
+}

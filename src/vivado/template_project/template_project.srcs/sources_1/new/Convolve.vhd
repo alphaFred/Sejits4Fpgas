@@ -28,6 +28,8 @@ use UNISIM.VComponents.all;
 
 use work.the_filter_package.all;
 
+library xil_defaultlib;
+use xil_defaultlib.fifo_generator_0;
 
 entity Convolve is
     Generic (
@@ -152,21 +154,35 @@ begin
     -- ======================================================================
     -- COMPONENTS
     -- ======================================================================
-    input_fifo : component STD_FIFO
-    generic map (
-        DATA_WIDTH => 8,
-        FIFO_DEPTH => 20000
-    )
-    port map (
-        CLK => CLK,
-        RST => not RST,
-        WriteEn => VALID_IN or ipt_fifo_wen_ctrl,
-        DataIn => DATA_IN,
-        ReadEn => ipt_fifo_ren or ipt_fifo_ren_ctrl,
-        DataOut => ipt_fifo_out,
-        Empty => ipt_fifo_empty,
-        Full => ipt_fifo_full
-    );
+--    input_fifo : component STD_FIFO
+--    generic map (
+--        DATA_WIDTH => 8,
+--        FIFO_DEPTH => 20000
+--    )
+--    port map (
+--        CLK => CLK,
+--        RST => not RST,
+--        WriteEn => VALID_IN or ipt_fifo_wen_ctrl,
+--        DataIn => DATA_IN,
+--        ReadEn => ipt_fifo_ren or ipt_fifo_ren_ctrl,
+--        DataOut => ipt_fifo_out,
+--        Empty => ipt_fifo_empty,
+--        Full => ipt_fifo_full
+--    );
+    
+    
+    input_fifo : ENTITY xil_defaultlib.fifo_generator_0 
+      PORT map (
+        clk => clk,
+        rst => not rst,
+        din => '0' & DATA_IN,
+        wr_en => VALID,
+        rd_en => todo, -- TODO
+        dout => ipt_fifo_out,
+        valid => valid_out,
+        prog_empty => run_flag
+      );
+
 
     filter_unit : FILTER
     generic map (

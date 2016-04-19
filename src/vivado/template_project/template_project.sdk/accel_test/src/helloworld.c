@@ -53,8 +53,6 @@
 #include "xil_cache.h"
 
 
-void rst_dma(struct dma_control *dev) { dev->global_control |= RST;}
-
 int main()
 {
 	init_platform();

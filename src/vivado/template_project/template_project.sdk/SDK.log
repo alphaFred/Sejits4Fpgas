@@ -2147,3 +2147,48 @@ con
 18:58:31 INFO  : ps7_post_config is completed.
 18:58:31 INFO  : Processor reset is completed for ps7_cortexa9_0
 19:00:33 ERROR : Unexpected error while parsing XMD response ?: com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: invalid number or unquoted string near 
+10:37:31 INFO  : Launching XSDB server: xsdb -n -s /local/eda/xilinx/sdk/2015.2/scripts/xsdb/xsdb/xsdb-server.tcl
+10:37:34 INFO  : XSDB server has started successfully.
+10:37:34 INFO  : Processing command line option -hwspec /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf.
+10:37:35 INFO  : Checking for hwspec changes in the project top_hw_platform_1.
+10:37:39 INFO  : SDK has detected change in the last modified timestamps for source hardware specification file Source:1460968286000,  Project:1460729152000
+10:37:39 INFO  : The hardware specification for project 'top_hw_platform_1' is different from /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf.
+10:37:39 INFO  : Copied contents of /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf into /top_hw_platform_1/system.hdf.
+10:37:42 INFO  : Synchronizing projects in the workspace with the hardware platform specification changes.
+10:37:42 INFO  : Clearing existing target manager status.
+10:37:44 INFO  : Workspace synchronized with the new hardware specification file. Cleaning dependent projects...
+10:37:44 WARN  : Linker script will not be updated automatically. Users need to update it manually.
+10:38:36 INFO  : Refreshed build settings on project accel_test
+10:43:57 INFO  : No changes in MSS file content so not generating sources.
+10:45:27 INFO  : No changes in MSS file content so not generating sources.
+10:45:46 INFO  : Refreshed build settings on project accel_test
+10:46:08 INFO  : Refreshed build settings on project accel_test
+10:52:19 INFO  : Launching XSDB server: xsdb -n -s /local/eda/xilinx/sdk/2015.2/scripts/xsdb/xsdb/xsdb-server.tcl
+10:52:20 INFO  : XSDB server has started successfully.
+10:52:30 INFO  : Processing command line option -hwspec /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf.
+10:52:31 INFO  : Checking for hwspec changes in the project top_hw_platform_1.
+10:53:04 INFO  : Launching XSDB server: xsdb -n -s /local/eda/xilinx/sdk/2015.2/scripts/xsdb/xsdb/xsdb-server.tcl
+10:53:05 INFO  : Processing command line option -hwspec /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf.
+10:53:05 INFO  : XSDB server has started successfully.
+10:53:06 INFO  : Checking for hwspec changes in the project top_hw_platform_1.
+10:55:11 INFO  : Refreshed build settings on project accel_test
+11:16:32 INFO  : Launching XSDB server: xsdb -n -s /local/eda/xilinx/sdk/2015.2/scripts/xsdb/xsdb/xsdb-server.tcl
+11:16:33 INFO  : XSDB server has started successfully.
+11:16:34 INFO  : Processing command line option -hwspec /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf.
+11:16:35 INFO  : Checking for hwspec changes in the project top_hw_platform_1.
+15:33:22 INFO  : Launching XSDB server: xsdb -n -s /local/eda/xilinx/sdk/2015.2/scripts/xsdb/xsdb/xsdb-server.tcl
+15:33:22 INFO  : Processing command line option -hwspec /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf.
+15:33:23 INFO  : XSDB server has started successfully.
+15:33:23 INFO  : Checking for hwspec changes in the project top_hw_platform_1.
+16:34:35 INFO  : Invoking Bootgen: bootgen -image fsbl.bif -o /mnt/studproj/ebensberger/zedboard_linux/BOOT.bin
+16:34:35 INFO  : Creating new bif file /mnt/studproj/ebensberger/zedboard_linux/fsbl.bif
+16:34:35 INFO  : Bootgen command execution is done.
+16:46:39 INFO  : Invoking Bootgen: bootgen -image fsbl.bif -o /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/fsbl/bootimage/BOOT.bin
+16:46:39 INFO  : Creating new bif file /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/fsbl/bootimage/fsbl.bif
+16:46:40 INFO  : Bootgen command execution is done.
+17:15:14 INFO  : Invoking Bootgen: bootgen -image fsbl.bif -o /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/fsbl/bootimage/BOOT.bin -w on
+17:15:15 INFO  : Bootgen command execution is done.
+09:00:50 INFO  : Launching XSDB server: xsdb -n -s /local/eda/xilinx/sdk/2015.2/scripts/xsdb/xsdb/xsdb-server.tcl
+09:00:53 INFO  : XSDB server has started successfully.
+09:01:02 INFO  : Processing command line option -hwspec /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top.hdf.
+09:01:03 INFO  : Checking for hwspec changes in the project top_hw_platform_1.

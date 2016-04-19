@@ -1,7 +1,7 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
-| Date         : Fri Apr 15 18:24:52 2016
+| Date         : Tue Apr 19 12:09:34 2016
 | Host         : codesigns45 running 64-bit Ubuntu 14.04.4 LTS
 | Command      : report_io -file top_io_placed.rpt
 | Design       : top

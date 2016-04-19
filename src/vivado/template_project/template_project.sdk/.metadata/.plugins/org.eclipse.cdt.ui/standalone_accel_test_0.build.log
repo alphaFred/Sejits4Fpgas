@@ -1,6 +1,5 @@
-15:44:57 **** Auto Build of project standalone_accel_test_0 ****
+11:16:31 **** Auto Build of project standalone_accel_test_0 ****
 make -k all 
-make: Warning: File `Makefile' has modification time 0.052 s in the future
 Running Make include in ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src
 make -C ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Running Make include in ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src
@@ -35,10 +34,13 @@ Running Make include in ps7_cortexa9_0/libsrc/usbps_v2_2/src
 make -C ps7_cortexa9_0/libsrc/usbps_v2_2/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Running Make include in ps7_cortexa9_0/libsrc/xadcps_v2_2/src
 make -C ps7_cortexa9_0/libsrc/xadcps_v2_2/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/xilffs_v3_0/src
+make -C ps7_cortexa9_0/libsrc/xilffs_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/xilrsa_v1_1/src
+make -C ps7_cortexa9_0/libsrc/xilrsa_v1_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Running Make libs in ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src
 make -C ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Compiling MINIMAL_DMA_CONTROL...
-arm-xilinx-eabi-ar: creating ../../../lib/libxil.a
 Running Make libs in ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src
 make -C ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Compiling coresightps_dcc
@@ -87,8 +89,13 @@ Compiling usbps
 Running Make libs in ps7_cortexa9_0/libsrc/xadcps_v2_2/src
 make -C ps7_cortexa9_0/libsrc/xadcps_v2_2/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Compiling xadcps
+Running Make libs in ps7_cortexa9_0/libsrc/xilffs_v3_0/src
+make -C ps7_cortexa9_0/libsrc/xilffs_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling XilFFs Library
+Creating archive libxilffs.a
+Running Make libs in ps7_cortexa9_0/libsrc/xilrsa_v1_1/src
+make -C ps7_cortexa9_0/libsrc/xilrsa_v1_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Finished building libraries
-make: warning:  Clock skew detected.  Your build may be incomplete.
 
-15:45:05 Build Finished (took 7s.378ms)
+11:16:41 Build Finished (took 9s.489ms)
 

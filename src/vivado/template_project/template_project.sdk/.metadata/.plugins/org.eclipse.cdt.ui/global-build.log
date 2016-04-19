@@ -1,17 +1,12 @@
-15:44:23 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.32 s in the future
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-../../standalone_accel_test_0/ps7_cortexa9_0/lib/libxil.a(MINIMAL_DMA_CONTROL.o): In function `rst_dma':
-/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/standalone_accel_test_0/ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src/MINIMAL_DMA_CONTROL.h:49: multiple definition of `rst_dma'
-./src/helloworld.o:/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/accel_test/Debug/../../standalone_accel_test_0/ps7_cortexa9_0/include/MINIMAL_DMA_CONTROL.h:49: first defined here
-collect2: error: ld returned 1 exit status
-make: *** [accel_test.elf] Error 1
-15:44:57 **** Auto Build of project standalone_accel_test_0 ****
+16:39:12 **** Clean-only build of configuration Debug for project fsbl ****
+make clean 
+rm -rf  ./src/fsbl_handoff.o ./src/fsbl_hooks.o ./src/image_mover.o ./src/main.o ./src/md5.o ./src/nand.o ./src/nor.o ./src/pcap.o ./src/ps7_init.o ./src/qspi.o ./src/rsa.o ./src/sd.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_init.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_timer_hw.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/dummy.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/profile_cg.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/profile_hist.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/profile_mcount_arm.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/profile_mcount_mb.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/profile_mcount_ppc.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/_exit.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/_open.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/_sbrk.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/abort.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/asm_vectors.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/boot.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/close.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/cpu_init.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/errno.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/fcntl.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/fstat.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/getpid.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/inbyte.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/isatty.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/kill.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/lseek.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/open.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/outbyte.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/print.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/putnum.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/read.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/sbrk.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/sleep.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/translation_table.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/unlink.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/usleep.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/vectors.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/write.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil-crt0.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_assert.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_cache.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_exception.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_io.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_misc_psreset_api.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_mmu.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_printf.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_testcache.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_testio.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_testmem.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xl2cc_counter.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xplatform_info.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xpm_counter.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xtime_l.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/sdps_v2_4/src/xsdps.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/sdps_v2_4/src/xsdps_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/sdps_v2_4/src/xsdps_options.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/sdps_v2_4/src/xsdps_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/scuwdt_v2_1/src/xscuwdt.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/scuwdt_v2_1/src/xscuwdt_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/scuwdt_v2_1/src/xscuwdt_selftest.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/scuwdt_v2_1/src/xscuwdt_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/scutimer_v2_1/src/xscutimer.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/scutimer_v2_1/src/xscutimer_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/scutimer_v2_1/src/xscutimer_selftest.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/scutimer_v2_1/src/xscutimer_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/scugic_v3_0/src/xscugic.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/scugic_v3_0/src/xscugic_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/scugic_v3_0/src/xscugic_hw.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/scugic_v3_0/src/xscugic_intr.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/scugic_v3_0/src/xscugic_selftest.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/scugic_v3_0/src/xscugic_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/qspips_v3_2/src/xqspips.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/qspips_v3_2/src/xqspips_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/qspips_v3_2/src/xqspips_hw.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/qspips_v3_2/src/xqspips_options.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/qspips_v3_2/src/xqspips_selftest.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/qspips_v3_2/src/xqspips_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/gpiops_v3_0/src/xgpiops.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/gpiops_v3_0/src/xgpiops_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/gpiops_v3_0/src/xgpiops_hw.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/gpiops_v3_0/src/xgpiops_intr.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/gpiops_v3_0/src/xgpiops_selftest.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/gpiops_v3_0/src/xgpiops_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps_bdring.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps_control.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps_hw.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps_intr.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/dmaps_v2_1/src/xdmaps.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/dmaps_v2_1/src/xdmaps_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/dmaps_v2_1/src/xdmaps_hw.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/dmaps_v2_1/src/xdmaps_selftest.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/dmaps_v2_1/src/xdmaps_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/devcfg_v3_3/src/xdevcfg.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/devcfg_v3_3/src/xdevcfg_g.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/devcfg_v3_3/src/xdevcfg_hw.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/devcfg_v3_3/src/xdevcfg_intr.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/devcfg_v3_3/src/xdevcfg_selftest.o ./fsbl_bsp/ps7_cortexa9_0/libsrc/devcfg_v3_3/src/xdevcfg_sinit.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src/xcoresightpsdcc.o  ./fsbl_bsp/ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src/MINIMAL_DMA_CONTROL.o  ./src/fsbl_handoff.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/dummy.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/profile_mcount_arm.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/profile_mcount_mb.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/profile_mcount_ppc.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/asm_vectors.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/boot.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/cpu_init.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/translation_table.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil-crt0.d  ./src/fsbl_hooks.d ./src/image_mover.d ./src/main.d ./src/md5.d ./src/nand.d ./src/nor.d ./src/pcap.d ./src/ps7_init.d ./src/qspi.d ./src/rsa.d ./src/sd.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_init.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_timer_hw.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/profile_cg.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/profile_hist.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/_exit.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/_open.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/_sbrk.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/abort.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/close.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/errno.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/fcntl.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/fstat.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/getpid.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/inbyte.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/isatty.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/kill.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/lseek.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/open.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/outbyte.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/print.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/putnum.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/read.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/sbrk.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/sleep.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/unlink.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/usleep.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/vectors.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/write.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_assert.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_cache.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_exception.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_io.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_misc_psreset_api.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_mmu.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_printf.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_testcache.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_testio.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xil_testmem.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xl2cc_counter.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xplatform_info.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xpm_counter.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/xtime_l.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/sdps_v2_4/src/xsdps.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/sdps_v2_4/src/xsdps_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/sdps_v2_4/src/xsdps_options.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/sdps_v2_4/src/xsdps_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/scuwdt_v2_1/src/xscuwdt.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/scuwdt_v2_1/src/xscuwdt_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/scuwdt_v2_1/src/xscuwdt_selftest.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/scuwdt_v2_1/src/xscuwdt_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/scutimer_v2_1/src/xscutimer.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/scutimer_v2_1/src/xscutimer_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/scutimer_v2_1/src/xscutimer_selftest.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/scutimer_v2_1/src/xscutimer_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/scugic_v3_0/src/xscugic.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/scugic_v3_0/src/xscugic_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/scugic_v3_0/src/xscugic_hw.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/scugic_v3_0/src/xscugic_intr.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/scugic_v3_0/src/xscugic_selftest.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/scugic_v3_0/src/xscugic_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/qspips_v3_2/src/xqspips.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/qspips_v3_2/src/xqspips_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/qspips_v3_2/src/xqspips_hw.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/qspips_v3_2/src/xqspips_options.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/qspips_v3_2/src/xqspips_selftest.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/qspips_v3_2/src/xqspips_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/gpiops_v3_0/src/xgpiops.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/gpiops_v3_0/src/xgpiops_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/gpiops_v3_0/src/xgpiops_hw.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/gpiops_v3_0/src/xgpiops_intr.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/gpiops_v3_0/src/xgpiops_selftest.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/gpiops_v3_0/src/xgpiops_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps_bdring.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps_control.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps_hw.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps_intr.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/emacps_v3_0/src/xemacps_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/dmaps_v2_1/src/xdmaps.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/dmaps_v2_1/src/xdmaps_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/dmaps_v2_1/src/xdmaps_hw.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/dmaps_v2_1/src/xdmaps_selftest.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/dmaps_v2_1/src/xdmaps_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/devcfg_v3_3/src/xdevcfg.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/devcfg_v3_3/src/xdevcfg_g.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/devcfg_v3_3/src/xdevcfg_hw.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/devcfg_v3_3/src/xdevcfg_intr.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/devcfg_v3_3/src/xdevcfg_selftest.d ./fsbl_bsp/ps7_cortexa9_0/libsrc/devcfg_v3_3/src/xdevcfg_sinit.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src/xcoresightpsdcc.d  ./fsbl_bsp/ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src/MINIMAL_DMA_CONTROL.d  fsbl.elf.size  fsbl.elf
+ 
+16:39:12 **** Clean-only build of project fsbl_bsp ****
+make -k clean 
+rm -f ps7_cortexa9_0/lib/libxil.a
+16:39:13 **** Build of project fsbl_bsp ****
 make -k all 
-make: Warning: File `Makefile' has modification time 0.052 s in the future
 Running Make include in ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src
 make -C ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Running Make include in ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src
@@ -46,6 +41,10 @@ Running Make include in ps7_cortexa9_0/libsrc/usbps_v2_2/src
 make -C ps7_cortexa9_0/libsrc/usbps_v2_2/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Running Make include in ps7_cortexa9_0/libsrc/xadcps_v2_2/src
 make -C ps7_cortexa9_0/libsrc/xadcps_v2_2/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/xilffs_v3_0/src
+make -C ps7_cortexa9_0/libsrc/xilffs_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/xilrsa_v1_1/src
+make -C ps7_cortexa9_0/libsrc/xilrsa_v1_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Running Make libs in ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src
 make -C ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Compiling MINIMAL_DMA_CONTROL...
@@ -98,598 +97,720 @@ Compiling usbps
 Running Make libs in ps7_cortexa9_0/libsrc/xadcps_v2_2/src
 make -C ps7_cortexa9_0/libsrc/xadcps_v2_2/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Compiling xadcps
+Running Make libs in ps7_cortexa9_0/libsrc/xilffs_v3_0/src
+make -C ps7_cortexa9_0/libsrc/xilffs_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling XilFFs Library
+Creating archive libxilffs.a
+Running Make libs in ps7_cortexa9_0/libsrc/xilrsa_v1_1/src
+make -C ps7_cortexa9_0/libsrc/xilrsa_v1_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Finished building libraries
-make: warning:  Clock skew detected.  Your build may be incomplete.
-15:45:05 **** Auto Build of configuration Debug for project accel_test ****
+16:39:21 **** Build of configuration Debug for project fsbl ****
 make all 
-make: Warning: File `src/subdir.mk' has modification time 0.31 s in the future
-Building file: ../src/helloworld.c
+make: Warning: File `objects.mk' has modification time 0.4 s in the future
+Building file: ../src/fsbl_handoff.S
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"src/fsbl_handoff.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/fsbl_handoff.d" -MT"src/fsbl_handoff.d" -o "src/fsbl_handoff.o" "../src/fsbl_handoff.S"
+Finished building: ../src/fsbl_handoff.S
  
-Building file: ../src/platform.c
+Building file: ../src/fsbl_hooks.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/platform.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/platform.d" -MT"src/platform.d" -o "src/platform.o" "../src/platform.c"
-Finished building: ../src/platform.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"src/fsbl_hooks.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/fsbl_hooks.d" -MT"src/fsbl_hooks.d" -o "src/fsbl_hooks.o" "../src/fsbl_hooks.c"
+Finished building: ../src/fsbl_hooks.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  61424	   2320	  22636	  86380	  1516c	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-15:45:59 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.32 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-15:47:24 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.32 s in the future
-make: Nothing to be done for `all'.
-make: warning:  Clock skew detected.  Your build may be incomplete.
-15:49:07 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.3 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-15:53:56 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.33 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-16:18:43 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.37 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-16:39:02 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.4 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-16:56:44 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.43 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-17:02:25 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.42 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-17:05:43 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.44 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-17:12:58 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.47 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-17:24:44 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.45 s in the future
-make: Nothing to be done for `all'.
-make: warning:  Clock skew detected.  Your build may be incomplete.
-17:27:13 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.48 s in the future
-Building file: ../src/helloworld.c
+Building file: ../src/image_mover.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"src/image_mover.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/image_mover.d" -MT"src/image_mover.d" -o "src/image_mover.o" "../src/image_mover.c"
+Finished building: ../src/image_mover.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  22968	   1152	  22564	  46684	   b65c	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-17:27:19 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.49 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-17:33:56 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.49 s in the future
-Building file: ../src/helloworld.c
+Building file: ../src/main.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-../src/helloworld.c: In function 'main':
-../src/helloworld.c:68:25: error: 'synthetic_image' undeclared (first use in this function)
-     start_dma_from_dev(&synthetic_image, 40, dma);
-                         ^
-../src/helloworld.c:68:25: note: each undeclared identifier is reported only once for each function it appears in
-../src/helloworld.c:62:13: warning: unused variable 'synthetic_image_out' [-Wunused-variable]
-     int32_t synthetic_image_out[10] = {0,1,2,3,4,5,6,7,8,9};
-             ^
-make: *** [src/helloworld.o] Error 1
-17:34:00 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.51 s in the future
-Building file: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"src/main.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.c"
+Finished building: ../src/main.c
+ 
+Building file: ../src/md5.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"src/md5.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/md5.d" -MT"src/md5.d" -o "src/md5.o" "../src/md5.c"
+Finished building: ../src/md5.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  23008	   1152	  22564	  46724	   b684	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-17:34:08 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.51 s in the future
-Building file: ../src/helloworld.c
+Building file: ../src/nand.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"src/nand.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/nand.d" -MT"src/nand.d" -o "src/nand.o" "../src/nand.c"
+Finished building: ../src/nand.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  23048	   1152	  22564	  46764	   b6ac	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-17:34:27 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.51 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-17:36:29 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.5 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-17:37:51 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.5 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-17:48:05 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.52 s in the future
-Building file: ../src/helloworld.c
+Building file: ../src/nor.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-../src/helloworld.c:55:1: warning: return type defaults to 'int' [-Wreturn-type]
- rst_dma(struct dma_control *dev) { dev->global_control |= RST;}
- ^
-../src/helloworld.c: In function 'rst_dma':
-../src/helloworld.c:55:16: warning: control reaches end of non-void function [-Wreturn-type]
- rst_dma(struct dma_control *dev) { dev->global_control |= RST;}
-                ^
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"src/nor.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/nor.d" -MT"src/nor.d" -o "src/nor.o" "../src/nor.c"
+Finished building: ../src/nor.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  23108	   1152	  22564	  46824	   b6e8	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-17:48:20 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.53 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-17:50:18 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.52 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-17:54:32 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.53 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-17:56:22 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.53 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-18:08:55 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.55 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-18:26:02 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.58 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-18:29:31 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.58 s in the future
-Building file: ../src/helloworld.c
+Building file: ../src/pcap.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-../src/helloworld.c:55:1: warning: return type defaults to 'int' [-Wreturn-type]
- rst_dma(struct dma_control *dev) { dev->global_control |= RST;}
- ^
-../src/helloworld.c: In function 'main':
-../src/helloworld.c:64:13: warning: unused variable 'dummy' [-Wunused-variable]
-     int32_t dummy[100];
-             ^
-../src/helloworld.c: In function 'rst_dma':
-../src/helloworld.c:55:16: warning: control reaches end of non-void function [-Wreturn-type]
- rst_dma(struct dma_control *dev) { dev->global_control |= RST;}
-                ^
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"src/pcap.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/pcap.d" -MT"src/pcap.d" -o "src/pcap.o" "../src/pcap.c"
+Finished building: ../src/pcap.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  23108	   1152	  22564	  46824	   b6e8	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:29:42 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.6 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-18:35:28 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.6 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-18:38:43 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.6 s in the future
-Building file: ../src/helloworld.c
+Building file: /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-../src/helloworld.c:55:1: warning: return type defaults to 'int' [-Wreturn-type]
- rst_dma(struct dma_control *dev) { dev->global_control |= RST;}
- ^
-../src/helloworld.c: In function 'rst_dma':
-../src/helloworld.c:55:16: warning: control reaches end of non-void function [-Wreturn-type]
- rst_dma(struct dma_control *dev) { dev->global_control |= RST;}
-                ^
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"src/ps7_init.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/ps7_init.d" -MT"src/ps7_init.d" -o "src/ps7_init.o" "/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.c"
+Finished building: /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0/ps7_init.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  23108	   1152	  22564	  46824	   b6e8	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:38:53 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.62 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-18:41:20 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.6 s in the future
-Building file: ../src/helloworld.c
+Building file: ../src/qspi.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-../src/helloworld.c:56:1: warning: return type defaults to 'int' [-Wreturn-type]
- rst_dma(struct dma_control *dev) { dev->global_control |= RST;}
- ^
-../src/helloworld.c: In function 'rst_dma':
-../src/helloworld.c:56:16: warning: control reaches end of non-void function [-Wreturn-type]
- rst_dma(struct dma_control *dev) { dev->global_control |= RST;}
-                ^
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"src/qspi.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/qspi.d" -MT"src/qspi.d" -o "src/qspi.o" "../src/qspi.c"
+Finished building: ../src/qspi.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  23108	   1152	  22564	  46824	   b6e8	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:41:30 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.62 s in the future
-Building file: ../src/helloworld.c
+Building file: ../src/rsa.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-../src/helloworld.c:55:1: warning: return type defaults to 'int' [-Wreturn-type]
- rst_dma(struct dma_control *dev) { dev->global_control |= RST;}
- ^
-../src/helloworld.c: In function 'rst_dma':
-../src/helloworld.c:55:16: warning: control reaches end of non-void function [-Wreturn-type]
- rst_dma(struct dma_control *dev) { dev->global_control |= RST;}
-                ^
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"src/rsa.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/rsa.d" -MT"src/rsa.d" -o "src/rsa.o" "../src/rsa.c"
+Finished building: ../src/rsa.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  23108	   1152	  22564	  46824	   b6e8	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:41:44 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.62 s in the future
-Building file: ../src/helloworld.c
+Building file: ../src/sd.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"src/sd.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/sd.d" -MT"src/sd.d" -o "src/sd.o" "../src/sd.c"
+Finished building: ../src/sd.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  23104	   1152	  22564	  46820	   b6e4	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:42:30 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.6 s in the future
-Building file: ../src/helloworld.c
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.c"
+../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.c:124:11: warning: 'ExtCsd' defined but not used [-Wunused-variable]
+ static u8 ExtCsd[512] __attribute__ ((aligned(32)));
+           ^
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  26276	   2192	  22628	  51096	   c798	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:43:18 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.62 s in the future
-Building file: ../src/helloworld.c
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.c"
+../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.c: In function 'create_name':
+../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.c:2147:4: warning: pointer targets in assignment differ in signedness [-Wpointer-sign]
+  p = *path;
+    ^
+../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.c:2220:8: warning: pointer targets in assignment differ in signedness [-Wpointer-sign]
+  *path = (p+si);      /* Return pointer to the next segment */
+        ^
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  26360	   2192	  22628	  51180	   c7ec	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:43:20 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.63 s in the future
-make: Nothing to be done for `all'.
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:46:43 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.61 s in the future
-Building file: ../src/helloworld.c
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  26344	   2192	  22628	  51164	   c7dc	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:46:53 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.63 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-18:48:14 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.61 s in the future
-Building file: ../src/helloworld.c
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  26344	   2192	  22628	  51164	   c7dc	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:48:25 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.63 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-18:49:26 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.62 s in the future
-Building file: ../src/helloworld.c
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  26340	   2192	  22628	  51160	   c7d8	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:49:30 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.63 s in the future
-Building file: ../src/helloworld.c
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  26332	   2192	  22628	  51152	   c7d0	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:49:46 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.63 s in the future
-make: warning:  Clock skew detected.  Your build may be incomplete.
-make: Nothing to be done for `all'.
-18:56:07 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.62 s in the future
-Building file: ../src/helloworld.c
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-../src/helloworld.c: In function 'main':
-../src/helloworld.c:68:2: warning: implicit declaration of function 'Xil_DCacheDisable' [-Wimplicit-function-declaration]
-  Xil_DCacheDisable();
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.c"
+../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.c: In function 'XUartPs_StubHandler':
+../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.c:669:2: warning: statement with no effect [-Wunused-value]
+  (void *) CallBackRef;
   ^
-Finished building: ../src/helloworld.c
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.c
  
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  26336	   2192	  22628	  51156	   c7d4	accel_test.elf
-Finished building: accel_test.elf.size
- 
-make: warning:  Clock skew detected.  Your build may be incomplete.
-18:56:27 **** Auto Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.64 s in the future
-Building file: ../src/helloworld.c
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.c
 Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.c
  
-Building target: accel_test.elf
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_0" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.o" -I/mnt/studproj/ebensberger/zedboard_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.c"
+In file included from ../fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.c:34:0:
+../fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_timer_hw.h:88:21: fatal error: xintc_l.h: No such file or directory
+ #include "xintc_l.h"
+                     ^
+compilation terminated.
+make: *** [fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.o] Error 1
+16:41:22 **** Build of project fsbl_bsp ****
+make -k all 
+Running Make include in ps7_cortexa9_0/libsrc/canps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/canps_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src
+make -C ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/cpu_cortexa9_v2_1/src
+make -C ps7_cortexa9_0/libsrc/cpu_cortexa9_v2_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/devcfg_v3_3/src
+make -C ps7_cortexa9_0/libsrc/devcfg_v3_3/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/dmaps_v2_1/src
+make -C ps7_cortexa9_0/libsrc/dmaps_v2_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/emacps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/emacps_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/gpiops_v3_0/src
+make -C ps7_cortexa9_0/libsrc/gpiops_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/iicps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/iicps_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/qspips_v3_2/src
+make -C ps7_cortexa9_0/libsrc/qspips_v3_2/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/scugic_v3_0/src
+make -C ps7_cortexa9_0/libsrc/scugic_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/scutimer_v2_1/src
+make -C ps7_cortexa9_0/libsrc/scutimer_v2_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/scuwdt_v2_1/src
+make -C ps7_cortexa9_0/libsrc/scuwdt_v2_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/sdps_v2_4/src
+make -C ps7_cortexa9_0/libsrc/sdps_v2_4/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/standalone_v5_1/src
+make -C ps7_cortexa9_0/libsrc/standalone_v5_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/ttcps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/ttcps_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/uartps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/uartps_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/usbps_v2_2/src
+make -C ps7_cortexa9_0/libsrc/usbps_v2_2/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/xadcps_v2_2/src
+make -C ps7_cortexa9_0/libsrc/xadcps_v2_2/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/xilffs_v3_0/src
+make -C ps7_cortexa9_0/libsrc/xilffs_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/xilrsa_v1_1/src
+make -C ps7_cortexa9_0/libsrc/xilrsa_v1_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make libs in ps7_cortexa9_0/libsrc/canps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/canps_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling canps
+arm-xilinx-eabi-ar: creating ../../../lib/libxil.a
+Running Make libs in ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src
+make -C ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling coresightps_dcc
+Running Make libs in ps7_cortexa9_0/libsrc/cpu_cortexa9_v2_1/src
+make -C ps7_cortexa9_0/libsrc/cpu_cortexa9_v2_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling cpu_cortexa9
+Running Make libs in ps7_cortexa9_0/libsrc/devcfg_v3_3/src
+make -C ps7_cortexa9_0/libsrc/devcfg_v3_3/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling devcfg
+Running Make libs in ps7_cortexa9_0/libsrc/dmaps_v2_1/src
+make -C ps7_cortexa9_0/libsrc/dmaps_v2_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling dmaps
+Running Make libs in ps7_cortexa9_0/libsrc/emacps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/emacps_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling emacps
+Running Make libs in ps7_cortexa9_0/libsrc/gpiops_v3_0/src
+make -C ps7_cortexa9_0/libsrc/gpiops_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling gpiops
+Running Make libs in ps7_cortexa9_0/libsrc/iicps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/iicps_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling iicps
+Running Make libs in ps7_cortexa9_0/libsrc/qspips_v3_2/src
+make -C ps7_cortexa9_0/libsrc/qspips_v3_2/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling qspips
+Running Make libs in ps7_cortexa9_0/libsrc/scugic_v3_0/src
+make -C ps7_cortexa9_0/libsrc/scugic_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling scugic
+Running Make libs in ps7_cortexa9_0/libsrc/scutimer_v2_1/src
+make -C ps7_cortexa9_0/libsrc/scutimer_v2_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling scutimer
+Running Make libs in ps7_cortexa9_0/libsrc/scuwdt_v2_1/src
+make -C ps7_cortexa9_0/libsrc/scuwdt_v2_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling scuwdt
+Running Make libs in ps7_cortexa9_0/libsrc/sdps_v2_4/src
+make -C ps7_cortexa9_0/libsrc/sdps_v2_4/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling sdps
+Running Make libs in ps7_cortexa9_0/libsrc/standalone_v5_1/src
+make -C ps7_cortexa9_0/libsrc/standalone_v5_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling standalone
+Running Make libs in ps7_cortexa9_0/libsrc/ttcps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/ttcps_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling ttcps
+Running Make libs in ps7_cortexa9_0/libsrc/uartps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/uartps_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling uartps
+Running Make libs in ps7_cortexa9_0/libsrc/usbps_v2_2/src
+make -C ps7_cortexa9_0/libsrc/usbps_v2_2/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling usbps
+Running Make libs in ps7_cortexa9_0/libsrc/xadcps_v2_2/src
+make -C ps7_cortexa9_0/libsrc/xadcps_v2_2/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling xadcps
+Running Make libs in ps7_cortexa9_0/libsrc/xilffs_v3_0/src
+make -C ps7_cortexa9_0/libsrc/xilffs_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling XilFFs Library
+Creating archive libxilffs.a
+Running Make libs in ps7_cortexa9_0/libsrc/xilrsa_v1_1/src
+make -C ps7_cortexa9_0/libsrc/xilrsa_v1_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Finished building libraries
+16:41:32 **** Build of configuration Debug for project fsbl ****
+make all 
+make: Warning: File `objects.mk' has modification time 0.34 s in the future
+Building file: ../src/fsbl_handoff.S
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"src/fsbl_handoff.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/fsbl_handoff.d" -MT"src/fsbl_handoff.d" -o "src/fsbl_handoff.o" "../src/fsbl_handoff.S"
+Finished building: ../src/fsbl_handoff.S
+ 
+Building file: ../src/fsbl_hooks.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"src/fsbl_hooks.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/fsbl_hooks.d" -MT"src/fsbl_hooks.d" -o "src/fsbl_hooks.o" "../src/fsbl_hooks.c"
+Finished building: ../src/fsbl_hooks.c
+ 
+Building file: ../src/image_mover.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"src/image_mover.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/image_mover.d" -MT"src/image_mover.d" -o "src/image_mover.o" "../src/image_mover.c"
+Finished building: ../src/image_mover.c
+ 
+Building file: ../src/main.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"src/main.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.c"
+Finished building: ../src/main.c
+ 
+Building file: ../src/md5.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"src/md5.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/md5.d" -MT"src/md5.d" -o "src/md5.o" "../src/md5.c"
+Finished building: ../src/md5.c
+ 
+Building file: ../src/nand.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"src/nand.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/nand.d" -MT"src/nand.d" -o "src/nand.o" "../src/nand.c"
+Finished building: ../src/nand.c
+ 
+Building file: ../src/nor.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"src/nor.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/nor.d" -MT"src/nor.d" -o "src/nor.o" "../src/nor.c"
+Finished building: ../src/nor.c
+ 
+Building file: ../src/pcap.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"src/pcap.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/pcap.d" -MT"src/pcap.d" -o "src/pcap.o" "../src/pcap.c"
+Finished building: ../src/pcap.c
+ 
+Building file: /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform/ps7_init.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"src/ps7_init.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/ps7_init.d" -MT"src/ps7_init.d" -o "src/ps7_init.o" "/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform/ps7_init.c"
+Finished building: /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform/ps7_init.c
+ 
+Building file: ../src/qspi.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"src/qspi.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/qspi.d" -MT"src/qspi.d" -o "src/qspi.o" "../src/qspi.c"
+Finished building: ../src/qspi.c
+ 
+Building file: ../src/rsa.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"src/rsa.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/rsa.d" -MT"src/rsa.d" -o "src/rsa.o" "../src/rsa.c"
+Finished building: ../src/rsa.c
+ 
+Building file: ../src/sd.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"src/sd.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/sd.d" -MT"src/sd.d" -o "src/sd.o" "../src/sd.c"
+Finished building: ../src/sd.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.c"
+../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.c:124:11: warning: 'ExtCsd' defined but not used [-Wunused-variable]
+ static u8 ExtCsd[512] __attribute__ ((aligned(32)));
+           ^
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/diskio.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.c"
+../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.c: In function 'create_name':
+../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.c:2147:4: warning: pointer targets in assignment differ in signedness [-Wpointer-sign]
+  p = *path;
+    ^
+../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.c:2220:8: warning: pointer targets in assignment differ in signedness [-Wpointer-sign]
+  *path = (p+si);      /* Return pointer to the next segment */
+        ^
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xilffs_v3_0/src/ff.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_g.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_intr.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_selftest.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/xadcps_v2_2/src/xadcps_sinit.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_endpoint.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_g.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_hw.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_intr.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/usbps_v2_2/src/xusbps_sinit.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.c"
+../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.c: In function 'XUartPs_StubHandler':
+../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.c:669:2: warning: statement with no effect [-Wunused-value]
+  (void *) CallBackRef;
+  ^
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_g.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_hw.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_intr.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_options.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_selftest.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/uartps_v3_0/src/xuartps_sinit.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_g.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_options.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_selftest.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.c"
+Finished building: ../fsbl_bsp/ps7_cortexa9_0/libsrc/ttcps_v3_0/src/xttcps_sinit.c
+ 
+Building file: ../fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/ZC702_hw_platform" -c -fmessage-length=0 -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.o" -I/mnt/studproj/ebensberger/fsbl_linux/fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.d" -MT"fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.d" -o "fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.o" "../fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.c"
+In file included from ../fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.c:34:0:
+../fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_timer_hw.h:88:21: fatal error: xintc_l.h: No such file or directory
+ #include "xintc_l.h"
+                     ^
+compilation terminated.
+make: *** [fsbl_bsp/ps7_cortexa9_0/libsrc/standalone_v5_1/src/profile/_profile_clean.o] Error 1
+16:43:59 **** Build of project fsbl_bsp ****
+make -k all 
+Running Make include in ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src
+make -C ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src
+make -C ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/cpu_cortexa9_v2_1/src
+make -C ps7_cortexa9_0/libsrc/cpu_cortexa9_v2_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/devcfg_v3_3/src
+make -C ps7_cortexa9_0/libsrc/devcfg_v3_3/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/dmaps_v2_1/src
+make -C ps7_cortexa9_0/libsrc/dmaps_v2_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/emacps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/emacps_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/gpiops_v3_0/src
+make -C ps7_cortexa9_0/libsrc/gpiops_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/qspips_v3_2/src
+make -C ps7_cortexa9_0/libsrc/qspips_v3_2/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/scugic_v3_0/src
+make -C ps7_cortexa9_0/libsrc/scugic_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/scutimer_v2_1/src
+make -C ps7_cortexa9_0/libsrc/scutimer_v2_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/scuwdt_v2_1/src
+make -C ps7_cortexa9_0/libsrc/scuwdt_v2_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/sdps_v2_4/src
+make -C ps7_cortexa9_0/libsrc/sdps_v2_4/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/standalone_v5_1/src
+make -C ps7_cortexa9_0/libsrc/standalone_v5_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/ttcps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/ttcps_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/uartps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/uartps_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/usbps_v2_2/src
+make -C ps7_cortexa9_0/libsrc/usbps_v2_2/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/xadcps_v2_2/src
+make -C ps7_cortexa9_0/libsrc/xadcps_v2_2/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/xilffs_v3_0/src
+make -C ps7_cortexa9_0/libsrc/xilffs_v3_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make include in ps7_cortexa9_0/libsrc/xilrsa_v1_1/src
+make -C ps7_cortexa9_0/libsrc/xilrsa_v1_1/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Running Make libs in ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src
+make -C ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling MINIMAL_DMA_CONTROL...
+arm-xilinx-eabi-ar: creating ../../../lib/libxil.a
+Running Make libs in ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src
+make -C ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling coresightps_dcc
+Running Make libs in ps7_cortexa9_0/libsrc/cpu_cortexa9_v2_1/src
+make -C ps7_cortexa9_0/libsrc/cpu_cortexa9_v2_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling cpu_cortexa9
+Running Make libs in ps7_cortexa9_0/libsrc/devcfg_v3_3/src
+make -C ps7_cortexa9_0/libsrc/devcfg_v3_3/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling devcfg
+Running Make libs in ps7_cortexa9_0/libsrc/dmaps_v2_1/src
+make -C ps7_cortexa9_0/libsrc/dmaps_v2_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling dmaps
+Running Make libs in ps7_cortexa9_0/libsrc/emacps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/emacps_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling emacps
+Running Make libs in ps7_cortexa9_0/libsrc/gpiops_v3_0/src
+make -C ps7_cortexa9_0/libsrc/gpiops_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling gpiops
+Running Make libs in ps7_cortexa9_0/libsrc/qspips_v3_2/src
+make -C ps7_cortexa9_0/libsrc/qspips_v3_2/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling qspips
+Running Make libs in ps7_cortexa9_0/libsrc/scugic_v3_0/src
+make -C ps7_cortexa9_0/libsrc/scugic_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling scugic
+Running Make libs in ps7_cortexa9_0/libsrc/scutimer_v2_1/src
+make -C ps7_cortexa9_0/libsrc/scutimer_v2_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling scutimer
+Running Make libs in ps7_cortexa9_0/libsrc/scuwdt_v2_1/src
+make -C ps7_cortexa9_0/libsrc/scuwdt_v2_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling scuwdt
+Running Make libs in ps7_cortexa9_0/libsrc/sdps_v2_4/src
+make -C ps7_cortexa9_0/libsrc/sdps_v2_4/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling sdps
+Running Make libs in ps7_cortexa9_0/libsrc/standalone_v5_1/src
+make -C ps7_cortexa9_0/libsrc/standalone_v5_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling standalone
+Running Make libs in ps7_cortexa9_0/libsrc/ttcps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/ttcps_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling ttcps
+Running Make libs in ps7_cortexa9_0/libsrc/uartps_v3_0/src
+make -C ps7_cortexa9_0/libsrc/uartps_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling uartps
+Running Make libs in ps7_cortexa9_0/libsrc/usbps_v2_2/src
+make -C ps7_cortexa9_0/libsrc/usbps_v2_2/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling usbps
+Running Make libs in ps7_cortexa9_0/libsrc/xadcps_v2_2/src
+make -C ps7_cortexa9_0/libsrc/xadcps_v2_2/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling xadcps
+Running Make libs in ps7_cortexa9_0/libsrc/xilffs_v3_0/src
+make -C ps7_cortexa9_0/libsrc/xilffs_v3_0/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Compiling XilFFs Library
+Creating archive libxilffs.a
+Running Make libs in ps7_cortexa9_0/libsrc/xilrsa_v1_1/src
+make -C ps7_cortexa9_0/libsrc/xilrsa_v1_1/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
+Finished building libraries
+16:44:08 **** Build of configuration Debug for project fsbl ****
+make all 
+make: Warning: File `objects.mk' has modification time 0.42 s in the future
+Building file: ../src/fsbl_handoff.S
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1" -c -fmessage-length=0 -MT"src/fsbl_handoff.o" -I../../fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/fsbl_handoff.d" -MT"src/fsbl_handoff.d" -o "src/fsbl_handoff.o" "../src/fsbl_handoff.S"
+Finished building: ../src/fsbl_handoff.S
+ 
+Building file: ../src/fsbl_hooks.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1" -c -fmessage-length=0 -MT"src/fsbl_hooks.o" -I../../fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/fsbl_hooks.d" -MT"src/fsbl_hooks.d" -o "src/fsbl_hooks.o" "../src/fsbl_hooks.c"
+Finished building: ../src/fsbl_hooks.c
+ 
+Building file: ../src/image_mover.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1" -c -fmessage-length=0 -MT"src/image_mover.o" -I../../fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/image_mover.d" -MT"src/image_mover.d" -o "src/image_mover.o" "../src/image_mover.c"
+Finished building: ../src/image_mover.c
+ 
+Building file: ../src/main.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1" -c -fmessage-length=0 -MT"src/main.o" -I../../fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.c"
+Finished building: ../src/main.c
+ 
+Building file: ../src/md5.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1" -c -fmessage-length=0 -MT"src/md5.o" -I../../fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/md5.d" -MT"src/md5.d" -o "src/md5.o" "../src/md5.c"
+Finished building: ../src/md5.c
+ 
+Building file: ../src/nand.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1" -c -fmessage-length=0 -MT"src/nand.o" -I../../fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/nand.d" -MT"src/nand.d" -o "src/nand.o" "../src/nand.c"
+Finished building: ../src/nand.c
+ 
+Building file: ../src/nor.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1" -c -fmessage-length=0 -MT"src/nor.o" -I../../fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/nor.d" -MT"src/nor.d" -o "src/nor.o" "../src/nor.c"
+Finished building: ../src/nor.c
+ 
+Building file: ../src/pcap.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1" -c -fmessage-length=0 -MT"src/pcap.o" -I../../fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/pcap.d" -MT"src/pcap.d" -o "src/pcap.o" "../src/pcap.c"
+Finished building: ../src/pcap.c
+ 
+Building file: /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1/ps7_init.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1" -c -fmessage-length=0 -MT"src/ps7_init.o" -I../../fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/ps7_init.d" -MT"src/ps7_init.d" -o "src/ps7_init.o" "/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1/ps7_init.c"
+Finished building: /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1/ps7_init.c
+ 
+Building file: ../src/qspi.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1" -c -fmessage-length=0 -MT"src/qspi.o" -I../../fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/qspi.d" -MT"src/qspi.d" -o "src/qspi.o" "../src/qspi.c"
+Finished building: ../src/qspi.c
+ 
+Building file: ../src/rsa.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1" -c -fmessage-length=0 -MT"src/rsa.o" -I../../fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/rsa.d" -MT"src/rsa.d" -o "src/rsa.o" "../src/rsa.c"
+Finished building: ../src/rsa.c
+ 
+Building file: ../src/sd.c
+Invoking: ARM gcc compiler
+arm-xilinx-eabi-gcc -Wall -O0 -g3 -I"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1" -c -fmessage-length=0 -MT"src/sd.o" -I../../fsbl_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/sd.d" -MT"src/sd.d" -o "src/sd.o" "../src/sd.c"
+Finished building: ../src/sd.c
+ 
+Building target: fsbl.elf
 Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
+arm-xilinx-eabi-gcc -L"/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/fsbl/src" -Wl,-T -Wl,../src/lscript.ld -L../../fsbl_bsp/ps7_cortexa9_0/lib -o "fsbl.elf"  ./src/fsbl_handoff.o ./src/fsbl_hooks.o ./src/image_mover.o ./src/main.o ./src/md5.o ./src/nand.o ./src/nor.o ./src/pcap.o ./src/ps7_init.o ./src/qspi.o ./src/rsa.o ./src/sd.o   -lrsa -Wl,--start-group,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lrsa,-lxil,-lgcc,-lc,--end-group
+Finished building target: fsbl.elf
  
 Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
+arm-xilinx-eabi-size fsbl.elf  |tee "fsbl.elf.size"
    text	   data	    bss	    dec	    hex	filename
-  26336	   2192	  22628	  51156	   c7d4	accel_test.elf
-Finished building: accel_test.elf.size
+  74404	  11908	  73380	 159692	  26fcc	fsbl.elf
+Finished building: fsbl.elf.size
  
 make: warning:  Clock skew detected.  Your build may be incomplete.
-18:56:34 **** Incremental Build of configuration Debug for project accel_test ****
+16:46:40 **** Auto Build of configuration Debug for project fsbl ****
 make all 
-make: Warning: File `src/subdir.mk' has modification time 0.65 s in the future
+make: Warning: File `src/subdir.mk' has modification time 0.41 s in the future
 make: warning:  Clock skew detected.  Your build may be incomplete.
 make: Nothing to be done for `all'.
-18:58:09 **** Auto Build of configuration Debug for project accel_test ****
+17:15:15 **** Auto Build of configuration Debug for project fsbl ****
 make all 
-make: Warning: File `src/subdir.mk' has modification time 0.63 s in the future
-Building file: ../src/helloworld.c
-Invoking: ARM gcc compiler
-arm-xilinx-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -I../../standalone_accel_test_0/ps7_cortexa9_0/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.d" -o "src/helloworld.o" "../src/helloworld.c"
-Finished building: ../src/helloworld.c
- 
-Building target: accel_test.elf
-Invoking: ARM gcc linker
-arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../standalone_accel_test_0/ps7_cortexa9_0/lib -o "accel_test.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-Finished building target: accel_test.elf
- 
-Invoking: ARM Print Size
-arm-xilinx-eabi-size accel_test.elf  |tee "accel_test.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  26332	   2192	  22628	  51152	   c7d0	accel_test.elf
-Finished building: accel_test.elf.size
- 
+make: Warning: File `src/subdir.mk' has modification time 0.46 s in the future
 make: warning:  Clock skew detected.  Your build may be incomplete.
-18:58:30 **** Incremental Build of configuration Debug for project accel_test ****
-make all 
-make: Warning: File `src/subdir.mk' has modification time 0.65 s in the future
 make: Nothing to be done for `all'.
-make: warning:  Clock skew detected.  Your build may be incomplete.
