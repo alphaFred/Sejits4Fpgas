@@ -551,9 +551,6 @@
         <spirit:name>axis_data_fifo_0_M_AXIS</spirit:name>
         <spirit:activeInterface spirit:busRef="M_AXIS" spirit:componentRef="axis_data_fifo_0"/>
         <spirit:activeInterface spirit:busRef="s_axis" spirit:componentRef="MINIMAL_DMA_CONTROL_0"/>
-        <bd:hdl_attributes>
-          <bd:hdl_attribute bd:name="MARK_DEBUG" bd:value="true"/>
-        </bd:hdl_attributes>
       </spirit:interconnection>
       <spirit:interconnection>
         <spirit:name>MINIMAL_DMA_CONTROL_0_m_axis</spirit:name>
@@ -573,15 +570,15 @@
         <spirit:internalPortReference spirit:componentRef="MINIMAL_DMA_0" spirit:portRef="m_axi_aclk"/>
         <spirit:internalPortReference spirit:componentRef="axis_data_fifo_0" spirit:portRef="s_axis_aclk"/>
         <spirit:internalPortReference spirit:componentRef="ila_0" spirit:portRef="clk"/>
+        <spirit:internalPortReference spirit:componentRef="axis_data_fifo_1" spirit:portRef="s_axis_aclk"/>
+        <spirit:internalPortReference spirit:componentRef="c_addsub_0" spirit:portRef="CLK"/>
+        <spirit:internalPortReference spirit:componentRef="axis_register_slice_0" spirit:portRef="aclk"/>
         <spirit:internalPortReference spirit:componentRef="processing_system7_0_axi_periph" spirit:portRef="S00_ACLK"/>
         <spirit:internalPortReference spirit:componentRef="processing_system7_0_axi_periph" spirit:portRef="ACLK"/>
         <spirit:internalPortReference spirit:componentRef="processing_system7_0_axi_periph" spirit:portRef="M00_ACLK"/>
         <spirit:internalPortReference spirit:componentRef="axi_mem_intercon" spirit:portRef="S00_ACLK"/>
         <spirit:internalPortReference spirit:componentRef="axi_mem_intercon" spirit:portRef="ACLK"/>
         <spirit:internalPortReference spirit:componentRef="axi_mem_intercon" spirit:portRef="M00_ACLK"/>
-        <spirit:internalPortReference spirit:componentRef="axis_data_fifo_1" spirit:portRef="s_axis_aclk"/>
-        <spirit:internalPortReference spirit:componentRef="c_addsub_0" spirit:portRef="CLK"/>
-        <spirit:internalPortReference spirit:componentRef="axis_register_slice_0" spirit:portRef="aclk"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>processing_system7_0_FCLK_RESET0_N</spirit:name>
@@ -621,9 +618,6 @@
         <spirit:name>axis_data_fifo_0_axis_rd_data_count</spirit:name>
         <spirit:internalPortReference spirit:componentRef="axis_data_fifo_0" spirit:portRef="axis_rd_data_count"/>
         <spirit:internalPortReference spirit:componentRef="c_addsub_0" spirit:portRef="A"/>
-        <bd:hdl_attributes>
-          <bd:hdl_attribute bd:name="MARK_DEBUG" bd:value="true"/>
-        </bd:hdl_attributes>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>axis_data_fifo_1_m_axis_tdata</spirit:name>
@@ -641,35 +635,19 @@
         <spirit:internalPortReference spirit:componentRef="axis_register_slice_0" spirit:portRef="s_axis_tvalid"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
-        <spirit:name>S</spirit:name>
-        <spirit:internalPortReference spirit:componentRef="c_addsub_0" spirit:portRef="S"/>
-        <bd:hdl_attributes>
-          <bd:hdl_attribute bd:name="MARK_DEBUG" bd:value="true"/>
-        </bd:hdl_attributes>
-      </spirit:adHocConnection>
-      <spirit:adHocConnection>
         <spirit:name>util_vector_logic_1_Res</spirit:name>
         <spirit:internalPortReference spirit:componentRef="util_vector_logic_1" spirit:portRef="Res"/>
         <spirit:internalPortReference spirit:componentRef="axis_data_fifo_1" spirit:portRef="m_axis_tready"/>
-        <bd:hdl_attributes>
-          <bd:hdl_attribute bd:name="MARK_DEBUG" bd:value="true"/>
-        </bd:hdl_attributes>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>axis_register_slice_0_s_axis_tready</spirit:name>
         <spirit:internalPortReference spirit:componentRef="axis_register_slice_0" spirit:portRef="s_axis_tready"/>
         <spirit:internalPortReference spirit:componentRef="util_vector_logic_1" spirit:portRef="Op1"/>
-        <bd:hdl_attributes>
-          <bd:hdl_attribute bd:name="MARK_DEBUG" bd:value="true"/>
-        </bd:hdl_attributes>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>c_addsub_0_C_OUT</spirit:name>
         <spirit:internalPortReference spirit:componentRef="c_addsub_0" spirit:portRef="C_OUT"/>
         <spirit:internalPortReference spirit:componentRef="util_vector_logic_1" spirit:portRef="Op2"/>
-        <bd:hdl_attributes>
-          <bd:hdl_attribute bd:name="MARK_DEBUG" bd:value="true"/>
-        </bd:hdl_attributes>
       </spirit:adHocConnection>
     </spirit:adHocConnections>
     <spirit:hierConnections>

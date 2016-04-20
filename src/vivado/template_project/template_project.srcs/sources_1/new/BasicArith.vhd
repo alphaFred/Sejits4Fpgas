@@ -67,8 +67,6 @@ ARCHITECTURE BasicArith_Behave OF BasicArith IS
     signal ValidsRegBus_ADD_SUB : iBus_ADD_SUB := (others => '0');
     signal ValidsRegBus_MUL     : iBus_MUL := (others => '0');
     --
-    signal nRST : std_logic;
-    --
     COMPONENT logic_dff_block
     Port (
         D   : in STD_LOGIC;
@@ -78,8 +76,6 @@ ARCHITECTURE BasicArith_Behave OF BasicArith IS
     );
     END COMPONENT;
 BEGIN
-    nRST <= not RST;
-    --
     DSP48E1_inst_1 : DSP48E1
     generic map (
         A_INPUT             => "DIRECT",
@@ -155,16 +151,16 @@ BEGIN
         CEINMODE            => '1',
         CEM                 => '1',
         CEP                 => '1',
-        RSTA                => nRST,
-        RSTALLCARRYIN       => nRST,
-        RSTALUMODE          => nRST,
-        RSTB                => nRST,
-        RSTC                => nRST,
-        RSTCTRL             => nRST,
-        RSTD                => nRST,
-        RSTINMODE           => nRST,
-        RSTM                => nRST,
-        RSTP                => nRST
+        RSTA                => RST,
+        RSTALLCARRYIN       => RST,
+        RSTALUMODE          => RST,
+        RSTB                => RST,
+        RSTC                => RST,
+        RSTCTRL             => RST,
+        RSTD                => RST,
+        RSTINMODE           => RST,
+        RSTM                => RST,
+        RSTP                => RST
     );
 
     validReg_ADD: if OP = 0 generate
@@ -177,7 +173,7 @@ BEGIN
                     port map (
                         D => VALID_IN,
                         CLK => CLK,
-                        RST => nRST,
+                        RST => RST,
                         Q => ValidsRegBus_ADD_SUB(i)
                     );
             end generate validdffLeft_ADD;
@@ -188,7 +184,7 @@ BEGIN
                     port map (
                         D => ValidsRegBus_ADD_SUB(i-1),
                         CLK => CLK,
-                        RST => not RST,
+                        RST => RST,
                         Q => ValidsRegBus_ADD_SUB(i)
                     );
             end generate dffOthers_ADD;
@@ -199,7 +195,7 @@ BEGIN
                     port map (
                         D => ValidsRegBus_ADD_SUB(i-1),
                         CLK => CLK,
-                        RST => nRST,
+                        RST => RST,
                         Q => VALID_OUT
                     );
             end generate dffRight_ADD;
@@ -216,7 +212,7 @@ BEGIN
                     port map (
                         D => VALID_IN,
                         CLK => CLK,
-                        RST => nRST,
+                        RST => RST,
                         Q => ValidsRegBus_ADD_SUB(i)
                     );
             end generate validdffLeft_SUB;
@@ -227,7 +223,7 @@ BEGIN
                     port map (
                         D => ValidsRegBus_ADD_SUB(i-1),
                         CLK => CLK,
-                        RST => nRST,
+                        RST => RST,
                         Q => ValidsRegBus_ADD_SUB(i)
                     );
             end generate dffOthers_SUB;
@@ -238,7 +234,7 @@ BEGIN
                     port map (
                         D => ValidsRegBus_ADD_SUB(i-1),
                         CLK => CLK,
-                        RST => nRST,
+                        RST => RST,
                         Q => VALID_OUT
                     );
             end generate dffRight_SUB;
@@ -255,7 +251,7 @@ BEGIN
                     port map (
                         D => VALID_IN,
                         CLK => CLK,
-                        RST => nRST,
+                        RST => RST,
                         Q => ValidsRegBus_MUL(i)
                     );
             end generate validdffLeft_MUL;
@@ -266,7 +262,7 @@ BEGIN
                     port map (
                         D => ValidsRegBus_MUL(i-1),
                         CLK => CLK,
-                        RST => nRST,
+                        RST => RST,
                         Q => ValidsRegBus_MUL(i)
                     );
             end generate dffOthers_MUL;
@@ -277,7 +273,7 @@ BEGIN
                     port map (
                         D => ValidsRegBus_MUL(i-1),
                         CLK => CLK,
-                        RST => nRST,
+                        RST => RST,
                         Q => VALID_OUT
                     );
             end generate dffRight_MUL;
@@ -296,7 +292,7 @@ BEGIN
     -- OP = 1 => Substract
         INMODE_DSP1 <= "00000";
         OPMODE_DSP1 <= "0110011";   -- (Z=C | Y=0 | X=A:B)
-        ALUMODE_DSP1 <= "0011";     --  Z ??? (X + Y + CIN)
+        ALUMODE_DSP1 <= "0011";     --  Z – (X + Y + CIN)
     END GENERATE;
 
     OP2:IF OP = 2 GENERATE

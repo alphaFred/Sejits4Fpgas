@@ -34,7 +34,6 @@ preplace netloc util_vector_logic_0_Res 1 0 7 120 780 490 660 NJ 660 1420 720 18
 preplace netloc processing_system7_0_FCLK_RESET0_N 1 2 3 NJ 240 NJ 240 1770
 preplace netloc MINIMAL_DMA_CONTROL_0_out_data 1 1 2 520 380 1120
 preplace netloc axi_mem_intercon_M00_AXI 1 1 6 460 10 NJ 10 NJ 10 NJ 10 NJ 10 2530
-preplace netloc S 1 1 1 N
 preplace netloc axis_data_fifo_1_m_axis_tvalid 1 4 1 1770
 preplace netloc processing_system7_0_FIXED_IO 1 2 5 1170 90 NJ 90 NJ 90 NJ 90 NJ
 preplace netloc MINIMAL_DMA_CONTROL_0_dma_control 1 1 2 510 360 1130

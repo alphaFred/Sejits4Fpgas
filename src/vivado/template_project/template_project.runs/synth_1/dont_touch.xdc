@@ -3,6 +3,9 @@
 
 # XDC: new/top.xdc
 
+# IP: ip/filter_input_fifo_1/filter_input_fifo_1.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==filter_input_fifo_1 || ORIG_REF_NAME==filter_input_fifo_1}]
+
 # Block Designs: bd/template_design/template_design.bd
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design || ORIG_REF_NAME==template_design}]
 
@@ -33,6 +36,18 @@ set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design
 # IP: bd/template_design/ip/template_design_ila_0_0/template_design_ila_0_0.xci
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_ila_0_0 || ORIG_REF_NAME==template_design_ila_0_0}]
 
+# IP: bd/template_design/ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_axis_data_fifo_1_0 || ORIG_REF_NAME==template_design_axis_data_fifo_1_0}]
+
+# IP: bd/template_design/ip/template_design_c_addsub_0_0/template_design_c_addsub_0_0.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_c_addsub_0_0 || ORIG_REF_NAME==template_design_c_addsub_0_0}]
+
+# IP: bd/template_design/ip/template_design_axis_register_slice_0_0/template_design_axis_register_slice_0_0.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_axis_register_slice_0_0 || ORIG_REF_NAME==template_design_axis_register_slice_0_0}]
+
+# IP: bd/template_design/ip/template_design_util_vector_logic_1_0/template_design_util_vector_logic_1_0.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_util_vector_logic_1_0 || ORIG_REF_NAME==template_design_util_vector_logic_1_0}]
+
 # IP: bd/template_design/ip/template_design_auto_pc_0/template_design_auto_pc_0.xci
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_auto_pc_0 || ORIG_REF_NAME==template_design_auto_pc_0}]
 
@@ -59,6 +74,15 @@ set_property DONT_TOUCH TRUE [get_cells [split [join [get_cells -hier -filter {R
 #dup# set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_ila_0_0 || ORIG_REF_NAME==template_design_ila_0_0}]
 
 # XDC: bd/template_design/ip/template_design_ila_0_0/template_design_ila_0_0_ooc.xdc
+
+# XDC: bd/template_design/ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0_ooc.xdc
+
+# XDC: bd/template_design/ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0.xdc
+set_property DONT_TOUCH TRUE [get_cells [split [join [get_cells -hier -filter {REF_NAME==template_design_axis_data_fifo_1_0 || ORIG_REF_NAME==template_design_axis_data_fifo_1_0}] {/inst }]/inst ]]
+
+# XDC: bd/template_design/ip/template_design_c_addsub_0_0/template_design_c_addsub_0_0_ooc.xdc
+
+# XDC: bd/template_design/ip/template_design_axis_register_slice_0_0/template_design_axis_register_slice_0_0_ooc.xdc
 
 # XDC: bd/template_design/ip/template_design_auto_pc_0/template_design_auto_pc_0_ooc.xdc
 
