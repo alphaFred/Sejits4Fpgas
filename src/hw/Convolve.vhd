@@ -26,6 +26,9 @@ use IEEE.NUMERIC_STD.ALL;
 library UNISIM;
 use UNISIM.VComponents.all;
 
+library xil_defaultlib;
+use xil_defaultlib.filter_input_fifo_1;
+
 use work.the_filter_package.all;
 
 
@@ -76,7 +79,7 @@ architecture Behavioral of Convolve is
     );
     end component;
 
-    component filter_input_fifo is
+    component filter_input_fifo_1 is
     port (
         clk : IN STD_LOGIC;
         rst : IN STD_LOGIC;
@@ -114,7 +117,7 @@ begin
     -- ======================================================================
     -- COMPONENTS
     -- ======================================================================
-    input_fifo : component filter_input_fifo
+    input_fifo : component filter_input_fifo_1
     port map(
         clk => CLK,
         rst => RST,
