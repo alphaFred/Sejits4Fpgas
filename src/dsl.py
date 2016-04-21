@@ -253,9 +253,8 @@ class DSLWrapper(object):
                 raise TransformationError("Invalid parameter type {}".format(type(self.ipt_params[0])))
 
     def _generate_wrapper_2d(self, component):
-        logger.info("Generate project wrapper")
-
-
+        logger.info("Generate 2d project wrapper")
+        #
         ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
         #
         component.library = "work.apply"
@@ -270,15 +269,16 @@ class DSLWrapper(object):
                                           "ieee.numeric_std.all"]),
                      VhdlLibrary(None, ["work.the_filter_package.all"])]
         #
-        architecture = [ret_component] + [VhdlAssignment(t, s) for t,s in zip(self.out_sigs[1:], self.in_sigs[1:])]
-        module = VhdlModule("accel_wrapper", libraries, slice(0, len(self.in_sigs)), self.in_sigs + self.out_sigs, architecture)
+        architecture = [ret_component] + [VhdlAssignment(t, s) for t, s in zip(self.out_sigs[1:], self.in_sigs[1:])]
+        module = VhdlModule("accel_wrapper", libraries,
+                            slice(0, len(self.in_sigs)), self.in_sigs + self.out_sigs, architecture)
         #
         module = transformations.VhdlGraphTransformer().visit(module)
         module = transformations.VhdlPortTransformer().visit(module)
         return VhdlFile("accel_wrapper", [module])
 
     def _generate_wrapper_3d(self, component):
-        logger.info("Generate project wrapper")
+        logger.info("Generate ed project wrapper")
 
         ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(24))
         #
