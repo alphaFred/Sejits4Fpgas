@@ -19,7 +19,7 @@ Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 1024.402 ; gain = 218.047 ; free physical = 1016 ; free virtual = 12358
+Starting RTL Elaboration : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1024.676 ; gain = 218.320 ; free physical = 957 ; free virtual = 11491
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-638] synthesizing module 'top' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/top.vhd:42]
 INFO: [Synth 8-3491] module 'template_design_wrapper' declared at '/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/hdl/template_design_wrapper.vhd:14' bound to instance 'template_design_wrapper_i' of component 'template_design_wrapper' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/top.vhd:95]
@@ -1296,8 +1296,8 @@ INFO: [Synth 8-3491] module 'logic_dff_block' declared at '/home/philipp/Univers
 INFO: [Synth 8-3491] module 'logic_dff_block' declared at '/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/logic_dff.vhd:6' bound to instance 'valid_dff' of component 'logic_dff_block' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/BasicArith.vhd:233]
 INFO: [Synth 8-256] done synthesizing module 'BasicArith' (135#1) [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/BasicArith.vhd:27]
 INFO: [Synth 8-638] synthesizing module 'Convolve' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/Convolve.vhd:54]
-INFO: [Synth 8-3491] module 'filter_input_fifo_1' declared at '/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.runs/synth_1/.Xil/Vivado-14600-philipp-ThinkPad-X250/realtime/filter_input_fifo_1_stub.vhdl:5' bound to instance 'input_fifo' of component 'filter_input_fifo_1' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/Convolve.vhd:120]
-INFO: [Synth 8-638] synthesizing module 'filter_input_fifo_1' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.runs/synth_1/.Xil/Vivado-14600-philipp-ThinkPad-X250/realtime/filter_input_fifo_1_stub.vhdl:20]
+INFO: [Synth 8-3491] module 'filter_input_fifo_1' declared at '/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.runs/synth_1/.Xil/Vivado-3167-philipp-ThinkPad-X250/realtime/filter_input_fifo_1_stub.vhdl:5' bound to instance 'input_fifo' of component 'filter_input_fifo_1' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/Convolve.vhd:120]
+INFO: [Synth 8-638] synthesizing module 'filter_input_fifo_1' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.runs/synth_1/.Xil/Vivado-3167-philipp-ThinkPad-X250/realtime/filter_input_fifo_1_stub.vhdl:20]
 INFO: [Synth 8-3491] module 'filter' declared at '/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/filter.vhd:63' bound to instance 'filter_unit' of component 'FILTER' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/Convolve.vhd:133]
 INFO: [Synth 8-638] synthesizing module 'filter' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/filter.vhd:85]
 INFO: [Synth 8-3491] module 'Bram_FIFO' declared at '/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/bram_fifo.vhd:7' bound to instance 'dfifo' of component 'bram_fifo' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/filter.vhd:193]
@@ -1314,7 +1314,7 @@ INFO: [Synth 8-256] done synthesizing module 'apply' (139#1) [/home/philipp/Univ
 INFO: [Synth 8-256] done synthesizing module 'accel_wrapper' (140#1) [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/accel_wrapper.vhd:19]
 INFO: [Synth 8-256] done synthesizing module 'top' (141#1) [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/top.vhd:42]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:02:52 ; elapsed = 00:02:52 . Memory (MB): peak = 1377.664 ; gain = 571.309 ; free physical = 694 ; free virtual = 11724
+Finished RTL Elaboration : Time (s): cpu = 00:03:03 ; elapsed = 00:03:05 . Memory (MB): peak = 1377.938 ; gain = 571.582 ; free physical = 484 ; free virtual = 11178
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -1425,9 +1425,9 @@ INFO: [Synth 8-3295] tying undriven pin U0:sl_iport0[18] to constant 0 [/home/ph
 INFO: [Synth 8-3295] tying undriven pin U0:sl_iport0[17] to constant 0 [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_ila_0_0/synth/template_design_ila_0_0.vhd:3233]
 INFO: [Common 17-14] Message 'Synth 8-3295' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:02:53 ; elapsed = 00:02:54 . Memory (MB): peak = 1377.664 ; gain = 571.309 ; free physical = 694 ; free virtual = 11725
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:03:04 ; elapsed = 00:03:07 . Memory (MB): peak = 1377.938 ; gain = 571.582 ; free physical = 483 ; free virtual = 11179
 ---------------------------------------------------------------------------------
-INFO: [Netlist 29-17] Analyzing 522 Unisim elements for replacement
+INFO: [Netlist 29-17] Analyzing 525 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Device 21-403] Loading part xc7z020clg484-1
 INFO: [Project 1-570] Preparing netlist for logic optimization
@@ -1465,16 +1465,16 @@ INFO: [Project 1-111] Unisim Transformation Summary:
   FDR => FDRE: 12 instances
   SRL16 => SRL16E: 1 instances
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00.09 ; elapsed = 00:00:00.09 . Memory (MB): peak = 1469.672 ; gain = 2.000 ; free physical = 1348 ; free virtual = 11733
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.09 ; elapsed = 00:00:00.08 . Memory (MB): peak = 1472.945 ; gain = 2.000 ; free physical = 436 ; free virtual = 11151
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:03:15 ; elapsed = 00:03:15 . Memory (MB): peak = 1469.676 ; gain = 663.320 ; free physical = 1360 ; free virtual = 11745
+Finished Constraint Validation : Time (s): cpu = 00:03:28 ; elapsed = 00:03:30 . Memory (MB): peak = 1472.949 ; gain = 666.594 ; free physical = 378 ; free virtual = 11091
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7z020clg484-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:03:15 ; elapsed = 00:03:15 . Memory (MB): peak = 1469.676 ; gain = 663.320 ; free physical = 1360 ; free virtual = 11745
+Finished Loading Part and Timing Information : Time (s): cpu = 00:03:28 ; elapsed = 00:03:30 . Memory (MB): peak = 1472.949 ; gain = 666.594 ; free physical = 378 ; free virtual = 11091
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
@@ -1484,6 +1484,12 @@ Applied set_property DONT_TOUCH = true for template_design_wrapper_i/template_de
 Applied set_property DONT_TOUCH = true for template_design_wrapper_i/template_design_i/axis_data_fifo_1/inst. (constraint file  /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.runs/synth_1/dont_touch.xdc, line 81).
 Applied set_property DONT_TOUCH = true for accel_wrapper/VhdlComponent/VhdlComponent/input_fifo. (constraint file  auto generated constraint, line ).
 Applied set_property DONT_TOUCH = true for accel_wrapper/VhdlComponent/VhdlComponent_1/input_fifo. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for accel_wrapper/VhdlComponent_1/VhdlComponent/input_fifo. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for accel_wrapper/VhdlComponent_1/VhdlComponent_1/input_fifo. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for accel_wrapper/VhdlComponent_2/VhdlComponent/input_fifo. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for accel_wrapper/VhdlComponent_2/VhdlComponent_1/input_fifo. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for accel_wrapper/VhdlComponent_3/VhdlComponent/input_fifo. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for accel_wrapper/VhdlComponent_3/VhdlComponent_1/input_fifo. (constraint file  auto generated constraint, line ).
 Applied set_property DONT_TOUCH = true for template_design_wrapper_i/template_design_i. (constraint file  auto generated constraint, line ).
 Applied set_property DONT_TOUCH = true for template_design_wrapper_i/template_design_i/MINIMAL_DMA_0. (constraint file  auto generated constraint, line ).
 Applied set_property DONT_TOUCH = true for template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0. (constraint file  auto generated constraint, line ).
@@ -1501,7 +1507,7 @@ Applied set_property DONT_TOUCH = true for template_design_wrapper_i/template_de
 Applied set_property DONT_TOUCH = true for template_design_wrapper_i/template_design_i/util_vector_logic_0. (constraint file  auto generated constraint, line ).
 Applied set_property DONT_TOUCH = true for template_design_wrapper_i/template_design_i/util_vector_logic_1. (constraint file  auto generated constraint, line ).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:03:18 ; elapsed = 00:03:18 . Memory (MB): peak = 1469.676 ; gain = 663.320 ; free physical = 1364 ; free virtual = 11749
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:03:31 ; elapsed = 00:03:33 . Memory (MB): peak = 1472.949 ; gain = 666.594 ; free physical = 433 ; free virtual = 11146
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-5546] ROM "axi_wlast" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "axi_wlast" won't be mapped to RAM because it is too sparse
@@ -1621,15 +1627,47 @@ INFO: [Synth 8-5545] ROM "filter_vsync" won't be mapped to RAM because address s
 INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
 INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
 INFO: [Synth 8-5545] ROM "filter_h_ctr" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_vsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_h_ctr" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_vsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_h_ctr" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_vsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_h_ctr" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_vsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_h_ctr" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_vsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_h_ctr" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_vsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_h_ctr" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:03:28 ; elapsed = 00:03:28 . Memory (MB): peak = 1469.676 ; gain = 663.320 ; free physical = 1372 ; free virtual = 11755
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:03:40 ; elapsed = 00:03:43 . Memory (MB): peak = 1472.949 ; gain = 666.594 ; free physical = 457 ; free virtual = 11167
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
-+-+--------------+------------+----------+
-| |RTL Partition |Replication |Instances |
-+-+--------------+------------+----------+
-+-+--------------+------------+----------+
++------+------------------------+------------+----------+
+|      |RTL Partition           |Replication |Instances |
++------+------------------------+------------+----------+
+|1     |accel_wrapper           |           1|     24247|
+|2     |template_design_wrapper |           1|     29071|
++------+------------------------+------------+----------+
 ---------------------------------------------------------------------------------
 Start RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -1651,7 +1689,7 @@ BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
 ---------------------------------------------------------------------------------
 Finished Part Resource Summary
 ---------------------------------------------------------------------------------
-Start Parallel Synthesis Optimization  : Time (s): cpu = 00:03:28 ; elapsed = 00:03:28 . Memory (MB): peak = 1469.676 ; gain = 663.320 ; free physical = 1372 ; free virtual = 11754
+Start Parallel Synthesis Optimization  : Time (s): cpu = 00:03:41 ; elapsed = 00:03:43 . Memory (MB): peak = 1472.949 ; gain = 666.594 ; free physical = 451 ; free virtual = 11164
 ---------------------------------------------------------------------------------
 Start Cross Boundary Optimization
 ---------------------------------------------------------------------------------
@@ -1727,137 +1765,189 @@ INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[1].dfifo/sempty" won'
 INFO: [Synth 8-5546] ROM "filter_unit/next_state" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
 INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[0].dfifo/sempty" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[1].dfifo/sempty" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "filter_unit/next_state" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[0].dfifo/sempty" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[1].dfifo/sempty" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "filter_unit/next_state" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[0].dfifo/sempty" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[1].dfifo/sempty" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "filter_unit/next_state" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[0].dfifo/sempty" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[1].dfifo/sempty" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "filter_unit/next_state" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[0].dfifo/sempty" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[1].dfifo/sempty" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "filter_unit/next_state" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[0].dfifo/sempty" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "filter_unit/FIFO_Data_Generation[1].dfifo/sempty" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "filter_unit/next_state" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5545] ROM "FILTER_state" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
+INFO: [Synth 8-5545] ROM "filter_hsync" won't be mapped to RAM because address size (32) is larger than maximum supported(18)
 ---------------------------------------------------------------------------------
-Finished Cross Boundary Optimization : Time (s): cpu = 00:03:34 ; elapsed = 00:03:34 . Memory (MB): peak = 1469.676 ; gain = 663.320 ; free physical = 1373 ; free virtual = 11756
+Finished Cross Boundary Optimization : Time (s): cpu = 00:03:49 ; elapsed = 00:03:51 . Memory (MB): peak = 1472.949 ; gain = 666.594 ; free physical = 453 ; free virtual = 11160
 ---------------------------------------------------------------------------------
-Finished Parallel Reinference  : Time (s): cpu = 00:03:34 ; elapsed = 00:03:34 . Memory (MB): peak = 1469.676 ; gain = 663.320 ; free physical = 1373 ; free virtual = 11756
+Finished Parallel Reinference  : Time (s): cpu = 00:03:49 ; elapsed = 00:03:51 . Memory (MB): peak = 1472.949 ; gain = 666.594 ; free physical = 453 ; free virtual = 11160
 
 Report RTL Partitions: 
-+-+--------------+------------+----------+
-| |RTL Partition |Replication |Instances |
-+-+--------------+------------+----------+
-+-+--------------+------------+----------+
-INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg to conserve power
-INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg to conserve power
-INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM accel_wrapper/VhdlComponent/VhdlComponent_1/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg to conserve power
-INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM accel_wrapper/VhdlComponent/VhdlComponent_1/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg to conserve power
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/B_DSP1_reg[17] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\accel_wrapper/VhdlComponent/VhdlComponent_1/filter_unit/filtergeneration[3].pfilt_reg[3][10] )
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[46] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[45] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[44] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[43] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[42] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[41] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[40] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[39] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[38] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[37] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[36] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[35] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[34] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[33] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[32] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[31] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[30] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[29] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[28] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[27] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[26] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[25] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[24] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[23] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[22] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[21] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[20] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[19] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[18] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[17] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[16] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[15] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[14] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[13] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[12] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[11] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[10] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[9] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[8] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[6] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[5] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[4] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[3] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[2] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[1] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[0] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[29] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/C_DSP1_reg[47] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[0] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[1] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[2] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[3] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[4] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[5] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[6] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[7] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[8] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[9] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[10] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[11] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[12] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[13] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[14] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[15] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[16] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[17] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[18] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[19] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[20] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[21] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[22] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[23] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[24] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[25] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[26] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[27] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/A_DSP1_reg[28] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/B_DSP1_reg[17] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/B_DSP1_reg[8] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/B_DSP1_reg[9] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/B_DSP1_reg[10] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/B_DSP1_reg[11] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/B_DSP1_reg[12] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/B_DSP1_reg[13] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/B_DSP1_reg[14] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/B_DSP1_reg[15] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlBinaryOp/B_DSP1_reg[16] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/fifo_wr_en_reg[1] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/valid_reg_reg ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/vsync_state_reg ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/line_cnt_reg[0] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/line_cnt_reg[1] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/line_cnt_reg[2] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/line_cnt_reg[3] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/line_cnt_reg[4] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/line_cnt_reg[5] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/line_cnt_reg[6] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/line_cnt_reg[7] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/line_cnt_reg[8] ) is unused and will be removed from module top.
-WARNING: [Synth 8-3332] Sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/line_cnt_reg[9] ) is unused and will be removed from module top.
-INFO: [Common 17-14] Message 'Synth 8-3332' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
++------+------------------------+------------+----------+
+|      |RTL Partition           |Replication |Instances |
++------+------------------------+------------+----------+
+|1     |accel_wrapper           |           1|     24719|
+|2     |template_design_wrapper |           1|     28658|
++------+------------------------+------------+----------+
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent_1/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent_1/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent_1/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent_1/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent_1/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent_1/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent_1/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg to conserve power
+INFO: [Synth 8-4652] Swapped enable and write-enable on 1 RAM instances of RAM VhdlComponent_1/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg to conserve power
+INFO: [Synth 8-3332] Sequential element (\ila_core_inst/xsdb_memory_read_inst/multiple_read_latency.read_enable_out_reg[0] ) is unused and will be removed from module ila_v5_1_ila.
+INFO: [Synth 8-3332] Sequential element (\ila_core_inst/xsdb_memory_read_inst/multiple_enable_latency.enable_out_reg[0] ) is unused and will be removed from module ila_v5_1_ila.
 ---------------------------------------------------------------------------------
 Start Area Optimization
 ---------------------------------------------------------------------------------
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/valid_reg_reg ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/vsync_state_reg ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/v_sync_int_reg ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/valid_reg_reg ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/vsync_state_reg ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/v_sync_int_reg ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[0] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[1] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[2] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[3] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[4] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[5] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[6] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[7] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[8] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[9] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[10] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[11] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[0] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[1] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[2] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[3] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[4] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[5] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[6] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[7] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[8] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[9] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[10] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[11] ) is unused and will be removed from module apply__xdcDup__1.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/valid_reg_reg ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/vsync_state_reg ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/v_sync_int_reg ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/valid_reg_reg ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/vsync_state_reg ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/v_sync_int_reg ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[0] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[1] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[2] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[3] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[4] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[5] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[6] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[7] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[8] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[9] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[10] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[11] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[0] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[1] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[2] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[3] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[4] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[5] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[6] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[7] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[8] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[9] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[10] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[11] ) is unused and will be removed from module apply__xdcDup__2.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/valid_reg_reg ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/vsync_state_reg ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/v_sync_int_reg ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/valid_reg_reg ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/vsync_state_reg ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/v_sync_int_reg ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[0] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[1] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[2] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[3] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[4] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[5] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[6] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[7] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[8] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[9] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[10] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[11] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[0] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[1] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[2] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[3] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[4] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[5] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[6] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[7] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[8] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[9] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[10] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/line_cnt_reg[11] ) is unused and will be removed from module apply__xdcDup__3.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/valid_reg_reg ) is unused and will be removed from module apply.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/vsync_state_reg ) is unused and will be removed from module apply.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/v_sync_int_reg ) is unused and will be removed from module apply.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/valid_reg_reg ) is unused and will be removed from module apply.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/vsync_state_reg ) is unused and will be removed from module apply.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent_1/filter_unit/v_sync_int_reg ) is unused and will be removed from module apply.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[0] ) is unused and will be removed from module apply.
+WARNING: [Synth 8-3332] Sequential element (\VhdlComponent/filter_unit/line_cnt_reg[1] ) is unused and will be removed from module apply.
+INFO: [Common 17-14] Message 'Synth 8-3332' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (accel_wrapper/VhdlComponent_2/\VhdlBinaryOp/B_DSP1_reg[17] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (accel_wrapper/VhdlComponent_1/\VhdlBinaryOp/B_DSP1_reg[17] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (accel_wrapper/VhdlComponent_3/\VhdlBinaryOp/B_DSP1_reg[17] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (accel_wrapper/VhdlComponent/\VhdlBinaryOp/B_DSP1_reg[17] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (accel_wrapper/VhdlComponent/\VhdlComponent_1/filter_unit/filtergeneration[3].pfilt_reg[3][9] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (accel_wrapper/VhdlComponent_1/\VhdlComponent_1/filter_unit/filtergeneration[3].pfilt_reg[3][9] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (accel_wrapper/VhdlComponent_2/\VhdlComponent_1/filter_unit/filtergeneration[3].pfilt_reg[3][9] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (accel_wrapper/VhdlComponent_3/\VhdlComponent_1/filter_unit/filtergeneration[3].pfilt_reg[3][9] )
 ---------------------------------------------------------------------------------
-Finished Area Optimization : Time (s): cpu = 00:03:46 ; elapsed = 00:03:47 . Memory (MB): peak = 1469.680 ; gain = 663.324 ; free physical = 1341 ; free virtual = 11724
+Finished Area Optimization : Time (s): cpu = 00:04:23 ; elapsed = 00:04:26 . Memory (MB): peak = 1480.961 ; gain = 674.605 ; free physical = 477 ; free virtual = 11162
 ---------------------------------------------------------------------------------
-Finished Parallel Area Optimization  : Time (s): cpu = 00:03:46 ; elapsed = 00:03:47 . Memory (MB): peak = 1469.680 ; gain = 663.324 ; free physical = 1341 ; free virtual = 11724
+Finished Parallel Area Optimization  : Time (s): cpu = 00:04:23 ; elapsed = 00:04:26 . Memory (MB): peak = 1480.961 ; gain = 674.605 ; free physical = 477 ; free virtual = 11162
 
 Report RTL Partitions: 
-+-+--------------+------------+----------+
-| |RTL Partition |Replication |Instances |
-+-+--------------+------------+----------+
-+-+--------------+------------+----------+
-Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:03:46 ; elapsed = 00:03:47 . Memory (MB): peak = 1469.680 ; gain = 663.324 ; free physical = 1341 ; free virtual = 11724
++------+------------------------+------------+----------+
+|      |RTL Partition           |Replication |Instances |
++------+------------------------+------------+----------+
+|1     |accel_wrapper           |           1|     11683|
+|2     |template_design_wrapper |           1|     27564|
++------+------------------------+------------+----------+
+Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:04:23 ; elapsed = 00:04:26 . Memory (MB): peak = 1480.961 ; gain = 674.605 ; free physical = 476 ; free virtual = 11162
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
@@ -1869,27 +1959,48 @@ WARNING: [Synth 8-3321] Empty from list for constraint at line 52 of /home/phili
 WARNING: [Synth 8-3321] Empty from list for constraint at line 58 of /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_ila_0_0/ila_v5_1/constraints/ila.xdc. [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_ila_0_0/ila_v5_1/constraints/ila.xdc:58]
 WARNING: [Synth 8-3321] Empty from list for constraint at line 59 of /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_ila_0_0/ila_v5_1/constraints/ila.xdc. [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_ila_0_0/ila_v5_1/constraints/ila.xdc:59]
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:04:03 ; elapsed = 00:04:03 . Memory (MB): peak = 1658.672 ; gain = 852.316 ; free physical = 1152 ; free virtual = 11535
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:04:39 ; elapsed = 00:04:42 . Memory (MB): peak = 1718.953 ; gain = 912.598 ; free physical = 275 ; free virtual = 10926
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:04:04 ; elapsed = 00:04:04 . Memory (MB): peak = 1676.680 ; gain = 870.324 ; free physical = 1135 ; free virtual = 11517
+Finished Timing Optimization : Time (s): cpu = 00:04:41 ; elapsed = 00:04:44 . Memory (MB): peak = 1735.969 ; gain = 929.613 ; free physical = 259 ; free virtual = 10911
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
-+-+--------------+------------+----------+
-| |RTL Partition |Replication |Instances |
-+-+--------------+------------+----------+
-+-+--------------+------------+----------+
++------+------------------------+------------+----------+
+|      |RTL Partition           |Replication |Instances |
++------+------------------------+------------+----------+
+|1     |accel_wrapper           |           1|     11683|
+|2     |template_design_wrapper |           1|     27564|
++------+------------------------+------------+----------+
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/filtergeneration[4].pfilt_reg[4][10] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\accel_wrapper/VhdlComponent_1/VhdlComponent/filter_unit/filtergeneration[4].pfilt_reg[4][10] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\accel_wrapper/VhdlComponent_2/VhdlComponent/filter_unit/filtergeneration[4].pfilt_reg[4][10] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\accel_wrapper/VhdlComponent_3/VhdlComponent/filter_unit/filtergeneration[4].pfilt_reg[4][10] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\accel_wrapper/VhdlComponent/VhdlComponent_1/filter_unit/filtergeneration[4].pfilt_reg[4][10] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\accel_wrapper/VhdlComponent_1/VhdlComponent_1/filter_unit/filtergeneration[4].pfilt_reg[4][10] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\accel_wrapper/VhdlComponent_2/VhdlComponent_1/filter_unit/filtergeneration[4].pfilt_reg[4][10] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\accel_wrapper/VhdlComponent_3/VhdlComponent_1/filter_unit/filtergeneration[4].pfilt_reg[4][10] )
 INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
 INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent/VhdlComponent/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
 INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent/VhdlComponent_1/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
 INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent/VhdlComponent_1/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent_1/VhdlComponent/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent_1/VhdlComponent/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent_1/VhdlComponent_1/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent_1/VhdlComponent_1/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent_2/VhdlComponent/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent_2/VhdlComponent/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent_2/VhdlComponent_1/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent_2/VhdlComponent_1/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent_3/VhdlComponent/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent_3/VhdlComponent/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent_3/VhdlComponent_1/filter_unit/FIFO_Data_Generation[0].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance \accel_wrapper/VhdlComponent_3/VhdlComponent_1/filter_unit/FIFO_Data_Generation[1].dfifo/bram_reg  (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:04:15 ; elapsed = 00:04:15 . Memory (MB): peak = 1725.945 ; gain = 919.590 ; free physical = 1058 ; free virtual = 11473
+Finished Technology Mapping : Time (s): cpu = 00:04:57 ; elapsed = 00:05:00 . Memory (MB): peak = 1787.398 ; gain = 981.043 ; free physical = 228 ; free virtual = 10872
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -1929,7 +2040,7 @@ INFO: [Synth 8-4618] Found max_fanout attribute set to 10 on net \inst/gen_axili
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:04:17 ; elapsed = 00:04:18 . Memory (MB): peak = 1725.945 ; gain = 919.590 ; free physical = 1041 ; free virtual = 11475
+Finished IO Insertion : Time (s): cpu = 00:04:59 ; elapsed = 00:05:03 . Memory (MB): peak = 1787.398 ; gain = 981.043 ; free physical = 230 ; free virtual = 10874
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -1942,7 +2053,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:04:17 ; elapsed = 00:04:18 . Memory (MB): peak = 1725.945 ; gain = 919.590 ; free physical = 1041 ; free virtual = 11475
+Finished Renaming Generated Instances : Time (s): cpu = 00:05:00 ; elapsed = 00:05:03 . Memory (MB): peak = 1787.398 ; gain = 981.043 ; free physical = 232 ; free virtual = 10876
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -1954,13 +2065,13 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:04:19 ; elapsed = 00:04:20 . Memory (MB): peak = 1725.945 ; gain = 919.590 ; free physical = 1035 ; free virtual = 11493
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:05:02 ; elapsed = 00:05:05 . Memory (MB): peak = 1787.398 ; gain = 981.043 ; free physical = 262 ; free virtual = 10892
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Start Renaming Generated Ports : Time (s): cpu = 00:04:19 ; elapsed = 00:04:20 . Memory (MB): peak = 1725.945 ; gain = 919.590 ; free physical = 1035 ; free virtual = 11493
+Start Renaming Generated Ports : Time (s): cpu = 00:05:02 ; elapsed = 00:05:05 . Memory (MB): peak = 1787.398 ; gain = 981.043 ; free physical = 262 ; free virtual = 10892
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:04:19 ; elapsed = 00:04:20 . Memory (MB): peak = 1725.945 ; gain = 919.590 ; free physical = 1016 ; free virtual = 11475
+Finished Renaming Generated Ports : Time (s): cpu = 00:05:02 ; elapsed = 00:05:05 . Memory (MB): peak = 1787.398 ; gain = 981.043 ; free physical = 261 ; free virtual = 10891
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -1970,64 +2081,70 @@ Report BlackBoxes:
 +------+--------------------+----------+
 |      |BlackBox name       |Instances |
 +------+--------------------+----------+
-|1     |filter_input_fifo_1 |         2|
+|1     |filter_input_fifo_1 |         8|
 +------+--------------------+----------+
 
 Report Cell Usage: 
-+------+----------------------------+------+
-|      |Cell                        |Count |
-+------+----------------------------+------+
-|1     |filter_input_fifo_1_bbox    |     1|
-|2     |filter_input_fifo_1_bbox__2 |     1|
-|3     |BIBUF                       |   130|
-|4     |BUFG                        |     1|
-|5     |CARRY4                      |   255|
-|6     |CFGLUT5                     |   325|
-|7     |DSP48E1                     |     1|
-|8     |GND                         |     2|
-|9     |LUT1                        |   517|
-|10    |LUT2                        |   365|
-|11    |LUT3                        |   748|
-|12    |LUT4                        |   876|
-|13    |LUT5                        |  1209|
-|14    |LUT6                        |  1528|
-|15    |MUXCY                       |   102|
-|16    |MUXCY_L                     |   123|
-|17    |MUXF7                       |   141|
-|18    |MUXF8                       |     4|
-|19    |PS7                         |     1|
-|20    |RAM32M                      |     2|
-|21    |RAM32X1D                    |     1|
-|22    |RAMB18E1                    |     1|
-|23    |RAMB18E1_1                  |     4|
-|24    |RAMB36E1                    |     4|
-|25    |RAMB36E1_1                  |     6|
-|26    |SRL16                       |     1|
-|27    |SRL16E                      |   244|
-|28    |SRLC16E                     |     2|
-|29    |SRLC32E                     |    64|
-|30    |VCC                         |     1|
-|31    |XORCY                       |   184|
-|32    |FDCE                        |   278|
-|33    |FDPE                        |    83|
-|34    |FDR                         |     8|
-|35    |FDRE                        |  5928|
-|36    |FDSE                        |   118|
-+------+----------------------------+------+
++------+-----------------------------+------+
+|      |Cell                         |Count |
++------+-----------------------------+------+
+|1     |filter_input_fifo_1_bbox     |     1|
+|2     |filter_input_fifo_1_bbox__10 |     1|
+|3     |filter_input_fifo_1_bbox__11 |     1|
+|4     |filter_input_fifo_1_bbox__12 |     1|
+|5     |filter_input_fifo_1_bbox__13 |     1|
+|6     |filter_input_fifo_1_bbox__14 |     1|
+|7     |filter_input_fifo_1_bbox__8  |     1|
+|8     |filter_input_fifo_1_bbox__9  |     1|
+|9     |BIBUF                        |   130|
+|10    |BUFG                         |     1|
+|11    |CARRY4                       |   580|
+|12    |CFGLUT5                      |   325|
+|13    |DSP48E1                      |     4|
+|14    |GND                          |     2|
+|15    |LUT1                         |   905|
+|16    |LUT2                         |  1013|
+|17    |LUT3                         |  1222|
+|18    |LUT4                         |  1410|
+|19    |LUT5                         |  1353|
+|20    |LUT6                         |  1872|
+|21    |MUXCY                        |   102|
+|22    |MUXCY_L                      |   371|
+|23    |MUXF7                        |   140|
+|24    |MUXF8                        |     4|
+|25    |PS7                          |     1|
+|26    |RAM32M                       |     2|
+|27    |RAM32X1D                     |     1|
+|28    |RAMB18E1                     |     1|
+|29    |RAMB18E1_1                   |    16|
+|30    |RAMB36E1                     |     4|
+|31    |RAMB36E1_1                   |     6|
+|32    |SRL16                        |     1|
+|33    |SRL16E                       |   244|
+|34    |SRLC16E                      |     2|
+|35    |SRLC32E                      |    64|
+|36    |VCC                          |     1|
+|37    |XORCY                        |   440|
+|38    |FDCE                         |   554|
+|39    |FDPE                         |    83|
+|40    |FDR                          |     8|
+|41    |FDRE                         |  7825|
+|42    |FDSE                         |   174|
++------+-----------------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:04:20 ; elapsed = 00:04:21 . Memory (MB): peak = 1725.945 ; gain = 919.590 ; free physical = 1002 ; free virtual = 11465
+Finished Writing Synthesis Report : Time (s): cpu = 00:05:03 ; elapsed = 00:05:06 . Memory (MB): peak = 1787.398 ; gain = 981.043 ; free physical = 260 ; free virtual = 10891
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 0 critical warnings and 233 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:03:57 ; elapsed = 00:03:58 . Memory (MB): peak = 1725.945 ; gain = 665.531 ; free physical = 1003 ; free virtual = 11465
-Synthesis Optimization Complete : Time (s): cpu = 00:04:21 ; elapsed = 00:04:21 . Memory (MB): peak = 1725.945 ; gain = 919.590 ; free physical = 1003 ; free virtual = 11465
+Synthesis finished with 0 errors, 0 critical warnings and 800 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:04:38 ; elapsed = 00:04:41 . Memory (MB): peak = 1787.398 ; gain = 723.711 ; free physical = 261 ; free virtual = 10891
+Synthesis Optimization Complete : Time (s): cpu = 00:05:03 ; elapsed = 00:05:06 . Memory (MB): peak = 1787.398 ; gain = 981.043 ; free physical = 261 ; free virtual = 10891
 INFO: [Project 1-571] Translating synthesized netlist
-INFO: [Netlist 29-17] Analyzing 915 Unisim elements for replacement
+INFO: [Netlist 29-17] Analyzing 1759 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
 INFO: [Project 1-111] Unisim Transformation Summary:
-  A total of 401 instances were transformed.
-  (MUXCY,XORCY) => CARRY4: 64 instances
+  A total of 465 instances were transformed.
+  (MUXCY,XORCY) => CARRY4: 128 instances
   CFGLUT5 => CFGLUT5 (SRLC32E, SRL16E): 276 instances
   CFGLUT5 => SRLC32E: 49 instances
   FDR => FDRE: 8 instances
@@ -2036,8 +2153,8 @@ INFO: [Project 1-111] Unisim Transformation Summary:
   SRL16 => SRL16E: 1 instances
 
 INFO: [Common 17-83] Releasing license: Synthesis
-1523 Infos, 216 Warnings, 0 Critical Warnings and 0 Errors encountered.
+1622 Infos, 214 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:04:27 ; elapsed = 00:04:26 . Memory (MB): peak = 1725.949 ; gain = 765.555 ; free physical = 992 ; free virtual = 11510
-report_utilization: Time (s): cpu = 00:00:00.33 ; elapsed = 00:00:00.39 . Memory (MB): peak = 1757.965 ; gain = 0.000 ; free physical = 991 ; free virtual = 11513
-INFO: [Common 17-206] Exiting Vivado at Wed Apr 20 13:50:57 2016...
+synth_design: Time (s): cpu = 00:05:12 ; elapsed = 00:05:12 . Memory (MB): peak = 1787.402 ; gain = 826.734 ; free physical = 371 ; free virtual = 10979
+report_utilization: Time (s): cpu = 00:00:00.33 ; elapsed = 00:00:00.37 . Memory (MB): peak = 1819.418 ; gain = 0.000 ; free physical = 369 ; free virtual = 10977
+INFO: [Common 17-206] Exiting Vivado at Wed Apr 20 15:39:35 2016...

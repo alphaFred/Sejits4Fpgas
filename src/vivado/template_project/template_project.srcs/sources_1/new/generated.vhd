@@ -31,8 +31,8 @@ VhdlBinaryOp : entity work.BasicArith
 VhdlComponent : entity work.Convolve                       
     generic map(FILTERMATRIX => (1, 2, 1, 2, 4, 2, 1, 2, 1),
                 FILTER_SCALE => 16,
-                IMG_WIDTH => 450,
-                IMG_HEIGHT => 64,
+                IMG_WIDTH => 315,
+                IMG_HEIGHT => 300,
                 IN_BITWIDTH => 8,
                 OUT_BITWIDTH => 8)                       
     port map(CLK => CLK,
@@ -45,8 +45,8 @@ VhdlComponent : entity work.Convolve
 VhdlComponent_1 : entity work.Convolve                       
     generic map(FILTERMATRIX => (1, 2, 1, 2, 4, 2, 1, 2, 1),
                 FILTER_SCALE => 16,
-                IMG_WIDTH => 450,
-                IMG_HEIGHT => 64,
+                IMG_WIDTH => 315,
+                IMG_HEIGHT => 300,
                 IN_BITWIDTH => 8,
                 OUT_BITWIDTH => 8)                       
     port map(CLK => CLK,
