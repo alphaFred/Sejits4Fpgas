@@ -133,7 +133,7 @@ def test_func(a):
     #
     c = 255 - a
     #
-    return bb_convolve(filtMASK_Gauss, 16, 450, 64, 8, 8, bb_convolve(filtMASK_Gauss, 16, 450, 64, 8, 8, c))
+    return bb_convolve(filtMASK_Gauss, 16, 315, 300, 8, 8, bb_convolve(filtMASK_Gauss, 16, 315, 300, 8, 8, c))
 
 # def test_func(img):
 #     filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)  # Gauss
