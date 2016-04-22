@@ -15,7 +15,7 @@ from ctree.jit import LazySpecializedFunction
 from src.transformations import VhdlIRTransformer, VhdlBaseTransformer
 from src.dsl import DSLTransformer
 from src.nodes import VhdlFile, VhdlProject
-from src.dsl import get_dsl_type, DSLWrapper
+from src.dsl import get_dsl_type, gen_dsl_wrapper
 #
 from ctree.jit import ConcreteSpecializedFunction
 #
@@ -41,8 +41,7 @@ class BasicTranslator(LazySpecializedFunction):
             else:
                 raise IOError()
         else:
-            return {'arg_type': get_dsl_type(args)}
-
+            return {'arg_type': get_dsl_type(args, 32)}
 
     def transform(self, tree, program_config):
         from ctree.visual.dot_manager import DotManager
@@ -70,16 +69,21 @@ class BasicTranslator(LazySpecializedFunction):
             #
             l_funcs = DSLTransformer.lifted_functions()
             tree = VhdlBaseTransformer(program_config.args_subconfig['arg_type'], l_funcs).visit(tree)
-            # tree = VhdlIRTransformer(program_config.args_subconfig['arg_type'], l_funcs).visit(tree)
 
             # =================================================================
             DotManager().dot_ast_to_file(tree,
                                          file_name=img_path + posttrans_tree)
             # =================================================================
-            accel_file = VhdlFile("generated", body=[tree])
-            wrapper_file = DSLWrapper(program_config.args_subconfig['arg_type']).generate_wrapper(file2wrap=accel_file)
 
-            # add pregenerated vhdl files
+            # Generate accelerator file
+            accel_file = VhdlFile("generated", body=[tree])
+
+            # Generate wrapper file
+            wrapper_file = gen_dsl_wrapper(program_config.args_subconfig['arg_type'],
+                                           axi_stream_width=32,
+                                           file2wrap=accel_file)
+
+            # Add pregenerated vhdl files
             hw_file_path = "./src/hw/"
             prebuilt_files = []
             for fn in glob.glob(hw_file_path + "*"):
@@ -162,6 +166,7 @@ def bb_sub(x, y):
 
 def test_func(a):
     return bb_sub(255, a)
+
 
 transformed_func = BasicTranslator.from_function(test_func)
 

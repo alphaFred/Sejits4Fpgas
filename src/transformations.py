@@ -36,10 +36,10 @@ UNARY_OP = namedtuple("UNARY_OP", ["i_args", "out_arg"])
 class VhdlBaseTransformer(object):
     """Run all DSL independant transformations."""
 
-    def __init__(self, ipt_params=None, lifted_functions=None):
+    def __init__(self, ipt_params, lifted_functions):
         """Initialize transform parameters."""
-        self.ipt_params = ipt_params if ipt_params is not None else []
-        self.lifted_functions = lifted_functions if lifted_functions is not None else []
+        self.ipt_params = ipt_params
+        self.lifted_functions = lifted_functions
 
     def visit(self, tree):
         """Visit all transformation classes sequentially."""
@@ -84,12 +84,13 @@ class VhdlKwdTransformer(ast.NodeTransformer):
 
 class VhdlIRTransformer(ast.NodeTransformer):
 
-    def __init__(self, ipt_param_types=None, lifted_functions=None):
+    def __init__(self, ipt_param_types, lifted_functions, axi_stream_width=32):
         self.symbols = {}
         self.assignments = set()
         self.n_con_signals = 0
-        #
-        self.lifted_functions = lifted_functions if lifted_functions is not None else []
+        self.axi_stream_width = axi_stream_width
+        # prepare lifte functions from DSL transformer
+        self.lifted_functions = lifted_functions
         self.lifted_function_names = {f.name for f in lifted_functions}
         self.lifted_functions.reverse()
         #
@@ -169,7 +170,7 @@ class VhdlIRTransformer(ast.NodeTransformer):
     def visit_SymbolRef(self, node):
         if node.name not in self.symbols:
             vhdl_sym = VhdlSignal(name=node.name,
-                                  vhdl_type=VhdlType.VhdlStdLogicVector(8))
+                                  vhdl_type=VhdlType.VhdlStdLogicVector(self.axi_stream_width))
             self.symbols[vhdl_sym.name] = vhdl_sym
         return self.symbols[node.name]
 
