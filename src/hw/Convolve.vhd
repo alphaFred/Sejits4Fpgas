@@ -37,7 +37,9 @@ entity Convolve is
         FILTERMATRIX    : filtMASK      := (0,0,0,0,1,0,0,0,0);
         FILTER_SCALE    : integer       := 1;
         IMG_WIDTH       : positive      := 640;
-        IMG_HEIGHT      : positive      := 480
+        IMG_HEIGHT      : positive      := 480;
+        IN_BITWIDTH     : positive      := 8;
+        OUT_BITWIDTH    : positive      := 8
         );
     Port (
         CLK             : in  std_logic;
@@ -132,8 +134,8 @@ begin
     generic map (
         FILTERMATRIX    => FILTERMATRIX,
         FILTER_SCALE    => FILTER_SCALE,
-        IN_BITWIDTH     => 32,
-        OUT_BITWIDTH    => 32
+        IN_BITWIDTH     => IN_BITWIDTH,
+        OUT_BITWIDTH    => OUT_BITWIDTH
     )
     port map (
         CLK => CLK,
