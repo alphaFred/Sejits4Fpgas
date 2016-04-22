@@ -165,7 +165,8 @@ def bb_sub(x, y):
 #     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
 
 def test_func(a):
-    return bb_sub(255, a)
+    c = bb_split(a, 0)
+    return bb_sub(255, c)
 
 
 transformed_func = BasicTranslator.from_function(test_func)
