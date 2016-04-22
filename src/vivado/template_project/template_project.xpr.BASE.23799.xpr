@@ -21,7 +21,44 @@
   <FileSets Version="1" Minor="31">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
       <Filter Type="Srcs"/>
+      <File Path="$PSRCDIR/sources_1/new/bram_fifo.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/new/the_filter_package.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/filter.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/logic_dff.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/filter_input_fifo_1/filter_input_fifo_1.xci">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/Convolve.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/BasicArith.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -33,36 +70,29 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_c_addsub_0_0/template_design_c_addsub_0_0.xci"/>
         <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="hdl/template_design.hwdef"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="hw_handoff/template_design_bd.tcl"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_util_vector_logic_1_0/template_design_util_vector_logic_1_0.xci"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_processing_system7_0_axi_periph_0/template_design_processing_system7_0_axi_periph_0.xci"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0.xci"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_axi_mem_intercon_0/template_design_axi_mem_intercon_0.xci"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_MINIMAL_DMA_0_0/template_design_MINIMAL_DMA_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="hdl/template_design.vhd"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_MINIMAL_DMA_CONTROL_0_0/template_design_MINIMAL_DMA_CONTROL_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_processing_system7_0_0/template_design_processing_system7_0_0.xci"/>
         <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="hw_handoff/template_design.hwh"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_ila_0_0/template_design_ila_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0.xci"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_util_vector_logic_0_0/template_design_util_vector_logic_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_axis_register_slice_0_0/template_design_axis_register_slice_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="hw_handoff/template_design_bd.tcl"/>
+        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_auto_pc_0/template_design_auto_pc_0.xci"/>
         <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="template_design_ooc.xdc"/>
         <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_auto_pc_1/template_design_auto_pc_1.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_auto_pc_0/template_design_auto_pc_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_util_vector_logic_1_0/template_design_util_vector_logic_1_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_axis_register_slice_0_0/template_design_axis_register_slice_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_c_addsub_0_0/template_design_c_addsub_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_ila_0_0/template_design_ila_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_util_vector_logic_0_0/template_design_util_vector_logic_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="hdl/template_design.vhd"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_MINIMAL_DMA_CONTROL_0_0/template_design_MINIMAL_DMA_CONTROL_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_MINIMAL_DMA_0_0/template_design_MINIMAL_DMA_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_axi_mem_intercon_0/template_design_axi_mem_intercon_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_processing_system7_0_axi_periph_0/template_design_processing_system7_0_axi_periph_0.xci"/>
-        <CompFileExtendedInfo CompFileName="template_design.bd" FileRelPathName="ip/template_design_processing_system7_0_0/template_design_processing_system7_0_0.xci"/>
       </File>
       <File Path="$PSRCDIR/sources_1/new/generated.vhd">
         <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/accel_wrapper.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
@@ -73,51 +103,14 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/new/accel_wrapper.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/new/top.vhd">
         <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/bram_fifo.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/logic_dff.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/ip/filter_input_fifo_1/filter_input_fifo_1.xci">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/filter.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/Convolve.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/BasicArith.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>

@@ -30,14 +30,14 @@ class BasicBlockBaseTransformer(ast.NodeTransformer):
     lifted_functions = []
     func_count = 0
 
-    def __init__(self, backend="C"):
+    def __init__(self, backend="C", **kwargs):
         self.backend = backend.lower()
+        self.kwargs = kwargs
 
     def visit_Call(self, node):
         self.generic_visit(node)
         if getattr(node.func, "id", None) != self.func_name:
             return node
-
         return self.convert(node)
 
     def convert(self, node):
@@ -49,7 +49,7 @@ class BasicBlockBaseTransformer(ast.NodeTransformer):
                 % self.backend
             raise TransformationError(error_msg)
 
-        func_def = func_def_getter()
+        func_def = func_def_getter(**self.kwargs)
         # add function definition to class variable lifted_functions
         BasicBlockBaseTransformer.lifted_functions.append((node.lineno, func_def))
         # return C node FunctionCall
@@ -74,14 +74,14 @@ class BasicBlockBaseTransformer(ast.NodeTransformer):
 class ConvolveTransformer(BasicBlockBaseTransformer):
     func_name = "bb_convolve"
 
-    def get_func_def_c(self):
+    def get_func_def_c(self, **kwargs):
         """Return C interpretation of the BasicBlock."""
         params = [SymbolRef("inpt", ctypes.c_long())]
         return_type = ctypes.c_long()
         defn = [Return(BinaryOp(SymbolRef("inpt"), Op.Mul(), Constant(2)))]
         return FunctionDecl(return_type, self.func_name, params, defn)
 
-    def get_func_def_vhdl(self):
+    def get_func_def_vhdl(self, **kwargs):
         """Return VHDL interpretation of the BasicBlock."""
         inport_info = [GenericInfo("FILTERMATRIX",
                                    VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
@@ -101,17 +101,100 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
                              library="work.Convolve")
         return defn
 
+
+class AddTransformer(BasicBlockBaseTransformer):
+    func_name = "bb_add"
+
+    def get_func_def_c(self, **kwargs):
+        params = [SymbolRef("x", ctypes.c_long()), SymbolRef("y", ctypes.c_long())]
+        return_type = ctypes.c_long()
+        defn = [Return(BinaryOp(SymbolRef("x"), Op.Add(), SymbolRef("y")))]
+        return FunctionDecl(return_type, self.func_name, params, defn)
+
+    def get_func_def_vhdl(self, **kwargs):
+        if "DataWidth" in kwargs:
+            data_width = kwargs["DataWidth"]
+        else:
+            data_width = 32
+        #
+        inport_info = [PortInfo("LEFT", "in", VhdlType.VhdlStdLogicVector(data_width)),
+                       PortInfo("RIGHT", "in", VhdlType.VhdlStdLogicVector(data_width))]
+        outport_info = [PortInfo("BINOP_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
+        #
+        defn = VhdlComponent(name="bb_add",
+                             delay=10,
+                             inport_info=inport_info,
+                             outport_info=outport_info,
+                             library="work.AddBB")
+        #
+        return defn
+
+class SubTransformer(BasicBlockBaseTransformer):
+    func_name = "bb_sub"
+
+    def get_func_def_c(self, **kwargs):
+        params = [SymbolRef("x", ctypes.c_long()), SymbolRef("y", ctypes.c_long())]
+        return_type = ctypes.c_long()
+        defn = [Return(BinaryOp(SymbolRef("x"), Op.Sub(), SymbolRef("y")))]
+        return FunctionDecl(return_type, self.func_name, params, defn)
+
+    def get_func_def_vhdl(self, **kwargs):
+        if "DataWidth" in kwargs:
+            data_width = kwargs["DataWidth"]
+        else:
+            data_width = 32
+        #
+        inport_info = [PortInfo("LEFT", "in", VhdlType.VhdlStdLogicVector(data_width)),
+                       PortInfo("RIGHT", "in", VhdlType.VhdlStdLogicVector(data_width))]
+        outport_info = [PortInfo("BINOP_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
+        #
+        defn = VhdlComponent(name="bb_sub",
+                             delay=10,
+                             inport_info=inport_info,
+                             outport_info=outport_info,
+                             library="work.SubBB")
+        #
+        return defn
+
+class MulTransformer(BasicBlockBaseTransformer):
+    func_name = "bb_mul"
+
+    def get_func_def_c(self, **kwargs):
+        params = [SymbolRef("x", ctypes.c_long()), SymbolRef("y", ctypes.c_long())]
+        return_type = ctypes.c_long()
+        defn = [Return(BinaryOp(SymbolRef("x"), Op.Mul(), SymbolRef("y")))]
+        return FunctionDecl(return_type, self.func_name, params, defn)
+
+    def get_func_def_vhdl(self, **kwargs):
+        if "DataWidth" in kwargs:
+            data_width = kwargs["DataWidth"]
+        else:
+            data_width = 32
+        #
+        inport_info = [PortInfo("LEFT", "in", VhdlType.VhdlStdLogicVector(data_width)),
+                       PortInfo("RIGHT", "in", VhdlType.VhdlStdLogicVector(data_width))]
+        outport_info = [PortInfo("BINOP_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
+        #
+        defn = VhdlComponent(name="bb_mul",
+                             delay=10,
+                             inport_info=inport_info,
+                             outport_info=outport_info,
+                             library="work.MulBB")
+        #
+        return defn
+
+
 class SplitTransformer(BasicBlockBaseTransformer):
     func_name = "bb_split"
 
-    def get_func_def_c(self):
+    def get_func_def_c(self, **kwargs):
         """Return C interpretation of the BasicBlock."""
         params = [SymbolRef("inpt", ctypes.c_long())]
         return_type = ctypes.c_long()
         defn = [Return(BinaryOp(SymbolRef("inpt"), Op.Mul(), Constant(2)))]
         return FunctionDecl(return_type, self.func_name, params, defn)
 
-    def get_func_def_vhdl(self):
+    def get_func_def_vhdl(self, **kwargs):
         """Return VHDL interpretation of the BasicBlock."""
         inport_info = [PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(24)),
                        PortInfo("INDEX", "in", VhdlType.VhdlUnsigned(8))]
@@ -125,17 +208,18 @@ class SplitTransformer(BasicBlockBaseTransformer):
                              library="work.split")
         return defn
 
+
 class MergeTransformer(BasicBlockBaseTransformer):
     func_name = "bb_merge"
 
-    def get_func_def_c(self):
+    def get_func_def_c(self, **kwargs):
         """Return C interpretation of the BasicBlock."""
         params = [SymbolRef("inpt", ctypes.c_long())]
         return_type = ctypes.c_long()
         defn = [Return(BinaryOp(SymbolRef("inpt"), Op.Mul(), Constant(2)))]
         return FunctionDecl(return_type, self.func_name, params, defn)
 
-    def get_func_def_vhdl(self):
+    def get_func_def_vhdl(self, **kwargs):
         """Return VHDL interpretation of the BasicBlock."""
         inport_info = [PortInfo("R_IN", "in", VhdlType.VhdlStdLogicVector(8)),
                        PortInfo("G_IN", "in", VhdlType.VhdlStdLogicVector(8)),
@@ -154,16 +238,19 @@ class MergeTransformer(BasicBlockBaseTransformer):
 class DSLTransformer(object):
     """Transformer for all basic block transformer."""
 
-    transformers = [ConvolveTransformer, SplitTransformer, MergeTransformer]
+    transformers = [ConvolveTransformer, AddTransformer,
+                    SubTransformer, MulTransformer,
+                    SplitTransformer, MergeTransformer]
 
-    def __init__(self, backend="C"):
+    def __init__(self, backend="C", **kwargs):
         """Initialize transformation target backend."""
         self.backend = backend
+        self.kwargs = kwargs
 
     def visit(self, tree):
         """Enable all basic block Transformations."""
         for transformer in self.transformers:
-            transformer(self.backend).visit(tree)
+            transformer(self.backend, **self.kwargs).visit(tree)
         return tree
 
     @staticmethod
