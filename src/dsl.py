@@ -74,14 +74,14 @@ class BasicBlockBaseTransformer(ast.NodeTransformer):
 class ConvolveTransformer(BasicBlockBaseTransformer):
     func_name = "bb_convolve"
 
-    def get_func_def_c(self):
+    def get_func_def_c(self, node):
         """Return C interpretation of the BasicBlock."""
         params = [SymbolRef("inpt", ctypes.c_long())]
         return_type = ctypes.c_long()
         defn = [Return(BinaryOp(SymbolRef("inpt"), Op.Mul(), Constant(2)))]
         return FunctionDecl(return_type, self.func_name, params, defn)
 
-    def get_func_def_vhdl(self):
+    def get_func_def_vhdl(self, node):
         """Return VHDL interpretation of the BasicBlock."""
         inport_info = [GenericInfo("FILTERMATRIX",
                                    VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
@@ -101,17 +101,28 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
                              library="work.Convolve")
         return defn
 
+
+class BinaryOpTransformer(BasicBlockBaseTransformer):
+    func_name = "BinaryOp"
+
+    def get_func_def_c(self, node):
+        return None
+
+    def get_func_def_vhdl(self, node):
+        return None
+
+
 class SplitTransformer(BasicBlockBaseTransformer):
     func_name = "bb_split"
 
-    def get_func_def_c(self):
+    def get_func_def_c(self, node):
         """Return C interpretation of the BasicBlock."""
         params = [SymbolRef("inpt", ctypes.c_long())]
         return_type = ctypes.c_long()
         defn = [Return(BinaryOp(SymbolRef("inpt"), Op.Mul(), Constant(2)))]
         return FunctionDecl(return_type, self.func_name, params, defn)
 
-    def get_func_def_vhdl(self):
+    def get_func_def_vhdl(self, node):
         """Return VHDL interpretation of the BasicBlock."""
         inport_info = [PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(24)),
                        PortInfo("INDEX", "in", VhdlType.VhdlUnsigned(8))]
@@ -125,17 +136,18 @@ class SplitTransformer(BasicBlockBaseTransformer):
                              library="work.split")
         return defn
 
+
 class MergeTransformer(BasicBlockBaseTransformer):
     func_name = "bb_merge"
 
-    def get_func_def_c(self):
+    def get_func_def_c(self, node):
         """Return C interpretation of the BasicBlock."""
         params = [SymbolRef("inpt", ctypes.c_long())]
         return_type = ctypes.c_long()
         defn = [Return(BinaryOp(SymbolRef("inpt"), Op.Mul(), Constant(2)))]
         return FunctionDecl(return_type, self.func_name, params, defn)
 
-    def get_func_def_vhdl(self):
+    def get_func_def_vhdl(self, node):
         """Return VHDL interpretation of the BasicBlock."""
         inport_info = [PortInfo("R_IN", "in", VhdlType.VhdlStdLogicVector(8)),
                        PortInfo("G_IN", "in", VhdlType.VhdlStdLogicVector(8)),
