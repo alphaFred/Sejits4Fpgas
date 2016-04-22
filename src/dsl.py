@@ -88,8 +88,6 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
                        GenericInfo("FILTER_SCALE", VhdlType.VhdlInteger()),
                        GenericInfo("IMG_WIDTH", VhdlType.VhdlPositive()),
                        GenericInfo("IMG_HEIGHT", VhdlType.VhdlPositive()),
-                       GenericInfo("IN_BITWIDTH", VhdlType.VhdlPositive()),
-                       GenericInfo("OUT_BITWIDTH", VhdlType.VhdlPositive()),
                        PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(8))]
         #
         outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
