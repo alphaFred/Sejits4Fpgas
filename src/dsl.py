@@ -175,129 +175,70 @@ class DSLTransformer(object):
         return lf
 
 
-def get_dsl_type(params=None):
-    #
-    MAX_IPT_BYTEWIDTH = 1
-    #
-    def _get_vhdltype(dtype, len=1):
-        if isinstance(dtype.type(), np.integer):
-            if dtype.itemsize <= MAX_IPT_BYTEWIDTH:
-                return VhdlType.VhdlStdLogicVector(8 * dtype.itemsize * len)
-            else:
-                raise TransformationError("Input data of width {}bit not supported".format(dtype.itemsize * 8))
-        else:
-            raise TransformationError("Invalid parameter type: {}".format(type(dtype)))
+def get_dsl_type(params, axi_stream_width=0):
 
-    def process_2darray(param):
-        return _get_vhdltype(param.dtype)
-
-    def process_3darray(param):
-        # TODO: make len 3=RGB) dynamic; e.g. for RGBA
-        return _get_vhdltype(param.dtype, 3)
-
-    def dispatch(param):
-        if param.ndim == 2:
-            return process_2darray(param)
-        elif param.ndim == 3:
-            return process_3darray(param)
-        else:
-            raise TransformationError("Processing of {}dim arrays not supported".format(param.ndim))
-
-    _params = params if params is not None else []
-    #
-    if len(_params) == 1:
-        if not isinstance(_params[0], np.ndarray):
+    def gen_return(param, width):
+        if not isinstance(param, np.ndarray):
             raise TransformationError("All input parameter must be of type np.ndarray")
-        return [dispatch(_params[0])]
-    elif len(_params) > 1:
-        if not all([isinstance(p, np.ndarray) for p in _params]):
-            raise TransformationError("All input parameter must be of type np.ndarray")
-        return map(dispatch, _params)
+        else:
+            return VhdlType.VhdlStdLogicVector(width)
+    #
+    if hasattr(params, "__iter__"):
+        ret = []
+        for param in params:
+            ret.append(gen_return(param, axi_stream_width))
+        return ret
     else:
-        raise TransformationError("DSL kernel must have at least one input parameter")
+        return gen_return(params, axi_stream_width)
 
 
-class DSLWrapper(object):
-    def __init__(self, ipt_params=None):
-        self.axi_stream_width = 32
-        self.ipt_params = ipt_params if ipt_params is not None else []
+def gen_dsl_wrapper(ipt_params, axi_stream_width, file2wrap):
+        axi_stream_width = axi_stream_width
+        ipt_params = ipt_params
+
         # TODO: Change to support multiple input params
-        if len(self.ipt_params) > 1:
+
+        if len(ipt_params) > 1:
             raise TransformationError("Multiple inputs currently not supported by the hardware!")
         # input signals
-        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector(self.axi_stream_width, "0"))
+        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
         m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast", VhdlType.VhdlStdLogic("0"))
         s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready", VhdlType.VhdlStdLogic("0"))
         #
-        self.in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tlast, s_axis_s2mm_tready]
+        in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tlast, s_axis_s2mm_tready]
 
         # output signals
-        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector(self.axi_stream_width, "0"))
+        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
         s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast", VhdlType.VhdlStdLogic("0"))
         m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready", VhdlType.VhdlStdLogic("0"))
         #
-        self.out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tlast, m_axis_mm2s_tready]
+        out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tlast, m_axis_mm2s_tready]
 
-    def generate_wrapper(self, file2wrap=None):
         try:
             component = file2wrap.component()
         except AttributeError:
             raise TransformationError("File to wrap must provide component() method")
         else:
-            if type(self.ipt_params[0]) is VhdlType.VhdlStdLogicVector:
-                if len(self.ipt_params[0]) == 8:
-                    return self._generate_wrapper_2d(component)
-                else:
-                    return self._generate_wrapper_3d(component)
-            else:
-                raise TransformationError("Invalid parameter type {}".format(type(self.ipt_params[0])))
+            logger.info("Generate project wrapper")
+            #
+            ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
+            #
+            component.library = "work.apply"
+            component.delay = 5
+            component.prev = [in_sigs[0]]
+            component.in_port = [in_sigs[0]]
+            component.out_port = [ret_sig]
+            #
+            ret_component = VhdlReturn([component], [ret_sig], [out_sigs[0]])
 
-    def _generate_wrapper_2d(self, component):
-        logger.info("Generate 2d project wrapper")
-        #
-        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(8, "0"))
-        #
-        component.library = "work.apply"
-        component.delay = 5
-        component.prev = [self.in_sigs[0]]
-        component.in_port = [VhdlSignalSplit(self.in_sigs[0], slice(0, 8))]
-        component.out_port = [ret_sig]
-        #
-        ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(8, 32), "0")], [self.out_sigs[0]])
-
-        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
-                                          "ieee.numeric_std.all"]),
-                     VhdlLibrary(None, ["work.the_filter_package.all"])]
-        #
-        architecture = [ret_component] + [VhdlAssignment(t, s) for t, s in zip(self.out_sigs[1:], self.in_sigs[1:])]
-        module = VhdlModule("accel_wrapper", libraries,
-                            slice(0, len(self.in_sigs)), self.in_sigs + self.out_sigs, architecture)
-        #
-        module = transformations.VhdlGraphTransformer().visit(module)
-        module = transformations.VhdlPortTransformer().visit(module)
-        return VhdlFile("accel_wrapper", [module])
-
-    def _generate_wrapper_3d(self, component):
-        logger.info("Generate ed project wrapper")
-
-        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(24))
-        #
-        component.library = "work.apply"
-        component.delay = 5
-        component.prev = [self.in_sigs[0]]
-        #
-        component.in_port = [VhdlConcatenation([VhdlSignalSplit(self.in_sigs[0], slice(0, 8)),
-                                                VhdlSignalSplit(self.in_sigs[0], slice(8, 16)),
-                                                VhdlSignalSplit(self.in_sigs[0], slice(16, 24))])]
-        component.out_port = [ret_sig]
-        #
-        ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(24, 32))], [self.out_sigs[0]])
-
-        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
-                                          "ieee.numeric_std.all"]),
-                     VhdlLibrary(None, ["work.the_filter_package.all"])]
-        #
-        module = VhdlModule("accel_wrapper", libraries, slice(0, len(self.in_sigs)), self.in_sigs + self.out_sigs, [ret_component])
-        module = transformations.VhdlGraphTransformer().visit(module)
-        module = transformations.VhdlPortTransformer().visit(module)
-        return VhdlFile("accel_wrapper", [module])
+            libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
+                                              "ieee.numeric_std.all"]),
+                         VhdlLibrary(None, ["work.the_filter_package.all"])]
+            #
+            architecture = [ret_component] + [VhdlAssignment(t, s) for t, s in zip(out_sigs[1:], in_sigs[1:])]
+            module = VhdlModule("accel_wrapper", libraries,
+                                slice(0, len(in_sigs)), in_sigs + out_sigs, architecture)
+            #
+            module = transformations.VhdlGraphTransformer().visit(module)
+            module = transformations.VhdlPortTransformer().visit(module)
+            return VhdlFile("accel_wrapper", [module])
