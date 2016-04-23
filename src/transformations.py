@@ -92,7 +92,6 @@ class VhdlIRTransformer(ast.NodeTransformer):
         # prepare lifte functions from DSL transformer
         self.lifted_functions = lifted_functions
         self.lifted_function_names = {f.name for f in lifted_functions}
-        self.lifted_functions.reverse()
         #
         self.ipt_param_types = ipt_param_types if ipt_param_types is not None else []
 
