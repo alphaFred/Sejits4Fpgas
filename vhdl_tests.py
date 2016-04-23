@@ -177,7 +177,7 @@ def bb_sub(x, y):
 def test_func(a):
     filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)  # Gauss
     filtMASK_Sobel_y = (-1, 0, 1, -2, 0, 2, -1, 0, 1)  # Sobel_y
-    return bb_convolve(filtMASK_Gauss, 16, 315, 300, bb_convolve(filtMASK_Sobel_y, 16, 315, 300, a))
+    return bb_convolve(filtMASK_Gauss, 16, 315, 300, bb_convolve(filtMASK_Sobel_y, 16, 315, 300, bb_split(a, 0)))
 
 
 transformed_func = BasicTranslator.from_function(test_func)
