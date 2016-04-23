@@ -38,12 +38,6 @@ class BasicBlockBaseTransformer(object):
         self.backend = backend.lower()
         self.kwargs = kwargs
 
-    # def visit_Call(self, node):
-    #     self.generic_visit(node)
-    #     if getattr(node.func, "id", None) != self.func_name:
-    #         return node
-    #     return self.convert(node)
-
     def convert(self, node):
         method = "get_func_def_" + self.backend
         try:
@@ -302,13 +296,6 @@ class DSLTransformer(ast.NodeTransformer):
         self.kwargs = kwargs
         #
         self.transformer_func = {t.func_name: t for t in self.transformers}
-        #
-
-    # def visit(self, tree):
-    #     """Enable all basic block Transformations."""
-    #     for transformer in self.transformers:
-    #         transformer.visit(tree)
-    #     return tree
 
     def visit_Call(self, node):
         self.generic_visit(node)
