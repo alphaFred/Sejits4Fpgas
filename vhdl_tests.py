@@ -132,11 +132,11 @@ class BasicFunction(ConcreteSpecializedFunction):
 def bb_convolve(n):
     return n * 2
 
-def bb_split(n, i):
+def bb_split(i, n):
     return n[i]
 
-def bb_merge(n_0, n_1, n_2):
-    return [n_2, n_1, n_0]
+def bb_merge(n_3, n_2, n_1, n_0):
+    return [n_3, n_2, n_1, n_0]
 
 def bb_add(x, y):
     return x + y
@@ -175,9 +175,10 @@ def bb_sub(x, y):
 #     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
 
 def test_func(a):
-    filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)  # Gauss
-    filtMASK_Sobel_y = (-1, 0, 1, -2, 0, 2, -1, 0, 1)  # Sobel_y
-    return bb_convolve(filtMASK_Gauss, 16, 315, 300, bb_split(a, 0))
+    n_3 = 0
+    n_2 = 255
+    n_1 = bb_split(0, a)
+    return bb_merge(n_3, n_2, n_1, bb_split(2, a))
 
 
 transformed_func = BasicTranslator.from_function(test_func)
