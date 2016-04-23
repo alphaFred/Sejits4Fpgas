@@ -1,6 +1,6 @@
 """Transformations."""
 import ast
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 from itertools import izip_longest
 
 import numpy as np
@@ -87,7 +87,7 @@ class VhdlIRTransformer(ast.NodeTransformer):
     def __init__(self, ipt_param_types, lifted_functions, axi_stream_width=32):
         self.symbols = {}
         self.assignments = set()
-        self.n_con_signals = 0
+        self.n_con_signals = defaultdict(int)
         self.axi_stream_width = axi_stream_width
         # prepare lifte functions from DSL transformer
         self.lifted_functions = lifted_functions
@@ -211,9 +211,16 @@ class VhdlIRTransformer(ast.NodeTransformer):
     def _connect(self, node):
         if isinstance(node, VhdlNode):
             if len(node.out_port) == 0:
-                con_signal = VhdlSignal(name=node.__class__.__name__ + "_OUT_" + str(self.n_con_signals),
+                if hasattr(node, "name"):
+                    name = node.name.upper() + "_OUT_"
+                else:
+                    name = node.__class__.__name__ + "_OUT_"
+                #
+                con_signal_number = self.n_con_signals[name]
+                self.n_con_signals[name] = self.n_con_signals[name] +1
+                #
+                con_signal = VhdlSignal(name=name + str(con_signal_number),
                                         vhdl_type=node.outport_info[0].vhdl_type)
-                self.n_con_signals += 1
                 node.out_port.append(con_signal)
                 self.symbols[con_signal.name] = con_signal
                 return con_signal
@@ -289,7 +296,7 @@ class VhdlPortTransformer(ast.NodeVisitor):
         else:
             self.occps_info = [PortInfo("VALID_OUT", "out", VhdlType.VhdlStdLogic())]
 
-        self.cpe_id = 0  # command port edge ID
+        self.cpe_id = defaultdict(int)  # command port edge ID
 
         # generate Ports
         self.icps = [Port(*info, value=VhdlSignal(info.name, info.vhdl_type))
@@ -328,12 +335,14 @@ class VhdlPortTransformer(ast.NodeVisitor):
         return node
 
     def finalize_ports(self, node):
-        iccps = []
-        idxs = range(len(self.iccps_info))
-        #
+        # Finalize Generic, In- and Out-Ports
         node.finalize_ports()
         #
+        iccps = []
+        idxs = range(len(self.iccps_info))
+
         if isinstance(node, VhdlModule):
+            # Just add command ports to Module
             node.in_port = self.icps + self.iccps + node.in_port
             node.out_port = self.occps + node.out_port
         else:
@@ -347,8 +356,15 @@ class VhdlPortTransformer(ast.NodeVisitor):
                             # get cascading connection edge
                             cc_edge = pnode.out_port[idx].value
                         else:
-                            n = pnode.__class__.__name__ + "_" + occp.name + "_" + str(self.cpe_id)
-                            self.cpe_id += 1
+                            if hasattr(pnode, "name"):
+                                name = pnode.name.upper() + "_" + occp.name + "_"
+                            else:
+                                name = pnode.__class__.__name__ + "_" + occp.name + "_"
+                            #
+                            con_signal_number = self.cpe_id[name]
+                            self.cpe_id[name] = self.cpe_id[name] + 1
+                            #
+                            n = name + str(con_signal_number)
                             cc_edge = VhdlSignal(name=n, vhdl_type=occp.vhdl_type)
                             poccps.append(Port(occp.name, occp.direction, occp.vhdl_type, cc_edge))
                             cc_edges.append(cc_edge)
@@ -360,9 +376,12 @@ class VhdlPortTransformer(ast.NodeVisitor):
                             cc_edge = VhdlSignal(iccp.name, iccp.vhdl_type)
                             cc_edges.append(cc_edge)
                     self.visited_nodes.add(hash(pnode))
-                # finalize nodes in_port
+                # add cascading input command ports to iccps
                 iccps.append(Port(iccp.name, iccp.direction, iccp.vhdl_type, cc_edges))
-            # finalize nodes in_port
+
+            # Add Cascading Command, Command and In-Ports
             node.in_port = self.icps + iccps + node.in_port
+
             if isinstance(node, VhdlReturn):
+                # Add Cascading Command and Out-Ports
                 node.out_port = self.occps + node.out_port
