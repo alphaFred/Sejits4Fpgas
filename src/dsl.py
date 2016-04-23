@@ -3,6 +3,7 @@ import logging
 import numpy as np
 import ctypes
 
+from collections import namedtuple
 from ctree.c.nodes import FunctionCall, SymbolRef, Return, BinaryOp, Op, Constant, FunctionDecl
 
 from src import transformations
@@ -26,7 +27,10 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-class BasicBlockBaseTransformer(ast.NodeTransformer):
+LF_Data = namedtuple("LF_Data", ["lineno", "func"])
+
+
+class BasicBlockBaseTransformer(object):
     lifted_functions = []
     func_count = 0
 
@@ -34,11 +38,11 @@ class BasicBlockBaseTransformer(ast.NodeTransformer):
         self.backend = backend.lower()
         self.kwargs = kwargs
 
-    def visit_Call(self, node):
-        self.generic_visit(node)
-        if getattr(node.func, "id", None) != self.func_name:
-            return node
-        return self.convert(node)
+    # def visit_Call(self, node):
+    #     self.generic_visit(node)
+    #     if getattr(node.func, "id", None) != self.func_name:
+    #         return node
+    #     return self.convert(node)
 
     def convert(self, node):
         method = "get_func_def_" + self.backend
@@ -51,7 +55,7 @@ class BasicBlockBaseTransformer(ast.NodeTransformer):
 
         func_def = func_def_getter(**self.kwargs)
         # add function definition to class variable lifted_functions
-        BasicBlockBaseTransformer.lifted_functions.append((node.lineno, func_def))
+        BasicBlockBaseTransformer.lifted_functions.append(LF_Data(node.lineno, func_def))
         # return C node FunctionCall
         return FunctionCall(SymbolRef(func_def.name), node.args)
 
@@ -254,31 +258,91 @@ class MergeTransformer(BasicBlockBaseTransformer):
         return defn
 
 
-class DSLTransformer(object):
+class LimitToTransformer(BasicBlockBaseTransformer):
+    func_name = "bb_limitTo"
+
+    def get_func_def_c(self, **kwargs):
+        """Return C interpretation of the BasicBlock."""
+        params = [SymbolRef("inpt", ctypes.c_long())]
+        return_type = ctypes.c_long()
+        defn = [Return(BinaryOp(SymbolRef("inpt"), Op.Mul(), Constant(2)))]
+        return FunctionDecl(return_type, self.func_name, params, defn)
+
+    def get_func_def_vhdl(self, **kwargs):
+        """Return VHDL interpretation of the BasicBlock."""
+        if "DataWidth" in kwargs:
+            data_width = kwargs["DataWidth"]
+        else:
+            data_width = 32
+        #
+        inport_info = [GenericInfo("VALID_BITS", VhdlType.VhdlPositive()),
+                       PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(data_width))]
+        #
+        outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
+        defn = VhdlComponent(name="bb_limitTo",
+                             generic_slice=slice(0,1),
+                             delay=0,
+                             inport_info=inport_info,
+                             outport_info=outport_info,
+                             library="work.limit_to")
+        return defn
+
+
+class DSLTransformer(ast.NodeTransformer):
     """Transformer for all basic block transformer."""
 
     transformers = [ConvolveTransformer, AddTransformer,
                     SubTransformer, MulTransformer,
-                    SplitTransformer, MergeTransformer]
+                    SplitTransformer, MergeTransformer,
+                    LimitToTransformer]
 
     def __init__(self, backend="C", **kwargs):
         """Initialize transformation target backend."""
         self.backend = backend
         self.kwargs = kwargs
+        #
+        self.transformer_func = {t.func_name: t for t in self.transformers}
+        #
 
-    def visit(self, tree):
-        """Enable all basic block Transformations."""
-        for transformer in self.transformers:
-            transformer(self.backend, **self.kwargs).visit(tree)
-        return tree
+    # def visit(self, tree):
+    #     """Enable all basic block Transformations."""
+    #     for transformer in self.transformers:
+    #         transformer.visit(tree)
+    #     return tree
+
+    def visit_Call(self, node):
+        self.generic_visit(node)
+        if getattr(node.func, "id", None) not in self.transformer_func:
+            return node
+        else:
+            transformer = self.transformer_func[getattr(node.func, "id", None)]
+            return transformer(self.backend, **self.kwargs).convert(node)
 
     @staticmethod
     def lifted_functions():
         """Return all basic block transformer functions."""
-        lf = BasicBlockBaseTransformer.lifted_functions
-        lf.sort()
-        lf = [i[1] for i in lf]
-        return lf
+        lifted_functions = BasicBlockBaseTransformer.lifted_functions
+        # group and reverse
+        line_dict = {}
+        line_nbrs = []
+        #
+        for lf in lifted_functions:
+            if lf.lineno in line_dict:
+                line_dict[lf.lineno].append(lf.func)
+            else:
+                line_dict[lf.lineno] = [lf.func]
+                line_nbrs.append(lf.lineno)
+        #
+        line_nbrs.sort()
+        line_nbrs.reverse()
+        #
+        ret = []
+        for ln in line_nbrs:
+            data = line_dict[ln]
+            data.reverse()
+            ret.extend(data)
+        #
+        return ret
 
 
 def get_dsl_type(params, axi_stream_width=0):
