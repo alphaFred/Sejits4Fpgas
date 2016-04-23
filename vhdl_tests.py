@@ -144,6 +144,9 @@ def bb_add(x, y):
 def bb_sub(x, y):
     return x - y
 
+def bb_limitTo(valid, x):
+    return x
+
 # def test_func(a):
 #     filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)  # Gauss
 #     # filtMASK_Sobel_y = (-1, 0, 1, -2, 0, 2, -1, 0, 1)  # Sobel_y
@@ -175,10 +178,9 @@ def bb_sub(x, y):
 #     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
 
 def test_func(a):
-    n_3 = 0
+    n_3 = bb_split(3, a)
     n_2 = 255
-    n_1 = bb_split(0, a)
-    return bb_merge(n_3, n_2, n_1, bb_split(2, a))
+    return bb_limitTo(8, bb_split(1, bb_merge(n_3, n_2, 1, bb_split(2, a))))
 
 
 transformed_func = BasicTranslator.from_function(test_func)
