@@ -26,6 +26,8 @@ VHDL = True
 img_path = os.getcwd() + "/images/"
 
 orig_tree = "origin_tree.png"
+pre_dsl_trans_tree = "pre-dsl-transform_tree.png"
+post_dsl_trans_tree = "post-dsl-transform_tree.png"
 pretrans_tree = "pre-transform_tree.png"
 posttrans_tree = "post-transform_tree.png"
 
@@ -45,8 +47,10 @@ class BasicTranslator(LazySpecializedFunction):
 
     def transform(self, tree, program_config):
         from ctree.visual.dot_manager import DotManager
+
+        # ----
         DotManager().dot_ast_to_file(tree, file_name=img_path + orig_tree)
-        #
+        # ----
         if not VHDL:
             tree = DSLTransformer(backend="C").visit(tree)
             tree = PyBasicConversions().visit(tree)
@@ -60,20 +64,23 @@ class BasicTranslator(LazySpecializedFunction):
             c_translator = CFile("generated", [lifted_functions, tree])
             return [c_translator]
         else:
+            # ----
+            DotManager().dot_ast_to_file(tree, file_name=img_path + pre_dsl_trans_tree)
+            # ----
+
             tree = DSLTransformer(backend="VHDL").visit(tree)
+
+            # ----
+            DotManager().dot_ast_to_file(tree, file_name=img_path + post_dsl_trans_tree)
+            # ----
+
             tree = PyBasicConversions().visit(tree)
-            # =================================================================
-            DotManager().dot_ast_to_file(tree,
-                                         file_name=img_path + pretrans_tree)
-            # =================================================================
-            #
             l_funcs = DSLTransformer.lifted_functions()
             tree = VhdlBaseTransformer(program_config.args_subconfig['arg_type'], l_funcs).visit(tree)
 
-            # =================================================================
-            DotManager().dot_ast_to_file(tree,
-                                         file_name=img_path + posttrans_tree)
-            # =================================================================
+            # ----
+            DotManager().dot_ast_to_file(tree, file_name=img_path + posttrans_tree)
+            # ----
 
             # Generate accelerator file
             accel_file = VhdlFile("generated", body=[tree])
@@ -131,6 +138,9 @@ def bb_split(n, i):
 def bb_merge(n_0, n_1, n_2):
     return [n_2, n_1, n_0]
 
+def bb_add(x, y):
+    return x + y
+
 def bb_sub(x, y):
     return x - y
 
@@ -165,8 +175,9 @@ def bb_sub(x, y):
 #     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
 
 def test_func(a):
-    c = bb_split(a, 0)
-    return bb_sub(255, c)
+    filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)  # Gauss
+    filtMASK_Sobel_y = (-1, 0, 1, -2, 0, 2, -1, 0, 1)  # Sobel_y
+    return bb_convolve(filtMASK_Gauss, 16, 315, 300, bb_convolve(filtMASK_Sobel_y, 16, 315, 300, a))
 
 
 transformed_func = BasicTranslator.from_function(test_func)
