@@ -91,7 +91,7 @@ class BasicTranslator(LazySpecializedFunction):
                                            file2wrap=accel_file)
 
             # Add pregenerated vhdl files
-            hw_file_path = "./src/hw/"
+            hw_file_path = os.path.dirname(__file__) + "/src/hw/"
             prebuilt_files = []
             for fn in glob.glob(hw_file_path + "*"):
                 fname = fn.lstrip(hw_file_path).rstrip(".vhd").lower()
