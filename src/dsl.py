@@ -82,12 +82,12 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
         return FunctionDecl(return_type, self.func_name, params, defn)
 
     def get_func_def_vhdl(self, **kwargs):
+        """Return VHDL interpretation of the BasicBlock."""
         if "DataWidth" in kwargs:
             data_width = kwargs["DataWidth"]
         else:
             data_width = 32
         #
-        """Return VHDL interpretation of the BasicBlock."""
         inport_info = [GenericInfo("FILTERMATRIX",
                                    VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
                        GenericInfo("FILTER_SCALE", VhdlType.VhdlInteger()),
@@ -115,6 +115,7 @@ class AddTransformer(BasicBlockBaseTransformer):
         return FunctionDecl(return_type, self.func_name, params, defn)
 
     def get_func_def_vhdl(self, **kwargs):
+        """Return VHDL interpretation of the BasicBlock."""
         if "DataWidth" in kwargs:
             data_width = kwargs["DataWidth"]
         else:
@@ -143,6 +144,7 @@ class SubTransformer(BasicBlockBaseTransformer):
         return FunctionDecl(return_type, self.func_name, params, defn)
 
     def get_func_def_vhdl(self, **kwargs):
+        """Return VHDL interpretation of the BasicBlock."""
         if "DataWidth" in kwargs:
             data_width = kwargs["DataWidth"]
         else:
@@ -171,6 +173,7 @@ class MulTransformer(BasicBlockBaseTransformer):
         return FunctionDecl(return_type, self.func_name, params, defn)
 
     def get_func_def_vhdl(self, **kwargs):
+        """Return VHDL interpretation of the BasicBlock."""
         if "DataWidth" in kwargs:
             data_width = kwargs["DataWidth"]
         else:
@@ -200,18 +203,18 @@ class SplitTransformer(BasicBlockBaseTransformer):
         return FunctionDecl(return_type, self.func_name, params, defn)
 
     def get_func_def_vhdl(self, **kwargs):
+        """Return VHDL interpretation of the BasicBlock."""
         if "DataWidth" in kwargs:
             data_width = kwargs["DataWidth"]
         else:
             data_width = 32
         #
-        """Return VHDL interpretation of the BasicBlock."""
-        inport_info = [PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(data_width)),
-                       PortInfo("INDEX", "in", VhdlType.VhdlUnsigned(8))]
+        inport_info = [GenericInfo("INDEX", VhdlType.VhdlInteger()),
+                       PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(data_width))]
         #
         outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         defn = VhdlComponent(name="bb_split",
-                             generic_slice=None,
+                             generic_slice=slice(0, 1),
                              delay=0,
                              inport_info=inport_info,
                              outport_info=outport_info,
@@ -231,11 +234,17 @@ class MergeTransformer(BasicBlockBaseTransformer):
 
     def get_func_def_vhdl(self, **kwargs):
         """Return VHDL interpretation of the BasicBlock."""
-        inport_info = [PortInfo("R_IN", "in", VhdlType.VhdlStdLogicVector(8)),
-                       PortInfo("G_IN", "in", VhdlType.VhdlStdLogicVector(8)),
-                       PortInfo("B_IN", "in", VhdlType.VhdlStdLogicVector(8))]
+        if "DataWidth" in kwargs:
+            data_width = kwargs["DataWidth"]
+        else:
+            data_width = 32
         #
-        outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(24))]
+        inport_info = [PortInfo("IN_3", "in", VhdlType.VhdlStdLogicVector(data_width)),
+                       PortInfo("IN_2", "in", VhdlType.VhdlStdLogicVector(data_width)),
+                       PortInfo("IN_1", "in", VhdlType.VhdlStdLogicVector(data_width)),
+                       PortInfo("IN_0", "in", VhdlType.VhdlStdLogicVector(data_width))]
+        #
+        outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         defn = VhdlComponent(name="bb_merge",
                              generic_slice=None,
                              delay=0,
