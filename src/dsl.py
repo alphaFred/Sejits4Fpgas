@@ -82,17 +82,22 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
         return FunctionDecl(return_type, self.func_name, params, defn)
 
     def get_func_def_vhdl(self, **kwargs):
+        if "DataWidth" in kwargs:
+            data_width = kwargs["DataWidth"]
+        else:
+            data_width = 32
+        #
         """Return VHDL interpretation of the BasicBlock."""
         inport_info = [GenericInfo("FILTERMATRIX",
                                    VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
                        GenericInfo("FILTER_SCALE", VhdlType.VhdlInteger()),
                        GenericInfo("IMG_WIDTH", VhdlType.VhdlPositive()),
                        GenericInfo("IMG_HEIGHT", VhdlType.VhdlPositive()),
-                       PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(8))]
+                       PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(data_width))]
         #
-        outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
+        outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         defn = VhdlComponent(name="bb_convolve",
-                             generic_slice=slice(0, 6),
+                             generic_slice=slice(0, 4),
                              delay=10,
                              inport_info=inport_info,
                              outport_info=outport_info,
@@ -127,6 +132,7 @@ class AddTransformer(BasicBlockBaseTransformer):
         #
         return defn
 
+
 class SubTransformer(BasicBlockBaseTransformer):
     func_name = "bb_sub"
 
@@ -153,6 +159,7 @@ class SubTransformer(BasicBlockBaseTransformer):
                              library="work.SubBB")
         #
         return defn
+
 
 class MulTransformer(BasicBlockBaseTransformer):
     func_name = "bb_mul"
@@ -193,11 +200,16 @@ class SplitTransformer(BasicBlockBaseTransformer):
         return FunctionDecl(return_type, self.func_name, params, defn)
 
     def get_func_def_vhdl(self, **kwargs):
+        if "DataWidth" in kwargs:
+            data_width = kwargs["DataWidth"]
+        else:
+            data_width = 32
+        #
         """Return VHDL interpretation of the BasicBlock."""
-        inport_info = [PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(24)),
+        inport_info = [PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(data_width)),
                        PortInfo("INDEX", "in", VhdlType.VhdlUnsigned(8))]
         #
-        outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
+        outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         defn = VhdlComponent(name="bb_split",
                              generic_slice=None,
                              delay=0,
