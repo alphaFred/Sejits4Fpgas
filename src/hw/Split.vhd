@@ -5,8 +5,6 @@ use IEEE.NUMERIC_STD.ALL;
 library UNISIM;
 use UNISIM.VComponents.all;
 
-use work.the_filter_package.all;
-
 
 entity Split is
     Port (
@@ -18,3 +16,9 @@ entity Split is
         DATA_OUT        : out std_logic_vector(OUT_BITWIDTH-1 downto 0)
         );
 end Split;
+
+architecture split_behave of Split is
+
+begin
+
+end split_behave;
