@@ -12,31 +12,39 @@ entity apply is
          VALID_OUT : out std_logic;
          MODULE_OUT : out std_logic_vector(31 downto 0));                end apply;
 
-architecture BEHAVE of apply is                              signal BB_SPLIT_VALID_OUT_0 : std_logic;
+architecture BEHAVE of apply is                              signal BB_MERGE_VALID_OUT_0 : std_logic;
+    signal n_1 : std_logic_vector(31 downto 0);
+    signal BB_SPLIT_VALID_OUT_0 : std_logic;
     signal BB_SPLIT_OUT_0 : std_logic_vector(31 downto 0);
-    signal BB_CONVOLVE_VALID_OUT_0 : std_logic;
-    signal BB_CONVOLVE_OUT_0 : std_logic_vector(31 downto 0);                      begin                          
-VhdlComponent : entity work.split                       
+    signal BB_SPLIT_VALID_OUT_1 : std_logic;
+    signal BB_SPLIT_OUT_1 : std_logic_vector(31 downto 0);                      begin                          
+VhdlComponent : entity work.merge                       
+    port map(CLK => CLK,
+             RST => RST,
+             VALID_IN => VALID_IN,
+             IN_3 => std_logic_vector(to_signed(0, 32)),
+             IN_2 => a,
+             VALID_OUT => BB_MERGE_VALID_OUT_0,
+             DATA_OUT => n_1); 
+
+VhdlComponent_1 : entity work.split                       
+    generic map(INDEX => 2)                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VALID_IN,
              DATA_IN => a,
-             INDEX => to_unsigned(0, 8),
              VALID_OUT => BB_SPLIT_VALID_OUT_0,
              DATA_OUT => BB_SPLIT_OUT_0); 
 
-VhdlComponent_1 : entity work.Convolve                       
-    generic map(FILTERMATRIX => (1, 2, 1, 2, 4, 2, 1, 2, 1),
-                FILTER_SCALE => 16,
-                IMG_WIDTH => 315,
-                IMG_HEIGHT => 300)                       
+VhdlComponent_2 : entity work.split                       
+    generic map(INDEX => 0)                       
     port map(CLK => CLK,
              RST => RST,
-             VALID_IN => BB_SPLIT_VALID_OUT_0,
-             DATA_IN => BB_SPLIT_OUT_0,
-             VALID_OUT => BB_CONVOLVE_VALID_OUT_0,
-             DATA_OUT => BB_CONVOLVE_OUT_0); 
+             VALID_IN => BB_MERGE_VALID_OUT_0 AND BB_SPLIT_VALID_OUT_0,
+             DATA_IN => std_logic_vector(to_signed(255, 32)),
+             VALID_OUT => BB_SPLIT_VALID_OUT_1,
+             DATA_OUT => BB_SPLIT_OUT_1); 
 
 -- RETURN
-VALID_OUT <= BB_CONVOLVE_VALID_OUT_0;
-MODULE_OUT <= BB_CONVOLVE_OUT_0;                      end BEHAVE;
+VALID_OUT <= BB_SPLIT_VALID_OUT_1;
+MODULE_OUT <= BB_SPLIT_OUT_1;                      end BEHAVE;

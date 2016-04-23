@@ -67,6 +67,7 @@ set files [list \
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/vector_dff.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/DReg.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/bram_fifo.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/Merge.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/Convolve.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/logic_dff.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/STD_FIFO.vhd"]"\
