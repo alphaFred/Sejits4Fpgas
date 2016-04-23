@@ -23,7 +23,7 @@ logging.basicConfig(level=40)
 #
 
 VHDL = True
-img_path = os.getcwd() + "/images/"
+img_path = os.path.dirname(__file__) + "/images/"
 
 orig_tree = "origin_tree.png"
 pre_dsl_trans_tree = "pre-dsl-transform_tree.png"

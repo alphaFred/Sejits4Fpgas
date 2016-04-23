@@ -31,7 +31,7 @@ class VhdlSynthModule(object):
         """Initialize VhdlSynthModule instance."""
         self._linked_files = []
         # vivado project folder
-        self.v_proj_fol = CONFIG.get("vivado", "PROJ_FOLDER_PATH")
+        self.v_proj_fol = os.path.dirname(__file__) + CONFIG.get("vivado", "PROJ_FOLDER_PATH")
         if os.path.isdir(self.v_proj_fol):
             logger.info("Found Vivado Project at: %s" % self.v_proj_fol)
         else:
