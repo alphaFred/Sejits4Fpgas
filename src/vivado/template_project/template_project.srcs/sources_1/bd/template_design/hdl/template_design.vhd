@@ -1,7 +1,7 @@
 --Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
---Date        : Tue Apr 26 16:20:27 2016
+--Date        : Tue Apr 26 17:57:31 2016
 --Host        : philipp-ThinkPad-X250 running 64-bit Ubuntu 15.04
 --Command     : generate_target template_design.bd
 --Design      : template_design
@@ -1423,10 +1423,10 @@ entity template_design is
     s_axis_tready : out STD_LOGIC;
     s_axis_tvalid : in STD_LOGIC
   );
-  attribute core_generation_info : string;
-  attribute core_generation_info of template_design : entity is "template_design,IP_Integrator,{x_ipProduct=Vivado 2015.2,x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=template_design,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=16,numReposBlks=12,numNonXlnxBlks=2,numHierBlks=4,maxHierDepth=0,da_axi4_cnt=5,da_ps7_cnt=1,synth_mode=Global}";
-  attribute hw_handoff : string;
-  attribute hw_handoff of template_design : entity is "template_design.hwdef";
+  attribute CORE_GENERATION_INFO : string;
+  attribute CORE_GENERATION_INFO of template_design : entity is "template_design,IP_Integrator,{x_ipProduct=Vivado 2015.2,x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=template_design,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=16,numReposBlks=12,numNonXlnxBlks=2,numHierBlks=4,maxHierDepth=0,da_axi4_cnt=5,da_ps7_cnt=1,synth_mode=Global}";
+  attribute HW_HANDOFF : string;
+  attribute HW_HANDOFF of template_design : entity is "template_design.hwdef";
 end template_design;
 
 architecture STRUCTURE of template_design is
@@ -1571,123 +1571,6 @@ architecture STRUCTURE of template_design is
     peripheral_aresetn : out STD_LOGIC_VECTOR ( 0 to 0 )
   );
   end component template_design_rst_processing_system7_0_102M_0;
-  component template_design_MINIMAL_DMA_0_0 is
-  port (
-    out_data : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    out_valid : out STD_LOGIC;
-    out_last : out STD_LOGIC;
-    out_ready : in STD_LOGIC;
-    in_data : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    in_valid : in STD_LOGIC;
-    in_last : in STD_LOGIC;
-    in_ready : out STD_LOGIC;
-    r_addr : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    r_len : in STD_LOGIC_VECTOR ( 19 downto 0 );
-    r_valid : in STD_LOGIC;
-    r_ready : out STD_LOGIC;
-    w_addr : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    w_len : in STD_LOGIC_VECTOR ( 19 downto 0 );
-    w_valid : in STD_LOGIC;
-    w_ready : out STD_LOGIC;
-    rst : in STD_LOGIC;
-    m_axi_aclk : in STD_LOGIC;
-    m_axi_aresetn : in STD_LOGIC;
-    m_axi_awid : out STD_LOGIC_VECTOR ( 0 to 0 );
-    m_axi_awaddr : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axi_awlen : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    m_axi_awsize : out STD_LOGIC_VECTOR ( 2 downto 0 );
-    m_axi_awburst : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    m_axi_awlock : out STD_LOGIC;
-    m_axi_awcache : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    m_axi_awprot : out STD_LOGIC_VECTOR ( 2 downto 0 );
-    m_axi_awqos : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    m_axi_awuser : out STD_LOGIC_VECTOR ( 0 to 0 );
-    m_axi_awvalid : out STD_LOGIC;
-    m_axi_awready : in STD_LOGIC;
-    m_axi_wdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axi_wstrb : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    m_axi_wlast : out STD_LOGIC;
-    m_axi_wuser : out STD_LOGIC_VECTOR ( 0 to 0 );
-    m_axi_wvalid : out STD_LOGIC;
-    m_axi_wready : in STD_LOGIC;
-    m_axi_bid : in STD_LOGIC_VECTOR ( 0 to 0 );
-    m_axi_bresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    m_axi_buser : in STD_LOGIC_VECTOR ( 0 to 0 );
-    m_axi_bvalid : in STD_LOGIC;
-    m_axi_bready : out STD_LOGIC;
-    m_axi_arid : out STD_LOGIC_VECTOR ( 0 to 0 );
-    m_axi_araddr : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axi_arlen : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    m_axi_arsize : out STD_LOGIC_VECTOR ( 2 downto 0 );
-    m_axi_arburst : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    m_axi_arlock : out STD_LOGIC;
-    m_axi_arcache : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    m_axi_arprot : out STD_LOGIC_VECTOR ( 2 downto 0 );
-    m_axi_arqos : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    m_axi_aruser : out STD_LOGIC_VECTOR ( 0 to 0 );
-    m_axi_arvalid : out STD_LOGIC;
-    m_axi_arready : in STD_LOGIC;
-    m_axi_rid : in STD_LOGIC_VECTOR ( 0 to 0 );
-    m_axi_rdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axi_rresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    m_axi_rlast : in STD_LOGIC;
-    m_axi_ruser : in STD_LOGIC_VECTOR ( 0 to 0 );
-    m_axi_rvalid : in STD_LOGIC;
-    m_axi_rready : out STD_LOGIC
-  );
-  end component template_design_MINIMAL_DMA_0_0;
-  component template_design_MINIMAL_DMA_CONTROL_0_0 is
-  port (
-    r_addr : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    r_len : out STD_LOGIC_VECTOR ( 19 downto 0 );
-    r_valid : out STD_LOGIC;
-    r_ready : in STD_LOGIC;
-    w_addr : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    w_len : out STD_LOGIC_VECTOR ( 19 downto 0 );
-    w_valid : out STD_LOGIC;
-    w_ready : in STD_LOGIC;
-    rst : out STD_LOGIC;
-    axis_rst : out STD_LOGIC;
-    interrupt : out STD_LOGIC;
-    out_data : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    out_valid : out STD_LOGIC;
-    out_last : out STD_LOGIC;
-    out_ready : in STD_LOGIC;
-    in_data : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    in_valid : in STD_LOGIC;
-    in_last : in STD_LOGIC;
-    in_ready : out STD_LOGIC;
-    m_axis_data : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axis_valid : out STD_LOGIC;
-    m_axis_last : out STD_LOGIC;
-    m_axis_ready : in STD_LOGIC;
-    s_axis_data : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    s_axis_valid : in STD_LOGIC;
-    s_axis_last : in STD_LOGIC;
-    s_axis_ready : out STD_LOGIC;
-    s_axi_awaddr : in STD_LOGIC_VECTOR ( 4 downto 0 );
-    s_axi_awprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
-    s_axi_awvalid : in STD_LOGIC;
-    s_axi_awready : out STD_LOGIC;
-    s_axi_wdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    s_axi_wstrb : in STD_LOGIC_VECTOR ( 3 downto 0 );
-    s_axi_wvalid : in STD_LOGIC;
-    s_axi_wready : out STD_LOGIC;
-    s_axi_bresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    s_axi_bvalid : out STD_LOGIC;
-    s_axi_bready : in STD_LOGIC;
-    s_axi_araddr : in STD_LOGIC_VECTOR ( 4 downto 0 );
-    s_axi_arprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
-    s_axi_arvalid : in STD_LOGIC;
-    s_axi_arready : out STD_LOGIC;
-    s_axi_rdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    s_axi_rresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    s_axi_rvalid : out STD_LOGIC;
-    s_axi_rready : in STD_LOGIC;
-    s_axi_aclk : in STD_LOGIC;
-    s_axi_aresetn : in STD_LOGIC
-  );
-  end component template_design_MINIMAL_DMA_CONTROL_0_0;
   component template_design_axis_data_fifo_0_0 is
   port (
     s_axis_aresetn : in STD_LOGIC;
@@ -1757,6 +1640,128 @@ architecture STRUCTURE of template_design is
     Res : out STD_LOGIC_VECTOR ( 0 to 0 )
   );
   end component template_design_util_vector_logic_1_0;
+  component template_design_MINIMAL_DMA_0_0 is
+  port (
+    out_data : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    out_valid : out STD_LOGIC;
+    out_last : out STD_LOGIC;
+    out_ready : in STD_LOGIC;
+    in_data : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    in_valid : in STD_LOGIC;
+    in_last : in STD_LOGIC;
+    in_ready : out STD_LOGIC;
+    r_addr : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    r_len : in STD_LOGIC_VECTOR ( 19 downto 0 );
+    r_valid : in STD_LOGIC;
+    r_ready : out STD_LOGIC;
+    r_compl : out STD_LOGIC;
+    w_addr : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    w_len : in STD_LOGIC_VECTOR ( 19 downto 0 );
+    w_valid : in STD_LOGIC;
+    w_ready : out STD_LOGIC;
+    w_compl : out STD_LOGIC;
+    rst : in STD_LOGIC;
+    m_axi_aclk : in STD_LOGIC;
+    m_axi_aresetn : in STD_LOGIC;
+    m_axi_awid : out STD_LOGIC_VECTOR ( 0 to 0 );
+    m_axi_awaddr : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axi_awlen : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    m_axi_awsize : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    m_axi_awburst : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    m_axi_awlock : out STD_LOGIC;
+    m_axi_awcache : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    m_axi_awprot : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    m_axi_awqos : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    m_axi_awuser : out STD_LOGIC_VECTOR ( 0 to 0 );
+    m_axi_awvalid : out STD_LOGIC;
+    m_axi_awready : in STD_LOGIC;
+    m_axi_wdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axi_wstrb : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    m_axi_wlast : out STD_LOGIC;
+    m_axi_wuser : out STD_LOGIC_VECTOR ( 0 to 0 );
+    m_axi_wvalid : out STD_LOGIC;
+    m_axi_wready : in STD_LOGIC;
+    m_axi_bid : in STD_LOGIC_VECTOR ( 0 to 0 );
+    m_axi_bresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    m_axi_buser : in STD_LOGIC_VECTOR ( 0 to 0 );
+    m_axi_bvalid : in STD_LOGIC;
+    m_axi_bready : out STD_LOGIC;
+    m_axi_arid : out STD_LOGIC_VECTOR ( 0 to 0 );
+    m_axi_araddr : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axi_arlen : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    m_axi_arsize : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    m_axi_arburst : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    m_axi_arlock : out STD_LOGIC;
+    m_axi_arcache : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    m_axi_arprot : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    m_axi_arqos : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    m_axi_aruser : out STD_LOGIC_VECTOR ( 0 to 0 );
+    m_axi_arvalid : out STD_LOGIC;
+    m_axi_arready : in STD_LOGIC;
+    m_axi_rid : in STD_LOGIC_VECTOR ( 0 to 0 );
+    m_axi_rdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axi_rresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    m_axi_rlast : in STD_LOGIC;
+    m_axi_ruser : in STD_LOGIC_VECTOR ( 0 to 0 );
+    m_axi_rvalid : in STD_LOGIC;
+    m_axi_rready : out STD_LOGIC
+  );
+  end component template_design_MINIMAL_DMA_0_0;
+  component template_design_MINIMAL_DMA_CONTROL_0_0 is
+  port (
+    r_addr : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    r_len : out STD_LOGIC_VECTOR ( 19 downto 0 );
+    r_valid : out STD_LOGIC;
+    r_ready : in STD_LOGIC;
+    r_compl : in STD_LOGIC;
+    w_addr : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    w_len : out STD_LOGIC_VECTOR ( 19 downto 0 );
+    w_valid : out STD_LOGIC;
+    w_ready : in STD_LOGIC;
+    w_compl : in STD_LOGIC;
+    rst : out STD_LOGIC;
+    axis_rst : out STD_LOGIC;
+    axis_rstn : out STD_LOGIC;
+    interrupt : out STD_LOGIC;
+    out_data : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    out_valid : out STD_LOGIC;
+    out_last : out STD_LOGIC;
+    out_ready : in STD_LOGIC;
+    in_data : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    in_valid : in STD_LOGIC;
+    in_last : in STD_LOGIC;
+    in_ready : out STD_LOGIC;
+    m_axis_data : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_valid : out STD_LOGIC;
+    m_axis_last : out STD_LOGIC;
+    m_axis_ready : in STD_LOGIC;
+    s_axis_data : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axis_valid : in STD_LOGIC;
+    s_axis_last : in STD_LOGIC;
+    s_axis_ready : out STD_LOGIC;
+    s_axi_awaddr : in STD_LOGIC_VECTOR ( 4 downto 0 );
+    s_axi_awprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    s_axi_awvalid : in STD_LOGIC;
+    s_axi_awready : out STD_LOGIC;
+    s_axi_wdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axi_wstrb : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    s_axi_wvalid : in STD_LOGIC;
+    s_axi_wready : out STD_LOGIC;
+    s_axi_bresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    s_axi_bvalid : out STD_LOGIC;
+    s_axi_bready : in STD_LOGIC;
+    s_axi_araddr : in STD_LOGIC_VECTOR ( 4 downto 0 );
+    s_axi_arprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    s_axi_arvalid : in STD_LOGIC;
+    s_axi_arready : out STD_LOGIC;
+    s_axi_rdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axi_rresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    s_axi_rvalid : out STD_LOGIC;
+    s_axi_rready : in STD_LOGIC;
+    s_axi_aclk : in STD_LOGIC;
+    s_axi_aresetn : in STD_LOGIC
+  );
+  end component template_design_MINIMAL_DMA_CONTROL_0_0;
   signal GND_1 : STD_LOGIC;
   signal MINIMAL_DMA_0_M_AXI_ARADDR : STD_LOGIC_VECTOR ( 31 downto 0 );
   signal MINIMAL_DMA_0_M_AXI_ARBURST : STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -1805,11 +1810,13 @@ architecture STRUCTURE of template_design is
   signal MINIMAL_DMA_0_data_out_valid : STD_LOGIC;
   signal MINIMAL_DMA_CONTROL_0_axis_rst : STD_LOGIC;
   signal MINIMAL_DMA_CONTROL_0_dma_control_r_addr : STD_LOGIC_VECTOR ( 31 downto 0 );
+  signal MINIMAL_DMA_CONTROL_0_dma_control_r_compl : STD_LOGIC;
   signal MINIMAL_DMA_CONTROL_0_dma_control_r_len : STD_LOGIC_VECTOR ( 19 downto 0 );
   signal MINIMAL_DMA_CONTROL_0_dma_control_r_ready : STD_LOGIC;
   signal MINIMAL_DMA_CONTROL_0_dma_control_r_valid : STD_LOGIC;
   signal MINIMAL_DMA_CONTROL_0_dma_control_rst : STD_LOGIC;
   signal MINIMAL_DMA_CONTROL_0_dma_control_w_addr : STD_LOGIC_VECTOR ( 31 downto 0 );
+  signal MINIMAL_DMA_CONTROL_0_dma_control_w_compl : STD_LOGIC;
   signal MINIMAL_DMA_CONTROL_0_dma_control_w_len : STD_LOGIC_VECTOR ( 19 downto 0 );
   signal MINIMAL_DMA_CONTROL_0_dma_control_w_ready : STD_LOGIC;
   signal MINIMAL_DMA_CONTROL_0_dma_control_w_valid : STD_LOGIC;
@@ -1962,6 +1969,7 @@ architecture STRUCTURE of template_design is
   signal s_axis_1_TVALID : STD_LOGIC;
   signal util_vector_logic_0_Res : STD_LOGIC_VECTOR ( 0 to 0 );
   signal util_vector_logic_1_Res : STD_LOGIC_VECTOR ( 0 to 0 );
+  signal NLW_MINIMAL_DMA_CONTROL_0_axis_rstn_UNCONNECTED : STD_LOGIC;
   signal NLW_MINIMAL_DMA_CONTROL_0_interrupt_UNCONNECTED : STD_LOGIC;
   signal NLW_axis_data_fifo_0_axis_data_count_UNCONNECTED : STD_LOGIC_VECTOR ( 31 downto 0 );
   signal NLW_axis_data_fifo_0_axis_wr_data_count_UNCONNECTED : STD_LOGIC_VECTOR ( 31 downto 0 );
@@ -2061,11 +2069,13 @@ MINIMAL_DMA_0: component template_design_MINIMAL_DMA_0_0
       out_ready => MINIMAL_DMA_0_data_out_ready,
       out_valid => MINIMAL_DMA_0_data_out_valid,
       r_addr(31 downto 0) => MINIMAL_DMA_CONTROL_0_dma_control_r_addr(31 downto 0),
+      r_compl => MINIMAL_DMA_CONTROL_0_dma_control_r_compl,
       r_len(19 downto 0) => MINIMAL_DMA_CONTROL_0_dma_control_r_len(19 downto 0),
       r_ready => MINIMAL_DMA_CONTROL_0_dma_control_r_ready,
       r_valid => MINIMAL_DMA_CONTROL_0_dma_control_r_valid,
       rst => MINIMAL_DMA_CONTROL_0_dma_control_rst,
       w_addr(31 downto 0) => MINIMAL_DMA_CONTROL_0_dma_control_w_addr(31 downto 0),
+      w_compl => MINIMAL_DMA_CONTROL_0_dma_control_w_compl,
       w_len(19 downto 0) => MINIMAL_DMA_CONTROL_0_dma_control_w_len(19 downto 0),
       w_ready => MINIMAL_DMA_CONTROL_0_dma_control_w_ready,
       w_valid => MINIMAL_DMA_CONTROL_0_dma_control_w_valid
@@ -2073,6 +2083,7 @@ MINIMAL_DMA_0: component template_design_MINIMAL_DMA_0_0
 MINIMAL_DMA_CONTROL_0: component template_design_MINIMAL_DMA_CONTROL_0_0
      port map (
       axis_rst => MINIMAL_DMA_CONTROL_0_axis_rst,
+      axis_rstn => NLW_MINIMAL_DMA_CONTROL_0_axis_rstn_UNCONNECTED,
       in_data(31 downto 0) => MINIMAL_DMA_0_data_out_data(31 downto 0),
       in_last => MINIMAL_DMA_0_data_out_last,
       in_ready => MINIMAL_DMA_0_data_out_ready,
@@ -2087,6 +2098,7 @@ MINIMAL_DMA_CONTROL_0: component template_design_MINIMAL_DMA_CONTROL_0_0
       out_ready => MINIMAL_DMA_CONTROL_0_out_data_ready,
       out_valid => MINIMAL_DMA_CONTROL_0_out_data_valid,
       r_addr(31 downto 0) => MINIMAL_DMA_CONTROL_0_dma_control_r_addr(31 downto 0),
+      r_compl => MINIMAL_DMA_CONTROL_0_dma_control_r_compl,
       r_len(19 downto 0) => MINIMAL_DMA_CONTROL_0_dma_control_r_len(19 downto 0),
       r_ready => MINIMAL_DMA_CONTROL_0_dma_control_r_ready,
       r_valid => MINIMAL_DMA_CONTROL_0_dma_control_r_valid,
@@ -2117,6 +2129,7 @@ MINIMAL_DMA_CONTROL_0: component template_design_MINIMAL_DMA_CONTROL_0_0
       s_axis_ready => axis_data_fifo_0_M_AXIS_TREADY,
       s_axis_valid => axis_data_fifo_0_M_AXIS_TVALID,
       w_addr(31 downto 0) => MINIMAL_DMA_CONTROL_0_dma_control_w_addr(31 downto 0),
+      w_compl => MINIMAL_DMA_CONTROL_0_dma_control_w_compl,
       w_len(19 downto 0) => MINIMAL_DMA_CONTROL_0_dma_control_w_len(19 downto 0),
       w_ready => MINIMAL_DMA_CONTROL_0_dma_control_w_ready,
       w_valid => MINIMAL_DMA_CONTROL_0_dma_control_w_valid

@@ -1,7 +1,7 @@
 --Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
---Date        : Tue Apr 26 16:20:27 2016
+--Date        : Tue Apr 26 17:57:31 2016
 --Host        : philipp-ThinkPad-X250 running 64-bit Ubuntu 15.04
 --Command     : generate_target template_design_wrapper.bd
 --Design      : template_design_wrapper

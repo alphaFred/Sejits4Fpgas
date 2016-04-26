@@ -415,24 +415,6 @@
         </spirit:configurableElementValues>
       </spirit:componentInstance>
       <spirit:componentInstance>
-        <spirit:instanceName>MINIMAL_DMA_0</spirit:instanceName>
-        <spirit:componentRef spirit:library="user" spirit:name="MINIMAL_DMA" spirit:vendor="fau.de" spirit:version="1.0"/>
-        <spirit:configurableElementValues>
-          <spirit:configurableElementValue spirit:referenceId="bd:xciName">template_design_MINIMAL_DMA_0_0</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="C_M_AXI_BURST_LEN">64</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="LEN_WIDTH">20</spirit:configurableElementValue>
-        </spirit:configurableElementValues>
-      </spirit:componentInstance>
-      <spirit:componentInstance>
-        <spirit:instanceName>MINIMAL_DMA_CONTROL_0</spirit:instanceName>
-        <spirit:componentRef spirit:library="user" spirit:name="MINIMAL_DMA_CONTROL" spirit:vendor="user.org" spirit:version="1.0"/>
-        <spirit:configurableElementValues>
-          <spirit:configurableElementValue spirit:referenceId="bd:xciName">template_design_MINIMAL_DMA_CONTROL_0_0</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="DMA_LEN_WIDTH">20</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="GEN_DONE">true</spirit:configurableElementValue>
-        </spirit:configurableElementValues>
-      </spirit:componentInstance>
-      <spirit:componentInstance>
         <spirit:instanceName>axis_data_fifo_0</spirit:instanceName>
         <spirit:componentRef spirit:library="ip" spirit:name="axis_data_fifo" spirit:vendor="xilinx.com" spirit:version="1.1"/>
         <spirit:configurableElementValues>
@@ -498,6 +480,24 @@
           <spirit:configurableElementValue spirit:referenceId="C_SIZE">1</spirit:configurableElementValue>
         </spirit:configurableElementValues>
       </spirit:componentInstance>
+      <spirit:componentInstance>
+        <spirit:instanceName>MINIMAL_DMA_0</spirit:instanceName>
+        <spirit:componentRef spirit:library="user" spirit:name="MINIMAL_DMA" spirit:vendor="fau.de" spirit:version="1.0"/>
+        <spirit:configurableElementValues>
+          <spirit:configurableElementValue spirit:referenceId="bd:xciName">template_design_MINIMAL_DMA_0_0</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="C_M_AXI_BURST_LEN">64</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="LEN_WIDTH">20</spirit:configurableElementValue>
+        </spirit:configurableElementValues>
+      </spirit:componentInstance>
+      <spirit:componentInstance>
+        <spirit:instanceName>MINIMAL_DMA_CONTROL_0</spirit:instanceName>
+        <spirit:componentRef spirit:library="user" spirit:name="MINIMAL_DMA_CONTROL" spirit:vendor="user.org" spirit:version="1.0"/>
+        <spirit:configurableElementValues>
+          <spirit:configurableElementValue spirit:referenceId="bd:xciName">template_design_MINIMAL_DMA_CONTROL_0_0</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="DMA_LEN_WIDTH">20</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="GEN_DONE">true</spirit:configurableElementValue>
+        </spirit:configurableElementValues>
+      </spirit:componentInstance>
     </spirit:componentInstances>
     <spirit:interconnections>
       <spirit:interconnection>
@@ -554,8 +554,6 @@
         <spirit:internalPortReference spirit:componentRef="processing_system7_0" spirit:portRef="M_AXI_GP0_ACLK"/>
         <spirit:internalPortReference spirit:componentRef="rst_processing_system7_0_102M" spirit:portRef="slowest_sync_clk"/>
         <spirit:internalPortReference spirit:componentRef="processing_system7_0" spirit:portRef="S_AXI_HP0_ACLK"/>
-        <spirit:internalPortReference spirit:componentRef="MINIMAL_DMA_CONTROL_0" spirit:portRef="s_axi_aclk"/>
-        <spirit:internalPortReference spirit:componentRef="MINIMAL_DMA_0" spirit:portRef="m_axi_aclk"/>
         <spirit:internalPortReference spirit:componentRef="axis_data_fifo_0" spirit:portRef="s_axis_aclk"/>
         <spirit:internalPortReference spirit:componentRef="axis_data_fifo_1" spirit:portRef="s_axis_aclk"/>
         <spirit:internalPortReference spirit:componentRef="c_addsub_0" spirit:portRef="CLK"/>
@@ -566,6 +564,8 @@
         <spirit:internalPortReference spirit:componentRef="axi_mem_intercon" spirit:portRef="S00_ACLK"/>
         <spirit:internalPortReference spirit:componentRef="axi_mem_intercon" spirit:portRef="ACLK"/>
         <spirit:internalPortReference spirit:componentRef="axi_mem_intercon" spirit:portRef="M00_ACLK"/>
+        <spirit:internalPortReference spirit:componentRef="MINIMAL_DMA_0" spirit:portRef="m_axi_aclk"/>
+        <spirit:internalPortReference spirit:componentRef="MINIMAL_DMA_CONTROL_0" spirit:portRef="s_axi_aclk"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>processing_system7_0_FCLK_RESET0_N</spirit:name>
@@ -575,12 +575,12 @@
       <spirit:adHocConnection>
         <spirit:name>rst_processing_system7_0_102M_peripheral_aresetn</spirit:name>
         <spirit:internalPortReference spirit:componentRef="rst_processing_system7_0_102M" spirit:portRef="peripheral_aresetn"/>
-        <spirit:internalPortReference spirit:componentRef="MINIMAL_DMA_CONTROL_0" spirit:portRef="s_axi_aresetn"/>
-        <spirit:internalPortReference spirit:componentRef="MINIMAL_DMA_0" spirit:portRef="m_axi_aresetn"/>
         <spirit:internalPortReference spirit:componentRef="processing_system7_0_axi_periph" spirit:portRef="S00_ARESETN"/>
         <spirit:internalPortReference spirit:componentRef="processing_system7_0_axi_periph" spirit:portRef="M00_ARESETN"/>
         <spirit:internalPortReference spirit:componentRef="axi_mem_intercon" spirit:portRef="S00_ARESETN"/>
         <spirit:internalPortReference spirit:componentRef="axi_mem_intercon" spirit:portRef="M00_ARESETN"/>
+        <spirit:internalPortReference spirit:componentRef="MINIMAL_DMA_0" spirit:portRef="m_axi_aresetn"/>
+        <spirit:internalPortReference spirit:componentRef="MINIMAL_DMA_CONTROL_0" spirit:portRef="s_axi_aresetn"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>rst_processing_system7_0_102M_interconnect_aresetn</spirit:name>

@@ -44,11 +44,11 @@ architecture Behavioral of tb_minimal_dma is
 
 constant clk_period : time := 10ns;
 
-constant		LEN_WIDTH : integer := 12;
+constant		LEN_WIDTH : integer := 13;
 constant		C_M_AXI_BURST_LEN	: integer	:= 16; --256
 constant		C_M_AXI_ID_WIDTH	: integer	:= 1;
 constant		C_M_AXI_ADDR_WIDTH	: integer	:= 32;
-constant		C_M_AXI_DATA_WIDTH	: integer	:= 256;
+constant		C_M_AXI_DATA_WIDTH	: integer	:= 32;
 constant		C_M_AXI_AWUSER_WIDTH	: integer	:= 0;
 constant		C_M_AXI_ARUSER_WIDTH	: integer	:= 0;
 constant		C_M_AXI_WUSER_WIDTH	: integer	:= 0;
@@ -213,7 +213,16 @@ wait until rising_edge(M_AXI_ACLK);
 wait for clk_period*10;
 wait until rising_edge(M_AXI_ACLK);
 
-w_len <= std_logic_vector(to_unsigned(63+16,r_len'length)); -- 1 beat
+w_len <= std_logic_vector(to_unsigned(129,r_len'length)); -- 1 beat
+w_addr <= std_logic_vector(to_unsigned(2*(C_M_AXI_DATA_WIDTH/8),w_addr'length)); -- @2
+w_valid <= '1';
+wait until rising_edge(M_AXI_ACLK);
+w_valid <= '0';
+wait until rising_edge(M_AXI_ACLK);
+
+while (w_ready = '0') loop wait until rising_edge(M_AXI_ACLK); end loop;
+wait until rising_edge(M_AXI_ACLK);
+w_len <= std_logic_vector(to_unsigned(17*4,r_len'length)); -- 1 beat
 w_addr <= std_logic_vector(to_unsigned(2*(C_M_AXI_DATA_WIDTH/8),w_addr'length)); -- @2
 w_valid <= '1';
 wait until rising_edge(M_AXI_ACLK);
@@ -222,9 +231,6 @@ wait until rising_edge(M_AXI_ACLK);
 
 
 
-
---while (w_ready = '0') loop wait until rising_edge(M_AXI_ACLK); end loop;
---wait until rising_edge(M_AXI_ACLK);
 --wait for clk_period*10;
 --wait until rising_edge(M_AXI_ACLK);
 
@@ -252,7 +258,7 @@ wait until rising_edge(M_AXI_ACLK);
 --w_valid <= '0';
 --wait until rising_edge(M_AXI_ACLK);
 
-wait for clk_period*10;
+wait for clk_period*60;
 wait until rising_edge(M_AXI_ACLK);
 
 
@@ -265,31 +271,25 @@ wait until rising_edge(M_AXI_ACLK);
 --wait until rising_edge(M_AXI_ACLK);
 
 
-r_len <= std_logic_vector(to_unsigned(40,r_len'length)); -- 5 beats
+r_len <= std_logic_vector(to_unsigned(4*16*3-1,r_len'length)); -- 5 beats
 r_addr <= std_logic_vector(to_unsigned(2*(C_M_AXI_DATA_WIDTH/8),w_addr'length)); -- @0
-r_valid <= '1';
-wait until rising_edge(M_AXI_ACLK);
-r_valid <= '0';
-wait until rising_edge(M_AXI_ACLK);
-
-
-wait for clk_period*10;
-wait until rising_edge(M_AXI_ACLK);
-out_ready <= '1';
-wait until rising_edge(M_AXI_ACLK);
---while (r_ready = '0') loop wait until rising_edge(M_AXI_ACLK); end loop;
---wait until rising_edge(M_AXI_ACLK);
---wait for clk_period*10;
---wait until rising_edge(M_AXI_ACLK);
-
-
-r_len <= std_logic_vector(to_unsigned(4,r_len'length)); -- 5 beats
-r_addr <= std_logic_vector(to_unsigned(2*(C_M_AXI_DATA_WIDTH/8),w_addr'length)); -- @2
 r_valid <= '1';
 wait until rising_edge(M_AXI_ACLK);
 while (r_ready = '0') loop wait until rising_edge(M_AXI_ACLK); end loop;
 r_valid <= '0';
 wait until rising_edge(M_AXI_ACLK);
+
+out_ready <= '1';
+
+wait until rising_edge(M_AXI_ACLK);
+
+--r_len <= std_logic_vector(to_unsigned(10,r_len'length)); -- 5 beats
+--r_addr <= std_logic_vector(to_unsigned(2*(C_M_AXI_DATA_WIDTH/8),w_addr'length)); -- @2
+--r_valid <= '1';
+--wait until rising_edge(M_AXI_ACLK);
+--while (r_ready = '0') loop wait until rising_edge(M_AXI_ACLK); end loop;
+--r_valid <= '0';
+--wait until rising_edge(M_AXI_ACLK);
 
 
 --while (r_ready = '0') loop wait until rising_edge(M_AXI_ACLK); end loop;
@@ -322,9 +322,13 @@ end process;
 
 r_answer_proc: process
 begin
-m_axi_arready <= '0';
-wait until rising_edge(m_axi_arvalid);
 m_axi_arready <= '1';
+wait until rising_edge(m_axi_arvalid);
+wait until rising_edge(M_AXI_ACLK);
+m_axi_arready <= '0';
+
+wait until rising_edge(M_AXI_ACLK);
+wait until rising_edge(M_AXI_ACLK);
 wait until rising_edge(M_AXI_ACLK);
 wait until rising_edge(M_AXI_ACLK);
 m_axi_arready <= '0';

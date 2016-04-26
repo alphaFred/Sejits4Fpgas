@@ -1,0 +1,10 @@
+#-----------------------------------------------------------
+# Vivado v2015.2 (64-bit)
+# SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
+# IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
+# Start of session at: Tue Apr 26 18:01:04 2016
+# Process ID: 31411
+# Log file: /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.runs/impl_1/top.vdi
+# Journal file: /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.runs/impl_1/vivado.jou
+#-----------------------------------------------------------
+source top.tcl -notrace

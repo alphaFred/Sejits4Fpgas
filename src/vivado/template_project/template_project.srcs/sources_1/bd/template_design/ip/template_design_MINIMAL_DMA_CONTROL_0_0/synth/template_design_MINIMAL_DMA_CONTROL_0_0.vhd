@@ -59,12 +59,15 @@ ENTITY template_design_MINIMAL_DMA_CONTROL_0_0 IS
     r_len : OUT STD_LOGIC_VECTOR(19 DOWNTO 0);
     r_valid : OUT STD_LOGIC;
     r_ready : IN STD_LOGIC;
+    r_compl : IN STD_LOGIC;
     w_addr : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
     w_len : OUT STD_LOGIC_VECTOR(19 DOWNTO 0);
     w_valid : OUT STD_LOGIC;
     w_ready : IN STD_LOGIC;
+    w_compl : IN STD_LOGIC;
     rst : OUT STD_LOGIC;
     axis_rst : OUT STD_LOGIC;
+    axis_rstn : OUT STD_LOGIC;
     interrupt : OUT STD_LOGIC;
     out_data : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
     out_valid : OUT STD_LOGIC;
@@ -124,12 +127,15 @@ ARCHITECTURE template_design_MINIMAL_DMA_CONTROL_0_0_arch OF template_design_MIN
       r_len : OUT STD_LOGIC_VECTOR(19 DOWNTO 0);
       r_valid : OUT STD_LOGIC;
       r_ready : IN STD_LOGIC;
+      r_compl : IN STD_LOGIC;
       w_addr : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
       w_len : OUT STD_LOGIC_VECTOR(19 DOWNTO 0);
       w_valid : OUT STD_LOGIC;
       w_ready : IN STD_LOGIC;
+      w_compl : IN STD_LOGIC;
       rst : OUT STD_LOGIC;
       axis_rst : OUT STD_LOGIC;
+      axis_rstn : OUT STD_LOGIC;
       interrupt : OUT STD_LOGIC;
       out_data : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
       out_valid : OUT STD_LOGIC;
@@ -179,12 +185,15 @@ ARCHITECTURE template_design_MINIMAL_DMA_CONTROL_0_0_arch OF template_design_MIN
   ATTRIBUTE X_INTERFACE_INFO OF r_len: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control r_len";
   ATTRIBUTE X_INTERFACE_INFO OF r_valid: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control r_valid";
   ATTRIBUTE X_INTERFACE_INFO OF r_ready: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control r_ready";
+  ATTRIBUTE X_INTERFACE_INFO OF r_compl: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control r_compl";
   ATTRIBUTE X_INTERFACE_INFO OF w_addr: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control w_addr";
   ATTRIBUTE X_INTERFACE_INFO OF w_len: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control w_len";
   ATTRIBUTE X_INTERFACE_INFO OF w_valid: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control w_valid";
   ATTRIBUTE X_INTERFACE_INFO OF w_ready: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control w_ready";
+  ATTRIBUTE X_INTERFACE_INFO OF w_compl: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control w_compl";
   ATTRIBUTE X_INTERFACE_INFO OF rst: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control rst";
   ATTRIBUTE X_INTERFACE_INFO OF axis_rst: SIGNAL IS "xilinx.com:signal:reset:1.0 axis_rst RST";
+  ATTRIBUTE X_INTERFACE_INFO OF axis_rstn: SIGNAL IS "xilinx.com:signal:reset:1.0 axis_rstn RST";
   ATTRIBUTE X_INTERFACE_INFO OF interrupt: SIGNAL IS "xilinx.com:signal:interrupt:1.0 int INTERRUPT";
   ATTRIBUTE X_INTERFACE_INFO OF out_data: SIGNAL IS "fau.de:user:my_data_stream:1.0 out_data data";
   ATTRIBUTE X_INTERFACE_INFO OF out_valid: SIGNAL IS "fau.de:user:my_data_stream:1.0 out_data valid";
@@ -238,12 +247,15 @@ BEGIN
       r_len => r_len,
       r_valid => r_valid,
       r_ready => r_ready,
+      r_compl => r_compl,
       w_addr => w_addr,
       w_len => w_len,
       w_valid => w_valid,
       w_ready => w_ready,
+      w_compl => w_compl,
       rst => rst,
       axis_rst => axis_rst,
+      axis_rstn => axis_rstn,
       interrupt => interrupt,
       out_data => out_data,
       out_valid => out_valid,

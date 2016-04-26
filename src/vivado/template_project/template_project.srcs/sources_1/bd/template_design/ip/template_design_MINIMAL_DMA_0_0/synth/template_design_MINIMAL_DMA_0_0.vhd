@@ -67,10 +67,12 @@ ENTITY template_design_MINIMAL_DMA_0_0 IS
     r_len : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
     r_valid : IN STD_LOGIC;
     r_ready : OUT STD_LOGIC;
+    r_compl : OUT STD_LOGIC;
     w_addr : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
     w_len : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
     w_valid : IN STD_LOGIC;
     w_ready : OUT STD_LOGIC;
+    w_compl : OUT STD_LOGIC;
     rst : IN STD_LOGIC;
     m_axi_aclk : IN STD_LOGIC;
     m_axi_aresetn : IN STD_LOGIC;
@@ -134,7 +136,8 @@ ARCHITECTURE template_design_MINIMAL_DMA_0_0_arch OF template_design_MINIMAL_DMA
       C_M_AXI_WUSER_WIDTH : INTEGER; -- Width of User Write Data Bus
       C_M_AXI_RUSER_WIDTH : INTEGER; -- Width of User Read Data Bus
       C_M_AXI_BUSER_WIDTH : INTEGER; -- Width of User Response Bus
-      LEN_WIDTH : INTEGER
+      LEN_WIDTH : INTEGER;
+      ISSUE_DEPTH : INTEGER
     );
     PORT (
       out_data : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -149,10 +152,12 @@ ARCHITECTURE template_design_MINIMAL_DMA_0_0_arch OF template_design_MINIMAL_DMA
       r_len : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
       r_valid : IN STD_LOGIC;
       r_ready : OUT STD_LOGIC;
+      r_compl : OUT STD_LOGIC;
       w_addr : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
       w_len : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
       w_valid : IN STD_LOGIC;
       w_ready : OUT STD_LOGIC;
+      w_compl : OUT STD_LOGIC;
       rst : IN STD_LOGIC;
       m_axi_aclk : IN STD_LOGIC;
       m_axi_aresetn : IN STD_LOGIC;
@@ -217,10 +222,12 @@ ARCHITECTURE template_design_MINIMAL_DMA_0_0_arch OF template_design_MINIMAL_DMA
   ATTRIBUTE X_INTERFACE_INFO OF r_len: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control r_len";
   ATTRIBUTE X_INTERFACE_INFO OF r_valid: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control r_valid";
   ATTRIBUTE X_INTERFACE_INFO OF r_ready: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control r_ready";
+  ATTRIBUTE X_INTERFACE_INFO OF r_compl: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control r_compl";
   ATTRIBUTE X_INTERFACE_INFO OF w_addr: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control w_addr";
   ATTRIBUTE X_INTERFACE_INFO OF w_len: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control w_len";
   ATTRIBUTE X_INTERFACE_INFO OF w_valid: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control w_valid";
   ATTRIBUTE X_INTERFACE_INFO OF w_ready: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control w_ready";
+  ATTRIBUTE X_INTERFACE_INFO OF w_compl: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control w_compl";
   ATTRIBUTE X_INTERFACE_INFO OF rst: SIGNAL IS "fau.de:user:minimal_dma_control:1.0 dma_control rst";
   ATTRIBUTE X_INTERFACE_INFO OF m_axi_aclk: SIGNAL IS "xilinx.com:signal:clock:1.0 M_AXI_CLK CLK";
   ATTRIBUTE X_INTERFACE_INFO OF m_axi_aresetn: SIGNAL IS "xilinx.com:signal:reset:1.0 M_AXI_RST RST";
@@ -278,7 +285,8 @@ BEGIN
       C_M_AXI_WUSER_WIDTH => 1,
       C_M_AXI_RUSER_WIDTH => 1,
       C_M_AXI_BUSER_WIDTH => 1,
-      LEN_WIDTH => 20
+      LEN_WIDTH => 20,
+      ISSUE_DEPTH => 2
     )
     PORT MAP (
       out_data => out_data,
@@ -293,10 +301,12 @@ BEGIN
       r_len => r_len,
       r_valid => r_valid,
       r_ready => r_ready,
+      r_compl => r_compl,
       w_addr => w_addr,
       w_len => w_len,
       w_valid => w_valid,
       w_ready => w_ready,
+      w_compl => w_compl,
       rst => rst,
       m_axi_aclk => m_axi_aclk,
       m_axi_aresetn => m_axi_aresetn,
