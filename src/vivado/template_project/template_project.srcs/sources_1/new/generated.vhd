@@ -20,7 +20,7 @@ VhdlComponent : entity work.AddBB
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VALID_IN,
-             LEFT => std_logic_vector(to_signed(255, 32)),
+             LEFT => std_logic_vector(to_signed(125, 32)),
              RIGHT => a,
              VALID_OUT => BB_ADD_VALID_OUT_0,
              ADD_OUT => BB_ADD_OUT_0); 

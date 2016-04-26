@@ -30,9 +30,6 @@ set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design
 # IP: bd/template_design/ip/template_design_util_vector_logic_0_0/template_design_util_vector_logic_0_0.xci
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_util_vector_logic_0_0 || ORIG_REF_NAME==template_design_util_vector_logic_0_0}]
 
-# IP: bd/template_design/ip/template_design_ila_0_0/template_design_ila_0_0.xci
-set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_ila_0_0 || ORIG_REF_NAME==template_design_ila_0_0}]
-
 # IP: bd/template_design/ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0.xci
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_axis_data_fifo_1_0 || ORIG_REF_NAME==template_design_axis_data_fifo_1_0}]
 
@@ -66,11 +63,6 @@ set_property DONT_TOUCH TRUE [get_cells [split [join [get_cells -hier -filter {R
 
 # XDC: bd/template_design/ip/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0.xdc
 set_property DONT_TOUCH TRUE [get_cells [split [join [get_cells -hier -filter {REF_NAME==template_design_axis_data_fifo_0_0 || ORIG_REF_NAME==template_design_axis_data_fifo_0_0}] {/inst }]/inst ]]
-
-# XDC: bd/template_design/ip/template_design_ila_0_0/ila_v5_1/constraints/ila.xdc
-#dup# set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_ila_0_0 || ORIG_REF_NAME==template_design_ila_0_0}]
-
-# XDC: bd/template_design/ip/template_design_ila_0_0/template_design_ila_0_0_ooc.xdc
 
 # XDC: bd/template_design/ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0_ooc.xdc
 

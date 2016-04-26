@@ -5,6 +5,8 @@
 debug::add_scope template.lib 1
 set_msg_config -id {HDL 9-1061} -limit 100000
 set_msg_config -id {HDL 9-1654} -limit 100000
+set_msg_config -id {Synth 8-256} -limit 10000
+set_msg_config -id {Synth 8-638} -limit 10000
 create_project -in_memory -part xc7z020clg484-1
 
 set_param project.compositeFile.enableAutoGeneration 0
@@ -23,8 +25,6 @@ set_property used_in_implementation false [get_files -all /home/philipp/Universi
 set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0_ooc.xdc]
 set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0_ooc.xdc]
 set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0.xdc]
-set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_ila_0_0/ila_v5_1/constraints/ila.xdc]
-set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_ila_0_0/template_design_ila_0_0_ooc.xdc]
 set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0_ooc.xdc]
 set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0.xdc]
 set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_c_addsub_0_0/template_design_c_addsub_0_0_ooc.xdc]

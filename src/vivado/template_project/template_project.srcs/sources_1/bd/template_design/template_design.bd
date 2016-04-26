@@ -105,7 +105,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>FREQ_HZ</spirit:name>
-            <spirit:value>100000000</spirit:value>
+            <spirit:value>102000000</spirit:value>
             <spirit:vendorExtensions>
               <bd:configElementInfos>
                 <bd:configElementInfo bd:valueSource="user_prop"/>
@@ -221,7 +221,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>FREQ_HZ</spirit:name>
-            <spirit:value>100000000</spirit:value>
+            <spirit:value>102000000</spirit:value>
             <spirit:vendorExtensions>
               <bd:configElementInfos>
                 <bd:configElementInfo bd:valueSource="user_prop"/>
@@ -277,7 +277,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>FREQ_HZ</spirit:name>
-            <spirit:value>100000000</spirit:value>
+            <spirit:value>102000000</spirit:value>
             <spirit:vendorExtensions>
               <bd:configElementInfos>
                 <bd:configElementInfo bd:valueSource="user_prop"/>
@@ -452,13 +452,6 @@
         </spirit:configurableElementValues>
       </spirit:componentInstance>
       <spirit:componentInstance>
-        <spirit:instanceName>ila_0</spirit:instanceName>
-        <spirit:componentRef spirit:library="ip" spirit:name="ila" spirit:vendor="xilinx.com" spirit:version="5.1"/>
-        <spirit:configurableElementValues>
-          <spirit:configurableElementValue spirit:referenceId="bd:xciName">template_design_ila_0_0</spirit:configurableElementValue>
-        </spirit:configurableElementValues>
-      </spirit:componentInstance>
-      <spirit:componentInstance>
         <spirit:instanceName>axis_data_fifo_1</spirit:instanceName>
         <spirit:componentRef spirit:library="ip" spirit:name="axis_data_fifo" spirit:vendor="xilinx.com" spirit:version="1.1"/>
         <spirit:configurableElementValues>
@@ -532,11 +525,6 @@
         <spirit:activeInterface spirit:busRef="M_AXI" spirit:componentRef="MINIMAL_DMA_0"/>
         <spirit:activeInterface spirit:busRef="S00_AXI" spirit:componentRef="axi_mem_intercon"/>
       </spirit:interconnection>
-      <spirit:monitorInterconnection>
-        <spirit:name>MINIMAL_DMA_0_M_AXI</spirit:name>
-        <spirit:monitoredActiveInterface spirit:busRef="S00_AXI" spirit:componentRef="axi_mem_intercon"/>
-        <spirit:monitorInterface spirit:busRef="SLOT_0_AXI" spirit:componentRef="ila_0"/>
-      </spirit:monitorInterconnection>
       <spirit:interconnection>
         <spirit:name>MINIMAL_DMA_CONTROL_0_dma_control</spirit:name>
         <spirit:activeInterface spirit:busRef="dma_control" spirit:componentRef="MINIMAL_DMA_0"/>
@@ -569,7 +557,6 @@
         <spirit:internalPortReference spirit:componentRef="MINIMAL_DMA_CONTROL_0" spirit:portRef="s_axi_aclk"/>
         <spirit:internalPortReference spirit:componentRef="MINIMAL_DMA_0" spirit:portRef="m_axi_aclk"/>
         <spirit:internalPortReference spirit:componentRef="axis_data_fifo_0" spirit:portRef="s_axis_aclk"/>
-        <spirit:internalPortReference spirit:componentRef="ila_0" spirit:portRef="clk"/>
         <spirit:internalPortReference spirit:componentRef="axis_data_fifo_1" spirit:portRef="s_axis_aclk"/>
         <spirit:internalPortReference spirit:componentRef="c_addsub_0" spirit:portRef="CLK"/>
         <spirit:internalPortReference spirit:componentRef="axis_register_slice_0" spirit:portRef="aclk"/>

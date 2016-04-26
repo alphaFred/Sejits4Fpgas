@@ -1,7 +1,7 @@
 --Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
---Date        : Wed Apr 20 13:46:16 2016
+--Date        : Tue Apr 26 16:20:27 2016
 --Host        : philipp-ThinkPad-X250 running 64-bit Ubuntu 15.04
 --Command     : generate_target template_design.bd
 --Design      : template_design
@@ -1423,10 +1423,10 @@ entity template_design is
     s_axis_tready : out STD_LOGIC;
     s_axis_tvalid : in STD_LOGIC
   );
-  attribute CORE_GENERATION_INFO : string;
-  attribute CORE_GENERATION_INFO of template_design : entity is "template_design,IP_Integrator,{x_ipProduct=Vivado 2015.2,x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=template_design,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=17,numReposBlks=13,numNonXlnxBlks=2,numHierBlks=4,maxHierDepth=0,da_axi4_cnt=5,da_ps7_cnt=1,synth_mode=Global}";
-  attribute HW_HANDOFF : string;
-  attribute HW_HANDOFF of template_design : entity is "template_design.hwdef";
+  attribute core_generation_info : string;
+  attribute core_generation_info of template_design : entity is "template_design,IP_Integrator,{x_ipProduct=Vivado 2015.2,x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=template_design,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=16,numReposBlks=12,numNonXlnxBlks=2,numHierBlks=4,maxHierDepth=0,da_axi4_cnt=5,da_ps7_cnt=1,synth_mode=Global}";
+  attribute hw_handoff : string;
+  attribute hw_handoff of template_design : entity is "template_design.hwdef";
 end template_design;
 
 architecture STRUCTURE of template_design is
@@ -1711,55 +1711,6 @@ architecture STRUCTURE of template_design is
     Res : out STD_LOGIC_VECTOR ( 0 to 0 )
   );
   end component template_design_util_vector_logic_0_0;
-  component template_design_ila_0_0 is
-  port (
-    clk : in STD_LOGIC;
-    probe0 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe1 : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    probe2 : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    probe3 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe4 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe5 : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    probe6 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe7 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe8 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe9 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe10 : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    probe11 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe12 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe13 : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    probe14 : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    probe15 : in STD_LOGIC_VECTOR ( 3 downto 0 );
-    probe16 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe17 : in STD_LOGIC_VECTOR ( 2 downto 0 );
-    probe18 : in STD_LOGIC_VECTOR ( 2 downto 0 );
-    probe19 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe20 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe21 : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    probe22 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe23 : in STD_LOGIC_VECTOR ( 2 downto 0 );
-    probe24 : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    probe25 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe26 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe28 : in STD_LOGIC_VECTOR ( 2 downto 0 );
-    probe29 : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    probe30 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe31 : in STD_LOGIC_VECTOR ( 3 downto 0 );
-    probe32 : in STD_LOGIC_VECTOR ( 3 downto 0 );
-    probe33 : in STD_LOGIC_VECTOR ( 3 downto 0 );
-    probe34 : in STD_LOGIC_VECTOR ( 3 downto 0 );
-    probe35 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe36 : in STD_LOGIC_VECTOR ( 3 downto 0 );
-    probe37 : in STD_LOGIC_VECTOR ( 3 downto 0 );
-    probe38 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe39 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe41 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe42 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe43 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe44 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe27 : in STD_LOGIC_VECTOR ( 7 downto 0 )
-  );
-  end component template_design_ila_0_0;
   component template_design_axis_data_fifo_1_0 is
   port (
     s_axis_aresetn : in STD_LOGIC;
@@ -2313,60 +2264,6 @@ c_addsub_0: component template_design_c_addsub_0_0
       CLK => processing_system7_0_FCLK_CLK0,
       C_OUT => c_addsub_0_C_OUT,
       S(31 downto 0) => NLW_c_addsub_0_S_UNCONNECTED(31 downto 0)
-    );
-ila_0: component template_design_ila_0_0
-     port map (
-      clk => processing_system7_0_FCLK_CLK0,
-      probe0(0) => MINIMAL_DMA_0_M_AXI_WREADY,
-      probe1(31 downto 0) => MINIMAL_DMA_0_M_AXI_AWADDR(31 downto 0),
-      probe10(31 downto 0) => MINIMAL_DMA_0_M_AXI_RDATA(31 downto 0),
-      probe11(0) => MINIMAL_DMA_0_M_AXI_AWVALID,
-      probe12(0) => MINIMAL_DMA_0_M_AXI_AWREADY,
-      probe13(1 downto 0) => MINIMAL_DMA_0_M_AXI_RRESP(1 downto 0),
-      probe14(31 downto 0) => MINIMAL_DMA_0_M_AXI_WDATA(31 downto 0),
-      probe15(3 downto 0) => MINIMAL_DMA_0_M_AXI_WSTRB(3 downto 0),
-      probe16(0) => MINIMAL_DMA_0_M_AXI_RVALID,
-      probe17(2 downto 0) => MINIMAL_DMA_0_M_AXI_ARPROT(2 downto 0),
-      probe18(2 downto 0) => MINIMAL_DMA_0_M_AXI_AWPROT(2 downto 0),
-      probe19(0) => MINIMAL_DMA_0_M_AXI_AWID(0),
-      probe2(1 downto 0) => MINIMAL_DMA_0_M_AXI_BRESP(1 downto 0),
-      probe20(0) => MINIMAL_DMA_0_M_AXI_BID(0),
-      probe21(7 downto 0) => MINIMAL_DMA_0_M_AXI_AWLEN(7 downto 0),
-      probe22(0) => GND_1,
-      probe23(2 downto 0) => MINIMAL_DMA_0_M_AXI_AWSIZE(2 downto 0),
-      probe24(1 downto 0) => MINIMAL_DMA_0_M_AXI_AWBURST(1 downto 0),
-      probe25(0) => MINIMAL_DMA_0_M_AXI_ARID(0),
-      probe26(0) => MINIMAL_DMA_0_M_AXI_AWLOCK,
-      probe27(7 downto 0) => MINIMAL_DMA_0_M_AXI_ARLEN(7 downto 0),
-      probe28(2 downto 0) => MINIMAL_DMA_0_M_AXI_ARSIZE(2 downto 0),
-      probe29(1 downto 0) => MINIMAL_DMA_0_M_AXI_ARBURST(1 downto 0),
-      probe3(0) => MINIMAL_DMA_0_M_AXI_BVALID,
-      probe30(0) => MINIMAL_DMA_0_M_AXI_ARLOCK,
-      probe31(3 downto 0) => MINIMAL_DMA_0_M_AXI_ARCACHE(3 downto 0),
-      probe32(3 downto 0) => MINIMAL_DMA_0_M_AXI_AWCACHE(3 downto 0),
-      probe33(3) => GND_1,
-      probe33(2) => GND_1,
-      probe33(1) => GND_1,
-      probe33(0) => GND_1,
-      probe34(3 downto 0) => MINIMAL_DMA_0_M_AXI_ARQOS(3 downto 0),
-      probe35(0) => MINIMAL_DMA_0_M_AXI_ARUSER(0),
-      probe36(3) => GND_1,
-      probe36(2) => GND_1,
-      probe36(1) => GND_1,
-      probe36(0) => GND_1,
-      probe37(3 downto 0) => MINIMAL_DMA_0_M_AXI_AWQOS(3 downto 0),
-      probe38(0) => MINIMAL_DMA_0_M_AXI_RID(0),
-      probe39(0) => MINIMAL_DMA_0_M_AXI_AWUSER(0),
-      probe4(0) => MINIMAL_DMA_0_M_AXI_BREADY,
-      probe41(0) => MINIMAL_DMA_0_M_AXI_RLAST,
-      probe42(0) => MINIMAL_DMA_0_M_AXI_RUSER(0),
-      probe43(0) => MINIMAL_DMA_0_M_AXI_WLAST,
-      probe44(0) => MINIMAL_DMA_0_M_AXI_WUSER(0),
-      probe5(31 downto 0) => MINIMAL_DMA_0_M_AXI_ARADDR(31 downto 0),
-      probe6(0) => MINIMAL_DMA_0_M_AXI_RREADY,
-      probe7(0) => MINIMAL_DMA_0_M_AXI_WVALID,
-      probe8(0) => MINIMAL_DMA_0_M_AXI_ARVALID,
-      probe9(0) => MINIMAL_DMA_0_M_AXI_ARREADY
     );
 processing_system7_0: component template_design_processing_system7_0_0
      port map (

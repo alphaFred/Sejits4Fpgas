@@ -183,9 +183,6 @@ proc create_root_design { parentCell } {
   set c_addsub_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:c_addsub:12.0 c_addsub_0 ]
   set_property -dict [ list CONFIG.A_Type {Unsigned} CONFIG.A_Width {32} CONFIG.Add_Mode {Subtract} CONFIG.B_Constant {true} CONFIG.B_Type {Unsigned} CONFIG.B_Value {00000000000000000000010111011100} CONFIG.B_Width {32} CONFIG.CE {false} CONFIG.C_Out {true} CONFIG.Implementation {Fabric} CONFIG.Latency {3} CONFIG.Latency_Configuration {Automatic} CONFIG.Out_Width {32}  ] $c_addsub_0
 
-  # Create instance: ila_0, and set properties
-  set ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:ila:5.1 ila_0 ]
-
   # Create instance: processing_system7_0, and set properties
   set processing_system7_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0 ]
   set_property -dict [ list CONFIG.PCW_S_AXI_HP0_DATA_WIDTH {32} CONFIG.PCW_USE_S_AXI_HP0 {1} CONFIG.preset {ZedBoard}  ] $processing_system7_0
@@ -207,7 +204,6 @@ proc create_root_design { parentCell } {
 
   # Create interface connections
   connect_bd_intf_net -intf_net MINIMAL_DMA_0_M_AXI [get_bd_intf_pins MINIMAL_DMA_0/M_AXI] [get_bd_intf_pins axi_mem_intercon/S00_AXI]
-connect_bd_intf_net -intf_net MINIMAL_DMA_0_M_AXI [get_bd_intf_pins MINIMAL_DMA_0/M_AXI] [get_bd_intf_pins ila_0/SLOT_0_AXI]
   connect_bd_intf_net -intf_net MINIMAL_DMA_0_data_out [get_bd_intf_pins MINIMAL_DMA_0/data_out] [get_bd_intf_pins MINIMAL_DMA_CONTROL_0/in_data]
   connect_bd_intf_net -intf_net MINIMAL_DMA_CONTROL_0_dma_control [get_bd_intf_pins MINIMAL_DMA_0/dma_control] [get_bd_intf_pins MINIMAL_DMA_CONTROL_0/dma_control]
   connect_bd_intf_net -intf_net MINIMAL_DMA_CONTROL_0_m_axis [get_bd_intf_pins MINIMAL_DMA_CONTROL_0/m_axis] [get_bd_intf_pins axis_data_fifo_1/S_AXIS]
@@ -229,7 +225,7 @@ connect_bd_intf_net -intf_net MINIMAL_DMA_0_M_AXI [get_bd_intf_pins MINIMAL_DMA_
   connect_bd_net -net axis_data_fifo_1_m_axis_tvalid [get_bd_pins axis_data_fifo_1/m_axis_tvalid] [get_bd_pins axis_register_slice_0/s_axis_tvalid]
   connect_bd_net -net axis_register_slice_0_s_axis_tready [get_bd_pins axis_register_slice_0/s_axis_tready] [get_bd_pins util_vector_logic_1/Op1]
   connect_bd_net -net c_addsub_0_C_OUT [get_bd_pins c_addsub_0/C_OUT] [get_bd_pins util_vector_logic_1/Op2]
-  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_ports CLK] [get_bd_pins MINIMAL_DMA_0/m_axi_aclk] [get_bd_pins MINIMAL_DMA_CONTROL_0/s_axi_aclk] [get_bd_pins axi_mem_intercon/ACLK] [get_bd_pins axi_mem_intercon/M00_ACLK] [get_bd_pins axi_mem_intercon/S00_ACLK] [get_bd_pins axis_data_fifo_0/s_axis_aclk] [get_bd_pins axis_data_fifo_1/s_axis_aclk] [get_bd_pins axis_register_slice_0/aclk] [get_bd_pins c_addsub_0/CLK] [get_bd_pins ila_0/clk] [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins processing_system7_0/S_AXI_HP0_ACLK] [get_bd_pins processing_system7_0_axi_periph/ACLK] [get_bd_pins processing_system7_0_axi_periph/M00_ACLK] [get_bd_pins processing_system7_0_axi_periph/S00_ACLK] [get_bd_pins rst_processing_system7_0_102M/slowest_sync_clk]
+  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_ports CLK] [get_bd_pins MINIMAL_DMA_0/m_axi_aclk] [get_bd_pins MINIMAL_DMA_CONTROL_0/s_axi_aclk] [get_bd_pins axi_mem_intercon/ACLK] [get_bd_pins axi_mem_intercon/M00_ACLK] [get_bd_pins axi_mem_intercon/S00_ACLK] [get_bd_pins axis_data_fifo_0/s_axis_aclk] [get_bd_pins axis_data_fifo_1/s_axis_aclk] [get_bd_pins axis_register_slice_0/aclk] [get_bd_pins c_addsub_0/CLK] [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins processing_system7_0/S_AXI_HP0_ACLK] [get_bd_pins processing_system7_0_axi_periph/ACLK] [get_bd_pins processing_system7_0_axi_periph/M00_ACLK] [get_bd_pins processing_system7_0_axi_periph/S00_ACLK] [get_bd_pins rst_processing_system7_0_102M/slowest_sync_clk]
   connect_bd_net -net processing_system7_0_FCLK_RESET0_N [get_bd_pins processing_system7_0/FCLK_RESET0_N] [get_bd_pins rst_processing_system7_0_102M/ext_reset_in]
   connect_bd_net -net rst_processing_system7_0_102M_interconnect_aresetn [get_bd_pins axi_mem_intercon/ARESETN] [get_bd_pins processing_system7_0_axi_periph/ARESETN] [get_bd_pins rst_processing_system7_0_102M/interconnect_aresetn]
   connect_bd_net -net rst_processing_system7_0_102M_peripheral_aresetn [get_bd_pins MINIMAL_DMA_0/m_axi_aresetn] [get_bd_pins MINIMAL_DMA_CONTROL_0/s_axi_aresetn] [get_bd_pins axi_mem_intercon/M00_ARESETN] [get_bd_pins axi_mem_intercon/S00_ARESETN] [get_bd_pins processing_system7_0_axi_periph/M00_ARESETN] [get_bd_pins processing_system7_0_axi_periph/S00_ARESETN] [get_bd_pins rst_processing_system7_0_102M/peripheral_aresetn]
