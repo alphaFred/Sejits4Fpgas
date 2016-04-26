@@ -42,19 +42,19 @@ begin
 
     ADDSUB_MACRO_inst : ADDSUB_MACRO
     generic map (
-        DEVICE => "7SERIES", -- Target Device: "VIRTEX5", "7SERIES", "SPARTAN6"
-        LATENCY => 2,        -- Desired clock cycle latency, 0-2
-        WIDTH => 32)         -- Input / Output bus width, 1-48
+        DEVICE => "7SERIES",    -- Target Device: "VIRTEX5", "7SERIES", "SPARTAN6"
+        LATENCY => 2,           -- Desired clock cycle latency, 0-2
+        WIDTH => 32)            -- Input / Output bus width, 1-48
     port map (
-        CARRYOUT => open, -- 1-bit carry-out output signal
-        RESULT => RESULT,     -- Add/sub result output, width defined by WIDTH generic
-        A => LEFT,               -- Input A bus, width defined by WIDTH generic
-        ADD_SUB => '1',   -- 1-bit add/sub input, high selects add, low selects subtract
-        B => RIGHT,               -- Input B bus, width defined by WIDTH generic
-        CARRYIN => '0',   -- 1-bit carry-in input
-        CE => '1',             -- 1-bit clock enable input
-        CLK =>CLK,           -- 1-bit clock input
-        RST => RST            -- 1-bit active high synchronous reset
+        CARRYOUT => open,       -- 1-bit carry-out output signal
+        RESULT => RESULT,       -- Add/sub result output, width defined by WIDTH generic
+        A => LEFT,              -- Input A bus, width defined by WIDTH generic
+        ADD_SUB => '1',         -- 1-bit add/sub input, high selects add, low selects subtract
+        B => RIGHT,             -- Input B bus, width defined by WIDTH generic
+        CARRYIN => '0',         -- 1-bit carry-in input
+        CE => '1',              -- 1-bit clock enable input
+        CLK =>CLK,              -- 1-bit clock input
+        RST => RST              -- 1-bit active high synchronous reset
     );
 
     validReg_ADD_int: for i in 0 to DELAY_ADD_SUB generate
@@ -92,11 +92,6 @@ begin
                 );
         end generate dffRight_ADD;
     end generate validReg_ADD_int;
-
-    ---- OP = 0 => Add
-    --INMODE_DSP1 <= "00000";
-    --OPMODE_DSP1 <= "0110011";   -- (Z=C | Y=0 | X=A:B)
-    --ALUMODE_DSP1 <= "0000";     --  Z + X + Y + CIN
 
     calc_result : process(clk)
     begin
