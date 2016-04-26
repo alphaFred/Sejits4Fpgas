@@ -3,6 +3,7 @@ import os
 import ctypes
 import logging
 import glob
+import traceback
 #
 from skimage import data
 #
@@ -129,6 +130,25 @@ class BasicFunction(ConcreteSpecializedFunction):
             return self.vhdl_function()
 
 
+def specialize(func):
+    # generated lazy specialized function
+    specialized_function = BasicTranslator.from_function(func)
+
+    def specializer(*args, **kwargs):
+        try:
+            # try to generate concrete specialized function
+            return specialized_function(*args, **kwargs)
+        except:
+            print "specializer failed"
+            return func(*args, **kwargs)
+        else:
+            print "specializer succeded"
+        finally:
+            print traceback.format_exc()
+    return specializer
+
+
+
 def bb_convolve(n):
     return n * 2
 
@@ -177,14 +197,16 @@ def bb_limitTo(valid, x):
 #     a = img * 12
 #     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
 
+@specialize
 def test_func(a):
-    n_3 = bb_split(3, a)
-    n_2 = 255
-    return bb_limitTo(8, bb_split(1, bb_merge(n_3, n_2, 1, bb_split(2, a))))
+    return bb_limitTo(16, bb_add(255, a))
 
 
-transformed_func = BasicTranslator.from_function(test_func)
+# transformed_func = BasicTranslator.from_function(test_func)
 
 image = data.coins()
 
-print transformed_func(image)
+print test_func(image)
+# print test_func(image)
+# print test_func(image)
+# print test_func(image)
