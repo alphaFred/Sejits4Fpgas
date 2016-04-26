@@ -52,25 +52,25 @@ set rc [catch {
   create_project -in_memory -part xc7z020clg484-1
   set_property board_part em.avnet.com:zed:part0:1.3 [current_project]
   set_property design_mode GateLvl [current_fileset]
-  set_property webtalk.parent_dir /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.cache/wt [current_project]
-  set_property parent.project_path /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.xpr [current_project]
+  set_property webtalk.parent_dir /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.cache/wt [current_project]
+  set_property parent.project_path /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.xpr [current_project]
   set_property ip_repo_paths {
-  /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.cache/ip
-  /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado
+  /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.cache/ip
+  /mnt/studproj/ebensberger/vhdl-sejits/src/vivado
 } [current_project]
-  set_property ip_output_repo /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.cache/ip [current_project]
-  add_files -quiet /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.runs/synth_1/top.dcp
-  read_xdc -ref template_design_processing_system7_0_0 -cells inst /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_processing_system7_0_0/template_design_processing_system7_0_0.xdc
-  set_property processing_order EARLY [get_files /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_processing_system7_0_0/template_design_processing_system7_0_0.xdc]
-  read_xdc -prop_thru_buffers -ref template_design_rst_processing_system7_0_102M_0 /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0_board.xdc
-  set_property processing_order EARLY [get_files /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0_board.xdc]
-  read_xdc -ref template_design_rst_processing_system7_0_102M_0 /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0.xdc
-  set_property processing_order EARLY [get_files /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0.xdc]
-  read_xdc -ref template_design_axis_data_fifo_0_0 -cells inst /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0.xdc
-  set_property processing_order EARLY [get_files /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0.xdc]
-  read_xdc -ref template_design_axis_data_fifo_1_0 -cells inst /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0.xdc
-  set_property processing_order EARLY [get_files /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0.xdc]
-  read_xdc /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/constrs_1/new/top.xdc
+  set_property ip_output_repo /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.cache/ip [current_project]
+  add_files -quiet /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.runs/synth_1/top.dcp
+  read_xdc -ref template_design_processing_system7_0_0 -cells inst /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_processing_system7_0_0/template_design_processing_system7_0_0.xdc
+  set_property processing_order EARLY [get_files /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_processing_system7_0_0/template_design_processing_system7_0_0.xdc]
+  read_xdc -prop_thru_buffers -ref template_design_rst_processing_system7_0_102M_0 /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0_board.xdc
+  set_property processing_order EARLY [get_files /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0_board.xdc]
+  read_xdc -ref template_design_rst_processing_system7_0_102M_0 /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0.xdc
+  set_property processing_order EARLY [get_files /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0.xdc]
+  read_xdc -ref template_design_axis_data_fifo_0_0 -cells inst /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0.xdc
+  set_property processing_order EARLY [get_files /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0.xdc]
+  read_xdc -ref template_design_axis_data_fifo_1_0 -cells inst /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0.xdc
+  set_property processing_order EARLY [get_files /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0.xdc]
+  read_xdc /mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.srcs/constrs_1/new/top.xdc
   link_design -top top -part xc7z020clg484-1
   close_msg_db -file init_design.pb
 } RESULT]
@@ -132,5 +132,19 @@ if {$rc} {
   return -code error $RESULT
 } else {
   end_step route_design
+}
+
+start_step write_bitstream
+set rc [catch {
+  create_msg_db write_bitstream.pb
+  write_bitstream -force top.bit 
+  catch { write_sysdef -hwdef top.hwdef -bitfile top.bit -meminfo top.mmi -ltxfile debug_nets.ltx -file top.sysdef }
+  close_msg_db -file write_bitstream.pb
+} RESULT]
+if {$rc} {
+  step_failed write_bitstream
+  return -code error $RESULT
+} else {
+  end_step write_bitstream
 }
 

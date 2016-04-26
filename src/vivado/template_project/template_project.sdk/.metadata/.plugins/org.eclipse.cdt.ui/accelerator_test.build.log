@@ -1,0 +1,8 @@
+18:46:51 **** Incremental Build of configuration Debug for project accelerator_test ****
+make all 
+make: Warning: File `src/subdir.mk' has modification time 0.61 s in the future
+make: warning:  Clock skew detected.  Your build may be incomplete.
+make: Nothing to be done for `all'.
+
+18:46:51 Build Finished (took 68ms)
+

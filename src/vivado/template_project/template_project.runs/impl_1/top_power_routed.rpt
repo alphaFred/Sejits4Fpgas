@@ -1,8 +1,8 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
-| Date             : Tue Apr 26 18:02:18 2016
-| Host             : philipp-ThinkPad-X250 running 64-bit Ubuntu 15.04
+| Date             : Tue Apr 26 18:29:29 2016
+| Host             : codesigns45 running 64-bit Ubuntu 14.04.4 LTS
 | Command          : report_power -file top_power_routed.rpt -pb top_power_summary_routed.pb
 | Design           : top
 | Device           : xc7z020clg484-1

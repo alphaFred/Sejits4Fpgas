@@ -1,8 +1,8 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------
 | Tool Version      : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
-| Date              : Tue Apr 26 18:02:18 2016
-| Host              : philipp-ThinkPad-X250 running 64-bit Ubuntu 15.04
+| Date              : Tue Apr 26 18:29:30 2016
+| Host              : codesigns45 running 64-bit Ubuntu 14.04.4 LTS
 | Command           : report_clock_utilization -file top_clock_utilization_routed.rpt
 | Design            : top
 | Device            : 7z020-clg484
