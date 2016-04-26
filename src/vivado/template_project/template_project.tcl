@@ -70,9 +70,11 @@ set files [list \
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/bram_fifo.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/SubBB.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/Merge.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/dsp_sreg_block.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/Convolve.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/AddBB.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/logic_dff.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/dsp_dff_block.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/STD_FIFO.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/the_filter_package.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/filter.vhd"]"\

@@ -17,7 +17,7 @@ entity SubBB is
         LEFT      : in std_logic_vector(31 downto 0);
         RIGHT     : in std_logic_vector(31 downto 0);
         VALID_OUT : out std_logic;
-        ADD_OUT   : out std_logic_vector(31 downto 0)
+        SUB_OUT   : out std_logic_vector(31 downto 0)
         );
 end SubBB;
 
@@ -157,9 +157,9 @@ begin
         RSTP                => RST
     );
 
-    validReg_ADD_int: for i in 0 to DELAY_ADD_SUB generate
+    validReg_SUB_int: for i in 0 to DELAY_ADD_SUB generate
     begin
-        validdffLeft_ADD: if i = 0 generate
+        validdffLeft_SUB: if i = 0 generate
         begin
             valid_dff: component logic_dff_block
                 port map (
@@ -168,9 +168,9 @@ begin
                     RST => RST,
                     Q => ValidsRegBus_ADD_SUB(i)
                 );
-        end generate validdffLeft_ADD;
+        end generate validdffLeft_SUB;
         --
-        dffOthers_ADD: if (i > 0 AND i < DELAY_ADD_SUB) generate
+        dffOthers_SUB: if (i > 0 AND i < DELAY_ADD_SUB) generate
         begin
             valid_dff: component logic_dff_block
                 port map (
@@ -179,9 +179,9 @@ begin
                     RST => RST,
                     Q => ValidsRegBus_ADD_SUB(i)
                 );
-        end generate dffOthers_ADD;
+        end generate dffOthers_SUB;
         --
-        dffRight_ADD: if i = DELAY_ADD_SUB generate
+        dffRight_SUB: if i = DELAY_ADD_SUB generate
         begin
             valid_dff: component logic_dff_block
                 port map (
@@ -190,17 +190,25 @@ begin
                     RST => RST,
                     Q => VALID_OUT
                 );
-        end generate dffRight_ADD;
-    end generate validReg_ADD_int;
+        end generate dffRight_SUB;
+    end generate validReg_SUB_int;
 
     -- OP = 1 => Substract
     INMODE_DSP1 <= "00000";
     OPMODE_DSP1 <= "0110011";   -- (Z=C | Y=0 | X=A:B)
     ALUMODE_DSP1 <= "0011";     --  Z – (X + Y + CIN)
 
-    A_DSP1 <= (29 downto 0 => '0');
-    -- Pack RIGHT input into A:B
-    B_DSP1 <= (17 downto 8 => '0') & RIGHT;
-    -- Pack LEFT input into C
-    C_DSP1 <= (47 downto 8 => '0') & LEFT;
+    calc_result : process(clk)
+    begin
+        if rising_edge(clk) then
+            A_DSP1 <= (29 downto 14 => '0') & RIGHT(31 downto 18);
+            -- Pack RIGHT input into A:B
+            B_DSP1 <= RIGHT(17 downto 0);
+            -- B_DSP1 <= (17 downto 8 => '0') & RIGHT;
+            -- Pack LEFT input into C
+            C_DSP1 <= (47 downto 32 => '0') & LEFT;
+            --
+            SUB_OUT <= P_DSP1(31 downto 0);
+        end if;
+    end process;
 end architecture ; -- arch

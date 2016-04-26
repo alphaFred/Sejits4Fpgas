@@ -198,11 +198,17 @@ begin
     OPMODE_DSP1 <= "0110011";   -- (Z=C | Y=0 | X=A:B)
     ALUMODE_DSP1 <= "0000";     --  Z + X + Y + CIN
 
-    A_DSP1 <= (29 downto 14 => '0') & RIGHT(31 downto 18);
-    -- Pack RIGHT input into A:B
-    B_DSP1 <= RIGHT(17 downto 0);
-    -- B_DSP1 <= (17 downto 8 => '0') & RIGHT;
-    -- Pack LEFT input into C
-    C_DSP1 <= (47 downto 32 => '0') & LEFT;
-
+    calc_result : process(clk)
+    begin
+        if rising_edge(clk) then
+            A_DSP1 <= (29 downto 14 => '0') & RIGHT(31 downto 18);
+            -- Pack RIGHT input into A:B
+            B_DSP1 <= RIGHT(17 downto 0);
+            -- B_DSP1 <= (17 downto 8 => '0') & RIGHT;
+            -- Pack LEFT input into C
+            C_DSP1 <= (47 downto 32 => '0') & LEFT;
+            --
+            ADD_OUT <= P_DSP1(31 downto 0);
+        end if;
+    end process;
 end architecture ; -- arch
