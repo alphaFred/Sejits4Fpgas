@@ -121,7 +121,7 @@ class AddTransformer(BasicBlockBaseTransformer):
         #
         inport_info = [PortInfo("LEFT", "in", VhdlType.VhdlStdLogicVector(data_width)),
                        PortInfo("RIGHT", "in", VhdlType.VhdlStdLogicVector(data_width))]
-        outport_info = [PortInfo("BINOP_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
+        outport_info = [PortInfo("ADD_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         #
         defn = VhdlComponent(name="bb_add",
                              delay=10,
@@ -150,7 +150,7 @@ class SubTransformer(BasicBlockBaseTransformer):
         #
         inport_info = [PortInfo("LEFT", "in", VhdlType.VhdlStdLogicVector(data_width)),
                        PortInfo("RIGHT", "in", VhdlType.VhdlStdLogicVector(data_width))]
-        outport_info = [PortInfo("BINOP_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
+        outport_info = [PortInfo("SUB_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         #
         defn = VhdlComponent(name="bb_sub",
                              delay=10,
@@ -179,7 +179,7 @@ class MulTransformer(BasicBlockBaseTransformer):
         #
         inport_info = [PortInfo("LEFT", "in", VhdlType.VhdlStdLogicVector(data_width)),
                        PortInfo("RIGHT", "in", VhdlType.VhdlStdLogicVector(data_width))]
-        outport_info = [PortInfo("BINOP_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
+        outport_info = [PortInfo("MUL_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         #
         defn = VhdlComponent(name="bb_mul",
                              delay=10,
@@ -278,7 +278,7 @@ class LimitToTransformer(BasicBlockBaseTransformer):
                              delay=0,
                              inport_info=inport_info,
                              outport_info=outport_info,
-                             library="work.limit_to")
+                             library="work.LimitTo")
         return defn
 
 
