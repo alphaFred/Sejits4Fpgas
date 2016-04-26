@@ -3,9 +3,6 @@
 
 # XDC: new/top.xdc
 
-# IP: ip/filter_input_fifo_1/filter_input_fifo_1.xci
-set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==filter_input_fifo_1 || ORIG_REF_NAME==filter_input_fifo_1}]
-
 # Block Designs: bd/template_design/template_design.bd
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design || ORIG_REF_NAME==template_design}]
 

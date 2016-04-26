@@ -60,10 +60,6 @@ set rc [catch {
 } [current_project]
   set_property ip_output_repo /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.cache/ip [current_project]
   add_files -quiet /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.runs/synth_1/top.dcp
-  add_files -quiet /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ip/filter_input_fifo_1/filter_input_fifo_1.dcp
-  set_property netlist_only true [get_files /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ip/filter_input_fifo_1/filter_input_fifo_1.dcp]
-  read_xdc -ref filter_input_fifo_1 -cells U0 /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ip/filter_input_fifo_1/filter_input_fifo_1/filter_input_fifo_1.xdc
-  set_property processing_order EARLY [get_files /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ip/filter_input_fifo_1/filter_input_fifo_1/filter_input_fifo_1.xdc]
   read_xdc -ref template_design_processing_system7_0_0 -cells inst /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_processing_system7_0_0/template_design_processing_system7_0_0.xdc
   set_property processing_order EARLY [get_files /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_processing_system7_0_0/template_design_processing_system7_0_0.xdc]
   read_xdc -prop_thru_buffers -ref template_design_rst_processing_system7_0_102M_0 /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0_board.xdc

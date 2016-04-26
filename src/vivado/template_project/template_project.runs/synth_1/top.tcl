@@ -16,12 +16,6 @@ set_property default_lib xil_defaultlib [current_project]
 set_property target_language VHDL [current_project]
 set_property board_part em.avnet.com:zed:part0:1.3 [current_project]
 set_property ip_repo_paths /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado [current_project]
-read_ip /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ip/filter_input_fifo_1/filter_input_fifo_1.xci
-set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ip/filter_input_fifo_1/filter_input_fifo_1/filter_input_fifo_1.xdc]
-set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ip/filter_input_fifo_1/filter_input_fifo_1_ooc.xdc]
-set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ip/filter_input_fifo_1/filter_input_fifo_1.dcp]
-set_property is_locked true [get_files /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ip/filter_input_fifo_1/filter_input_fifo_1.xci]
-
 add_files /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/template_design.bd
 set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_processing_system7_0_0/template_design_processing_system7_0_0.xdc]
 set_property used_in_implementation false [get_files -all /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/ip/template_design_rst_processing_system7_0_102M_0/template_design_rst_processing_system7_0_102M_0_board.xdc]
@@ -41,12 +35,10 @@ set_property used_in_implementation false [get_files -all /home/philipp/Universi
 set_property is_locked true [get_files /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/template_design.bd]
 
 read_vhdl -library xil_defaultlib {
-  /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/bram_fifo.vhd
-  /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/the_filter_package.vhd
-  /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/filter.vhd
   /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/logic_dff.vhd
-  /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/Convolve.vhd
-  /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/BasicArith.vhd
+  /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/the_filter_package.vhd
+  /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/AddBB.vhd
+  /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/LimitTo.vhd
   /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/generated.vhd
   /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/hdl/template_design_wrapper.vhd
   /home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/accel_wrapper.vhd
