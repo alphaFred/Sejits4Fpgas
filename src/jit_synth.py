@@ -78,8 +78,7 @@ class VhdlSynthModule(object):
         if not os.path.exists(saved_tcl_file_path):
             os.system("cp " + mod_tcl_file_path + " " + saved_tcl_file_path)
 
-        with open(saved_tcl_file_path, "r") as old_tcl:
-            with open(mod_tcl_file_path, "w") as new_tcl:
+        with open(saved_tcl_file_path, "r") as old_tcl, open(mod_tcl_file_path, "w") as new_tcl:
                 line = old_tcl.readline()
 
                 # TODO: find better way than with while loops
