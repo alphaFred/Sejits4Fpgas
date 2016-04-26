@@ -19,7 +19,7 @@ Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 987.789 ; gain = 181.438 ; free physical = 647 ; free virtual = 9076
+Starting RTL Elaboration : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 987.797 ; gain = 181.438 ; free physical = 474 ; free virtual = 9074
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-638] synthesizing module 'top' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/top.vhd:42]
 INFO: [Synth 8-3491] module 'template_design_wrapper' declared at '/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/bd/template_design/hdl/template_design_wrapper.vhd:14' bound to instance 'template_design_wrapper_i' of component 'template_design_wrapper' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/top.vhd:95]
@@ -640,14 +640,11 @@ INFO: [Synth 8-256] done synthesizing module 'logic_dff_block' (97#1) [/home/phi
 INFO: [Synth 8-3491] module 'logic_dff_block' declared at '/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/logic_dff.vhd:6' bound to instance 'valid_dff' of component 'logic_dff_block' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/AddBB.vhd:75]
 INFO: [Synth 8-3491] module 'logic_dff_block' declared at '/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/logic_dff.vhd:6' bound to instance 'valid_dff' of component 'logic_dff_block' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/AddBB.vhd:86]
 INFO: [Synth 8-256] done synthesizing module 'AddBB' (98#1) [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/AddBB.vhd:24]
-INFO: [Synth 8-638] synthesizing module 'LimitTo' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/LimitTo.vhd:23]
-WARNING: [Synth 8-3848] Net DATA_OUT in module/entity LimitTo does not have driver. [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/LimitTo.vhd:19]
-INFO: [Synth 8-256] done synthesizing module 'LimitTo' (99#1) [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/LimitTo.vhd:23]
-INFO: [Synth 8-256] done synthesizing module 'apply' (100#1) [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/generated.vhd:15]
-INFO: [Synth 8-256] done synthesizing module 'accel_wrapper' (101#1) [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/accel_wrapper.vhd:19]
-INFO: [Synth 8-256] done synthesizing module 'top' (102#1) [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/top.vhd:42]
+INFO: [Synth 8-256] done synthesizing module 'apply' (99#1) [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/generated.vhd:15]
+INFO: [Synth 8-256] done synthesizing module 'accel_wrapper' (100#1) [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/accel_wrapper.vhd:19]
+INFO: [Synth 8-256] done synthesizing module 'top' (101#1) [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/new/top.vhd:42]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:01:41 ; elapsed = 00:01:42 . Memory (MB): peak = 1220.012 ; gain = 413.660 ; free physical = 352 ; free virtual = 8863
+Finished RTL Elaboration : Time (s): cpu = 00:01:40 ; elapsed = 00:01:40 . Memory (MB): peak = 1220.020 ; gain = 413.660 ; free physical = 286 ; free virtual = 8845
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -673,7 +670,7 @@ INFO: [Synth 8-3295] tying undriven pin \pipelining.stages[2].slices[2].middlest
 INFO: [Synth 8-3295] tying undriven pin \pipelining.stages[3].slices[3].laststage.diagonal.diagonal_adder :add to constant 0 [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ipshared/xilinx.com/c_addsub_v12_0/5d5655bd/hdl/c_addsub_v12_0_vh_rfs.vhd:6208]
 INFO: [Synth 8-3295] tying undriven pin \pipelining.stages[3].slices[3].laststage.diagonal.diagonal_adder :bypass to constant 0 [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ipshared/xilinx.com/c_addsub_v12_0/5d5655bd/hdl/c_addsub_v12_0_vh_rfs.vhd:6208]
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:01:42 ; elapsed = 00:01:42 . Memory (MB): peak = 1220.012 ; gain = 413.660 ; free physical = 352 ; free virtual = 8863
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:01:40 ; elapsed = 00:01:41 . Memory (MB): peak = 1220.020 ; gain = 413.660 ; free physical = 285 ; free virtual = 8844
 ---------------------------------------------------------------------------------
 INFO: [Netlist 29-17] Analyzing 72 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
@@ -707,16 +704,16 @@ INFO: [Project 1-111] Unisim Transformation Summary:
   FDR => FDRE: 12 instances
   SRL16 => SRL16E: 1 instances
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 1344.020 ; gain = 1.000 ; free physical = 309 ; free virtual = 8786
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 1343.027 ; gain = 0.000 ; free physical = 210 ; free virtual = 8769
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:01:54 ; elapsed = 00:01:54 . Memory (MB): peak = 1344.023 ; gain = 537.672 ; free physical = 316 ; free virtual = 8790
+Finished Constraint Validation : Time (s): cpu = 00:01:52 ; elapsed = 00:01:53 . Memory (MB): peak = 1343.031 ; gain = 536.672 ; free physical = 208 ; free virtual = 8768
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7z020clg484-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:01:54 ; elapsed = 00:01:54 . Memory (MB): peak = 1344.023 ; gain = 537.672 ; free physical = 316 ; free virtual = 8790
+Finished Loading Part and Timing Information : Time (s): cpu = 00:01:52 ; elapsed = 00:01:53 . Memory (MB): peak = 1343.031 ; gain = 536.672 ; free physical = 208 ; free virtual = 8768
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
@@ -740,7 +737,7 @@ Applied set_property DONT_TOUCH = true for template_design_wrapper_i/template_de
 Applied set_property DONT_TOUCH = true for template_design_wrapper_i/template_design_i/util_vector_logic_0. (constraint file  auto generated constraint, line ).
 Applied set_property DONT_TOUCH = true for template_design_wrapper_i/template_design_i/util_vector_logic_1. (constraint file  auto generated constraint, line ).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:01:54 ; elapsed = 00:01:55 . Memory (MB): peak = 1344.023 ; gain = 537.672 ; free physical = 320 ; free virtual = 8793
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:01:53 ; elapsed = 00:01:53 . Memory (MB): peak = 1343.031 ; gain = 536.672 ; free physical = 211 ; free virtual = 8771
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-5546] ROM "axi_wlast" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "axi_wlast" won't be mapped to RAM because it is too sparse
@@ -748,7 +745,7 @@ INFO: [Synth 8-5544] ROM "leaving_empty_fwft" won't be mapped to Block RAM becau
 INFO: [Synth 8-4490] FSM extraction disabled for register 'gen_AB_reg_slice.state_reg' through user attribute
 INFO: [Synth 8-4471] merging register 'seq_cnt_en_reg' into 'from_sys_reg' [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ipshared/xilinx.com/proc_sys_reset_v5_0/066de7cd/hdl/src/vhdl/sequence.vhd:222]
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:01:58 ; elapsed = 00:01:59 . Memory (MB): peak = 1344.023 ; gain = 537.672 ; free physical = 306 ; free virtual = 8778
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:01:57 ; elapsed = 00:01:57 . Memory (MB): peak = 1343.031 ; gain = 536.672 ; free physical = 211 ; free virtual = 8770
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -777,7 +774,7 @@ BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
 ---------------------------------------------------------------------------------
 Finished Part Resource Summary
 ---------------------------------------------------------------------------------
-Start Parallel Synthesis Optimization  : Time (s): cpu = 00:01:58 ; elapsed = 00:01:59 . Memory (MB): peak = 1344.023 ; gain = 537.672 ; free physical = 306 ; free virtual = 8778
+Start Parallel Synthesis Optimization  : Time (s): cpu = 00:01:57 ; elapsed = 00:01:57 . Memory (MB): peak = 1343.031 ; gain = 536.672 ; free physical = 211 ; free virtual = 8770
 ---------------------------------------------------------------------------------
 Start Cross Boundary Optimization
 ---------------------------------------------------------------------------------
@@ -785,9 +782,9 @@ INFO: [Synth 8-5546] ROM "U0/MINIMAL_DMA_v1_0_M_AXI_inst/axi_wlast" won't be map
 INFO: [Synth 8-3936] Found unconnected internal register 'inst/gen_axilite.gen_b2s_conv.axilite_b2s/SI_REG/aw_pipe/m_payload_i_reg' and it is trimmed from '66' to '62' bits. [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ipshared/xilinx.com/axi_register_slice_v2_1/03a8e0ba/hdl/verilog/axi_register_slice_v2_1_axic_register_slice.v:121]
 INFO: [Synth 8-3936] Found unconnected internal register 'inst/gen_axilite.gen_b2s_conv.axilite_b2s/SI_REG/ar_pipe/m_payload_i_reg' and it is trimmed from '66' to '62' bits. [/home/philipp/University/M4/Masterthesis/src/vhdl-sejits/src/vivado/template_project/template_project.srcs/sources_1/ipshared/xilinx.com/axi_register_slice_v2_1/03a8e0ba/hdl/verilog/axi_register_slice_v2_1_axic_register_slice.v:121]
 ---------------------------------------------------------------------------------
-Finished Cross Boundary Optimization : Time (s): cpu = 00:01:59 ; elapsed = 00:02:00 . Memory (MB): peak = 1344.023 ; gain = 537.672 ; free physical = 305 ; free virtual = 8778
+Finished Cross Boundary Optimization : Time (s): cpu = 00:01:58 ; elapsed = 00:01:59 . Memory (MB): peak = 1343.031 ; gain = 536.672 ; free physical = 211 ; free virtual = 8770
 ---------------------------------------------------------------------------------
-Finished Parallel Reinference  : Time (s): cpu = 00:01:59 ; elapsed = 00:02:00 . Memory (MB): peak = 1344.023 ; gain = 537.672 ; free physical = 305 ; free virtual = 8778
+Finished Parallel Reinference  : Time (s): cpu = 00:01:58 ; elapsed = 00:01:59 . Memory (MB): peak = 1343.031 ; gain = 536.672 ; free physical = 211 ; free virtual = 8770
 
 Report RTL Partitions: 
 +-+--------------+------------+----------+
@@ -798,16 +795,16 @@ Report RTL Partitions:
 Start Area Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Area Optimization : Time (s): cpu = 00:02:04 ; elapsed = 00:02:05 . Memory (MB): peak = 1352.035 ; gain = 545.684 ; free physical = 293 ; free virtual = 8764
+Finished Area Optimization : Time (s): cpu = 00:02:02 ; elapsed = 00:02:03 . Memory (MB): peak = 1351.043 ; gain = 544.684 ; free physical = 196 ; free virtual = 8757
 ---------------------------------------------------------------------------------
-Finished Parallel Area Optimization  : Time (s): cpu = 00:02:04 ; elapsed = 00:02:05 . Memory (MB): peak = 1352.035 ; gain = 545.684 ; free physical = 293 ; free virtual = 8764
+Finished Parallel Area Optimization  : Time (s): cpu = 00:02:02 ; elapsed = 00:02:03 . Memory (MB): peak = 1351.043 ; gain = 544.684 ; free physical = 196 ; free virtual = 8757
 
 Report RTL Partitions: 
 +-+--------------+------------+----------+
 | |RTL Partition |Replication |Instances |
 +-+--------------+------------+----------+
 +-+--------------+------------+----------+
-Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:02:04 ; elapsed = 00:02:05 . Memory (MB): peak = 1352.035 ; gain = 545.684 ; free physical = 293 ; free virtual = 8764
+Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:02:02 ; elapsed = 00:02:03 . Memory (MB): peak = 1351.043 ; gain = 544.684 ; free physical = 196 ; free virtual = 8757
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
@@ -815,10 +812,10 @@ Start Timing Optimization
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:02:14 ; elapsed = 00:02:15 . Memory (MB): peak = 1527.027 ; gain = 720.676 ; free physical = 156 ; free virtual = 8562
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:02:15 ; elapsed = 00:02:16 . Memory (MB): peak = 1556.035 ; gain = 749.676 ; free physical = 129 ; free virtual = 8545
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:02:14 ; elapsed = 00:02:16 . Memory (MB): peak = 1545.035 ; gain = 738.684 ; free physical = 147 ; free virtual = 8553
+Finished Timing Optimization : Time (s): cpu = 00:02:16 ; elapsed = 00:02:17 . Memory (MB): peak = 1574.043 ; gain = 767.684 ; free physical = 140 ; free virtual = 8524
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -889,7 +886,7 @@ INFO: [Synth 8-3332] Sequential element (\U0/EXT_LPF/ACTIVE_LOW_EXT.ACT_LO_EXT/G
 INFO: [Synth 8-3332] Sequential element (\U0/EXT_LPF/ACTIVE_LOW_AUX.ACT_LO_AUX/GENERATE_LEVEL_P_S_CDC.SINGLE_BIT.CROSS_PLEVEL_IN2SCNDRY_s_level_out_d5 ) is unused and will be removed from module template_design_rst_processing_system7_0_102M_0.
 INFO: [Synth 8-3332] Sequential element (\U0/EXT_LPF/ACTIVE_LOW_AUX.ACT_LO_AUX/GENERATE_LEVEL_P_S_CDC.SINGLE_BIT.CROSS_PLEVEL_IN2SCNDRY_s_level_out_d6 ) is unused and will be removed from module template_design_rst_processing_system7_0_102M_0.
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:02:18 ; elapsed = 00:02:20 . Memory (MB): peak = 1565.051 ; gain = 758.699 ; free physical = 142 ; free virtual = 8543
+Finished Technology Mapping : Time (s): cpu = 00:02:20 ; elapsed = 00:02:21 . Memory (MB): peak = 1594.059 ; gain = 787.699 ; free physical = 151 ; free virtual = 8495
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -929,7 +926,7 @@ INFO: [Synth 8-4618] Found max_fanout attribute set to 10 on net \inst/gen_axili
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:02:20 ; elapsed = 00:02:22 . Memory (MB): peak = 1565.051 ; gain = 758.699 ; free physical = 140 ; free virtual = 8540
+Finished IO Insertion : Time (s): cpu = 00:02:22 ; elapsed = 00:02:23 . Memory (MB): peak = 1594.059 ; gain = 787.699 ; free physical = 150 ; free virtual = 8494
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -942,7 +939,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:02:21 ; elapsed = 00:02:22 . Memory (MB): peak = 1565.051 ; gain = 758.699 ; free physical = 141 ; free virtual = 8541
+Finished Renaming Generated Instances : Time (s): cpu = 00:02:22 ; elapsed = 00:02:23 . Memory (MB): peak = 1594.059 ; gain = 787.699 ; free physical = 150 ; free virtual = 8494
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -954,13 +951,13 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:02:21 ; elapsed = 00:02:22 . Memory (MB): peak = 1565.051 ; gain = 758.699 ; free physical = 141 ; free virtual = 8542
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:02:23 ; elapsed = 00:02:24 . Memory (MB): peak = 1594.059 ; gain = 787.699 ; free physical = 150 ; free virtual = 8494
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Start Renaming Generated Ports : Time (s): cpu = 00:02:21 ; elapsed = 00:02:22 . Memory (MB): peak = 1565.051 ; gain = 758.699 ; free physical = 141 ; free virtual = 8542
+Start Renaming Generated Ports : Time (s): cpu = 00:02:23 ; elapsed = 00:02:24 . Memory (MB): peak = 1594.059 ; gain = 787.699 ; free physical = 150 ; free virtual = 8494
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:02:21 ; elapsed = 00:02:22 . Memory (MB): peak = 1565.051 ; gain = 758.699 ; free physical = 141 ; free virtual = 8542
+Finished Renaming Generated Ports : Time (s): cpu = 00:02:23 ; elapsed = 00:02:24 . Memory (MB): peak = 1594.059 ; gain = 787.699 ; free physical = 150 ; free virtual = 8494
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -979,39 +976,40 @@ Report Cell Usage:
 |1     |BIBUF    |   130|
 |2     |BUFG     |     1|
 |3     |CARRY4   |    38|
-|4     |GND      |     2|
-|5     |LUT1     |   255|
-|6     |LUT2     |   128|
-|7     |LUT3     |   422|
-|8     |LUT4     |   252|
-|9     |LUT5     |   295|
-|10    |LUT6     |   692|
-|11    |MUXCY    |   102|
-|12    |MUXCY_L  |   123|
-|13    |MUXF7    |    32|
-|14    |PS7      |     1|
-|15    |RAM32M   |     2|
-|16    |RAM32X1D |     1|
-|17    |RAMB36E1 |     4|
-|18    |SRL16    |     1|
-|19    |SRL16E   |    22|
-|20    |SRLC32E  |    47|
-|21    |VCC      |     1|
-|22    |XORCY    |   184|
-|23    |FDCE     |   185|
-|24    |FDPE     |    83|
-|25    |FDR      |     8|
-|26    |FDRE     |  1637|
-|27    |FDSE     |    95|
+|4     |DSP48E1  |     1|
+|5     |GND      |     2|
+|6     |LUT1     |   255|
+|7     |LUT2     |   128|
+|8     |LUT3     |   422|
+|9     |LUT4     |   252|
+|10    |LUT5     |   295|
+|11    |LUT6     |   692|
+|12    |MUXCY    |   102|
+|13    |MUXCY_L  |   123|
+|14    |MUXF7    |    32|
+|15    |PS7      |     1|
+|16    |RAM32M   |     2|
+|17    |RAM32X1D |     1|
+|18    |RAMB36E1 |     4|
+|19    |SRL16    |     1|
+|20    |SRL16E   |    22|
+|21    |SRLC32E  |    47|
+|22    |VCC      |     1|
+|23    |XORCY    |   184|
+|24    |FDCE     |   185|
+|25    |FDPE     |    83|
+|26    |FDR      |     8|
+|27    |FDRE     |  1669|
+|28    |FDSE     |    95|
 +------+---------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:02:22 ; elapsed = 00:02:23 . Memory (MB): peak = 1565.051 ; gain = 758.699 ; free physical = 141 ; free virtual = 8542
+Finished Writing Synthesis Report : Time (s): cpu = 00:02:23 ; elapsed = 00:02:24 . Memory (MB): peak = 1594.059 ; gain = 787.699 ; free physical = 150 ; free virtual = 8494
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 5 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:02:09 ; elapsed = 00:02:10 . Memory (MB): peak = 1565.051 ; gain = 509.258 ; free physical = 140 ; free virtual = 8541
-Synthesis Optimization Complete : Time (s): cpu = 00:02:22 ; elapsed = 00:02:23 . Memory (MB): peak = 1565.051 ; gain = 758.699 ; free physical = 140 ; free virtual = 8540
+Synthesis Optimization Runtime : Time (s): cpu = 00:02:10 ; elapsed = 00:02:11 . Memory (MB): peak = 1594.059 ; gain = 539.258 ; free physical = 150 ; free virtual = 8494
+Synthesis Optimization Complete : Time (s): cpu = 00:02:23 ; elapsed = 00:02:24 . Memory (MB): peak = 1594.059 ; gain = 787.699 ; free physical = 150 ; free virtual = 8494
 INFO: [Project 1-571] Translating synthesized netlist
-INFO: [Netlist 29-17] Analyzing 361 Unisim elements for replacement
+INFO: [Netlist 29-17] Analyzing 362 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
@@ -1024,8 +1022,8 @@ INFO: [Project 1-111] Unisim Transformation Summary:
   SRL16 => SRL16E: 1 instances
 
 INFO: [Common 17-83] Releasing license: Synthesis
-639 Infos, 110 Warnings, 0 Critical Warnings and 0 Errors encountered.
+637 Infos, 109 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:02:21 ; elapsed = 00:02:22 . Memory (MB): peak = 1565.055 ; gain = 642.273 ; free physical = 142 ; free virtual = 8541
-report_utilization: Time (s): cpu = 00:00:00.14 ; elapsed = 00:00:00.18 . Memory (MB): peak = 1597.070 ; gain = 0.000 ; free physical = 138 ; free virtual = 8539
-INFO: [Common 17-206] Exiting Vivado at Tue Apr 26 16:23:02 2016...
+synth_design: Time (s): cpu = 00:02:22 ; elapsed = 00:02:23 . Memory (MB): peak = 1594.062 ; gain = 671.273 ; free physical = 150 ; free virtual = 8494
+report_utilization: Time (s): cpu = 00:00:00.15 ; elapsed = 00:00:00.20 . Memory (MB): peak = 1626.078 ; gain = 0.000 ; free physical = 147 ; free virtual = 8493
+INFO: [Common 17-206] Exiting Vivado at Tue Apr 26 16:31:00 2016...

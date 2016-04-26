@@ -22,12 +22,12 @@ end LimitTo;
 
 architecture limit_to_behave of LimitTo is
 begin
-    slice_full: if VALID_BITS = 32 generate
+    slice_full: if VALID_BITS >= 32 generate
     begin
         DATA_OUT <= DATA_IN;
     end generate slice_full;
 
-    slice_limit: if VALID_BITS > 32 generate
+    slice_limit: if VALID_BITS < 32 generate
     begin
         DATA_OUT <= (31 downto VALID_BITS => '0') & DATA_IN(VALID_BITS-1 downto 0);
     end generate slice_limit;

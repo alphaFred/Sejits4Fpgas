@@ -1,7 +1,7 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
-| Date         : Tue Apr 26 16:23:02 2016
+| Date         : Tue Apr 26 16:30:59 2016
 | Host         : philipp-ThinkPad-X250 running 64-bit Ubuntu 15.04
 | Command      : report_utilization -file top_utilization_synth.rpt -pb top_utilization_synth.pb
 | Design       : top
@@ -30,13 +30,13 @@ Table of Contents
 +----------------------------+------+-------+-----------+-------+
 |          Site Type         | Used | Fixed | Available | Util% |
 +----------------------------+------+-------+-----------+-------+
-| Slice LUTs*                | 1801 |     0 |     53200 |  3.39 |
-|   LUT as Logic             | 1721 |     0 |     53200 |  3.23 |
+| Slice LUTs*                | 1817 |     0 |     53200 |  3.42 |
+|   LUT as Logic             | 1737 |     0 |     53200 |  3.27 |
 |   LUT as Memory            |   80 |     0 |     17400 |  0.46 |
 |     LUT as Distributed RAM |   10 |     0 |           |       |
 |     LUT as Shift Register  |   70 |     0 |           |       |
-| Slice Registers            | 2008 |     0 |    106400 |  1.89 |
-|   Register as Flip Flop    | 2008 |     0 |    106400 |  1.89 |
+| Slice Registers            | 2040 |     0 |    106400 |  1.92 |
+|   Register as Flip Flop    | 2040 |     0 |    106400 |  1.92 |
 |   Register as Latch        |    0 |     0 |    106400 |  0.00 |
 | F7 Muxes                   |   32 |     0 |     26600 |  0.12 |
 | F8 Muxes                   |    0 |     0 |     13300 |  0.00 |
@@ -59,7 +59,7 @@ Table of Contents
 | 83    |          Yes |           - |          Set |
 | 185   |          Yes |           - |        Reset |
 | 95    |          Yes |         Set |            - |
-| 1645  |          Yes |       Reset |            - |
+| 1677  |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -80,11 +80,12 @@ Table of Contents
 3. DSP
 ------
 
-+-----------+------+-------+-----------+-------+
-| Site Type | Used | Fixed | Available | Util% |
-+-----------+------+-------+-----------+-------+
-| DSPs      |    0 |     0 |       220 |  0.00 |
-+-----------+------+-------+-----------+-------+
++----------------+------+-------+-----------+-------+
+|    Site Type   | Used | Fixed | Available | Util% |
++----------------+------+-------+-----------+-------+
+| DSPs           |    1 |     0 |       220 |  0.45 |
+|   DSP48E1 only |    1 |       |           |       |
++----------------+------+-------+-----------+-------+
 
 
 4. IO and GT Specific
@@ -149,7 +150,7 @@ Table of Contents
 +----------+------+----------------------+
 | Ref Name | Used |  Functional Category |
 +----------+------+----------------------+
-| FDRE     | 1645 |         Flop & Latch |
+| FDRE     | 1677 |         Flop & Latch |
 | LUT6     |  692 |                  LUT |
 | LUT3     |  422 |                  LUT |
 | LUT5     |  295 |                  LUT |
@@ -168,6 +169,7 @@ Table of Contents
 | RAMS32   |    4 |   Distributed Memory |
 | RAMB36E1 |    4 |         Block Memory |
 | PS7      |    1 | Specialized Resource |
+| DSP48E1  |    1 |     Block Arithmetic |
 | BUFG     |    1 |                Clock |
 +----------+------+----------------------+
 
