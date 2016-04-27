@@ -1,6 +1,0 @@
-the_ROM_image:
-{
-	[bootloader]/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/fsbl/Debug/fsbl.elf
-	/mnt/studproj/ebensberger/vhdl-sejits/src/vivado/template_project/template_project.sdk/top_hw_platform_1/top.bit
-	/scratch-local/ebensberger/zybo/u-boot-Digilent-Dev/u-boot.elf
-}

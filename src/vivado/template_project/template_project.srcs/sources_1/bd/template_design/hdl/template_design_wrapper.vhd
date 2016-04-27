@@ -1,8 +1,8 @@
 --Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
---Date        : Tue Apr 26 16:20:27 2016
---Host        : philipp-ThinkPad-X250 running 64-bit Ubuntu 15.04
+--Date        : Wed Apr 27 15:45:36 2016
+--Host        : codesigns38 running 64-bit Ubuntu 14.04.4 LTS
 --Command     : generate_target template_design_wrapper.bd
 --Design      : template_design_wrapper
 --Purpose     : IP block netlist
@@ -71,16 +71,16 @@ architecture STRUCTURE of template_design_wrapper is
     FIXED_IO_ps_srstb : inout STD_LOGIC;
     FIXED_IO_ps_clk : inout STD_LOGIC;
     FIXED_IO_ps_porb : inout STD_LOGIC;
-    m_axis_tvalid : out STD_LOGIC;
-    m_axis_tready : in STD_LOGIC;
-    m_axis_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axis_tlast : out STD_LOGIC;
+    CLK : out STD_LOGIC;
+    RST : out STD_LOGIC_VECTOR ( 0 to 0 );
     s_axis_tvalid : in STD_LOGIC;
     s_axis_tready : out STD_LOGIC;
     s_axis_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
     s_axis_tlast : in STD_LOGIC;
-    CLK : out STD_LOGIC;
-    RST : out STD_LOGIC_VECTOR ( 0 to 0 )
+    m_axis_tvalid : out STD_LOGIC;
+    m_axis_tready : in STD_LOGIC;
+    m_axis_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_tlast : out STD_LOGIC
   );
   end component template_design;
 begin

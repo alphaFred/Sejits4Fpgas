@@ -64,12 +64,12 @@ ENTITY template_design_MINIMAL_DMA_0_0 IS
     in_last : IN STD_LOGIC;
     in_ready : OUT STD_LOGIC;
     r_addr : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    r_len : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
+    r_len : IN STD_LOGIC_VECTOR(25 DOWNTO 0);
     r_valid : IN STD_LOGIC;
     r_ready : OUT STD_LOGIC;
     r_compl : OUT STD_LOGIC;
     w_addr : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    w_len : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
+    w_len : IN STD_LOGIC_VECTOR(25 DOWNTO 0);
     w_valid : IN STD_LOGIC;
     w_ready : OUT STD_LOGIC;
     w_compl : OUT STD_LOGIC;
@@ -149,12 +149,12 @@ ARCHITECTURE template_design_MINIMAL_DMA_0_0_arch OF template_design_MINIMAL_DMA
       in_last : IN STD_LOGIC;
       in_ready : OUT STD_LOGIC;
       r_addr : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-      r_len : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
+      r_len : IN STD_LOGIC_VECTOR(25 DOWNTO 0);
       r_valid : IN STD_LOGIC;
       r_ready : OUT STD_LOGIC;
       r_compl : OUT STD_LOGIC;
       w_addr : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-      w_len : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
+      w_len : IN STD_LOGIC_VECTOR(25 DOWNTO 0);
       w_valid : IN STD_LOGIC;
       w_ready : OUT STD_LOGIC;
       w_compl : OUT STD_LOGIC;
@@ -272,7 +272,7 @@ ARCHITECTURE template_design_MINIMAL_DMA_0_0_arch OF template_design_MINIMAL_DMA
 BEGIN
   U0 : MINIMAL_DMA_v1_0
     GENERIC MAP (
-      C_M_AXI_BURST_LEN => 64,
+      C_M_AXI_BURST_LEN => 16,
       C_M_AXI_ID_WIDTH => 1,
       C_M_AXI_ADDR_WIDTH => 32,
       C_M_AXI_DATA_WIDTH => 32,
@@ -281,7 +281,7 @@ BEGIN
       C_M_AXI_WUSER_WIDTH => 1,
       C_M_AXI_RUSER_WIDTH => 1,
       C_M_AXI_BUSER_WIDTH => 1,
-      LEN_WIDTH => 20,
+      LEN_WIDTH => 26,
       ISSUE_DEPTH => 2
     )
     PORT MAP (

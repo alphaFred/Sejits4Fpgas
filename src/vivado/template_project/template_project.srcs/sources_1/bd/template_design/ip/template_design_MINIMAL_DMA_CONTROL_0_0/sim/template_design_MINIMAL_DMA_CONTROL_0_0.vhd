@@ -56,12 +56,12 @@ USE ieee.numeric_std.ALL;
 ENTITY template_design_MINIMAL_DMA_CONTROL_0_0 IS
   PORT (
     r_addr : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-    r_len : OUT STD_LOGIC_VECTOR(19 DOWNTO 0);
+    r_len : OUT STD_LOGIC_VECTOR(25 DOWNTO 0);
     r_valid : OUT STD_LOGIC;
     r_ready : IN STD_LOGIC;
     r_compl : IN STD_LOGIC;
     w_addr : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-    w_len : OUT STD_LOGIC_VECTOR(19 DOWNTO 0);
+    w_len : OUT STD_LOGIC_VECTOR(25 DOWNTO 0);
     w_valid : OUT STD_LOGIC;
     w_ready : IN STD_LOGIC;
     w_compl : IN STD_LOGIC;
@@ -124,12 +124,12 @@ ARCHITECTURE template_design_MINIMAL_DMA_CONTROL_0_0_arch OF template_design_MIN
     );
     PORT (
       r_addr : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-      r_len : OUT STD_LOGIC_VECTOR(19 DOWNTO 0);
+      r_len : OUT STD_LOGIC_VECTOR(25 DOWNTO 0);
       r_valid : OUT STD_LOGIC;
       r_ready : IN STD_LOGIC;
       r_compl : IN STD_LOGIC;
       w_addr : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-      w_len : OUT STD_LOGIC_VECTOR(19 DOWNTO 0);
+      w_len : OUT STD_LOGIC_VECTOR(25 DOWNTO 0);
       w_valid : OUT STD_LOGIC;
       w_ready : IN STD_LOGIC;
       w_compl : IN STD_LOGIC;
@@ -234,7 +234,7 @@ BEGIN
       C_S_AXI_DATA_WIDTH => 32,
       C_S_AXI_ADDR_WIDTH => 5,
       DMA_ADDR_WIDTH => 32,
-      DMA_LEN_WIDTH => 20,
+      DMA_LEN_WIDTH => 26,
       IO_DATA_WIDTH => 32,
       GEN_DONE => true
     )
