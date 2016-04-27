@@ -42,9 +42,10 @@ end DReg;
 architecture Behavioral of DReg is
 
     TYPE iBus is array(LENGTH-1 downto 0) of std_logic_vector(WIDTH-1 downto 0);
-
+    TYPE iBus_VALID is array(DELAY_ADD_SUB-1 downto 0) of std_logic;
+    --
     signal sRegBus : iBus;
-    signal ValidsRegBus : iBus;
+    signal ValidsRegBus : iBus_VALID;
 
     COMPONENT vector_dff_block
         Generic (
@@ -76,7 +77,7 @@ begin
                         WIDTH => WIDTH
                     )
                     port map (
-                        D => D,
+                        D => DREG_IN,
                         CLK => CLK,
                         RST => RST,
                         Q => sRegBus(i)
@@ -105,7 +106,7 @@ begin
                         D => sRegBus(i-1),
                         CLK => CLK,
                         RST => RST,
-                        Q => Q
+                        Q => DREG_OUT
                     );
             end generate dffRight;
         end generate shiftReg;
