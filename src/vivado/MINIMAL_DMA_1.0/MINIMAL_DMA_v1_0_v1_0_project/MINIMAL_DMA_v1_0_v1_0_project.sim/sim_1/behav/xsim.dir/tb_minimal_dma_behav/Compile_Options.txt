@@ -1,1 +1,0 @@
--wto "a99397119088487385e9730224509bf8" --debug "typical" --relax -L "xil_defaultlib" -L "secureip" --snapshot "tb_minimal_dma_behav" "xil_defaultlib.tb_minimal_dma" -log "elaborate.log" 

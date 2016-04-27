@@ -1,3 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  "../../../../hdl/MINIMAL_DMA_v1_0_M_AXI.vhd"
-vhdl xil_defaultlib  "../../../../hdl/tb_minimal_dma.vhd"

@@ -1,5 +1,0 @@
-Determining compilation order of HDL files.
-INFO: [VRFC 10-163] Analyzing VHDL file "/scratch-local/becher/Documents/becher/vivado/myips/ip_repo/MINIMAL_DMA_1.0/hdl/MINIMAL_DMA_v1_0_M_AXI.vhd" into library xil_defaultlib
-INFO: [VRFC 10-307] analyzing entity MINIMAL_DMA_v1_0_M_AXI
-INFO: [VRFC 10-163] Analyzing VHDL file "/scratch-local/becher/Documents/becher/vivado/myips/ip_repo/MINIMAL_DMA_1.0/hdl/tb_minimal_dma.vhd" into library xil_defaultlib
-INFO: [VRFC 10-307] analyzing entity tb_minimal_dma
