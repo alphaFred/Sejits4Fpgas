@@ -1,51 +1,62 @@
 {
    guistr: "# # String gsaved with Nlview 6.4.12  2014-12-16 bk=1.3272 VDI=35 GEI=35 GUI=JA:1.8
 #  -string -flagsOSRD
-preplace port DDR -pg 1 -y 120 -defaultsOSRD
-preplace port CLK -pg 1 -y 310 -defaultsOSRD
-preplace port FIXED_IO -pg 1 -y 140 -defaultsOSRD
-preplace port s_axis -pg 1 -y 460 -defaultsOSRD
-preplace port m_axis -pg 1 -y 460 -defaultsOSRD
-preplace portBus RST -pg 1 -y 710 -defaultsOSRD
-preplace inst axis_data_fifo_1 -pg 1 -lvl 4 -y 590 -defaultsOSRD
-preplace inst rst_processing_system7_0_102M -pg 1 -lvl 5 -y 220 -defaultsOSRD
-preplace inst MINIMAL_DMA_CONTROL_0 -pg 1 -lvl 2 -y 470 -defaultsOSRD
-preplace inst MINIMAL_DMA_0 -pg 1 -lvl 2 -y 730 -defaultsOSRD
-preplace inst c_addsub_0 -pg 1 -lvl 1 -y 710 -defaultsOSRD
-preplace inst util_vector_logic_0 -pg 1 -lvl 1 -y 820 -defaultsOSRD
-preplace inst util_vector_logic_1 -pg 1 -lvl 5 -y 670 -defaultsOSRD
-preplace inst axis_register_slice_0 -pg 1 -lvl 5 -y 460 -defaultsOSRD
-preplace inst axi_mem_intercon -pg 1 -lvl 6 -y 200 -defaultsOSRD
-preplace inst axis_data_fifo_0 -pg 1 -lvl 1 -y 520 -defaultsOSRD
-preplace inst processing_system7_0_axi_periph -pg 1 -lvl 6 -y 580 -defaultsOSRD
-preplace inst processing_system7_0 -pg 1 -lvl 2 -y 140 -defaultsOSRD
-preplace netloc processing_system7_0_DDR 1 2 5 1140 60 NJ 60 NJ 60 NJ 60 NJ
-preplace netloc rst_processing_system7_0_102M_interconnect_aresetn 1 5 1 2220
-preplace netloc processing_system7_0_axi_periph_M00_AXI 1 1 6 480 370 NJ 370 NJ 370 NJ 570 NJ 460 2550
-preplace netloc MINIMAL_DMA_CONTROL_0_axis_rst 1 0 3 110 600 NJ 600 1110
-preplace netloc MINIMAL_DMA_0_M_AXI 1 2 4 NJ 720 NJ 730 NJ 730 2190
-preplace netloc MINIMAL_DMA_0_data_out 1 1 2 480 810 1110
-preplace netloc processing_system7_0_M_AXI_GP0 1 2 4 NJ 320 NJ 320 NJ 320 2230
-preplace netloc c_addsub_0_C_OUT 1 1 4 NJ 820 NJ 820 NJ 820 1820
-preplace netloc axis_register_slice_0_s_axis_tready 1 4 1 1820
-preplace netloc axis_data_fifo_1_m_axis_tdata 1 4 1 1770
-preplace netloc util_vector_logic_0_Res 1 0 7 120 650 450 650 NJ 650 1310 720 1810 600 NJ 710 NJ
-preplace netloc processing_system7_0_FCLK_RESET0_N 1 2 3 NJ 230 NJ 230 1750
-preplace netloc MINIMAL_DMA_CONTROL_0_out_data 1 1 2 510 640 1130
-preplace netloc axi_mem_intercon_M00_AXI 1 1 6 480 280 NJ 280 NJ 280 NJ 130 NJ 320 2550
-preplace netloc axis_data_fifo_1_m_axis_tvalid 1 4 1 1750
-preplace netloc processing_system7_0_FIXED_IO 1 2 5 1150 70 NJ 70 NJ 70 NJ 70 NJ
-preplace netloc MINIMAL_DMA_CONTROL_0_dma_control 1 1 2 500 570 1120
-preplace netloc axis_data_fifo_1_m_axis_tlast 1 4 1 1800
-preplace netloc axis_data_fifo_0_axis_rd_data_count 1 0 2 130 640 450
-preplace netloc axis_data_fifo_0_M_AXIS 1 1 1 450
-preplace netloc util_vector_logic_1_Res 1 4 2 1740 610 2170
-preplace netloc rst_processing_system7_0_102M_peripheral_aresetn 1 1 5 490 610 NJ 470 NJ 470 NJ 580 2200
-preplace netloc processing_system7_0_FCLK_CLK0 1 0 7 100 770 470 580 1140 220 1300 710 1760 310 2240 80 2560
-preplace netloc s_axis_1 1 0 1 100
-preplace netloc MINIMAL_DMA_CONTROL_0_m_axis 1 2 2 NJ 440 1290
-preplace netloc axis_register_slice_0_M_AXIS 1 5 2 NJ 450 2570
-levelinfo -pg 1 80 290 884 1270 1580 2000 2400 2600
+preplace port DDR -pg 1 -y 140 -defaultsOSRD
+preplace port CLK -pg 1 -y 220 -defaultsOSRD
+preplace port FIXED_IO -pg 1 -y 160 -defaultsOSRD
+preplace port s_axis -pg 1 -y 1080 -defaultsOSRD
+preplace port m_axis -pg 1 -y 1090 -defaultsOSRD
+preplace portBus RST -pg 1 -y 1040 -defaultsOSRD
+preplace inst dma_stuff_0|util_vector_logic_3 -pg 1 -lvl 3 -y 1110 -defaultsOSRD
+preplace inst rst_processing_system7_0_102M -pg 1 -lvl 3 -y 240 -defaultsOSRD
+preplace inst dma_stuff_0|axis_register_slice_0 -pg 1 -lvl 4 -y 1080 -defaultsOSRD
+preplace inst dma_stuff_0 -pg 1 -lvl 2 -y 980 -regy -50 -defaultsOSRD
+preplace inst dma_stuff_0|xlslice_0 -pg 1 -lvl 2 -y 1510 -defaultsOSRD
+preplace inst dma_stuff_0|c_addsub_0 -pg 1 -lvl 1 -y 1500 -defaultsOSRD
+preplace inst MINIMAL_DMA_CONTROL_0 -pg 1 -lvl 2 -y 760 -defaultsOSRD
+preplace inst MINIMAL_DMA_0 -pg 1 -lvl 2 -y 540 -defaultsOSRD
+preplace inst dma_stuff_0|axis_data_fifo_0 -pg 1 -lvl 1 -y 1100 -defaultsOSRD
+preplace inst dma_stuff_0|axis_data_fifo_1 -pg 1 -lvl 2 -y 1090 -defaultsOSRD
+preplace inst dma_stuff_0|util_vector_logic_1 -pg 1 -lvl 2 -y 1310 -defaultsOSRD
+preplace inst axi_mem_intercon -pg 1 -lvl 4 -y 220 -defaultsOSRD
+preplace inst processing_system7_0_axi_periph -pg 1 -lvl 2 -y 250 -defaultsOSRD
+preplace inst processing_system7_0 -pg 1 -lvl 1 -y 160 -defaultsOSRD
+preplace netloc processing_system7_0_DDR 1 1 4 570 70 NJ 70 NJ 70 NJ
+preplace netloc rst_processing_system7_0_102M_interconnect_aresetn 1 1 3 660 100 NJ 100 3010
+preplace netloc processing_system7_0_axi_periph_M00_AXI 1 1 2 630 130 2550
+preplace netloc MINIMAL_DMA_CONTROL_0_axis_rst 1 2 3 2580 1040 NJ 1040 NJ
+preplace netloc MINIMAL_DMA_0_M_AXI 1 2 2 NJ 150 3020
+preplace netloc MINIMAL_DMA_0_data_out 1 1 2 650 650 2580
+preplace netloc processing_system7_0_M_AXI_GP0 1 1 1 570
+preplace netloc dma_stuff_0_M_AXIS 1 1 2 660 860 2550
+preplace netloc processing_system7_0_FCLK_RESET0_N 1 1 2 NJ 90 2580
+preplace netloc dma_stuff_0|axis_register_slice_0_s_axis_tready 1 1 3 1444 1380 NJ 1380 NJ
+preplace netloc MINIMAL_DMA_CONTROL_0_out_data 1 1 2 650 630 2590
+preplace netloc axi_mem_intercon_M00_AXI 1 0 5 120 10 NJ 10 NJ 10 NJ 10 3350
+preplace netloc dma_stuff_0|Conn1 1 1 4 NJ 970 NJ 970 NJ 970 NJ
+preplace netloc MINIMAL_DMA_CONTROL_0_axis_rstn 1 1 2 640 660 2560
+preplace netloc dma_stuff_0|Conn2 1 0 1 NJ
+preplace netloc dma_stuff_0|c_addsub_0_S 1 1 1 N
+preplace netloc dma_stuff_0|axis_data_fifo_0_axis_rd_data_count 1 0 2 1084 1440 NJ
+preplace netloc dma_stuff_0|axis_data_fifo_1_m_axis_tdata 1 2 2 NJ 1040 NJ
+preplace netloc dma_stuff_0|s_axis_aclk_1 1 0 4 1074 1380 1434 1390 NJ 1390 2124
+preplace netloc processing_system7_0_FIXED_IO 1 1 4 600 80 NJ 80 NJ 80 NJ
+preplace netloc MINIMAL_DMA_CONTROL_0_dma_control 1 1 2 660 620 2570
+preplace netloc dma_stuff_0|Conn3 1 4 1 2434
+preplace netloc dma_stuff_0|axis_data_fifo_1_m_axis_tvalid 1 2 1 1824
+preplace netloc dma_stuff_0|util_vector_logic_1_Res 1 2 1 1804
+preplace netloc dma_stuff_0|Conn4 1 0 2 NJ 1180 NJ
+preplace netloc dma_stuff_0|xlslice_0_Dout 1 1 2 1454 1370 1824
+preplace netloc dma_stuff_0_M_AXIS1 1 2 3 2560 1090 NJ 1090 NJ
+preplace netloc rst_processing_system7_0_102M_peripheral_aresetn 1 1 3 610 110 NJ 110 3000
+preplace netloc processing_system7_0_FCLK_CLK0 1 0 5 130 20 590 120 2590 90 3030 100 NJ
+preplace netloc dma_stuff_0|util_vector_logic_3_Res 1 3 1 2084
+preplace netloc dma_stuff_0|axis_data_fifo_1_m_axis_tlast 1 2 2 NJ 1050 NJ
+preplace netloc s_axis_1 1 0 2 N 1080 NJ
+preplace netloc MINIMAL_DMA_CONTROL_0_m_axis 1 1 2 620 640 2550
+preplace netloc dma_stuff_0|s_axis_aresetn_1 1 0 4 1084 1020 NJ 1210 NJ 1210 2114
+levelinfo -pg 1 80 350 1754 2828 3200 3400
+levelinfo -hier dma_stuff_0 1044 1244 1643 1982 2301 2454
 ",
 }
 {

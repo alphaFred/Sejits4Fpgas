@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="impl_1" LaunchPart="xc7z020clg484-1" LaunchTime="1461688020">
+<GenRun Id="impl_1" LaunchPart="xc7z020clg484-1" LaunchTime="1461765274">
   <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
   <File Type="RDI-RDI" Name="top.vdi"/>
   <File Type="BG-DRC" Name="top.drc"/>
@@ -45,6 +45,7 @@
   <File Type="OPT-DCP" Name="top_opt.dcp"/>
   <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="top_timing_summary_postroute_physopted.pb"/>
   <File Type="PA-TCL" Name="top.tcl"/>
+  <File Type="PA-DCP" Name="top.dcp"/>
   <File Type="RUN-STRAT" Name="$PDATADIR/runs/impl_1/impl_1.psg"/>
   <File Type="RUN-SRCS" Name="$PDATADIR/runs/impl_1/sources.xml"/>
   <File Type="RUN-CONSTRS" Name="$PDATADIR/runs/impl_1/constrs_in.xml"/>

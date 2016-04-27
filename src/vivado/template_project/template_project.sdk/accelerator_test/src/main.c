@@ -64,7 +64,7 @@ int main()
 
     struct dma_control *dma = (struct dma_control*) XPAR_MINIMAL_DMA_CONTROL_0_S_AXI_BASEADDR;
 
-    //Xil_DCacheDisable();
+    Xil_DCacheDisable();
 
     // process test data
     int i;
@@ -73,6 +73,7 @@ int main()
     	test_data_output[i] = 0;
     }
 
+    while(1){
     rst_dma(dma);
 
     start_dma_to_dev(test_data_input, 40, dma);
@@ -80,7 +81,7 @@ int main()
 
     start_dma_from_dev(test_data_output, 40, dma);
     wait_end_dma_from_dev(test_data_output, 40, dma);
-
+    }
     cleanup_platform();
     return 0;
 }

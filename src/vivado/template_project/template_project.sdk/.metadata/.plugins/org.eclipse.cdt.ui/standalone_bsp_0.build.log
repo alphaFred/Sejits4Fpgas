@@ -1,6 +1,5 @@
-18:33:13 **** Build of project standalone_bsp_0 ****
+12:19:29 **** Auto Build of project standalone_bsp_0 ****
 make -k all 
-make: Warning: File `Makefile' has modification time 0.37 s in the future
 Running Make include in ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src
 make -C ps7_cortexa9_0/libsrc/MINIMAL_DMA_CONTROL_v1_0/src -s include  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Running Make include in ps7_cortexa9_0/libsrc/coresightps_dcc_v1_0/src
@@ -88,7 +87,6 @@ Running Make libs in ps7_cortexa9_0/libsrc/xadcps_v2_2/src
 make -C ps7_cortexa9_0/libsrc/xadcps_v2_2/src -s libs  "SHELL=/bin/sh" "COMPILER=arm-xilinx-eabi-gcc" "ARCHIVER=arm-xilinx-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-g"
 Compiling xadcps
 Finished building libraries
-make: warning:  Clock skew detected.  Your build may be incomplete.
 
-18:33:21 Build Finished (took 8s.192ms)
+12:19:41 Build Finished (took 11s.963ms)
 

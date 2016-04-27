@@ -27,9 +27,6 @@ set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design
 # IP: bd/template_design/ip/template_design_axis_data_fifo_0_0/template_design_axis_data_fifo_0_0.xci
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_axis_data_fifo_0_0 || ORIG_REF_NAME==template_design_axis_data_fifo_0_0}]
 
-# IP: bd/template_design/ip/template_design_util_vector_logic_0_0/template_design_util_vector_logic_0_0.xci
-set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_util_vector_logic_0_0 || ORIG_REF_NAME==template_design_util_vector_logic_0_0}]
-
 # IP: bd/template_design/ip/template_design_axis_data_fifo_1_0/template_design_axis_data_fifo_1_0.xci
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_axis_data_fifo_1_0 || ORIG_REF_NAME==template_design_axis_data_fifo_1_0}]
 
@@ -41,6 +38,12 @@ set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design
 
 # IP: bd/template_design/ip/template_design_util_vector_logic_1_0/template_design_util_vector_logic_1_0.xci
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_util_vector_logic_1_0 || ORIG_REF_NAME==template_design_util_vector_logic_1_0}]
+
+# IP: bd/template_design/ip/template_design_util_vector_logic_3_0/template_design_util_vector_logic_3_0.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_util_vector_logic_3_0 || ORIG_REF_NAME==template_design_util_vector_logic_3_0}]
+
+# IP: bd/template_design/ip/template_design_xlslice_0_0/template_design_xlslice_0_0.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_xlslice_0_0 || ORIG_REF_NAME==template_design_xlslice_0_0}]
 
 # IP: bd/template_design/ip/template_design_auto_pc_0/template_design_auto_pc_0.xci
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==template_design_auto_pc_0 || ORIG_REF_NAME==template_design_auto_pc_0}]

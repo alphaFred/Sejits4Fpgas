@@ -11,7 +11,7 @@ enum dma_ctrl {
     SUPPRESS_LAST = 2,
     READY = (1 << 8),
     DONE = (1 << 9),
-    COMPLETE = (1 << 9),
+    COMPLETE = (1 << 10),
     INT_EN = (1 << 16),
     CLEAR = 0xf0000
 };

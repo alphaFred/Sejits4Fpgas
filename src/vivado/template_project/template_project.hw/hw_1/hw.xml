@@ -4,7 +4,7 @@
 <!-- Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.        -->
 
 <hwsession version="1" minor="1">
-  <device name="xc7z020_1" gui_info=""/>
+  <device name="xc7z020_1" gui_info="dashboard1=hw_ila_1[xc7z020_1/hw_ila_1/Waveform=ILA_WAVE_1;xc7z020_1/hw_ila_1/Capture Setup=ILA_CAPTURE_1;xc7z020_1/hw_ila_1/Status=ILA_STATUS_1;xc7z020_1/hw_ila_1/Trigger Setup=ILA_TRIGGER_1;xc7z020_1/hw_ila_1/Settings=ILA_SETTINGS_1;]"/>
   <ObjectList object_type="hw_device" gui_info="">
     <Object name="xc7z020_1" gui_info="">
       <Properties Property="PROBES.FILE" value="$_project_name_.runs/impl_1/debug_nets.ltx"/>
@@ -17,17 +17,62 @@
       <Properties Property="CORE_REFRESH_RATE_MS" value="500"/>
     </Object>
     <Object name="u_ila_0" gui_info="">
+      <Properties Property="CONTROL.DATA_DEPTH" value="256"/>
       <Properties Property="CONTROL.TRIGGER_CONDITION" value="OR"/>
       <Properties Property="CONTROL.TRIGGER_POSITION" value="20"/>
+      <Properties Property="CONTROL.WINDOW_COUNT" value="2"/>
       <Properties Property="CORE_REFRESH_RATE_MS" value="500"/>
     </Object>
     <Object name="u_ila_0_0" gui_info="">
-      <Properties Property="CONTROL.TRIGGER_CONDITION" value="AND"/>
+      <Properties Property="CONTROL.DATA_DEPTH" value="1024"/>
+      <Properties Property="CONTROL.TRIGGER_CONDITION" value="OR"/>
       <Properties Property="CONTROL.TRIGGER_POSITION" value="10"/>
+      <Properties Property="CONTROL.WINDOW_COUNT" value="2"/>
       <Properties Property="CORE_REFRESH_RATE_MS" value="500"/>
     </Object>
   </ObjectList>
   <ObjectList object_type="hw_probe" gui_info="">
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARADDR[31:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARBURST[1:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARCACHE[3:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARID" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARLEN[7:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARLOCK" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARPROT[2:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARQOS[3:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARREADY" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARSIZE[2:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARUSER" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARVALID" gui_info="Trigger Setup=0"/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWADDR[31:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWBURST[1:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWCACHE[3:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWID" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWLEN[7:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWLOCK" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWPROT[2:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWQOS[3:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWREADY" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWSIZE[2:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWUSER" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWVALID" gui_info="Trigger Setup=1"/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_BID" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_BREADY" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_BRESP[1:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_BVALID" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_RDATA[31:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_RID" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_RLAST" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_RREADY" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_RRESP[1:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_RUSER" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_RVALID" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_WDATA[31:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_WLAST" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_WREADY" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_WSTRB[3:0]" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_WUSER" gui_info=""/>
+    <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_WVALID" gui_info=""/>
     <Object name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_m_axis_TVALID" gui_info="Trigger Setup=0"/>
     <Object name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_M_AXIS_TREADY" gui_info="Trigger Setup=1"/>
     <Object name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_M_AXIS_TVALID" gui_info=""/>
@@ -183,7 +228,7 @@
         <net name="template_design_wrapper_i/template_design_i/GND_1_8"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
         <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
@@ -229,7 +274,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARADDR[0]"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq2&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq2&apos;hX"/>
@@ -245,7 +290,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARBURST[0]"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq4&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq4&apos;hX"/>
@@ -278,7 +323,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARID"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq8&apos;hXX"/>
         <Option Id="COMPARE_VALUE.0" value="eq8&apos;hXX"/>
@@ -315,7 +360,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARLOCK"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq3&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq3&apos;hX"/>
@@ -332,7 +377,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARPROT[0]"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq4&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq4&apos;hX"/>
@@ -365,7 +410,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARREADY"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq3&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq3&apos;hX"/>
@@ -400,19 +445,19 @@
     <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
-        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bR"/>
         <Option Id="DISPLAY_HINT" value=""/>
         <Option Id="DISPLAY_VISIBILITY" value=""/>
         <Option Id="HW_ILA" value="hw_ila_1"/>
         <Option Id="NAME.CUSTOM" value=""/>
         <Option Id="NAME.SELECT" value="Long"/>
-        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bR"/>
       </probeOptions>
       <nets>
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_ARVALID"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
         <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
@@ -458,7 +503,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWADDR[0]"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq2&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq2&apos;hX"/>
@@ -474,7 +519,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWBURST[0]"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq4&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq4&apos;hX"/>
@@ -507,7 +552,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWID"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq8&apos;hXX"/>
         <Option Id="COMPARE_VALUE.0" value="eq8&apos;hXX"/>
@@ -544,7 +589,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWLOCK"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq3&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq3&apos;hX"/>
@@ -561,7 +606,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWPROT[0]"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq4&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq4&apos;hX"/>
@@ -594,7 +639,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWREADY"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq3&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq3&apos;hX"/>
@@ -629,13 +674,13 @@
     <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
-        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bR"/>
         <Option Id="DISPLAY_HINT" value=""/>
         <Option Id="DISPLAY_VISIBILITY" value=""/>
         <Option Id="HW_ILA" value="hw_ila_1"/>
         <Option Id="NAME.CUSTOM" value=""/>
         <Option Id="NAME.SELECT" value="Long"/>
-        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bR"/>
       </probeOptions>
       <nets>
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_AWVALID"/>
@@ -671,7 +716,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_BREADY"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq2&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq2&apos;hX"/>
@@ -702,7 +747,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_BVALID"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
         <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
@@ -793,7 +838,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_RREADY"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq2&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq2&apos;hX"/>
@@ -839,7 +884,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_RVALID"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
         <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
@@ -915,7 +960,7 @@
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_WREADY"/>
       </nets>
     </probe>
-    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
       <probeOptions Id="DebugProbeParams">
         <Option Id="CAPTURE_COMPARE_VALUE" value="eq4&apos;hX"/>
         <Option Id="COMPARE_VALUE.0" value="eq4&apos;hX"/>
@@ -961,6 +1006,283 @@
       </probeOptions>
       <nets>
         <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_0_M_AXI_WVALID"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[31]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[30]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[29]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[28]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[27]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[26]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[25]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[24]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[23]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[22]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[21]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[20]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[19]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[18]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[17]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[16]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[15]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[14]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[13]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[12]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[11]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[10]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[9]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[8]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[7]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[6]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[5]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[4]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[3]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[2]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[1]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_addr[0]"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_compl"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq26&apos;hXXX_XXXX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq26&apos;hXXX_XXXX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq26&apos;hXXX_XXXX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[25]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[24]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[23]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[22]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[21]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[20]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[19]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[18]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[17]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[16]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[15]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[14]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[13]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[12]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[11]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[10]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[9]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[8]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[7]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[6]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[5]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[4]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[3]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[2]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[1]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_len[0]"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_ready"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_r_valid"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_rst"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[31]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[30]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[29]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[28]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[27]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[26]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[25]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[24]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[23]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[22]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[21]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[20]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[19]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[18]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[17]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[16]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[15]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[14]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[13]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[12]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[11]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[10]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[9]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[8]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[7]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[6]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[5]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[4]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[3]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[2]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[1]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_addr[0]"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_compl"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq26&apos;hXXX_XXXX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq26&apos;hXXX_XXXX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq26&apos;hXXX_XXXX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[25]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[24]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[23]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[22]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[21]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[20]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[19]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[18]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[17]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[16]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[15]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[14]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[13]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[12]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[11]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[10]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[9]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[8]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[7]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[6]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[5]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[4]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[3]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[2]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[1]"/>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_len[0]"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_ready"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/MINIMAL_DMA_CONTROL_0_dma_control_w_valid"/>
       </nets>
     </probe>
     <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
@@ -1151,7 +1473,614 @@
         <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
         <Option Id="DISPLAY_HINT" value=""/>
         <Option Id="DISPLAY_VISIBILITY" value=""/>
-        <Option Id="HW_ILA" value="hw_ila_2"/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[31]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[30]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[29]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[28]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[27]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[26]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[25]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[24]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[23]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[22]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[21]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[20]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[19]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[18]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[17]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[16]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[15]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[14]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[13]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[12]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[11]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[10]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[9]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[8]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[7]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[6]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[5]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[4]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[3]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[2]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[1]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_data_fifo_0_axis_rd_data_count[0]"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[31]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[30]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[29]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[28]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[27]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[26]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[25]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[24]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[23]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[22]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[21]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[20]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[19]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[18]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[17]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[16]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[15]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[14]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[13]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[12]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[11]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[10]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[9]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[8]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[7]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[6]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[5]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[4]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[3]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[2]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[1]"/>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TDATA[0]"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TLAST"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TREADY"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_M_AXIS_TVALID"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/axis_register_slice_0_s_axis_tready"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/c_addsub_0_C_OUT"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[31]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[30]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[29]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[28]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[27]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[26]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[25]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[24]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[23]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[22]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[21]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[20]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[19]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[18]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[17]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[16]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[15]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[14]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[13]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[12]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[11]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[10]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[9]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[8]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[7]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[6]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[5]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[4]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[3]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[2]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[1]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TDATA[0]"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TLAST"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TREADY"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn1_TVALID"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[31]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[30]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[29]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[28]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[27]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[26]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[25]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[24]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[23]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[22]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[21]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[20]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[19]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[18]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[17]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[16]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[15]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[14]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[13]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[12]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[11]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[10]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[9]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[8]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[7]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[6]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[5]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[4]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[3]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[2]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[1]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TDATA[0]"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TLAST"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TREADY"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/Conn3_TVALID"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[31]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[30]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[29]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[28]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[27]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[26]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[25]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[24]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[23]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[22]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[21]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[20]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[19]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[18]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[17]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[16]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[15]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[14]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[13]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[12]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[11]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[10]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[9]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[8]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[7]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[6]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[5]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[4]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[3]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[2]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[1]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_0_axis_rd_data_count[0]"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/axis_data_fifo_1_m_axis_tvalid"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_C_OUT"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[31]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[30]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[29]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[28]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[27]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[26]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[25]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[24]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[23]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[22]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[21]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[20]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[19]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[18]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[17]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[16]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[15]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[14]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[13]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[12]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[11]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[10]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[9]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[8]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[7]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[6]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[5]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[4]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[3]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[2]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[1]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/c_addsub_0_S[0]"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/util_vector_logic_1_Res"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/util_vector_logic_3_Res"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0/xlslice_0_Dout"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[31]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[30]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[29]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[28]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[27]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[26]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[25]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[24]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[23]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[22]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[21]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[20]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[19]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[18]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[17]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[16]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[15]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[14]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[13]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[12]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[11]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[10]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[9]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[8]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[7]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[6]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[5]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[4]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[3]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[2]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[1]"/>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TDATA[0]"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TLAST"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TREADY"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/dma_stuff_0_M_AXIS1_TVALID"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="bus" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq32&apos;hXXXX_XXXX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
         <Option Id="NAME.CUSTOM" value=""/>
         <Option Id="NAME.SELECT" value="Long"/>
         <Option Id="TRIGGER_COMPARE_VALUE" value="eq32&apos;hXXXX_XXXX"/>
@@ -1197,7 +2126,7 @@
         <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
         <Option Id="DISPLAY_HINT" value=""/>
         <Option Id="DISPLAY_VISIBILITY" value=""/>
-        <Option Id="HW_ILA" value="hw_ila_2"/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
         <Option Id="NAME.CUSTOM" value=""/>
         <Option Id="NAME.SELECT" value="Long"/>
         <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
@@ -1212,7 +2141,7 @@
         <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
         <Option Id="DISPLAY_HINT" value=""/>
         <Option Id="DISPLAY_VISIBILITY" value=""/>
-        <Option Id="HW_ILA" value="hw_ila_2"/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
         <Option Id="NAME.CUSTOM" value=""/>
         <Option Id="NAME.SELECT" value="Long"/>
         <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
@@ -1227,13 +2156,43 @@
         <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
         <Option Id="DISPLAY_HINT" value=""/>
         <Option Id="DISPLAY_VISIBILITY" value=""/>
-        <Option Id="HW_ILA" value="hw_ila_2"/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
         <Option Id="NAME.CUSTOM" value=""/>
         <Option Id="NAME.SELECT" value="Long"/>
         <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
       </probeOptions>
       <nets>
         <net name="template_design_wrapper_i/template_design_i/s_axis_1_TVALID"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/util_vector_logic_0_Res"/>
+      </nets>
+    </probe>
+    <probe type="ila" busType="net" source="netlist" spec="ILA_V2_RT">
+      <probeOptions Id="DebugProbeParams">
+        <Option Id="CAPTURE_COMPARE_VALUE" value="eq1&apos;bX"/>
+        <Option Id="COMPARE_VALUE.0" value="eq1&apos;bX"/>
+        <Option Id="DISPLAY_HINT" value=""/>
+        <Option Id="DISPLAY_VISIBILITY" value=""/>
+        <Option Id="HW_ILA" value="hw_ila_1"/>
+        <Option Id="NAME.CUSTOM" value=""/>
+        <Option Id="NAME.SELECT" value="Long"/>
+        <Option Id="TRIGGER_COMPARE_VALUE" value="eq1&apos;bX"/>
+      </probeOptions>
+      <nets>
+        <net name="template_design_wrapper_i/template_design_i/util_vector_logic_1_Res"/>
       </nets>
     </probe>
   </probeset>
