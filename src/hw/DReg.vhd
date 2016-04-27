@@ -42,7 +42,7 @@ end DReg;
 architecture Behavioral of DReg is
 
     TYPE iBus is array(LENGTH-1 downto 0) of std_logic_vector(WIDTH-1 downto 0);
-    TYPE iBus_VALID is array(DELAY_ADD_SUB-1 downto 0) of std_logic;
+    TYPE iBus_VALID is array(LENGTH-1 downto 0) of std_logic;
     --
     signal sRegBus : iBus;
     signal ValidsRegBus : iBus_VALID;
