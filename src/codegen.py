@@ -54,6 +54,7 @@ class VhdlCodegen(ast.NodeVisitor):
         self.symbols = ""
         self.used_symbols = set()
         self.component_ids = defaultdict(int)
+        self.processed_nodes = set()
 
     def _tab(self):
         """return correct spaces if tab found"""
@@ -118,29 +119,34 @@ class VhdlCodegen(ast.NodeVisitor):
         return prev_component
 
     def visit_VhdlComponent(self, node):
-        temp_prev_component = [p for p in map(self.visit, node.prev) if p is not None]
-        prev_component = []
-        for i in temp_prev_component:
-            if isinstance(i, list):
-                prev_component.extend(i)
-            else:
-                prev_component.append(i)
-        #
-        generic_src = self._generic_map(node.generic)
-        port_src = self._port_map((node.in_port, node.out_port))
-        if node.generic:
-            component = self.COMPONENT.format(instance_name=self._generate_name(node),
-                                              component_lib=node.library,
-                                              generic_map=generic_src,
-                                              port_map=port_src) + "\n"
-        else:
-            component = self.COMPONENT_noG.format(instance_name=self._generate_name(node),
+        if id(node) not in self.processed_nodes:
+            temp_prev_component = [p for p in map(self.visit, node.prev) if p is not None]
+            prev_component = []
+            for i in temp_prev_component:
+                if isinstance(i, list):
+                    prev_component.extend(i)
+                else:
+                    prev_component.append(i)
+            #
+            generic_src = self._generic_map(node.generic)
+            port_src = self._port_map((node.in_port, node.out_port))
+            if node.generic:
+                component = self.COMPONENT.format(instance_name=self._generate_name(node),
                                                   component_lib=node.library,
+                                                  generic_map=generic_src,
                                                   port_map=port_src) + "\n"
-        self.architecture_body += "\n" + component
-        #
-        prev_component.append(component)
-        return prev_component
+            else:
+                component = self.COMPONENT_noG.format(instance_name=self._generate_name(node),
+                                                      component_lib=node.library,
+                                                      port_map=port_src) + "\n"
+            self.architecture_body += "\n" + component
+            #
+            self.processed_nodes.add(id(node))
+            prev_component.append(component)
+            return prev_component
+        else:
+            return []
+
 
     def visit_VhdlDReg(self, node):
         temp_prev_component = [p for p in map(self.visit, node.prev) if p is not None]
