@@ -75,10 +75,10 @@ class VhdlKwdTransformer(ast.NodeTransformer):
                       "use", "variable", "wait", "when", "while", "width",
                       "with", "xnor", "xor"})
 
-    def visit_Name(self, node):
+    def visit_SymbolRef(self, node):
         """Change id of Name node if it is a VHDL keyword."""
-        if node.id.lower() in self.VHDL_Keywords:
-            node.id = "sig_" + node.id
+        if node.name.lower() in self.VHDL_Keywords:
+            node.name = "sig_" + node.name
         return node
 
 
@@ -154,6 +154,8 @@ class VhdlIRTransformer(ast.NodeTransformer):
             elif isinstance(right, VhdlConstant):
                 vhdl_node = right
                 vhdl_node.name = left.name
+            elif isinstance(right, VhdlSource):
+                vhdl_node = right
             else:
                 raise TransformationError("Illegal assignment to symbol %s" % node.left.name)
             self.symbols[left.name] = vhdl_node
