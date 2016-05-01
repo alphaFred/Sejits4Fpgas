@@ -459,17 +459,23 @@ class VhdlComponent(VhdlNode):
         else:
             error_msg = "Delay of Component must be >= 0"
             raise TransformationError(error_msg)
+        self.ports_finalized = False
 
     def finalize_ports(self):
-        if self.generic_slice:
-            self.generic = self.in_port[self.generic_slice]
-            self.in_port = self.in_port[self.generic_slice.stop:]
-            self.generic_info = self.inport_info[self.generic_slice]
-            self.inport_info = self.inport_info[self.generic_slice.stop:]
+        if not self.ports_finalized:
+            if self.generic_slice:
+                self.generic = self.in_port[self.generic_slice]
+                self.in_port = self.in_port[self.generic_slice.stop:]
+                self.generic_info = self.inport_info[self.generic_slice]
+                self.inport_info = self.inport_info[self.generic_slice.stop:]
+                #
+            self.generic = [Generic(*i, value=g) for i, g in zip(self.generic_info, self.generic)]
+            self.in_port = [Port(*i, value=g) for i, g in zip(self.inport_info, self.in_port)]
+            self.out_port = [Port(*i, value=g) for i, g in zip(self.outport_info, self.out_port)]
             #
-        self.generic = [Generic(*i, value=g) for i, g in zip(self.generic_info, self.generic)]
-        self.in_port = [Port(*i, value=g) for i, g in zip(self.inport_info, self.in_port)]
-        self.out_port = [Port(*i, value=g) for i, g in zip(self.outport_info, self.out_port)]
+            self.ports_finalized = True
+        else:
+            pass
 
 
 class VhdlDReg(VhdlNode):
