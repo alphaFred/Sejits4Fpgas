@@ -149,8 +149,8 @@ def specialize(func):
 
 
 
-def bb_convolve(n):
-    return n * 2
+def bb_convolve(mask, divisor, width, height, img):
+    return img * 2
 
 def bb_split(i, n):
     return n[i]
@@ -163,6 +163,9 @@ def bb_add(x, y):
 
 def bb_sub(x, y):
     return x - y
+
+def bb_mul(x, y):
+    return x * y
 
 def bb_limitTo(valid, x):
     return x
@@ -199,8 +202,11 @@ def bb_limitTo(valid, x):
 
 @specialize
 def test_func(a):
-    c = bb_sub(a, 125)
-    return bb_add(c, a)
+    filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)
+    b = a
+    c = bb_convolve(filtMASK_Gauss, 16, 640, 480, b)
+    d = bb_convolve(filtMASK_Gauss, 16, 640, 480, c)
+    return bb_mul(c, d)
 
 
 # transformed_func = BasicTranslator.from_function(test_func)
