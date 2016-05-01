@@ -355,6 +355,7 @@ class VhdlPortTransformer(ast.NodeVisitor):
                         if hash(pnode) in self.visited_nodes:
                             # get cascading connection edge
                             cc_edge = pnode.out_port[idx].value
+                            cc_edges.append(cc_edge)
                         else:
                             if hasattr(pnode, "name"):
                                 name = pnode.name.upper() + "_" + occp.name + "_"
