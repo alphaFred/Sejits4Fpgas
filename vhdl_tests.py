@@ -202,11 +202,7 @@ def bb_limitTo(valid, x):
 
 @specialize
 def test_func(a):
-    filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)
-    b = a
-    c = bb_convolve(filtMASK_Gauss, 16, 640, 480, b)
-    d = bb_convolve(filtMASK_Gauss, 16, 640, 480, c)
-    return bb_mul(c, d)
+    return a
 
 
 # transformed_func = BasicTranslator.from_function(test_func)
