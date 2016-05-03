@@ -1,12 +1,9 @@
 """Code generator for VHDL IR."""
 import ast
 import logging
-#
-from src.types import VhdlType
-from nodes import Port, Generic, VhdlSignal
+
 from utils import TransformationError
 from utils import CONFIG
-
 
 logger = logging.getLogger(__name__)
 logger.disabled = CONFIG.getboolean("logging", "ENABLE_LOGGING")
@@ -23,7 +20,6 @@ logger.addHandler(ch)
 
 
 class VhdlCodegen(ast.NodeVisitor):
-
     ENTITY = """entity {entity_name} is\
                     \r{generic_declarations}\
                     \r{port_declarations}\
@@ -147,7 +143,6 @@ class VhdlCodegen(ast.NodeVisitor):
         else:
             return []
 
-
     def visit_VhdlDReg(self, node):
         temp_prev_component = [p for p in map(self.visit, node.prev) if p is not None]
         prev_component = []
@@ -193,7 +188,7 @@ class VhdlCodegen(ast.NodeVisitor):
         #
         return s
 
-    def _port_map(self, ports=([],[])):
+    def _port_map(self, ports=([], [])):
         block_indent = " " * len("port map(")
         #
         port_map = []
@@ -201,7 +196,7 @@ class VhdlCodegen(ast.NodeVisitor):
             frmt, lfunc = self.type_conversion(str(p.value.vhdl_type),
                                                str(p.vhdl_type))
             port_map.append(p.name + " => " + frmt.format(*lfunc(p.value, p)))
-        #port_map.extend([p.name + " => " + str(p.value) for p in ports[0]])
+        # port_map.extend([p.name + " => " + str(p.value) for p in ports[0]])
         port_map.extend([p.name + " => " + str(p.value) for p in ports[1]])
         join_statement = ",\n" + self._tab() + block_indent
         #
@@ -231,7 +226,7 @@ class VhdlCodegen(ast.NodeVisitor):
         s += ");"
         return s
 
-    def _port_block(self, ports=([],[])):
+    def _port_block(self, ports=([], [])):
         block_indent = " " * len("port(")
         #
         port_block = []
@@ -254,7 +249,8 @@ class VhdlCodegen(ast.NodeVisitor):
         else:
             return node.__class__.__name__
 
-    def _generate_libs(self, node):
+    @staticmethod
+    def _generate_libs(node):
         src = ""
         for lib in node.libraries:
             src += "library " + lib.mainlib_name + ";\n" if lib.mainlib_name else ""
@@ -262,62 +258,34 @@ class VhdlCodegen(ast.NodeVisitor):
                 src += "use " + sublib + ";\n"
         return src
 
-    def type_conversion(self, source, sink):
+    @staticmethod
+    def type_conversion(source, sink):
         def check_equal_len(src, snk):
             if len(src.vhdl_type) == len(snk.vhdl_type):
                 return str(src)
             else:
-                error_msg = "Can not assign {0} of size {1} to {0} of size {2}".\
-                            format(src.vhdl_type, len(src.vhdl_type), len(snk.vhdl_type))
+                error_msg = "Can not assign {0} of size {1} to {0} of size {2}". \
+                    format(src.vhdl_type, len(src.vhdl_type), len(snk.vhdl_type))
                 raise TransformationError(error_msg)
 
-        type_conv = {"integer": {"integer":
-                                 ("{}", lambda src, snk: (check_equal_len(src, snk),)),
-                                 "signed":
-                                 ("to_signed({0}, {1})",
-                                     lambda src, snk: (str(src), len(snk.vhdl_type))),
-                                 "unsigned":
-                                 ("to_unsigned({0}, {1})",
-                                     lambda src, snk: (str(src), len(snk.vhdl_type))),
+        type_conv = {"integer": {"integer": ("{}", lambda src, snk: (check_equal_len(src, snk),)),
+                                 "signed": ("to_signed({0}, {1})", lambda src, snk: (str(src), len(snk.vhdl_type))),
+                                 "unsigned": ("to_unsigned({0}, {1})", lambda src, snk: (str(src), len(snk.vhdl_type))),
                                  "std_logic_vector":
                                  ("std_logic_vector(to_signed({0}, {1}))",
-                                     lambda src, snk: (str(src), len(snk.vhdl_type)))},
-                     "signed": {"integer":
-                                ("to_integer({})",
-                                    lambda src, snk: (src,)),
-                                "signed":
-                                ("{}",
-                                    lambda src, snk: (check_equal_len(src, snk),)),
-                                "unsigned":
-                                ("unsigned(std_logic_vector({}))",
-                                    lambda src, snk: (src,)),
-                                "std_logic_vector":
-                                ("std_logic_vector({})",
-                                    lambda src, snk: (src,))},
-                     "unsigned": {"integer":
-                                  ("to_integer({})",
-                                      lambda src, snk: (src,)),
-                                  "signed":
-                                  ("signed(std_logic_vector({}))",
-                                      lambda src, snk: (src,)),
-                                  "unsigned":
-                                  ("{}",
-                                      lambda src, snk: (check_equal_len(src, snk),)),
-                                  "std_logic_vector":
-                                  ("std_logic_vector({})",
-                                      lambda src, snk: (src,))},
-                     "std_logic_vector": {"integer":
-                                          ("to_integer(signed({}))",
-                                              lambda src, snk: (src,)),
-                                          "signed":
-                                          ("signed({})",
-                                              lambda src, snk: (src,)),
-                                          "unsigned":
-                                          ("unsigned({})",
-                                              lambda src, snk: (src,)),
-                                          "std_logic_vector":
-                                          ("{}",
-                                              lambda src, snk: (check_equal_len(src, snk),))},
+                                  lambda src, snk: (str(src), len(snk.vhdl_type)))},
+                     "signed": {"integer": ("to_integer({})", lambda src, snk: (src,)),
+                                "signed": ("{}", lambda src, snk: (check_equal_len(src, snk),)),
+                                "unsigned": ("unsigned(std_logic_vector({}))", lambda src, snk: (src,)),
+                                "std_logic_vector": ("std_logic_vector({})", lambda src, snk: (src,))},
+                     "unsigned": {"integer": ("to_integer({})", lambda src, snk: (src,)),
+                                  "signed": ("signed(std_logic_vector({}))", lambda src, snk: (src,)),
+                                  "unsigned": ("{}", lambda src, snk: (check_equal_len(src, snk),)),
+                                  "std_logic_vector": ("std_logic_vector({})", lambda src, snk: (src,))},
+                     "std_logic_vector": {"integer": ("to_integer(signed({}))", lambda src, snk: (src,)),
+                                          "signed": ("signed({})", lambda src, snk: (src,)),
+                                          "unsigned": ("unsigned({})", lambda src, snk: (src,)),
+                                          "std_logic_vector": ("{}", lambda src, snk: (check_equal_len(src, snk),))},
                      "std_logic": {"std_logic": ("{}", lambda src, snk: (src,))},
                      "array": {"array": ("{}", lambda src, snk: (src,))}}
         try:
@@ -325,4 +293,4 @@ class VhdlCodegen(ast.NodeVisitor):
         except KeyError:
             error_msg = "Invalid conversion from {0} to {1}".format(source, sink)
             raise TransformationError(error_msg)
-        return (frmt_string, lambda_func)
+        return frmt_string, lambda_func

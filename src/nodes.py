@@ -1,18 +1,19 @@
 """Nodes."""
 import collections
 import logging
-import os
 import new
-import transformations
-#
-from src.types import VhdlType
-from src.utils import TransformationError, CONFIG
-from dotgen import VhdlDotGenVisitor
+import os
 from collections import namedtuple
-#
-from ctree.nodes import File, Project, CtreeNode
-from ctree.c.nodes import Op
 
+import transformations
+from dotgen import VhdlDotGenVisitor
+from types import VhdlType
+from utils import CONFIG
+from utils import TransformationError
+from .vhdl_ctree.nodes import CtreeNode
+from .vhdl_ctree.nodes import Project
+from .vhdl_ctree.nodes import File
+from .vhdl_ctree.c. nodes import Op
 
 # set up module-level logger
 logger = logging.getLogger(__name__)
@@ -27,7 +28,6 @@ formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
-
 
 VhdlLibrary = namedtuple("VhdlLibrary", ["mainlib_name", "sublib"])
 Interface = namedtuple("Interface", ["iports", "oport"])
@@ -124,6 +124,8 @@ class VhdlNode(VhdlBaseNode):
         self.outport_info = outport_info if outport_info is not None else []
         # initialize generic list
         self.generic = []
+        #
+        super(VhdlNode, self).__init__()
 
     def finalize_ports(self):
         raise NotImplementedError()
@@ -131,7 +133,10 @@ class VhdlNode(VhdlBaseNode):
 
 class VhdlSymbolCollection(collections.MutableSequence, VhdlSymbol):
     """Base class for signal collections."""
+
     def __init__(self, *args):
+        super(VhdlSymbolCollection, self).__init__()
+        #
         self.list = list()
         for arg in args:
             if hasattr(arg, "__iter__"):
@@ -165,13 +170,14 @@ class VhdlSymbolCollection(collections.MutableSequence, VhdlSymbol):
 
 class VhdlSignalSplit(VhdlSymbol):
     def __init__(self, sig, sig_slice):
+        super(VhdlSignalSplit, self).__init__()
+        #
         self.sig = sig
         self.sig_slice = sig_slice
         if hasattr(sig.vhdl_type, "size"):
             self.vhdl_type = sig.vhdl_type.__class__(sig_slice.stop - sig_slice.start)
         else:
-            raise TransformationError()
-
+            raise TransformationError("{} does not have size attribute".format(sig.vhdl_type))
 
     def __str__(self):
         return self.sig.name + "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + ")"
@@ -179,12 +185,15 @@ class VhdlSignalSplit(VhdlSymbol):
 
 class VhdlSignalMerge(VhdlSymbol):
     def __init__(self, sig, sig_slice, fill_bitval=""):
+        super(VhdlSignalMerge, self).__init__()
+        #
         self.sig = sig
         self.sig_slice = sig_slice
         self.fill_bitval = "0" if fill_bitval == "" else fill_bitval
 
     def __str__(self):
-        return "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + " => '" + self.fill_bitval + "') & " + self.sig.name
+        return "(" + str(self.sig_slice.stop - 1) + " downto " + str(
+            self.sig_slice.start) + " => '" + self.fill_bitval + "') & " + self.sig.name
 
 
 class VhdlConcatenation(VhdlSymbolCollection):
@@ -196,7 +205,7 @@ class VhdlConcatenation(VhdlSymbolCollection):
         if self._vhdl_type is None:
             self._vhdl_type = v.vhdl_type
         else:
-            if type(self._vhdl_type) != type(v.vhdl_type):
+            if not isinstance(self._vhdl_type, v.vhdl_type):
                 error_msg = "All types of Array must be equal"
                 raise TransformationError(error_msg)
 
@@ -210,6 +219,7 @@ class VhdlConcatenation(VhdlSymbolCollection):
 
 class VhdlAnd(VhdlSymbolCollection):
     """Bool signal connection AND."""
+
     def __init__(self, *args):
         super(VhdlAnd, self).__init__(*args)
 
@@ -227,6 +237,7 @@ class VhdlAnd(VhdlSymbolCollection):
 
 class VhdlAssignment(VhdlBaseNode):
     def __init__(self, target_signal, source_signal):
+        super(VhdlAssignment, self).__init__()
         self.target = target_signal
         self.source = source_signal
 
@@ -237,6 +248,7 @@ class VhdlSource(VhdlSymbol):
     _fields = ["name", "vhdl_type"]
 
     def __init__(self, name="", vhdl_type=None):
+        super(VhdlSource, self).__init__()
         self.name = name
         self.vhdl_type = vhdl_type
 
@@ -247,6 +259,7 @@ class VhdlSink(VhdlSymbol):
     _fields = ["name", "vhdl_type"]
 
     def __init__(self, name="", vhdl_type=None):
+        super(VhdlSink, self).__init__()
         self.name = name
         self.vhdl_type = vhdl_type
 
@@ -257,6 +270,7 @@ class VhdlSignal(VhdlSymbol):
     _fields = ["name", "vhdl_type"]
 
     def __init__(self, name="", vhdl_type=None):
+        super(VhdlSignal, self).__init__()
         self.name = name
         self.vhdl_type = vhdl_type
 
@@ -267,6 +281,7 @@ class VhdlConstant(VhdlSymbol):
     _fields = ["name", "vhdl_type", "value"]
 
     def __init__(self, name="", vhdl_type=None, value=None, ):
+        super(VhdlConstant, self).__init__()
         if name == "":
             self.name = str(value)
         else:
@@ -285,6 +300,7 @@ class Port(VhdlSymbol):
 
     def __init__(self, name="", direction="", vhdl_type=None, value=None):
         """ Initialize name, direction and value of Port. """
+        super(Port, self).__init__()
         self.name = name
         self.direction = direction
         self.vhdl_type = vhdl_type
@@ -302,6 +318,7 @@ class Generic(VhdlSymbol):
 
     def __init__(self, name="", vhdl_type=None, value=None):
         """ Initialize name and value of Generic. """
+        super(Generic, self).__init__()
         self.name = name
         self.vhdl_type = vhdl_type
         self.value = value
@@ -318,17 +335,21 @@ class VhdlModule(VhdlNode):
 
     _fields = ["entity", "architecture"]
 
-    def __init__(self, name="", libraries=[], inport_slice=None, entity=[], architecture=[]):
+    def __init__(self, name="", libraries=None, inport_slice=None, entity=None, architecture=None):
         """Initialize VhdlModule node.
 
         :param name: str containing name of module
         :param libraries: list containing library objects
         :param entity: list containing VhdlSource nodes, describing kernel
-            parameter
+            parameter_process_params
         :param architecture: list containing vhdl nodes, describing body of
             architecture
         """
         if inport_slice:
+            # check if input slice is slice object
+            if type(inport_slice) is not slice:
+                raise TransformationError("inport slice must be slice not of type{}".format(type(inport_slice)))
+
             in_port_info = [PortInfo(port.name, "in", port.vhdl_type) for port in entity[inport_slice]]
             in_port = entity[inport_slice]
             #
@@ -362,7 +383,7 @@ class VhdlBinaryOp(VhdlNode):
 
     _fields = ["prev"]
 
-    def __init__(self, prev=[], in_port=[], op=None, out_port=[]):
+    def __init__(self, prev=None, in_port=None, op=None, out_port=None):
         """Initialize VhdlBinaryOp node.
 
         :param prev: list of previous nodes in DAG
@@ -379,9 +400,9 @@ class VhdlBinaryOp(VhdlNode):
         super(VhdlBinaryOp, self).__init__(prev, in_port, in_port_info, out_port, out_port_info)
         self.library = "work.BasicArith"
         # operation decoder with (Operation ID, Delay)
-        op_decoder = {Op.Add:(0, 4),
-                      Op.Sub:(1, 4),
-                      Op.Mul:(2, 5)}
+        op_decoder = {Op.Add: (0, 4),
+                      Op.Sub: (1, 4),
+                      Op.Mul: (2, 5)}
 
         if type(op) in op_decoder:
             self.op, self.d = op_decoder[type(op)]
@@ -401,7 +422,7 @@ class VhdlReturn(VhdlNode):
 
     _fields = ["prev"]
 
-    def __init__(self, prev=[], in_port=[], out_port=[]):
+    def __init__(self, prev=None, in_port=None, out_port=None):
         """Initialize VhdlReturn node.
 
         :param prev: list of previous nodes in DAG
@@ -483,7 +504,7 @@ class VhdlDReg(VhdlNode):
 
     _fields = ["prev"]
 
-    def __init__(self, prev=[], delay=-1, in_port=[], out_port=[]):
+    def __init__(self, prev=None, delay=-1, in_port=None, out_port=None):
         """Initialize VhdlDReg node.
 
         :param prev: list of previous nodes in DAG
@@ -534,8 +555,10 @@ class VhdlFile(VhdlBaseNode, File):
     _ext = "vhd"
     file_path = ""
 
-    def __init__(self, name="generated", body=[], path=""):
+    def __init__(self, name="generated", body=None, path=""):
         """Initialize Vhdl File."""
+        self._filepath = None
+        #
         VhdlBaseNode.__init__(self)
         File.__init__(self, name, body, path)
 
@@ -578,9 +601,12 @@ class VhdlFile(VhdlBaseNode, File):
         """Generate Vhdl File from prebuilt source file."""
         vhdlfile = VhdlFile(name, body=[], path="")
         vhdlfile.file_path = path
+
         #
         def _compile(self, program_text):
+            _ = program_text
             return self.file_path
+
         vhdlfile._compile = new.instancemethod(_compile, vhdlfile, None)
         #
         return vhdlfile
@@ -605,6 +631,10 @@ class VhdlProject(Project):
         self.synthesis_dir = synthesis_dir
         self.indent = indent
         self.gen_wrapper = gen_wrapper  # generate wrapper
+        #
+        self._module = None
+        #
+        super(VhdlProject, self).__init__(self.files, self.indent, self.synthesis_dir)
 
     def codegen(self):
         """Generate vhdl code of wrapper and files in project."""
@@ -624,7 +654,7 @@ class VhdlProject(Project):
         logger.info("Generate project wrapper")
         axi_stream_width = 32
         # input signals
-        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector( axi_stream_width, "0"))
+        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
         m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep", VhdlType.VhdlStdLogicVector(4, "0"))
         m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast", VhdlType.VhdlStdLogic("0"))
         m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready", VhdlType.VhdlStdLogic("0"))
@@ -632,7 +662,7 @@ class VhdlProject(Project):
         in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast, m_axis_mm2s_tready, m_axis_mm2s_tvalid]
 
         # output signals
-        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector( axi_stream_width, "0"))
+        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
         s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep", VhdlType.VhdlStdLogicVector(4, "0"))
         s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast", VhdlType.VhdlStdLogic("0"))
         s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready", VhdlType.VhdlStdLogic("0"))
@@ -666,4 +696,4 @@ class VhdlProject(Project):
         """Return JIT module if available else create it."""
         if self._module:
             return self._module
-        return self.codegen(indent=self.indent)
+        return self.codegen()

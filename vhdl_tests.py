@@ -4,21 +4,21 @@ import ctypes
 import logging
 import glob
 import traceback
-#
+
 from skimage import data
-#
-from ctree.types import get_ctype
-from ctree.nodes import Project
-from ctree.c.nodes import FunctionDecl, CFile
-from ctree.transformations import PyBasicConversions
-from ctree.jit import LazySpecializedFunction
-#
+
+from src.vhdl_ctree.types import get_ctype
+from src.vhdl_ctree.nodes import Project
+from src.vhdl_ctree.c.nodes import FunctionDecl, CFile
+from src.vhdl_ctree.transformations import PyBasicConversions
+from src.vhdl_ctree.jit import LazySpecializedFunction
+from src.vhdl_ctree.jit import ConcreteSpecializedFunction
+
 from src.transformations import VhdlIRTransformer, VhdlBaseTransformer
 from src.dsl import DSLTransformer
 from src.nodes import VhdlFile, VhdlProject
 from src.dsl import get_dsl_type, gen_dsl_wrapper
-#
-from ctree.jit import ConcreteSpecializedFunction
+
 #
 logging.basicConfig(level=40)
 #
@@ -47,8 +47,7 @@ class BasicTranslator(LazySpecializedFunction):
             return {'arg_type': get_dsl_type(args, 32)}
 
     def transform(self, tree, program_config):
-        from ctree.visual.dot_manager import DotManager
-
+        from .src.vhdl_ctree.visual.dot_manager import DotManager
         # ----
         DotManager().dot_ast_to_file(tree, file_name=img_path + orig_tree)
         # ----
@@ -202,11 +201,8 @@ def bb_limitTo(valid, x):
 
 @specialize
 def test_func(a):
-    filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)
-    b = a
-    c = bb_convolve(filtMASK_Gauss, 16, 640, 480, b)
-    d = bb_convolve(filtMASK_Gauss, 16, 640, 480, c)
-    return bb_mul(c, d)
+    return bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1),
+                       16, 512, 512, a)
 
 
 # transformed_func = BasicTranslator.from_function(test_func)

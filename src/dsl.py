@@ -1,16 +1,30 @@
 import ast
-import logging
-import numpy as np
 import ctypes
-
+import logging
 from collections import namedtuple
-from ctree.c.nodes import FunctionCall, SymbolRef, Return, BinaryOp, Op, Constant, FunctionDecl
 
-from src import transformations
-from src.nodes import VhdlComponent, VhdlSource, VhdlSignal, VhdlSink, VhdlSignalSplit, VhdlReturn, VhdlSignalMerge, \
-    VhdlLibrary, VhdlModule, VhdlFile, VhdlConcatenation, VhdlAssignment, PortInfo, GenericInfo
-from src.types import VhdlType
-from src.utils import TransformationError, CONFIG
+import numpy as np
+import transformations
+from nodes import GenericInfo
+from nodes import PortInfo
+from nodes import VhdlAssignment
+from nodes import VhdlComponent
+from nodes import VhdlFile
+from nodes import VhdlLibrary
+from nodes import VhdlModule
+from nodes import VhdlReturn
+from nodes import VhdlSignal
+from nodes import VhdlSink
+from nodes import VhdlSource
+from types import VhdlType
+from utils import TransformationError, CONFIG
+from .vhdl_ctree.c.nodes import BinaryOp
+from .vhdl_ctree.c.nodes import Constant
+from .vhdl_ctree.c.nodes import FunctionCall
+from .vhdl_ctree.c.nodes import FunctionDecl
+from .vhdl_ctree.c.nodes import Op
+from .vhdl_ctree.c.nodes import Return
+from .vhdl_ctree.c.nodes import SymbolRef
 
 # set up module-level logger
 logger = logging.getLogger(__name__)
@@ -25,7 +39,6 @@ formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
-
 
 LF_Data = namedtuple("LF_Data", ["lineno", "func"])
 
@@ -43,8 +56,8 @@ class BasicBlockBaseTransformer(object):
         try:
             func_def_getter = getattr(self, method)
         except AttributeError:
-            error_msg = "No function definition provided for %s backend"\
-                % self.backend
+            error_msg = "No function definition provided for %s backend" \
+                        % self.backend
             raise TransformationError(error_msg)
 
         func_def = func_def_getter(**self.kwargs)
@@ -94,7 +107,7 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
                        PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(data_width))]
         #
         outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
-        defn = VhdlComponent(name="bb_convolve",
+        defn = VhdlComponent(name=self.func_name,
                              generic_slice=slice(0, 4),
                              delay=10,
                              inport_info=inport_info,
@@ -123,7 +136,7 @@ class AddTransformer(BasicBlockBaseTransformer):
                        PortInfo("RIGHT", "in", VhdlType.VhdlStdLogicVector(data_width))]
         outport_info = [PortInfo("ADD_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         #
-        defn = VhdlComponent(name="bb_add",
+        defn = VhdlComponent(name=self.func_name,
                              delay=10,
                              inport_info=inport_info,
                              outport_info=outport_info,
@@ -152,7 +165,7 @@ class SubTransformer(BasicBlockBaseTransformer):
                        PortInfo("RIGHT", "in", VhdlType.VhdlStdLogicVector(data_width))]
         outport_info = [PortInfo("SUB_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         #
-        defn = VhdlComponent(name="bb_sub",
+        defn = VhdlComponent(name=self.func_name,
                              delay=10,
                              inport_info=inport_info,
                              outport_info=outport_info,
@@ -181,7 +194,7 @@ class MulTransformer(BasicBlockBaseTransformer):
                        PortInfo("RIGHT", "in", VhdlType.VhdlStdLogicVector(data_width))]
         outport_info = [PortInfo("MUL_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         #
-        defn = VhdlComponent(name="bb_mul",
+        defn = VhdlComponent(name=self.func_name,
                              delay=10,
                              inport_info=inport_info,
                              outport_info=outport_info,
@@ -211,7 +224,7 @@ class SplitTransformer(BasicBlockBaseTransformer):
                        PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(data_width))]
         #
         outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
-        defn = VhdlComponent(name="bb_split",
+        defn = VhdlComponent(name=self.func_name,
                              generic_slice=slice(0, 1),
                              delay=0,
                              inport_info=inport_info,
@@ -243,7 +256,7 @@ class MergeTransformer(BasicBlockBaseTransformer):
                        PortInfo("IN_0", "in", VhdlType.VhdlStdLogicVector(data_width))]
         #
         outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
-        defn = VhdlComponent(name="bb_merge",
+        defn = VhdlComponent(name=self.func_name,
                              generic_slice=None,
                              delay=0,
                              inport_info=inport_info,
@@ -273,8 +286,8 @@ class LimitToTransformer(BasicBlockBaseTransformer):
                        PortInfo("DATA_IN", "in", VhdlType.VhdlStdLogicVector(data_width))]
         #
         outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
-        defn = VhdlComponent(name="bb_limitTo",
-                             generic_slice=slice(0,1),
+        defn = VhdlComponent(name=self.func_name,
+                             generic_slice=slice(0, 1),
                              delay=0,
                              inport_info=inport_info,
                              outport_info=outport_info,
@@ -333,12 +346,12 @@ class DSLTransformer(ast.NodeTransformer):
 
 
 def get_dsl_type(params, axi_stream_width=0):
-
-    def gen_return(param, width):
-        if not isinstance(param, np.ndarray):
+    def gen_return(ipt, width):
+        if not isinstance(ipt, np.ndarray):
             raise TransformationError("All input parameter must be of type np.ndarray")
         else:
             return VhdlType.VhdlStdLogicVector(width)
+
     #
     if hasattr(params, "__iter__"):
         ret = []
@@ -350,52 +363,52 @@ def get_dsl_type(params, axi_stream_width=0):
 
 
 def gen_dsl_wrapper(ipt_params, axi_stream_width, file2wrap):
-        axi_stream_width = axi_stream_width
-        ipt_params = ipt_params
+    axi_stream_width = axi_stream_width
+    ipt_params = ipt_params
 
-        # TODO: Change to support multiple input params
+    # TODO: Change to support multiple input params
 
-        if len(ipt_params) > 1:
-            raise TransformationError("Multiple inputs currently not supported by the hardware!")
-        # input signals
-        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
-        m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast", VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready", VhdlType.VhdlStdLogic("0"))
+    if len(ipt_params) > 1:
+        raise TransformationError("Multiple inputs currently not supported by the hardware!")
+    # input signals
+    m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
+    m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast", VhdlType.VhdlStdLogic("0"))
+    s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready", VhdlType.VhdlStdLogic("0"))
+    #
+    in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tlast, s_axis_s2mm_tready]
+
+    # output signals
+    s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
+    s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast", VhdlType.VhdlStdLogic("0"))
+    m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready", VhdlType.VhdlStdLogic("0"))
+    #
+    out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tlast, m_axis_mm2s_tready]
+
+    try:
+        component = file2wrap.component()
+    except AttributeError:
+        raise TransformationError("File to wrap must provide component() method")
+    else:
+        logger.info("Generate project wrapper")
         #
-        in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tlast, s_axis_s2mm_tready]
-
-        # output signals
-        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
-        s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast", VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready", VhdlType.VhdlStdLogic("0"))
+        ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
         #
-        out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tlast, m_axis_mm2s_tready]
+        component.library = "work.apply"
+        component.delay = 5
+        component.prev = [in_sigs[0]]
+        component.in_port = [in_sigs[0]]
+        component.out_port = [ret_sig]
+        #
+        ret_component = VhdlReturn([component], [ret_sig], [out_sigs[0]])
 
-        try:
-            component = file2wrap.component()
-        except AttributeError:
-            raise TransformationError("File to wrap must provide component() method")
-        else:
-            logger.info("Generate project wrapper")
-            #
-            ret_sig = VhdlSignal("ret_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
-            #
-            component.library = "work.apply"
-            component.delay = 5
-            component.prev = [in_sigs[0]]
-            component.in_port = [in_sigs[0]]
-            component.out_port = [ret_sig]
-            #
-            ret_component = VhdlReturn([component], [ret_sig], [out_sigs[0]])
-
-            libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
-                                              "ieee.numeric_std.all"]),
-                         VhdlLibrary(None, ["work.the_filter_package.all"])]
-            #
-            architecture = [ret_component] + [VhdlAssignment(t, s) for t, s in zip(out_sigs[1:], in_sigs[1:])]
-            module = VhdlModule("accel_wrapper", libraries,
-                                slice(0, len(in_sigs)), in_sigs + out_sigs, architecture)
-            #
-            module = transformations.VhdlGraphTransformer().visit(module)
-            module = transformations.VhdlPortTransformer().visit(module)
-            return VhdlFile("accel_wrapper", [module])
+        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all",
+                                          "ieee.numeric_std.all"]),
+                     VhdlLibrary(None, ["work.the_filter_package.all"])]
+        #
+        architecture = [ret_component] + [VhdlAssignment(t, s) for t, s in zip(out_sigs[1:], in_sigs[1:])]
+        module = VhdlModule("accel_wrapper", libraries,
+                            slice(0, len(in_sigs)), in_sigs + out_sigs, architecture)
+        #
+        module = transformations.VhdlGraphTransformer().visit(module)
+        module = transformations.VhdlPortTransformer().visit(module)
+        return VhdlFile("accel_wrapper", [module])

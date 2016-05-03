@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------
 # logging
-from os import path, getcwd
+from os import path
 import logging
 
 logging.basicConfig(filename='vhdl_sejits.log', level=logging.DEBUG)
@@ -26,9 +26,9 @@ CONFIG.readfp(open(DEFAULT_CFG_FILE_PATH), filename="defaults.cfg")
 # ---------------------------------------------------------------------------
 STDLIBS = ["ieee", "ieee.std_logic_1164.all"]
 
+
 # ---------------------------------------------------------------------------
 class TransformationError(Exception):
-
     """
     Exception that caused transformation not to occur.
 
