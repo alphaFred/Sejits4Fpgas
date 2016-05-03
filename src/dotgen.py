@@ -1,5 +1,4 @@
 """ DOT generator for VHDL constructs. """
-__author__ = 'philipp ebensberger'
 
 import ast
 from ctree.util import enumerate_flatten
@@ -19,7 +18,8 @@ class VhdlDotGenVisitor(ast.NodeVisitor):
         """ Return object name with leading module """
         return "%s.%s" % (obj.__module__, obj.__name__)
 
-    def label(self, node):
+    @staticmethod
+    def label(node):
         """
         A string to provide useful information for visualization,
         debugging, etc.
@@ -27,7 +27,8 @@ class VhdlDotGenVisitor(ast.NodeVisitor):
         return r"%s\n%s" % (type(node).__name__, node.label())
 
     # TODO: change formation to visitor pattern
-    def format(self, node):
+    @staticmethod
+    def format(node):
         """ Format Dot nodes. """
         formats = {"VhdlModule": ', style=filled, fillcolor="#00EB5E"',
                    "VhdlBinaryOp": ', style=filled, fillcolor="#C2FF66"',
@@ -61,47 +62,58 @@ class VhdlDotGenVisitor(ast.NodeVisitor):
 
 
 class VhdlDotGenLabeller(DotGenLabeller):
-
     """ Manages generation of DOT. """
 
-    def visit_Component(self, node):
+    @staticmethod
+    def visit_Component(node):
         """ Add Component information to dot node. """
         return node.name
 
-    def visit_Port(self, node):
+    @staticmethod
+    def visit_Port(node):
         """ Add Port information to dot node. """
         return node.direction
 
-    def visit_Signal(self, node):
+    @staticmethod
+    def visit_Signal(node):
         """ Add Signal information to dot node. """
         return node.name + " : " + str(node.vhdl_type)
 
-    def visit_Generic(self, node):
+    @staticmethod
+    def visit_Generic(node):
         """ Add Generic information to dot node. """
         return node.value.__class__.__name__
 
-    def visit_Constant(self, node):
+    @staticmethod
+    def visit_Constant(node):
         """ Add Constant information to dot node. """
         return str(node.value) + " : " + str(node.vhdl_type)
 
-    def visit_VhdlBinaryOp(self, node):
-        op_decode = {0: "Add", 1 : "Sub", 2: "Mul"}
+    @staticmethod
+    def visit_VhdlBinaryOp(node):
+        op_decode = {0: "Add", 1: "Sub", 2: "Mul"}
         return op_decode[node.op] + "\n" + "d=" + str(node.d) + " | " + "dprev=" + str(node.dprev)
 
-    def visit_VhdlComponent(self, node):
+    @staticmethod
+    def visit_VhdlComponent(node):
         return node.name + "\n" + "d=" + str(node.d) + " | " + "dprev=" + str(node.dprev)
 
-    def visit_VhdlReturn(self, node):
+    @staticmethod
+    def visit_VhdlReturn(node):
         return "dprev=" + str(node.dprev)
 
-    def visit_VhdlConstant(self, node):
+    @staticmethod
+    def visit_VhdlConstant(node):
         return str(node.value)
 
-    def visit_VhdlDReg(self, node):
+    @staticmethod
+    def visit_VhdlDReg(node):
         return "d=" + str(node.d)
 
-    def visit_VhdlSink(self, node):
+    @staticmethod
+    def visit_VhdlSink(node):
         return node.name
 
-    def visit_VhdlSource(self, node):
+    @staticmethod
+    def visit_VhdlSource(node):
         return node.name

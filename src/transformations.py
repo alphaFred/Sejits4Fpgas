@@ -3,16 +3,14 @@ import ast
 from collections import namedtuple, defaultdict
 from itertools import izip_longest
 
-import numpy as np
-#
 from utils import TransformationError
 from utils import CONFIG
-from src.types import VhdlType
+from types import VhdlType
 from nodes import VhdlBinaryOp, VhdlConstant, VhdlModule
 from nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal
 from nodes import VhdlSink, VhdlDReg
 from nodes import VhdlLibrary, VhdlAnd, PortInfo, Port
-#
+
 from ctree.c.nodes import *
 
 
@@ -95,7 +93,7 @@ class VhdlIRTransformer(ast.NodeTransformer):
         #
         self.ipt_param_types = ipt_param_types if ipt_param_types is not None else []
 
-    def _process_params(self, params=[]):
+    def _process_params(self, params):
         pparams = []
         #
         if len(self.ipt_param_types) > len(params):
@@ -161,11 +159,8 @@ class VhdlIRTransformer(ast.NodeTransformer):
             self.symbols[left.name] = vhdl_node
             self.assignments.add(left.name)
         else:
-            vhdl_node = VhdlBinaryOp(prev=[left, right],
-                                     in_port=[self._connect(left),
-                                               self._connect(right)],
-                                     op=node.op,
-                                     out_port=[])
+            vhdl_node = VhdlBinaryOp(prev=[left, right], in_port=[self._connect(left), self._connect(right)],
+                                     op=node.op, out_port=[])
         return vhdl_node
 
     def visit_SymbolRef(self, node):
@@ -219,7 +214,7 @@ class VhdlIRTransformer(ast.NodeTransformer):
                     name = node.__class__.__name__ + "_OUT_"
                 #
                 con_signal_number = self.n_con_signals[name]
-                self.n_con_signals[name] = self.n_con_signals[name] +1
+                self.n_con_signals[name] += 1
                 #
                 con_signal = VhdlSignal(name=name + str(con_signal_number),
                                         vhdl_type=node.outport_info[0].vhdl_type)
@@ -365,7 +360,7 @@ class VhdlPortTransformer(ast.NodeVisitor):
                                 name = pnode.__class__.__name__ + "_" + occp.name + "_"
                             #
                             con_signal_number = self.cpe_id[name]
-                            self.cpe_id[name] = self.cpe_id[name] + 1
+                            self.cpe_id[name] += 1
                             #
                             n = name + str(con_signal_number)
                             cc_edge = VhdlSignal(name=n, vhdl_type=occp.vhdl_type)

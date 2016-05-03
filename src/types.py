@@ -1,12 +1,11 @@
-from src.utils import TransformationError
+from utils import TransformationError
 
 
 class VhdlType(object):
-
     class _VhdlType(object):
 
         _fields = []
-
+        vhdl_type = ""
         bit_dvalues = ()
         std_logic_dvalues = ("U", "X", "0", "1", "Z", "W", "L", "H", "-")
         generated = True
@@ -42,12 +41,21 @@ class VhdlType(object):
             return self.vhdl_type + "({} downto 0)".format(self.size - 1)
 
     class VhdlPositive(_VhdlType):
+        def __init__(self):
+            pass
+
         vhdl_type = "positive"
 
     class VhdlInteger(_VhdlType):
+        def __init__(self):
+            pass
+
         vhdl_type = "integer"
 
     class VhdlString(_VhdlType):
+        def __init__(self):
+            pass
+
         vhdl_type = "string"
 
     class VhdlArray(_VhdlType):
@@ -83,12 +91,12 @@ class VhdlType(object):
 
         def __init__(self, default=None):
             if default:
-                if hasattr(default, "__len__")\
-                   and len(default) == 1\
-                   and default in self.std_logic_dvalues:
+                if hasattr(default, "__len__") \
+                        and len(default) == 1 \
+                        and default in self.std_logic_dvalues:
                     self.default = ["'" + ditm + "'" for ditm in default]
                 else:
-                    error_msg = "Illegal default value for {0}".\
+                    error_msg = "Illegal default value for {0}". \
                         format(self.__class__.__name__)
                     raise TransformationError(error_msg)
             else:
@@ -101,7 +109,7 @@ class VhdlType(object):
             if size > 1:
                 self.size = size
             else:
-                error_msg = "Parameter size of {0} must be > 1".\
+                error_msg = "Parameter size of {0} must be > 1". \
                     format(self.__class__.__name__)
                 raise TransformationError(error_msg)
 
@@ -115,7 +123,7 @@ class VhdlType(object):
                     if len(temp_default) == self.size:
                         self.default = "#" + "".join(temp_default) + "'"
                     elif len(temp_default) == 1:
-                        self.default = "(others=>"+str(temp_default[0])+")"
+                        self.default = "(others=>" + str(temp_default[0]) + ")"
                     else:
                         error_msg = "Length of default = {0}; " + \
                                     "should be {1} or {2}".format(len(temp_default), 1, self.size)
@@ -133,4 +141,5 @@ class VhdlType(object):
             return self.vhdl_type + "({} downto 0)".format(self.size - 1)
 
     class DummyType(_VhdlType):
-        pass
+        def __init__(self):
+            pass
