@@ -1,17 +1,16 @@
 """Transformations."""
 import ast
+import logging
 from collections import namedtuple, defaultdict
 from itertools import izip_longest
 
-from utils import TransformationError
-from utils import CONFIG
-from types import VhdlType
-from nodes import VhdlBinaryOp, VhdlConstant, VhdlModule
-from nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal
-from nodes import VhdlSink, VhdlDReg
-from nodes import VhdlLibrary, VhdlAnd, PortInfo, Port
-
-from ctree.c.nodes import *
+from .nodes import VhdlBinaryOp, VhdlConstant, VhdlModule
+from .nodes import VhdlLibrary, VhdlAnd, PortInfo, Port
+from .nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal
+from .nodes import VhdlSink, VhdlDReg
+from .types import VhdlType
+from .utils import CONFIG
+from .utils import TransformationError
 
 
 logger = logging.getLogger(__name__)

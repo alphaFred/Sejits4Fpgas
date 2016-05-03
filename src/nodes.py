@@ -1,18 +1,19 @@
 """Nodes."""
 import collections
 import logging
-import os
 import new
-import transformations
-
-from types import VhdlType
-from utils import TransformationError
-from utils import CONFIG
-from dotgen import VhdlDotGenVisitor
+import os
 from collections import namedtuple
 
-from ctree.nodes import File, Project, CtreeNode
-from ctree.c.nodes import Op
+import transformations
+from dotgen import VhdlDotGenVisitor
+from types import VhdlType
+from utils import CONFIG
+from utils import TransformationError
+from .vhdl_ctree.nodes import CtreeNode
+from .vhdl_ctree.nodes import Project
+from .vhdl_ctree.nodes import File
+from .vhdl_ctree.c. nodes import Op
 
 # set up module-level logger
 logger = logging.getLogger(__name__)
@@ -344,11 +345,11 @@ class VhdlModule(VhdlNode):
         :param architecture: list containing vhdl nodes, describing body of
             architecture
         """
-        # check if input slice is slice object
-        if type(inport_slice) is not slice:
-            raise TransformationError("inport slice must be slice not of type{}".format(type(inport_slice)))
-
         if inport_slice:
+            # check if input slice is slice object
+            if type(inport_slice) is not slice:
+                raise TransformationError("inport slice must be slice not of type{}".format(type(inport_slice)))
+
             in_port_info = [PortInfo(port.name, "in", port.vhdl_type) for port in entity[inport_slice]]
             in_port = entity[inport_slice]
             #

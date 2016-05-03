@@ -1,7 +1,7 @@
 """Code generator for VHDL IR."""
 import ast
 import logging
-#
+
 from utils import TransformationError
 from utils import CONFIG
 

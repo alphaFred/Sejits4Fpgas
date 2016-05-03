@@ -1,31 +1,30 @@
 import ast
-import logging
-import numpy as np
 import ctypes
-
+import logging
 from collections import namedtuple
-from ctree.c.nodes import FunctionCall
-from ctree.c.nodes import SymbolRef
-from ctree.c.nodes import Return
-from ctree.c.nodes import BinaryOp
-from ctree.c.nodes import Op
-from ctree.c.nodes import Constant
-from ctree.c.nodes import FunctionDecl
 
+import numpy as np
 import transformations
+from nodes import GenericInfo
+from nodes import PortInfo
+from nodes import VhdlAssignment
 from nodes import VhdlComponent
-from nodes import VhdlSource
-from nodes import VhdlSignal
-from nodes import VhdlSink
-from nodes import VhdlReturn
+from nodes import VhdlFile
 from nodes import VhdlLibrary
 from nodes import VhdlModule
-from nodes import VhdlFile
-from nodes import VhdlAssignment
-from nodes import PortInfo
-from nodes import GenericInfo
+from nodes import VhdlReturn
+from nodes import VhdlSignal
+from nodes import VhdlSink
+from nodes import VhdlSource
 from types import VhdlType
 from utils import TransformationError, CONFIG
+from .vhdl_ctree.c.nodes import BinaryOp
+from .vhdl_ctree.c.nodes import Constant
+from .vhdl_ctree.c.nodes import FunctionCall
+from .vhdl_ctree.c.nodes import FunctionDecl
+from .vhdl_ctree.c.nodes import Op
+from .vhdl_ctree.c.nodes import Return
+from .vhdl_ctree.c.nodes import SymbolRef
 
 # set up module-level logger
 logger = logging.getLogger(__name__)
