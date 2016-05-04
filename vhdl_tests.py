@@ -194,7 +194,10 @@ def bb_limitTo(valid, x):
 
 @specialize
 def test_func(a):
-    return bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 512, 512, a)
+    return bb_sub(255, a)
+
+# def test_func(a):
+#     return bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 512, 512, a)
 
 
 # transformed_func = BasicTranslator.from_function(test_func)
