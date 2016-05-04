@@ -2,7 +2,9 @@
 import os
 import glob
 import logging
+import ctypes as c
 import numpy as np
+import numpy.ctypeslib as ctl
 from collections import namedtuple
 #
 from utils import CONFIG
