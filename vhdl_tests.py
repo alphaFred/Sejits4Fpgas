@@ -47,7 +47,7 @@ class BasicTranslator(LazySpecializedFunction):
             return {'arg_type': get_dsl_type(args, 32)}
 
     def transform(self, tree, program_config):
-        from .src.vhdl_ctree.visual.dot_manager import DotManager
+        from src.vhdl_ctree.visual.dot_manager import DotManager
         # ----
         DotManager().dot_ast_to_file(tree, file_name=img_path + orig_tree)
         # ----
