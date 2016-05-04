@@ -81,10 +81,10 @@ architecture Behavioral of Convolve is
     port (
         clk : IN STD_LOGIC;
         rst : IN STD_LOGIC;
-        din : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+        din : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         wr_en : IN STD_LOGIC;
         rd_en : IN STD_LOGIC;
-        dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+        dout : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
         full : OUT STD_LOGIC;
         empty : OUT STD_LOGIC;
         data_count : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
@@ -95,7 +95,7 @@ architecture Behavioral of Convolve is
     -- SIGNALS | CONSTANTS
     -- ======================================================================
     signal ipt_fifo_ren     :   std_logic := '0';
-    signal ipt_fifo_out     :   std_logic_vector(7 downto 0);
+    signal ipt_fifo_out     :   std_logic_vector(31 downto 0);
     signal ipt_fifo_data_count : std_logic_vector(11 DOWNTO 0);
 
     signal filter_hsync     :   std_logic := '0';
