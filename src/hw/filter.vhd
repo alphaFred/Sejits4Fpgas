@@ -12,14 +12,14 @@
 --
 -------------------------------------------------------------------------------
 -- Description:
---   This filter module can process a 2D filter operation on hd grayscale image 
---   and calculates the absolute values. The input and output signals have 
+--   This filter module can process a 2D filter operation on hd grayscale image
+--   and calculates the absolute values. The input and output signals have
 --   different bit widths.
---   
+--
 -------------------------------------------------------------------------------
 -- GENERIC description:
 --   - FILTERMATRIX   : 3x3 filter mask
---   - FILTER_SCALE   : scale factor of the filter mask 
+--   - FILTER_SCALE   : scale factor of the filter mask
 --   - IMG_WIDTH      : image width
 --   - IMG_HEIGHT     : image height
 --   - IN_BITWIDTH    : bit width of the input signals
@@ -44,7 +44,7 @@
 -- LIMITATIONS:
 --   - image width must be smaller than 2046
 --   - only 3x3 filter masks are allowed
---   - region of values is limited, be careful! 
+--   - region of values is limited, be careful!
 -------------------------------------------------------------------------------
 -- Copyright (c) 2012 Informatik 12
 -------------------------------------------------------------------------------
@@ -106,7 +106,7 @@ end component bram_fifo;
 --------------------------
 --      SIGNALS         --
 --------------------------
--- Types 
+-- Types
 -- constants
 
 constant MAXFILTVAL : integer := (2 ** IN_BITWIDTH -1) *3;
@@ -142,7 +142,7 @@ signal fifo_valid_state     : valid_state := UNSET_VALID;
 type state is (start_fl,in_fl, start_nl, in_nl, start_ll, in_ll, end_img);
 signal next_state : state := start_fl;
 
-signal pixelmatrix : imagemask;  
+signal pixelmatrix : imagemask;
 signal pfilt       : filterarray;
 
 signal filtered_pixel     : std_logic_vector(OUT_BITWIDTH-1 downto 0);
@@ -178,15 +178,15 @@ signal valid_falling_edge : std_logic := '0';
 begin
 
 -- ##########################################
---      Generate FIFOS                     
---      ==============                     
---      Number of FIFOs == Filter Size     
+--      Generate FIFOS
+--      ==============
+--      Number of FIFOs == Filter Size
 -- ##########################################
 
 
 -- ######################################
 -- 	PIXEL CLOCK
--- ###################################### 
+-- ######################################
 
 FIFO_Data_Generation : for i in 0 to (filtersize-2) generate  -- two fifos are needed for a filter of 3x3
 begin
@@ -211,22 +211,22 @@ pxl_CLK : process(CLK)
 begin
 
 if (CLK'event and CLK = '1') then
-	
+
 	shift_pixel <= process_pixel;
 	sum_pixel <= shift_pixel;
 	data_inReg      <= DATA_IN;
 	data_inRegReg   <= data_inReg;
-	
+
 	hsync_reg <= H_SYNC_IN;
 	vsync_reg <= V_SYNC_IN;
-	
+
 	hsync_regreg <= hsync_reg;
 	vsync_regreg <= vsync_reg;
-    
+
     valid_reg <= valid;
   --hsync_delay_line <= hsync_delay_line(SYNC_DELAY-2 downto 0) & H_SYNC_IN;
   --vsync_delay_line <= vsync_delay_line(SYNC_DELAY-2 downto 0) & V_SYNC_IN;
-	 
+
 end if;
 end process pxl_CLK;
 
@@ -234,7 +234,7 @@ end process pxl_CLK;
 -- #####################################
 --    general sync signals
 ---   ====================
---    This process writes the sync signals to a fifo and 
+--    This process writes the sync signals to a fifo and
 --    increases/decreases counters (vertical/horizontal)
 --    Furthermore it triggers the start of writing/reading
 --    the sync signals
@@ -249,12 +249,12 @@ if reinit = '1' then
 	fifo_wr_en(1)      <='0';
   fifo_rd_en(0)      <='0';
 	fifo_rd_en(1)      <='0';
-	
+
 	pixelmatrix(2) <= BLACKx;
 	pixelmatrix(5) <= BLACKx;
-	pixelmatrix(8) <= BLACKx;        
+	pixelmatrix(8) <= BLACKx;
 	next_state     <= start_fl;
-	
+
 elsif (CLK'event and CLK = '1') then
 
   process_pixel      <='0';
@@ -263,94 +263,94 @@ elsif (CLK'event and CLK = '1') then
 	fifo_wr_en(1)      <='0';
   fifo_rd_en(0)      <='0';
 	fifo_rd_en(1)      <='0';
-	
+
 	pixelmatrix(2) <= BLACKx;
 	pixelmatrix(5) <= BLACKx;
 	pixelmatrix(8) <= BLACKx;
 	new_img <= '0';
 
 	case next_state is
-		when start_fl => 
-						
-		if hsync_reg = '1' and vsync_reg = '1' then				
+		when start_fl =>
+
+		if hsync_reg = '1' and vsync_reg = '1' then
 			vertical_counter   <=  vertical_counter +1;
 			fifo_wr_en(0)   <= '1'; -- Randnuller
 			fifo_wr_en(1)   <= '1';
-			fifo_data_in(0) <= BLACKx; 
+			fifo_data_in(0) <= BLACKx;
     		fifo_data_in(1) <= BLACKx;
-    		next_state      <= in_fl;    
+    		next_state      <= in_fl;
 		end if;
-		
+
 		when in_fl =>
-		  vertical_counter <=  vertical_counter;				
+		  vertical_counter <=  vertical_counter;
 			fifo_wr_en(0)   <= '1'; -- Randnuller
 			fifo_wr_en(1)   <= '1';
-			fifo_data_in(0) <= BLACKx; 
-		  fifo_data_in(1) <= data_inRegReg; 
+			fifo_data_in(0) <= BLACKx;
+		  fifo_data_in(1) <= data_inRegReg;
 			next_state      <= in_fl;
-		  
+
 			if hsync_regreg = '0' then
 			  fifo_wr_en(0)   <= '1'; -- Randnulle
 			  fifo_wr_en(1)   <= '1';
-			  fifo_data_in(0) <= BLACKx; 
+			  fifo_data_in(0) <= BLACKx;
     		  fifo_data_in(1) <= BLACKx;
-				next_state <= start_nl;				
+				next_state <= start_nl;
 			end if;
-			
+
 		when start_nl =>
 		  vertical_counter <=  vertical_counter;
-		  if (H_SYNC_IN = '1') and (V_SYNC_IN = '1') then 				
+		  if (H_SYNC_IN = '1') and (V_SYNC_IN = '1') then
 			  fifo_rd_en(0)      <= '1';
 			  fifo_rd_en(1)      <= '1';
-			  
+
 			  if hsync_reg = '1' then
 			     vertical_counter <=  vertical_counter + 1;
 			     fifo_wr_en(0)   <= '1';
 			     fifo_wr_en(1)   <= '1';
 			     fifo_rd_en(0)   <= '1';
 			     fifo_rd_en(1)   <= '1';
-			     
-			     fifo_data_in(0) <= fifo_data_out(1); 
+
+			     fifo_data_in(0) <= fifo_data_out(1);
   		       fifo_data_in(1) <= BLACKx;
-			     
+
 			     process_pixel   <= '1';
 			     pixelmatrix(2) <= fifo_data_out(0);
 			     pixelmatrix(5) <= fifo_data_out(1);
-			     pixelmatrix(8) <= BLACKx;          
+			     pixelmatrix(8) <= BLACKx;
 			     next_state <= in_nl;
 			  end if;
-			end if; 
-			  
-			  
+			end if;
+
+
 		when in_nl =>
-			
-			vertical_counter <=  vertical_counter;     
+
+			vertical_counter <=  vertical_counter;
 			fifo_wr_en(0)      <= '1';
 			fifo_wr_en(1)      <= '1';
 			fifo_rd_en(0)      <= '1';
 			fifo_rd_en(1)      <= '1';
-			     
-			fifo_data_in(0)    <= fifo_data_out(1); 
+
+			fifo_data_in(0)    <= fifo_data_out(1);
  		  fifo_data_in(1)    <= data_inRegReg;
-			     
+
 			process_pixel      <= '1';
 			pixelmatrix(2)     <= fifo_data_out(0);
 			pixelmatrix(5)     <= fifo_data_out(1);
 			pixelmatrix(8)     <= data_inRegReg;
-			
+
 			if (hsync_reg = '0') then
 			  fifo_rd_en(0)      <= '1';
 			  fifo_rd_en(1)      <= '1';
-			end if;	  		  
+			end if;
 		  if hsync_regreg = '0' then
 		    process_pixel      <= '0';
 				fifo_wr_en(0)      <= '1';
 			  fifo_wr_en(1)      <= '1';
 			  fifo_rd_en(0)      <= '0';
 			  fifo_rd_en(1)      <= '0';
-			  fifo_data_in(0)    <= fifo_data_out(1); 
+			  fifo_data_in(0)    <= fifo_data_out(1);
  		    fifo_data_in(1)    <= BLACKx;
-			     
+
 			  pixelmatrix(2)     <= fifo_data_out(0);
 			  pixelmatrix(5)     <= fifo_data_out(1);
 			  pixelmatrix(8)     <= BLACKx;
@@ -360,32 +360,32 @@ elsif (CLK'event and CLK = '1') then
 			     next_state <= start_ll;
 			  end if;
 			end if;
-			
+
 	    when start_ll =>
 	        fifo_wr_en(0)      <= '0';
             fifo_wr_en(1)      <= '0';
             fifo_rd_en(0)      <= '1';
             fifo_rd_en(1)      <= '1';
-            
+
             next_state <= in_ll;
-        
+
         when in_ll =>
             fifo_rd_en(0)      <= '1';
             fifo_rd_en(1)      <= '1';
-                        
+
             pixelmatrix(2)     <= fifo_data_out(0);
             pixelmatrix(5)     <= fifo_data_out(1);
             pixelmatrix(8)     <= BLACKx;
-            
+
             process_pixel      <= '1';
-            
+
             if unsigned(fifo_data_count(filtersize-2)) = 1 then
                 next_state <= end_img;
                 process_pixel <= '0';
                 fifo_rd_en(0)      <= '0';
                 fifo_rd_en(1)      <= '0';
             end if;
-	       
+
 		when end_img =>
 		  new_img <= '1';
 		  next_state <= start_fl;
@@ -395,7 +395,7 @@ end process general_sync_signals;
 
 
 -- ##############################################
---    Generate Filter Processes 
+--    Generate Filter Processes
 -- 	multiply all components
 -- ##############################################
 filtergeneration : for i in 0 to filtersize*filtersize-1 generate
@@ -416,27 +416,27 @@ end generate filtergeneration;
 pmproc : process (CLK)
 begin
 
-if (CLK = '1' and CLK'EVENT) then                                   
+if (CLK = '1' and CLK'EVENT) then
   if reinit = '1' or reset = '1' then -- initialize pixel
 	   pixelmatrix(0) <= BLACKx;
 	   pixelmatrix(1) <= BLACKx;
-	       
+
 	   pixelmatrix(3) <= BLACKx;
      pixelmatrix(4) <= BLACKx;
 
      pixelmatrix(6) <= BLACKx;
      pixelmatrix(7) <= BLACKx;
-                
+
  	elsif process_pixel = '1' then -- process pixel
  	   pixelmatrix(0) <= pixelmatrix(1);
      pixelmatrix(1) <= pixelmatrix(2);
 
      pixelmatrix(3) <= pixelmatrix(4);
      pixelmatrix(4) <= pixelmatrix(5);
-     
+
      pixelmatrix(6) <= pixelmatrix(7);
      pixelmatrix(7) <= pixelmatrix(8);
-     
+
   end if;
 end if;
 end process pmproc;
@@ -448,21 +448,21 @@ end process pmproc;
 msum : process(CLK)
 variable tmppfilt    : integer range 4*4095 downto -4*4095;
 variable bv          : signed(OUT_BITWIDTH-1 downto 0);
-begin 
-if (CLK = '1' and CLK'EVENT) then 
+begin
+if (CLK = '1' and CLK'EVENT) then
     --valid <= '0';
-                   
+
 	if (sum_pixel = '1') then
 	  tmppfilt := 0;
-	                  
-		-- add all        
+
+		-- add all
 		for k in 0 to filtersize*filtersize-1 loop
 	     tmppfilt := tmppfilt + pfilt(k);
    	end loop;
     tmppfilt := tmppfilt/FILTER_SCALE; -- scale
    	bv	:= to_signed(tmppfilt, bv'length);
    	filtered_pixel <= std_logic_vector(bv); -- output
- 
+
    	--valid <= '1';
  	else
  	  filtered_pixel <= (others => '1');
@@ -480,7 +480,7 @@ if (CLK = '1' and CLK'EVENT) then
     case fifo_valid_state is
         when UNSET_VALID =>
             valid <= '0';
-            
+
             if (sum_pixel = '1') then
                 fifo_valid_state <= SET_VALID;
             end if;
@@ -513,7 +513,7 @@ if (CLK = '1' and CLK'EVENT) then
                 if valid = '1' and valid_reg = '0' and line_cnt = 0 then
                     v_sync_int <= '1';
                     vsync_state <= SET_VSYNC;
-                end if;      
+                end if;
             when SET_VSYNC =>
                 if valid = '0' and valid_reg = '1' then
                     line_cnt <= line_cnt + 1;
@@ -521,9 +521,9 @@ if (CLK = '1' and CLK'EVENT) then
                         v_sync_int <= '0';
                         vsync_state <= UNSET_VSYNC;
                     end if;
-                end if; 
+                end if;
         end case;
-    
+
     end if;
 end if;
 end process proc_vsync;
@@ -553,7 +553,7 @@ if (CLK = '1' and CLK'EVENT) then
 end if;
 end process;
 
-				
+
 DATA_OUT    <= filtered_pixel;
 H_SYNC_OUT  <= hsync_delay_line(SYNC_DELAY-1);
 --V_SYNC_OUT  <= v_sync_int;--vsync_delay_line(SYNC_DELAY-1);

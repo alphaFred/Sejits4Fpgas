@@ -100,8 +100,8 @@ architecture Behavioral of Convolve is
 
     signal filter_hsync     :   std_logic := '0';
     signal filter_vsync     :   std_logic := '0';
-    signal filter_data_out  :   std_logic_vector(15 downto 0);
     signal filter_valid     :   std_logic;
+    signal filter_data_out  :   std_logic_vector(15 downto 0);
 
     -- ======================================================================
     -- FSM PARAMETERS
@@ -144,7 +144,7 @@ begin
         DATA_IN => ipt_fifo_out(11 downto 0),
         H_SYNC_IN => filter_hsync,
         V_SYNC_IN => filter_vsync,
-        DATA_OUT => filter_data_out(15 downto 0),
+        DATA_OUT => filter_data_out,
         H_SYNC_OUT => open,
         V_SYNC_OUT => open,
         VALID => filter_valid

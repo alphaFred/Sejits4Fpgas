@@ -81,10 +81,10 @@ architecture Behavioral of Convolve is
     port (
         clk : IN STD_LOGIC;
         rst : IN STD_LOGIC;
-        din : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+        din : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         wr_en : IN STD_LOGIC;
         rd_en : IN STD_LOGIC;
-        dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+        dout : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
         full : OUT STD_LOGIC;
         empty : OUT STD_LOGIC;
         data_count : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
@@ -95,12 +95,13 @@ architecture Behavioral of Convolve is
     -- SIGNALS | CONSTANTS
     -- ======================================================================
     signal ipt_fifo_ren     :   std_logic := '0';
-    signal ipt_fifo_out     :   std_logic_vector(7 downto 0);
+    signal ipt_fifo_out     :   std_logic_vector(31 downto 0);
     signal ipt_fifo_data_count : std_logic_vector(11 DOWNTO 0);
 
     signal filter_hsync     :   std_logic := '0';
     signal filter_vsync     :   std_logic := '0';
     signal filter_valid     :   std_logic;
+    signal filter_data_out  :   std_logic_vector(15 downto 0);
 
     -- ======================================================================
     -- FSM PARAMETERS
@@ -132,23 +133,23 @@ begin
     generic map (
         FILTERMATRIX    => FILTERMATRIX,
         FILTER_SCALE    => FILTER_SCALE,
-        IN_BITWIDTH     => 32,
-        OUT_BITWIDTH    => 32
+        IN_BITWIDTH     => 12,
+        OUT_BITWIDTH    => 16
     )
     port map (
         CLK => CLK,
         RESET => RST,
         IMG_WIDTH => IMG_WIDTH,
         IMG_HEIGHT => IMG_HEIGHT,
-        DATA_IN => ipt_fifo_out,
+        DATA_IN => ipt_fifo_out(11 downto 0),
         H_SYNC_IN => filter_hsync,
         V_SYNC_IN => filter_vsync,
-        DATA_OUT => DATA_OUT,
+        DATA_OUT => filter_data_out,
         H_SYNC_OUT => open,
         V_SYNC_OUT => open,
         VALID => filter_valid
     );
-
+    DATA_OUT <= (31 downto 16 => '0') & filter_data_out;
     VALID_OUT <= filter_valid;
 
     -- ======================================================================
