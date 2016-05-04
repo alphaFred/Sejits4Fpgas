@@ -18,9 +18,10 @@ from src.transformations import VhdlIRTransformer, VhdlBaseTransformer
 from src.dsl import DSLTransformer
 from src.nodes import VhdlFile, VhdlProject
 from src.dsl import get_dsl_type, gen_dsl_wrapper
+from src import TransformationError
 
 #
-logging.basicConfig(level=40)
+logging.basicConfig(level=10)
 #
 
 VHDL = True
@@ -115,18 +116,10 @@ class BasicTranslator(LazySpecializedFunction):
 
 class BasicFunction(ConcreteSpecializedFunction):
     def __init__(self, entry_name, project_node, entry_typesig):
-        if not VHDL:
-            self._c_function = self._compile(entry_name, project_node, entry_typesig)
-        else:
-            self.vhdl_function = self._compile(entry_name, project_node, entry_typesig)
+        self._ll_function = self._compile(entry_name, project_node, entry_typesig)
 
     def __call__(self, *args, **kwargs):
-        if not VHDL:
-            return self._c_function(*args, **kwargs)
-        else:
-            for i in args:
-                print id(i)
-            return self.vhdl_function()
+        return self._ll_function(*args, **kwargs)
 
 
 def specialize(func):
@@ -137,7 +130,7 @@ def specialize(func):
         try:
             # try to generate concrete specialized function
             return specialized_function(*args, **kwargs)
-        except:
+        except TransformationError:
             print "specializer failed"
             return func(*args, **kwargs)
         else:
@@ -210,6 +203,6 @@ def test_func(a):
 image = data.coins()
 
 print test_func(image)
-# print test_func(image)
+print test_func(image)
 # print test_func(image)
 # print test_func(image)
