@@ -202,7 +202,7 @@ begin
                     end if;
 
                 when FILTER_NLINE =>
-                    FILTER_state <= FILTER_WORK;
+                    FILTER_state <= FILTER_IDLE;
 
                 when others =>
             end case;
