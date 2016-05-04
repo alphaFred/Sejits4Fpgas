@@ -202,7 +202,11 @@ begin
                     end if;
 
                 when FILTER_NLINE =>
-                    FILTER_state <= FILTER_IDLE;
+                    if unsigned(ipt_fifo_data_count) >= IMG_WIDTH then
+                        FILTER_state <= FILTER_WORK;
+                    else
+                        FILTER_state <= FILTER_NLINE;
+                    end if;
 
                 when others =>
             end case;
