@@ -138,6 +138,9 @@ class VhdlSynthModule(object):
         # integrate vhdl files into templare project
         #   multiply process pipeline according to input width and data width
         #   integrate and connect pipelines into axi stream ip
-        libHwIntfc = c.cdll.LoadLibrary('/home/linaro/libHwIntfc.so')
-        libHwIntfc.process1d_img.argtypes = [ctl.ndpointer(np.uint32, ndim=1, flags='C'), c.c_uint]
-        self.hw_interface = libHwIntfc.process1d_img
+        if os.uname()[-1] == "armv7l":
+            libHwIntfc = c.cdll.LoadLibrary('/home/linaro/libHwIntfc.so')
+            libHwIntfc.process1d_img.argtypes = [ctl.ndpointer(np.uint32, ndim=1, flags='C'), c.c_uint]
+            self.hw_interface = libHwIntfc.process1d_img
+        else:
+            pass
