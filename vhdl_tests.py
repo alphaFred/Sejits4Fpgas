@@ -192,12 +192,13 @@ def bb_limitTo(valid, x):
 #     a = img * 12
 #     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
 
+# @specialize
+# def test_func(a):
+#     return bb_sub(255, a)
+
 @specialize
 def test_func(a):
-    return bb_sub(255, a)
-
-# def test_func(a):
-#     return bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 512, 512, a)
+    return bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 64, 64, a)
 
 
 # transformed_func = BasicTranslator.from_function(test_func)
