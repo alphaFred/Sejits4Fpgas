@@ -5,7 +5,6 @@ import new
 import os
 from collections import namedtuple
 
-import transformations
 from dotgen import VhdlDotGenVisitor
 from types import VhdlType
 from utils import CONFIG
@@ -13,7 +12,7 @@ from utils import TransformationError
 from .vhdl_ctree.nodes import CtreeNode
 from .vhdl_ctree.nodes import Project
 from .vhdl_ctree.nodes import File
-from .vhdl_ctree.c. nodes import Op
+from .vhdl_ctree.c.nodes import Op
 
 # set up module-level logger
 logger = logging.getLogger(__name__)
@@ -651,6 +650,9 @@ class VhdlProject(Project):
         return self._module
 
     def _generate_wrapper(self):
+        from .transformations import VhdlGraphTransformer
+        from .transformations import VhdlPortTransformer
+
         logger.info("Generate project wrapper")
         axi_stream_width = 32
         # input signals
@@ -687,8 +689,8 @@ class VhdlProject(Project):
         params = in_sigs + out_sigs
         module = VhdlModule("accel_wrapper", libraries, inport_slice, params, ret_component)
         #
-        transformations.VhdlGraphTransformer().visit(module)
-        transformations.VhdlPortTransformer().visit(module)
+        VhdlGraphTransformer().visit(module)
+        VhdlPortTransformer().visit(module)
         return VhdlFile("accel_wrapper", [module])
 
     @property

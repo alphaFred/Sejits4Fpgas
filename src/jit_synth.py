@@ -2,6 +2,9 @@
 import os
 import glob
 import logging
+import ctypes as c
+import numpy as np
+import numpy.ctypeslib as ctl
 from collections import namedtuple
 #
 from utils import CONFIG
@@ -42,10 +45,18 @@ class VhdlSynthModule(object):
         # ---------------------------------------------------------------------
         logger.info("Initialized VhdlSynthModule")
         # ---------------------------------------------------------------------
+        self.hw_interface = None
 
-    def __call__(self):
+    def __call__(self, *args, **kwargs):
         """Redirect call to python or vhdl kernel."""
-        print "VhdlSynthModule got called"
+        if os.uname()[-1] == "armv7l":
+            if len(args) > 1:
+                raise TransformationError("Multiple input data currently not supported by the hardware")
+            mod_arg = args[0].astype(np.uint32)
+            self.hw_interface(mod_arg, len(mod_arg))
+            return mod_arg
+        else:
+            return "Concrete Specialized Function called on x86"
 
     def _link_in(self, submodule):
         self._linked_files.append(submodule)
@@ -126,4 +137,9 @@ class VhdlSynthModule(object):
         # integrate vhdl files into templare project
         #   multiply process pipeline according to input width and data width
         #   integrate and connect pipelines into axi stream ip
-        pass
+        if os.uname()[-1] == "armv7l":
+            libHwIntfc = c.cdll.LoadLibrary('/home/linaro/libHwIntfc.so')
+            libHwIntfc.process1d_img.argtypes = [ctl.ndpointer(np.uint32, ndim=1, flags='C'), c.c_uint]
+            self.hw_interface = libHwIntfc.process1d_img
+        else:
+            pass

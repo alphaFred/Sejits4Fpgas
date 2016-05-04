@@ -34,7 +34,7 @@
 #*****************************************************************************************
 
 # Set the reference directory for source file relative paths (by default the value is script directory path)
-set origin_dir "/home/philipp/Thesis/src/VhdlSEJITS/vhdl_sejits/src/vivado/template_project"
+set origin_dir "/home/philipp/Thesis/src/VhdlSejits/vhdl_sejits/src/vivado/template_project"
 # Set the directory path for the original project from where this script was exported
 set orig_proj_dir "[file normalize "$origin_dir/"]"
 
@@ -64,6 +64,23 @@ set files [list \
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/top.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/accel_wrapper.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/generated.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/LimitTo.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/vector_dff.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/DReg.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/bram_fifo.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/SubBB.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/Merge.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/dsp_sreg_block.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/Convolve.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/AddBB.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/logic_dff.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/dsp_dff_block.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/STD_FIFO.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/the_filter_package.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/filter.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/Split.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/MulBB.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/BasicArith.vhd"]"\
 ]
 add_files -norecurse -fileset $obj $files
 
