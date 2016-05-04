@@ -56,8 +56,7 @@ class VhdlSynthModule(object):
             self.hw_interface(mod_arg, len(mod_arg))
             return mod_arg
         else:
-            print "Concrete Specialized Function called on x86"
-            return 0
+            return "Concrete Specialized Function called on x86"
 
     def _link_in(self, submodule):
         self._linked_files.append(submodule)
