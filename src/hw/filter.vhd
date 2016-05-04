@@ -465,7 +465,7 @@ if (CLK = '1' and CLK'EVENT) then
  
    	--valid <= '1';
  	else
- 	  filtered_pixel <= "10101010";--(others => '1');
+ 	  filtered_pixel <= (others => '1');
  	end if;
 end if;
 end process msum;
