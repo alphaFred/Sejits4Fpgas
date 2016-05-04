@@ -14,7 +14,7 @@ import json
 from collections import namedtuple
 import tempfile
 
-
+from ..nodes import VhdlFile
 from . import CONFIG
 from . import STATS
 from . import OCL_ENABLED
@@ -35,7 +35,7 @@ def getFile(filepath):
     Takes a filepath and returns a specialized File instance (i.e. OclFile,
     CFile, etc)
     """
-    file_types = [CFile]
+    file_types = [CFile,VhdlFile]
     if OCL_ENABLED:
         file_types.append(OclFile)
     ext_map = {'.'+t._ext: t for t in file_types}
