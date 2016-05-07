@@ -31,7 +31,7 @@ logger.addHandler(ch)
 VhdlLibrary = namedtuple("VhdlLibrary", ["mainlib_name", "sublib"])
 Interface = namedtuple("Interface", ["iports", "oport"])
 PortInfo = namedtuple("PortInfo", ("name", "direction", "vhdl_type"))
-GenericInfo = namedtuple("PortInfo", ("name", "vhdl_type"))
+GenericInfo = namedtuple("GenericInfo", ("name", "vhdl_type"))
 
 
 class VhdlTreeNode(CtreeNode):
@@ -167,53 +167,53 @@ class VhdlSymbolCollection(collections.MutableSequence, VhdlSymbol):
         return str(self.list)
 
 
-class VhdlSignalSplit(VhdlSymbol):
-    def __init__(self, sig, sig_slice):
-        super(VhdlSignalSplit, self).__init__()
-        #
-        self.sig = sig
-        self.sig_slice = sig_slice
-        if hasattr(sig.vhdl_type, "size"):
-            self.vhdl_type = sig.vhdl_type.__class__(sig_slice.stop - sig_slice.start)
-        else:
-            raise TransformationError("{} does not have size attribute".format(sig.vhdl_type))
-
-    def __str__(self):
-        return self.sig.name + "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + ")"
-
-
-class VhdlSignalMerge(VhdlSymbol):
-    def __init__(self, sig, sig_slice, fill_bitval=""):
-        super(VhdlSignalMerge, self).__init__()
-        #
-        self.sig = sig
-        self.sig_slice = sig_slice
-        self.fill_bitval = "0" if fill_bitval == "" else fill_bitval
-
-    def __str__(self):
-        return "(" + str(self.sig_slice.stop - 1) + " downto " + str(
-            self.sig_slice.start) + " => '" + self.fill_bitval + "') & " + self.sig.name
+# class VhdlSignalSplit(VhdlSymbol):
+#     def __init__(self, sig, sig_slice):
+#         super(VhdlSignalSplit, self).__init__()
+#         #
+#         self.sig = sig
+#         self.sig_slice = sig_slice
+#         if hasattr(sig.vhdl_type, "size"):
+#             self.vhdl_type = sig.vhdl_type.__class__(sig_slice.stop - sig_slice.start)
+#         else:
+#             raise TransformationError("{} does not have size attribute".format(sig.vhdl_type))
+#
+#     def __str__(self):
+#         return self.sig.name + "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + ")"
 
 
-class VhdlConcatenation(VhdlSymbolCollection):
-    def __init__(self, *args):
-        self._vhdl_type = None
-        super(VhdlConcatenation, self).__init__(*args)
+# class VhdlSignalMerge(VhdlSymbol):
+#     def __init__(self, sig, sig_slice, fill_bitval=""):
+#         super(VhdlSignalMerge, self).__init__()
+#         #
+#         self.sig = sig
+#         self.sig_slice = sig_slice
+#         self.fill_bitval = "0" if fill_bitval == "" else fill_bitval
+#
+#     def __str__(self):
+#         return "(" + str(self.sig_slice.stop - 1) + " downto " + str(
+#             self.sig_slice.start) + " => '" + self.fill_bitval + "') & " + self.sig.name
 
-    def check(self, v):
-        if self._vhdl_type is None:
-            self._vhdl_type = v.vhdl_type
-        else:
-            if not isinstance(self._vhdl_type, v.vhdl_type):
-                error_msg = "All types of Array must be equal"
-                raise TransformationError(error_msg)
 
-    @property
-    def vhdl_type(self):
-        return VhdlType.VhdlStdLogicVector(len(self) * self._vhdl_type.size)
-
-    def __str__(self):
-        return "(" + " & ".join([str(i) for i in self]) + ")"
+# class VhdlConcatenation(VhdlSymbolCollection):
+#     def __init__(self, *args):
+#         self._vhdl_type = None
+#         super(VhdlConcatenation, self).__init__(*args)
+#
+#     def check(self, v):
+#         if self._vhdl_type is None:
+#             self._vhdl_type = v.vhdl_type
+#         else:
+#             if not isinstance(self._vhdl_type, v.vhdl_type):
+#                 error_msg = "All types of Array must be equal"
+#                 raise TransformationError(error_msg)
+#
+#     @property
+#     def vhdl_type(self):
+#         return VhdlType.VhdlStdLogicVector(len(self) * self._vhdl_type.size)
+#
+#     def __str__(self):
+#         return "(" + " & ".join([str(i) for i in self]) + ")"
 
 
 class VhdlAnd(VhdlSymbolCollection):
@@ -648,50 +648,6 @@ class VhdlProject(Project):
             if submodule:
                 self._module._link_in(submodule)
         return self._module
-
-    def _generate_wrapper(self):
-        from .transformations import VhdlGraphTransformer
-        from .transformations import VhdlPortTransformer
-
-        logger.info("Generate project wrapper")
-        axi_stream_width = 32
-        # input signals
-        m_axis_mm2s_tdata = VhdlSource("m_axis_mm2s_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
-        m_axis_mm2s_tkeep = VhdlSignal("m_axis_mm2s_tkeep", VhdlType.VhdlStdLogicVector(4, "0"))
-        m_axis_mm2s_tlast = VhdlSignal("m_axis_mm2s_tlast", VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tready = VhdlSignal("m_axis_mm2s_tready", VhdlType.VhdlStdLogic("0"))
-        m_axis_mm2s_tvalid = VhdlSignal("m_axis_mm2s_tvalid", VhdlType.VhdlStdLogic("0"))
-        in_sigs = [m_axis_mm2s_tdata, m_axis_mm2s_tkeep, m_axis_mm2s_tlast, m_axis_mm2s_tready, m_axis_mm2s_tvalid]
-
-        # output signals
-        s_axis_s2mm_tdata = VhdlSink("s_axis_s2mm_tdata", VhdlType.VhdlStdLogicVector(axi_stream_width, "0"))
-        s_axis_s2mm_tkeep = VhdlSignal("s_axis_s2mm_tkeep", VhdlType.VhdlStdLogicVector(4, "0"))
-        s_axis_s2mm_tlast = VhdlSignal("s_axis_s2mm_tlast", VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tready = VhdlSignal("s_axis_s2mm_tready", VhdlType.VhdlStdLogic("0"))
-        s_axis_s2mm_tvalid = VhdlSignal("s_axis_s2mm_tvalid", VhdlType.VhdlStdLogic("0"))
-        out_sigs = [s_axis_s2mm_tdata, s_axis_s2mm_tkeep, s_axis_s2mm_tlast, s_axis_s2mm_tready, s_axis_s2mm_tvalid]
-
-        component = self.files[0].component()
-        component.delay = 5
-        component.library = "work.apply"
-        component.prev = [m_axis_mm2s_tdata]
-        component.in_port = [VhdlSignalSplit(m_axis_mm2s_tdata, slice(0, 8))]
-
-        ret_sig = VhdlSignal("ret_tdata", component.outport_info[0].vhdl_type)
-        component.out_port = [ret_sig]
-        #
-        ret_component = VhdlReturn([component], [VhdlSignalMerge(ret_sig, slice(8, 32), "0")], [out_sigs[0]])
-
-        libraries = [VhdlLibrary("ieee", ["ieee.std_logic_1164.all", "ieee.numeric_std.all"]),
-                     VhdlLibrary(None, ["work.the_filter_package.all"])]
-        #
-        inport_slice = slice(0, len(in_sigs))
-        params = in_sigs + out_sigs
-        module = VhdlModule("accel_wrapper", libraries, inport_slice, params, ret_component)
-        #
-        VhdlGraphTransformer().visit(module)
-        VhdlPortTransformer().visit(module)
-        return VhdlFile("accel_wrapper", [module])
 
     @property
     def module(self):
