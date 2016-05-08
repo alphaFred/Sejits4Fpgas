@@ -29,7 +29,6 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 VhdlLibrary = namedtuple("VhdlLibrary", ["mainlib_name", "sublib"])
-Interface = namedtuple("Interface", ["iports", "oport"])
 PortInfo = namedtuple("PortInfo", ("name", "direction", "vhdl_type"))
 GenericInfo = namedtuple("GenericInfo", ("name", "vhdl_type"))
 
@@ -167,55 +166,6 @@ class VhdlSymbolCollection(collections.MutableSequence, VhdlSymbol):
         return str(self.list)
 
 
-# class VhdlSignalSplit(VhdlSymbol):
-#     def __init__(self, sig, sig_slice):
-#         super(VhdlSignalSplit, self).__init__()
-#         #
-#         self.sig = sig
-#         self.sig_slice = sig_slice
-#         if hasattr(sig.vhdl_type, "size"):
-#             self.vhdl_type = sig.vhdl_type.__class__(sig_slice.stop - sig_slice.start)
-#         else:
-#             raise TransformationError("{} does not have size attribute".format(sig.vhdl_type))
-#
-#     def __str__(self):
-#         return self.sig.name + "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + ")"
-
-
-# class VhdlSignalMerge(VhdlSymbol):
-#     def __init__(self, sig, sig_slice, fill_bitval=""):
-#         super(VhdlSignalMerge, self).__init__()
-#         #
-#         self.sig = sig
-#         self.sig_slice = sig_slice
-#         self.fill_bitval = "0" if fill_bitval == "" else fill_bitval
-#
-#     def __str__(self):
-#         return "(" + str(self.sig_slice.stop - 1) + " downto " + str(
-#             self.sig_slice.start) + " => '" + self.fill_bitval + "') & " + self.sig.name
-
-
-# class VhdlConcatenation(VhdlSymbolCollection):
-#     def __init__(self, *args):
-#         self._vhdl_type = None
-#         super(VhdlConcatenation, self).__init__(*args)
-#
-#     def check(self, v):
-#         if self._vhdl_type is None:
-#             self._vhdl_type = v.vhdl_type
-#         else:
-#             if not isinstance(self._vhdl_type, v.vhdl_type):
-#                 error_msg = "All types of Array must be equal"
-#                 raise TransformationError(error_msg)
-#
-#     @property
-#     def vhdl_type(self):
-#         return VhdlType.VhdlStdLogicVector(len(self) * self._vhdl_type.size)
-#
-#     def __str__(self):
-#         return "(" + " & ".join([str(i) for i in self]) + ")"
-
-
 class VhdlAnd(VhdlSymbolCollection):
     """Bool signal connection AND."""
 
@@ -263,15 +213,13 @@ class VhdlSink(VhdlSymbol):
         self.vhdl_type = vhdl_type
 
 
-class VhdlSignal(VhdlSymbol):
-    """Base class for vhdl signal."""
-
-    _fields = ["name", "vhdl_type"]
-
-    def __init__(self, name="", vhdl_type=None):
-        super(VhdlSignal, self).__init__()
+class VhdlSignal(object):
+    def __init__(self, name, vhdl_type):
         self.name = name
         self.vhdl_type = vhdl_type
+
+    def __str__(self):
+        return self.name
 
 
 class VhdlConstant(VhdlSymbol):
@@ -293,24 +241,6 @@ class VhdlConstant(VhdlSymbol):
 
 Port = namedtuple("Port", ["name", "direction", "vhdl_type", "value"])
 Generic = namedtuple("Generic", ["name", "vhdl_type", "value"])
-
-class Generic(VhdlSymbol):
-    """Base class of Vhdl Generic item."""
-
-    _fields = ["name", "vhdl_type", "value"]
-
-    def __init__(self, name="", vhdl_type=None, value=None):
-        """ Initialize name and value of Generic. """
-        super(Generic, self).__init__()
-        self.name = name
-        self.vhdl_type = vhdl_type
-        self.value = value
-
-    def gmap(self):
-        if isinstance(self.value, VhdlConstant):
-            return self.name + " => " + str(self.value)
-        else:
-            raise TransformationError("Generic value must be constant")
 
 
 class VhdlModule(VhdlNode):
