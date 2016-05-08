@@ -6,7 +6,7 @@ from utils import TransformationError
 from utils import CONFIG
 
 logger = logging.getLogger(__name__)
-logger.disabled = CONFIG.getboolean("logging", "ENABLE_LOGGING")
+logger.disabled = CONFIG.getboolean("logging", "DISABLE_LOGGING")
 logger.setLevel(logging.DEBUG)
 # create console handler and set level to debug
 ch = logging.StreamHandler()
