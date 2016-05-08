@@ -8,6 +8,7 @@ from .nodes import VhdlBinaryOp, VhdlConstant, VhdlModule
 from .nodes import VhdlLibrary, VhdlAnd, PortInfo, Port
 from .nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal
 from .nodes import VhdlSink, VhdlDReg
+from .vhdl_ctree.c.nodes import Op
 from .types import VhdlType
 from .utils import CONFIG
 from .utils import TransformationError
