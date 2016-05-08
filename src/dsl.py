@@ -28,7 +28,7 @@ from .vhdl_ctree.c.nodes import SymbolRef
 
 # set up module-level logger
 logger = logging.getLogger(__name__)
-logger.disabled = CONFIG.getboolean("logging", "ENABLE_LOGGING")
+logger.disabled = CONFIG.getboolean("logging", "DISABLE_LOGGING")
 logger.setLevel(logging.DEBUG)
 # create console handler and set level to debug
 ch = logging.StreamHandler()
@@ -77,9 +77,11 @@ class BasicBlockBaseTransformer(object):
         raise NotImplementedError("Class %s should override func_name()"
                                   % type(self))
 
-    def get_func_def_c(self, inner_function_name):
-        raise NotImplementedError("Class %s should override get_func_def()"
-                                  % type(self))
+    def get_func_def_c(self, *args, **kwargs):
+        raise NotImplementedError("Class %s should override get_func_def_c()" % type(self))
+
+    def get_func_def_vhdl(self, *args, **kwargs):
+        raise NotImplementedError("Class %s should override get_func_def_vhdl()" % type(self))
 
 
 class ConvolveTransformer(BasicBlockBaseTransformer):

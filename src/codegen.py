@@ -2,11 +2,12 @@
 import ast
 import logging
 
+from .nodes import VhdlConstant
 from utils import TransformationError
 from utils import CONFIG
 
 logger = logging.getLogger(__name__)
-logger.disabled = CONFIG.getboolean("logging", "ENABLE_LOGGING")
+logger.disabled = CONFIG.getboolean("logging", "DISABLE_LOGGING")
 logger.setLevel(logging.DEBUG)
 # create console handler and set level to debug
 ch = logging.StreamHandler()
@@ -178,7 +179,13 @@ class VhdlCodegen(ast.NodeVisitor):
     def _generic_map(self, generics):
         block_indent = " " * len("generic map(")
         #
-        generic_map = [g.gmap() for g in generics]
+        generic_map = []
+        for g in generics:
+            if isinstance(g.value, VhdlConstant):
+                generic_map.append(g.name + " => " + str(g.value))
+            else:
+                raise TransformationError("Generic value must be constant")
+        #
         join_statement = ",\n" + self._tab() + block_indent
         #
         s = "\n"

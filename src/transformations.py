@@ -8,13 +8,14 @@ from .nodes import VhdlBinaryOp, VhdlConstant, VhdlModule
 from .nodes import VhdlLibrary, VhdlAnd, PortInfo, Port
 from .nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal
 from .nodes import VhdlSink, VhdlDReg
+from .vhdl_ctree.c.nodes import Op
 from .types import VhdlType
 from .utils import CONFIG
 from .utils import TransformationError
 
 
 logger = logging.getLogger(__name__)
-logger.disabled = CONFIG.getboolean("logging", "ENABLE_LOGGING")
+logger.disabled = CONFIG.getboolean("logging", "DISABLE_LOGGING")
 logger.setLevel(logging.DEBUG)
 # create console handler and set level to debug
 ch = logging.StreamHandler()
