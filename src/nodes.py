@@ -62,6 +62,7 @@ class VhdlBaseNode(VhdlTreeNode):
     """Base class for all VHDL nodes in sejits_ctree."""
     d = 0
     dprev = 0
+    prev = []
 
     def codegen(self, indent=4):
         """
