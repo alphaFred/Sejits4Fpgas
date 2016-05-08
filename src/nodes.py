@@ -132,11 +132,11 @@ class VhdlNode(VhdlBaseNode):
         raise NotImplementedError()
 
 
-class VhdlSymbolCollection(collections.MutableSequence, VhdlSignal):
+class VhdlSignalCollection(collections.MutableSequence, VhdlSignal):
     """Base class for signal collections."""
 
     def __init__(self, *args):
-        super(VhdlSymbolCollection, self).__init__("", None)
+        super(VhdlSignalCollection, self).__init__("", None)
         #
         self.list = list()
         for arg in args:
@@ -169,7 +169,7 @@ class VhdlSymbolCollection(collections.MutableSequence, VhdlSignal):
         return str(self.list)
 
 
-class VhdlAnd(VhdlSymbolCollection):
+class VhdlAnd(VhdlSignalCollection):
     """Bool signal connection AND."""
 
     def __init__(self, *args):
