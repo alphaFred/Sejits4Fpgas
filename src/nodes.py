@@ -60,6 +60,8 @@ class VhdlTreeNode(CtreeNode):
 
 class VhdlBaseNode(VhdlTreeNode):
     """Base class for all VHDL nodes in sejits_ctree."""
+    d = 0
+    dprev = 0
 
     def codegen(self, indent=4):
         """
@@ -82,15 +84,18 @@ class VhdlBaseNode(VhdlTreeNode):
         return VhdlDotGenLabeller().visit(self)
 
 
-class VhdlSymbol(VhdlBaseNode):
-    """Base class for vhdl symbols."""
-
-    d = 0
-    dprev = 0
-    vhdl_type = None
+class VhdlSignal(object):
+    def __init__(self, name, vhdl_type=None):
+        self.name = name
+        self.vhdl_type = vhdl_type
 
     def __str__(self):
         return self.name
+
+
+class VhdlSymbol(VhdlSignal, VhdlBaseNode):
+    """Base class for vhdl symbols."""
+    _fields = ["name", "vhdl_type"]
 
 
 class VhdlNode(VhdlBaseNode):
@@ -113,9 +118,6 @@ class VhdlNode(VhdlBaseNode):
         self.prev = prev if prev is not None else []
         self.in_port = in_port if in_port is not None else []
         self.out_port = out_port if out_port is not None else []
-        # initalize delay and cumulative previous delay
-        self.d = -1
-        self.dprev = -1
         # save in/outport information, initialize generic_info
         self.generic_info = []
         self.inport_info = inport_info if inport_info is not None else []
@@ -129,11 +131,11 @@ class VhdlNode(VhdlBaseNode):
         raise NotImplementedError()
 
 
-class VhdlSymbolCollection(collections.MutableSequence):
+class VhdlSymbolCollection(collections.MutableSequence, VhdlSignal):
     """Base class for signal collections."""
 
     def __init__(self, *args):
-        super(VhdlSymbolCollection, self).__init__()
+        super(VhdlSymbolCollection, self).__init__("", None)
         #
         self.list = list()
         for arg in args:
@@ -170,7 +172,6 @@ class VhdlAnd(VhdlSymbolCollection):
     """Bool signal connection AND."""
 
     def __init__(self, *args):
-        self.vhdl_type = None
         super(VhdlAnd, self).__init__(*args)
 
     def check(self, v):
@@ -195,32 +196,15 @@ class VhdlAssignment(VhdlBaseNode):
 class VhdlSource(VhdlSymbol):
     """Base class for kernel source signal."""
 
-    _fields = ["name", "vhdl_type"]
-
     def __init__(self, name="", vhdl_type=None):
-        super(VhdlSource, self).__init__()
-        self.name = name
-        self.vhdl_type = vhdl_type
+        super(VhdlSource, self).__init__(name, vhdl_type)
 
 
 class VhdlSink(VhdlSymbol):
     """Base class for kernel sink signal."""
 
-    _fields = ["name", "vhdl_type"]
-
     def __init__(self, name="", vhdl_type=None):
-        super(VhdlSink, self).__init__()
-        self.name = name
-        self.vhdl_type = vhdl_type
-
-
-class VhdlSignal(object):
-    def __init__(self, name, vhdl_type):
-        self.name = name
-        self.vhdl_type = vhdl_type
-
-    def __str__(self):
-        return self.name
+        super(VhdlSink, self).__init__(name, vhdl_type)
 
 
 class VhdlConstant(VhdlSymbol):
@@ -228,13 +212,11 @@ class VhdlConstant(VhdlSymbol):
 
     _fields = ["name", "vhdl_type", "value"]
 
-    def __init__(self, name="", vhdl_type=None, value=None, ):
-        super(VhdlConstant, self).__init__()
+    def __init__(self, name="", vhdl_type=None, value=None):
         if name == "":
-            self.name = str(value)
+            super(VhdlConstant, self).__init__(str(value), vhdl_type)
         else:
-            self.name = name
-        self.vhdl_type = vhdl_type
+            super(VhdlConstant, self).__init__(name, vhdl_type)
         self.value = value
 
     def __str__(self):
