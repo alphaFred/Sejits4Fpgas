@@ -291,24 +291,8 @@ class VhdlConstant(VhdlSymbol):
     def __str__(self):
         return str(self.value)
 
-
-class Port(VhdlSymbol):
-    """Base class of Vhld Port item."""
-
-    _fields = ["name", "direction", "vhdl_type", "value"]
-
-    def __init__(self, name="", direction="", vhdl_type=None, value=None):
-        """ Initialize name, direction and value of Port. """
-        super(Port, self).__init__()
-        self.name = name
-        self.direction = direction
-        self.vhdl_type = vhdl_type
-        self.value = value
-        self._type_check()
-
-    def _type_check(self):
-        pass
-
+Port = namedtuple("Port", ["name", "direction", "vhdl_type", "value"])
+Generic = namedtuple("Generic", ["name", "vhdl_type", "value"])
 
 class Generic(VhdlSymbol):
     """Base class of Vhdl Generic item."""
