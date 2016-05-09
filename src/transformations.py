@@ -207,6 +207,7 @@ class VhdlIRTransformer(ast.NodeTransformer):
 
     def _connect(self, node):
         if isinstance(node, VhdlNode):
+            # TODO: generate better indicator for connection
             if len(node.out_port) == 0:
                 if hasattr(node, "name"):
                     name = node.name.upper() + "_OUT_"
