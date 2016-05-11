@@ -201,8 +201,8 @@ def bb_limitTo(valid, x):
 
 @specialize
 def test_func(img):
-    a = bb_add(img, 125)
-    return bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 64, 64, a)
+    smooth = bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 640, 480, img)
+    return smooth
 
 # @specialize
 # def test_func(img):
