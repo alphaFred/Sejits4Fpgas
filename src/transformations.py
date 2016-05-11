@@ -124,6 +124,7 @@ class VhdlIRTransformer(ast.NodeTransformer):
         cached values at future occurences in the tree.
 
         :Example:
+
         >>> def kernel(img):
         >>>     a = bb_add(img, 3)
         >>>     return bb_add(img, a)
@@ -161,6 +162,7 @@ class VhdlIRTransformer(ast.NodeTransformer):
                 n140493258648464 -> n140493258648656 [label="args[1]"];
                 n140493258648656 [label="SymbolRef\\na"];
             }
+
     """
 
     def __init__(self, ipt_param_types, lifted_functions, axi_stream_width=32):
