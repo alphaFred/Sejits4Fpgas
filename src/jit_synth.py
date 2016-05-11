@@ -1,10 +1,16 @@
 """ """
 import os
 import glob
+import ast
 import logging
+import subprocess
 import ctypes as c
 import numpy as np
 import numpy.ctypeslib as ctl
+from .vhdl_ctree.frontend import get_ast
+from .vhdl_ctree.c.nodes import MultiNode
+from .vhdl_ctree.jit import LazySpecializedFunction
+from .utils import TransformationError
 from collections import namedtuple
 #
 from utils import CONFIG
@@ -143,3 +149,43 @@ class VhdlSynthModule(object):
             self.hw_interface = libHwIntfc.process1d_img
         else:
             pass
+
+class VhdlLazySpecializedFunction(LazySpecializedFunction):
+
+    def __init__(self, py_ast=None, sub_dir=None, backend_name="default", py_func=None):
+        self.py_func = py_func
+        super(VhdlLazySpecializedFunction, self).__init__(py_ast, sub_dir, backend_name)
+
+    def __call__(self, *args, **kwargs):
+        """ Call superclass's call method with error handling.
+
+        ..todo:: refine cache cleaning in error case
+        """
+        ret = None
+        try:
+            ret = super(VhdlLazySpecializedFunction, self).__call__(*args, **kwargs)
+        except TransformationError:
+            subprocess.call(["ctree", "-cc"])
+            ret = self.py_func(*args, **kwargs)
+        finally:
+            return ret
+
+    @classmethod
+    def from_function(cls, func, folder_name=''):
+        class Replacer(ast.NodeTransformer):
+            def visit_Module(self, node):
+                return MultiNode(body=[self.visit(i) for i in node.body])
+
+            def visit_FunctionDef(self, node):
+                if node.name == func.__name__:
+                    node.name = 'apply'
+                node.body = [self.visit(item) for item in node.body]
+                return node
+
+            def visit_Name(self, node):
+                if node.id == func.__name__:
+                    node.id = 'apply'
+                return node
+
+        func_ast = Replacer().visit(get_ast(func))
+        return cls(py_ast=func_ast, sub_dir=folder_name or func.__name__, py_func=func)
