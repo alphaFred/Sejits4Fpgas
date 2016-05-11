@@ -193,12 +193,21 @@ def bb_limitTo(valid, x):
 #     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
 
 # @specialize
-# def test_func(a):
-#     return bb_sub(255, a)
+# def test_func(img):
+#     c = bb_add(3, img)
+#     b = bb_add(4, img)
+#     a = bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 64, 64, b)
+#     return bb_add(c, a)
 
 @specialize
-def test_func(a):
+def test_func(img):
+    a = bb_add(img, 125)
     return bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 64, 64, a)
+
+# @specialize
+# def test_func(img):
+#     a = bb_add(img, 3)
+#     return bb_add(img, a)
 
 
 # transformed_func = BasicTranslator.from_function(test_func)

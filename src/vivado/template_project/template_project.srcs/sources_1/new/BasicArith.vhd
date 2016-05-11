@@ -17,9 +17,11 @@ ENTITY BasicArith IS
         CLK         : in STD_LOGIC;
         RST         : in STD_LOGIC;
         VALID_IN    : in STD_LOGIC;
+        READY_IN    : in std_logic;
         LEFT        : in STD_LOGIC_VECTOR(7 downto 0);
         RIGHT       : in STD_LOGIC_VECTOR(7 downto 0);
         VALID_OUT   : out STD_LOGIC;
+        READY_OUT   : out std_logic;
         BINOP_OUT  : out STD_LOGIC_VECTOR(7 downto 0)
         );
 END BasicArith;
@@ -340,4 +342,6 @@ BEGIN
             END IF;
         END IF;
     END PROCESS;
+
+    READY_OUT <= READY_IN;
 END BasicArith_Behave;

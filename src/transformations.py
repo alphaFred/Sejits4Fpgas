@@ -32,7 +32,60 @@ UNARY_OP = namedtuple("UNARY_OP", ["i_args", "out_arg"])
 
 
 class VhdlBaseTransformer(object):
-    """Run all DSL independant transformations."""
+    """This class docstring shows how to use sphinx and rst syntax
+
+    The first line is brief explanation, which may be completed with
+    a longer one. For instance to discuss about its methods. The only
+    method here is :func:`function1`'s. The main idea is to document
+    the class and methods's arguments with
+
+    - **parameters**, **types**, **return** and **return types**::
+
+          :param arg1: description
+          :param arg2: description
+          :type arg1: type description
+          :type arg1: type description
+          :return: return description
+          :rtype: the return type description
+
+    - and to provide sections such as **Example** using the double commas syntax::
+
+          :Example:
+
+          followed by a blank line !
+
+      which appears as follow:
+
+      :Example:
+
+      followed by a blank line
+
+    - Finally special sections such as **See Also**, **Warnings**, **Notes**
+      use the sphinx syntax (*paragraph directives*)::
+
+          .. seealso:: blabla
+          .. warnings also:: blabla
+          .. note:: blabla
+          .. todo:: blabla
+
+    .. note::
+        There are many other Info fields but they may be redundant:
+            * param, parameter, arg, argument, key, keyword: Description of a
+              parameter.
+            * type: Type of a parameter.
+            * raises, raise, except, exception: That (and when) a specific
+              exception is raised.
+            * var, ivar, cvar: Description of a variable.
+            * returns, return: Description of the return value.
+            * rtype: Return type.
+
+    .. note::
+        There are many other directives such as versionadded, versionchanged,
+        rubric, centered, ... See the sphinx documentation for more details.
+
+    Here below is the results of the :func:`function1` docstring.
+
+    """
 
     def __init__(self, ipt_params, lifted_functions):
         """Initialize transform parameters."""
@@ -40,17 +93,29 @@ class VhdlBaseTransformer(object):
         self.lifted_functions = lifted_functions
 
     def visit(self, tree):
-        """Visit all transformation classes sequentially."""
+        """Process tree with all transformers sequentially.
+
+        .. note::
+            Each transformer class that should be applied to the tree must be called within this method
+        """
+        from src.vhdl_ctree.visual.dot_manager import DotManager
+        img_path = "/home/philipp/University/M4/Masterthesis/src/VhdlSejits/vhdl_sejits/images/"
+        # ----
+        DotManager().dot_ast_to_file(tree, file_name=img_path + "raw_tree")
         tree = VhdlKwdTransformer().visit(tree)
+        # DotManager().dot_ast_to_file(tree, file_name=img_path + "kwd_trans_tree")
         tree = VhdlIRTransformer(self.ipt_params, self.lifted_functions).visit(tree)
+        # DotManager().dot_ast_to_file(tree, file_name=img_path + "ir_trans_tree")
         tree = VhdlGraphTransformer().visit(tree)
+        # DotManager().dot_ast_to_file(tree, file_name=img_path + "graph_trans_tree")
         tree = VhdlPortTransformer().visit(tree)
+        # DotManager().dot_ast_to_file(tree, file_name=img_path + "port_trans_tree")
         return tree
 
 
 class VhdlKwdTransformer(ast.NodeTransformer):
 
-    """Transform Name nodes with VHDL keywords."""
+    """Transform SymbolRef nodes with VHDL keywords as name."""
 
     # Vhdl keyword set; change every occurence in pyhton AST
     VHDL_Keywords = ({"abs", "access", "after", "alias", "all", "and",
@@ -81,6 +146,65 @@ class VhdlKwdTransformer(ast.NodeTransformer):
 
 
 class VhdlIRTransformer(ast.NodeTransformer):
+
+    """Transform an CTree AST into an VDHL Intermediate Representation DAG.
+
+        This transformer class is responsible for translating certain CTree nodes into VHDL IR nodes
+        and changing the line-by-line AST structure of the input into an data flow DAG representation.
+
+        The currently supported CTree node classes are:
+            - MultiNode
+            - FunctionDecl
+            - FunctionCall
+            - BinaryOp
+            - SymbolRef
+            - Array
+            - Tuple
+            - Constant
+            - Return
+
+        The transformation into the DAG structure is achieved by caching visited SymbolRefs and inserting the
+        cached values at future occurences in the tree.
+
+        :Example:
+        >>> def kernel(img):
+        >>>     a = bb_add(img, 3)
+        >>>     return bb_add(img, a)
+
+        Is transformed by CTree to:
+
+        .. graphviz::
+
+            digraph mytree {
+                n140493261637008 [label="MultiNode\\n"];
+                n140493261637008 -> n140493262198608 [label="body[0]"];
+                n140493262198608 [label="FunctionDecl\\nvoid apply(...)"];
+                n140493262198608 -> n140493262197840 [label="params[0]"];
+                n140493262197840 [label="SymbolRef\\nimg"];
+                n140493262198608 -> n140493262198032 [label="defn[0]"];
+                n140493262198032 [label="BinaryOp\\nAssign"];
+                n140493262198032 -> n140493258647568 [label="left"];
+                n140493258647568 [label="SymbolRef\\na"];
+                n140493262198032 -> n140493258648208 [label="right"];
+                n140493258648208 [label="FunctionCall"];
+                n140493258648208 -> n140493258648144 [label="func"];
+                n140493258648144 [label="SymbolRef\\nbb_add"];
+                n140493258648208 -> n140493258648528 [label="args[0]"];
+                n140493258648528 [label="SymbolRef\\nimg"];
+                n140493258648208 -> n140493258648592 [label="args[1]"];
+                n140493258648592 [label="Constant\\n3"];
+                n140493262198608 -> n140493262198352 [label="defn[1]"];
+                n140493262198352 [label="Return"];
+                n140493262198352 -> n140493258648464 [label="value"];
+                n140493258648464 [label="FunctionCall"];
+                n140493258648464 -> n140493258648400 [label="func"];
+                n140493258648400 [label="SymbolRef\\nbb_add"];
+                n140493258648464 -> n140493258647696 [label="args[0]"];
+                n140493258647696 [label="SymbolRef\\nimg"];
+                n140493258648464 -> n140493258648656 [label="args[1]"];
+                n140493258648656 [label="SymbolRef\\na"];
+            }
+    """
 
     def __init__(self, ipt_param_types, lifted_functions, axi_stream_width=32):
         self.symbols = {}
@@ -286,13 +410,15 @@ class VhdlPortTransformer(ast.NodeVisitor):
         if iccps_info is not None:
             self.iccps_info = iccps_info
         else:
-            self.iccps_info = [PortInfo("VALID_IN", "in", VhdlType.VhdlStdLogic())]
+            self.iccps_info = [PortInfo("VALID_IN", "in", VhdlType.VhdlStdLogic()),
+                               PortInfo("READY_IN", "in", VhdlType.VhdlStdLogic())]
 
         # OCCP - Output Cascading Command Ports
         if occps_info is not None:
             self.occps_info = occps_info
         else:
-            self.occps_info = [PortInfo("VALID_OUT", "out", VhdlType.VhdlStdLogic())]
+            self.occps_info = [PortInfo("VALID_OUT", "out", VhdlType.VhdlStdLogic()),
+                               PortInfo("READY_OUT", "out", VhdlType.VhdlStdLogic())]
 
         self.cpe_id = defaultdict(int)  # command port edge ID
 
@@ -374,10 +500,11 @@ class VhdlPortTransformer(ast.NodeVisitor):
                             # add vhdl modules command port
                             cc_edge = VhdlSignal(iccp.name, iccp.vhdl_type)
                             cc_edges.append(cc_edge)
-                    self.visited_nodes.add(hash(pnode))
                 # add cascading input command ports to iccps
                 iccps.append(Port(iccp.name, iccp.direction, iccp.vhdl_type, cc_edges))
-
+            # add all visited nodes to hash storage
+            for pnode in node.prev:
+                self.visited_nodes.add(hash(pnode))
             # Add Cascading Command, Command and In-Ports
             node.in_port = self.icps + iccps + node.in_port
 

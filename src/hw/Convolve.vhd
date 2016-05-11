@@ -43,8 +43,10 @@ entity Convolve is
         CLK             : in  std_logic;
         RST             : in  std_logic; -- low active
         VALID_IN        : in  std_logic; -- high active
-        VALID_OUT       : out std_logic; -- high active
+        READY_IN        : in  std_logic;
         DATA_IN         : in  std_logic_vector(31 downto 0);
+        VALID_OUT       : out std_logic; -- high active
+        READY_OUT       : out std_logic;
         DATA_OUT        : out std_logic_vector(31 downto 0)
         );
 end Convolve;
@@ -95,6 +97,8 @@ architecture Behavioral of Convolve is
     -- SIGNALS | CONSTANTS
     -- ======================================================================
     signal ipt_fifo_ren     :   std_logic := '0';
+    signal ipt_fifo_full    :   std_logic;
+    signal input_fifo_rst   :   std_logic := '0';
     signal ipt_fifo_out     :   std_logic_vector(31 downto 0);
     signal ipt_fifo_data_count : std_logic_vector(11 DOWNTO 0);
 
@@ -107,7 +111,7 @@ architecture Behavioral of Convolve is
     -- FSM PARAMETERS
     -- ======================================================================
 
-    type FILTER_type is ( FILTER_IDLE, FILTER_WORK, FILTER_STALL, FILTER_NLINE);
+    type FILTER_type is ( FILTER_IDLE, FILTER_WORK, FILTER_STALL, FILTER_NLINE, FILTER_NIMG);
     signal FILTER_state : FILTER_type := FILTER_IDLE;
     signal filter_w_ctr     :   integer := 0; -- filter width counter
     signal filter_h_ctr     :   integer := 0; -- filter height counter
@@ -119,15 +123,17 @@ begin
     input_fifo : component filter_input_fifo_1
     port map(
         clk => CLK,
-        rst => RST,
+        rst => RST or input_fifo_rst,
         din => DATA_IN,
         wr_en => VALID_IN,
         rd_en => ipt_fifo_ren,
         dout => ipt_fifo_out,
-        full => open,
+        full => ipt_fifo_full,
         empty => open,
         data_count => ipt_fifo_data_count
     );
+
+    READY_OUT <= NOT ipt_fifo_full AND READY_IN;
 
     filter_unit : filter
     generic map (
@@ -163,9 +169,12 @@ begin
             filter_hsync <= '0';
             filter_vsync <= '0';
             ipt_fifo_ren <= '0';
+            filter_w_ctr <= 0;
+            filter_h_ctr <= 0;
         elsif(rising_edge(CLK)) then
             case FILTER_state is
                 when FILTER_IDLE =>
+                    input_fifo_rst <= '0';
                     filter_hsync <= '0';
                     filter_vsync <= '0';
                     --
@@ -196,7 +205,8 @@ begin
 
                     if filter_h_ctr = IMG_HEIGHT then
                         filter_vsync <= '0';
-                        FILTER_state <= FILTER_IDLE;
+                        filter_h_ctr <= 0;
+                        FILTER_state <= FILTER_NIMG;
                     else
                         FILTER_state <= FILTER_NLINE;
                     end if;
@@ -207,6 +217,10 @@ begin
                     else
                         FILTER_state <= FILTER_NLINE;
                     end if;
+
+                when FILTER_NIMG =>
+                    input_fifo_rst <= '1';
+                    FILTER_state <= FILTER_IDLE;
 
                 when others =>
             end case;

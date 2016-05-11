@@ -14,8 +14,10 @@ entity Split is
         CLK             : in  std_logic;
         RST             : in  std_logic; -- low active
         VALID_IN        : in  std_logic; -- high active
+        READY_IN        : in  std_logic;
         DATA_IN         : in  std_logic_vector(31 downto 0);
         VALID_OUT       : out std_logic; -- high active
+        READY_OUT       : out std_logic;
         DATA_OUT        : out std_logic_vector(31 downto 0)
         );
 end Split;
@@ -43,4 +45,5 @@ begin
     end generate slice_3;
 
     VALID_OUT <= VALID_IN;
+    READY_OUT <= READY_IN;
 end split_behave;
