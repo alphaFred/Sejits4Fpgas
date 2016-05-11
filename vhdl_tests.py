@@ -13,6 +13,7 @@ from src.vhdl_ctree.c.nodes import FunctionDecl, CFile
 from src.vhdl_ctree.transformations import PyBasicConversions
 from src.vhdl_ctree.jit import LazySpecializedFunction
 from src.vhdl_ctree.jit import ConcreteSpecializedFunction
+from src.jit_synth import VhdlLazySpecializedFunction
 
 from src.transformations import VhdlIRTransformer, VhdlBaseTransformer
 from src.dsl import DSLTransformer
@@ -34,7 +35,7 @@ pretrans_tree = "pre-transform_tree.png"
 posttrans_tree = "post-transform_tree.png"
 
 
-class BasicTranslator(LazySpecializedFunction):
+class BasicTranslator(VhdlLazySpecializedFunction):
 
     def args_to_subconfig(self, args):
         if not VHDL:
@@ -201,8 +202,7 @@ def bb_limitTo(valid, x):
 
 @specialize
 def test_func(img):
-    smooth = bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 640, 480, img)
-    return smooth
+    return bb_add(img + 3)
 
 # @specialize
 # def test_func(img):
@@ -214,7 +214,8 @@ def test_func(img):
 
 image = data.coins()
 
+res = test_func(image)
+print res
 print test_func(image)
-# print test_func(image)
-# print test_func(image)
-# print test_func(image)
+print test_func(image)
+print test_func(image)
