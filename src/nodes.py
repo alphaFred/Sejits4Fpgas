@@ -493,14 +493,21 @@ class VhdlFile(VhdlBaseNode, File):
 
     @classmethod
     def from_prebuilt(cls, name="prebuilt", path=""):
-        """Generate Vhdl File from prebuilt source file."""
+        """Generate Vhdl File from prebuilt source file.
+
+        Generate VhdlFile instance and change _compile method to write
+        VHDL description into new file in cache directory.
+        """
         vhdlfile = VhdlFile(name, body=[], path="")
         vhdlfile.file_path = path
-
         #
         def _compile(self, program_text):
-            _ = program_text
-            return self.file_path
+            vhdl_src_file = os.path.join(self.path, self.get_filename())
+            with open(vhdl_src_file, 'w') as cache_file, open(self.file_path, 'r') as vhdl_file:
+                cache_file.write(vhdl_file.read())
+            logger.info("file for generated VHDL: %s", vhdl_src_file)
+            logger.info("generated VHDL program: (((\n%s\n)))", program_text)
+            return vhdl_src_file
 
         vhdlfile._compile = new.instancemethod(_compile, vhdlfile, None)
         #
