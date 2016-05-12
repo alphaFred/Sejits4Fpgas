@@ -233,25 +233,29 @@ class VhdlModule(VhdlNode):
 
     _fields = ["entity", "architecture"]
 
-    def __init__(self, name="", libraries=None, inport_slice=None, entity=None, architecture=None):
+    def __init__(self, name="", libraries=None, generic_slice=None, entity=None, architecture=None):
         """Initialize VhdlModule node.
 
-        :param name: str containing name of module
-        :param libraries: list containing library objects
-        :param entity: list containing VhdlSource nodes, describing kernel parameter_process_params
-        :param architecture: list containing vhdl nodes, describing body of architecture
+        :param name: name of module
+        :type name: str
+        :param libraries: libraries contained by module
+        :type libraries: list of VhdlLibrary objects
+        :param entity: kernel parameters and returned object
+        :type entity: list of VhdlSymbol subclasses
+        :param architecture: VHDL IR tree describing architecture of module
+        :type architecture: list of VhdlTreeNode subclasses
 
         """
-        if inport_slice:
+        if generic_slice:
             # check if input slice is slice object
-            if type(inport_slice) is not slice:
-                raise TransformationError("inport slice must be slice not of type{}".format(type(inport_slice)))
+            if type(generic_slice) is not slice:
+                raise TransformationError("inport slice must be slice not of type{}".format(type(generic_slice)))
 
-            in_port_info = [PortInfo(port.name, "in", port.vhdl_type) for port in entity[inport_slice]]
-            in_port = entity[inport_slice]
+            in_port_info = [PortInfo(port.name, "in", port.vhdl_type) for port in entity[generic_slice]]
+            in_port = entity[generic_slice]
             #
-            out_port_info = [PortInfo(port.name, "out", port.vhdl_type) for port in entity[inport_slice.stop:]]
-            out_port = entity[inport_slice.stop:]
+            out_port_info = [PortInfo(port.name, "out", port.vhdl_type) for port in entity[generic_slice.stop:]]
+            out_port = entity[generic_slice.stop:]
         else:
             in_port_info = [PortInfo(port.name, "in", port.vhdl_type) for port in entity[:-1]]
             in_port = entity[:-1]
@@ -268,46 +272,6 @@ class VhdlModule(VhdlNode):
     def label(self):
         from dotgen import VhdlDotGenLabeller
         return VhdlDotGenLabeller().visit(self)
-
-    def finalize_ports(self):
-        self.generic = [Generic(*i, value=g) for i, g in zip(self.generic_info, self.generic)]
-        self.in_port = [Port(*i, value=g) for i, g in zip(self.inport_info, self.in_port)]
-        self.out_port = [Port(*i, value=g) for i, g in zip(self.outport_info, self.out_port)]
-
-
-class VhdlBinaryOp(VhdlNode):
-    """Vhdl BinaryOp node class."""
-
-    _fields = ["prev"]
-
-    def __init__(self, prev=None, in_port=None, op=None, out_port=None):
-        """Initialize VhdlBinaryOp node.
-
-        :param prev: list of previous nodes in DAG
-        :param in_port: list of input signals
-        :param op: Op object describing binary operation
-        :param out_port: list of output signals
-
-        :raises TransformationError: raised if type of op is not supported
-
-        """
-        in_port_info = [PortInfo("LEFT", "in", VhdlType.VhdlStdLogicVector(8)),
-                        PortInfo("RIGHT", "in", VhdlType.VhdlStdLogicVector(8))]
-        out_port_info = [PortInfo("BINOP_OUT", "out", VhdlType.VhdlStdLogicVector(8))]
-
-        super(VhdlBinaryOp, self).__init__(prev, in_port, in_port_info, out_port, out_port_info)
-        self.library = "work.BasicArith"
-        # operation decoder with (Operation ID, Delay)
-        op_decoder = {Op.Add: (0, 4),
-                      Op.Sub: (1, 4),
-                      Op.Mul: (2, 5)}
-
-        if type(op) in op_decoder:
-            self.op, self.d = op_decoder[type(op)]
-            self.generic_info = [("OP", VhdlType.VhdlInteger())]
-            self.generic = [VhdlConstant("", VhdlType.VhdlInteger(), self.op)]
-        else:
-            raise TransformationError("Unsupported binary operation %s" % op)
 
     def finalize_ports(self):
         self.generic = [Generic(*i, value=g) for i, g in zip(self.generic_info, self.generic)]
