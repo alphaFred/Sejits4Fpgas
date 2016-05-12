@@ -14,9 +14,11 @@ entity SubBB is
         CLK       : in std_logic;
         RST       : in std_logic;
         VALID_IN  : in std_logic;
+        READY_IN  : in std_logic;
         LEFT      : in std_logic_vector(31 downto 0);
         RIGHT     : in std_logic_vector(31 downto 0);
         VALID_OUT : out std_logic;
+        READY_OUT : out std_logic;
         SUB_OUT   : out std_logic_vector(31 downto 0)
         );
 end SubBB;
@@ -98,4 +100,6 @@ begin
             SUB_OUT <= RESULT;
         end if;
     end process;
+
+    READY_OUT <= READY_IN;
 end architecture ; -- arch

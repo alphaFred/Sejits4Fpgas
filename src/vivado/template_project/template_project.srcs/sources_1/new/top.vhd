@@ -134,10 +134,10 @@ accel_wrapper :  entity work.accel_wrapper
       VALID_IN                        => m_axis_tvalid,
       M_AXIS_MM2S_tdata(31 downto 0)  => m_axis_tdata(31 downto 0),
       M_AXIS_MM2S_tlast               => m_axis_tlast,
-      M_AXIS_MM2S_tready              => m_axis_tready,
+      READY_OUT                       => m_axis_tready,
       VALID_OUT                       => s_axis_tvalid,
       S_AXIS_S2MM_tdata(31 downto 0)  => s_axis_tdata(31 downto 0),
       S_AXIS_S2MM_tlast               => s_axis_tlast,
-      S_AXIS_S2MM_tready              => s_axis_tready
+      READY_IN                        => s_axis_tready
     );
 end STRUCTURE;

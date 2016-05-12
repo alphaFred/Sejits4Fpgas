@@ -1,10 +1,16 @@
 """ """
 import os
 import glob
+import ast
 import logging
+import subprocess
 import ctypes as c
 import numpy as np
 import numpy.ctypeslib as ctl
+from .vhdl_ctree.frontend import get_ast
+from .vhdl_ctree.c.nodes import MultiNode
+from .vhdl_ctree.jit import LazySpecializedFunction
+from .utils import TransformationError
 from collections import namedtuple
 #
 from utils import CONFIG
@@ -143,3 +149,61 @@ class VhdlSynthModule(object):
             self.hw_interface = libHwIntfc.process1d_img
         else:
             pass
+
+class VhdlLazySpecializedFunction(LazySpecializedFunction):
+
+    def __init__(self, py_ast=None, sub_dir=None, backend_name="default", py_func=None):
+        """Extend existing LazySpecializedFunction with error handling.
+
+        Extends CTree's LazySpecializedFunction with error handling and default execution. Herefore the by py_func is
+        added as a new parameter besides its AST representation, passed as py_ast.
+
+        :param py_ast: Python AST representation of py_func
+        :param sub_dir: sub directory
+        :param backend_name: Unused in VHDL Back-End
+        :type backend_name: str
+        :param py_func: Python function which is also passed in its AST representation as py_ast
+        :type py_func: function
+
+        """
+        self.py_func = py_func
+        super(VhdlLazySpecializedFunction, self).__init__(py_ast, sub_dir, backend_name)
+
+    def __call__(self, *args, **kwargs):
+        """ Added error-handling with Python fall-back around super.__call__.
+
+        If calling the __call__ method of the super-class raises and TransformationError exeption, the passed Python
+        function will be called instead of an specialized version. In case of an TransformationError, the cache is
+        cleared.
+
+        .. todo:: refine cache cleaning in error case
+        """
+        ret = None
+        try:
+            ret = super(VhdlLazySpecializedFunction, self).__call__(*args, **kwargs)
+        except TransformationError:
+            print "Calling Python function ..."
+            subprocess.call(["ctree", "-cc"])
+            ret = self.py_func(*args, **kwargs)
+        finally:
+            return ret
+
+    @classmethod
+    def from_function(cls, func, folder_name=''):
+        class Replacer(ast.NodeTransformer):
+            def visit_Module(self, node):
+                return MultiNode(body=[self.visit(i) for i in node.body])
+
+            def visit_FunctionDef(self, node):
+                if node.name == func.__name__:
+                    node.name = 'apply'
+                node.body = [self.visit(item) for item in node.body]
+                return node
+
+            def visit_Name(self, node):
+                if node.id == func.__name__:
+                    node.id = 'apply'
+                return node
+
+        func_ast = Replacer().visit(get_ast(func))
+        return cls(py_ast=func_ast, sub_dir=folder_name or func.__name__, py_func=func)

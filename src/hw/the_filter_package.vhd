@@ -8,9 +8,9 @@
 -- some packacke to do these generic things the right way
 package the_filter_package is
 
--- 	constant filter_size : integer 9; 
--- 
--- 		generic ( 
+-- 	constant filter_size : integer 9;
+--
+-- 		generic (
 -- 						size : integer := 5;
 -- 						width : integer := 6;
 -- 						health : integer := 5

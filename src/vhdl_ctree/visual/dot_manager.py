@@ -1,4 +1,5 @@
 import tempfile
+import os
 
 __author__ = 'Chick Markley'
 
@@ -32,6 +33,10 @@ class DotManager(object):
     @staticmethod
     def dot_ast_to_file(ast_node, file_name):
         dot_text = ast_node.to_dot()
+        fn, _ = os.path.splitext(file_name)
+        with open(fn + ".dot", "w") as f:
+            f.write(dot_text)
+
         dot_output = DotManager.run_dot(dot_text)
 
         with open(file_name, "wb") as f:

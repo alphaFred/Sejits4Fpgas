@@ -33,8 +33,10 @@ entity DReg is
         CLK : in STD_LOGIC;
         RST : in STD_LOGIC;
         VALID_IN : in STD_LOGIC;
+        READY_IN : in std_logic;
         DREG_IN   : in STD_LOGIC_VECTOR (WIDTH-1 downto 0);
         VALID_OUT : out STD_LOGIC;
+        READY_OUT : out std_logic;
         DREG_OUT  : out STD_LOGIC_VECTOR (WIDTH-1 downto 0)
     );
 end DReg;
@@ -146,4 +148,6 @@ begin
                     );
             end generate dffRight;
         end generate validReg;
+
+    READY_OUT <= READY_IN;
 end architecture Behavioral;

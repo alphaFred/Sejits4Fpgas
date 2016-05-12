@@ -446,27 +446,33 @@ end process pmproc;
 --      process msum
 -- #################################
 msum : process(CLK)
-variable tmppfilt    : integer range 4*4095 downto -4*4095;
+variable tmppfilt0    : integer range 4*4095 downto -4*4095;
+variable tmppfilt1    : integer range 4*4095 downto -4*4095;
 variable bv          : signed(OUT_BITWIDTH-1 downto 0);
 begin
 if (CLK = '1' and CLK'EVENT) then
     --valid <= '0';
 
-	if (sum_pixel = '1') then
-	  tmppfilt := 0;
+    --if (sum_pixel = '1') then
+    tmppfilt0 := 0;
+    tmppfilt1 := 0;
 
-		-- add all
-		for k in 0 to filtersize*filtersize-1 loop
-	     tmppfilt := tmppfilt + pfilt(k);
-   	end loop;
-    tmppfilt := tmppfilt/FILTER_SCALE; -- scale
-   	bv	:= to_signed(tmppfilt, bv'length);
-   	filtered_pixel <= std_logic_vector(bv); -- output
+    -- add all
+    for k in 0 to ((filtersize*filtersize)/2-1) loop
+        tmppfilt0 := tmppfilt0 + pfilt(k);
+    end loop;
+    for k in ((filtersize*filtersize)/2) to filtersize*filtersize-1 loop
+        tmppfilt1 := tmppfilt1 + pfilt(k);
+    end loop;
 
-   	--valid <= '1';
- 	else
- 	  filtered_pixel <= (others => '1');
- 	end if;
+    tmppfilt0 := (tmppfilt0 + tmppfilt1)/FILTER_SCALE; -- scale
+    bv	:= to_signed(tmppfilt0, bv'length);
+    filtered_pixel <= std_logic_vector(bv); -- output
+
+    --valid <= '1';
+    --else
+    --  filtered_pixel <= (others => '1');
+    --end if;
 end if;
 end process msum;
 

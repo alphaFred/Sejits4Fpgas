@@ -1,4 +1,4 @@
-"""Nodes."""
+"""This module contains all node and signal classes of the VHDL IR."""
 import collections
 import logging
 import new
@@ -62,14 +62,15 @@ class VhdlBaseNode(VhdlTreeNode):
     """Base class for all VHDL nodes in sejits_ctree."""
     d = 0
     dprev = 0
+    prev = []
 
     def codegen(self, indent=4):
-        """
-        Generate Vhdl code of node.
+        """Generate Vhdl code of node.
 
-        :param indent: number of spaces per indentation level (Default = 0)
-        :return: string with source code of node
-        :rtype: str
+        :param indent: number of spaces per indentation level
+        :type indent: int
+        :returns: str -- string with source code of node
+
         """
         from codegen import VhdlCodegen
         return VhdlCodegen(indent).visit(self)
@@ -77,8 +78,8 @@ class VhdlBaseNode(VhdlTreeNode):
     def label(self):
         """ Return node label for dot file.
 
-        :return: string describing dot label of node
-        :rtype: str
+        :returns: str -- string describing dot label of node
+
         """
         from dotgen import VhdlDotGenLabeller
         return VhdlDotGenLabeller().visit(self)
@@ -108,12 +109,10 @@ class VhdlNode(VhdlBaseNode):
 
         :param prev: list of previous nodes in DAG
         :param in_port: list of input signals
-        :param inport_info: list of tuples describing port name,
-            direction and vhdl type ("PORTNAME", "direction", VhdlType) or
-            generic name and vhdl type ("GENERICNAME", VhdlType)
+        :param inport_info: list of tuples describing port name, direction and vhdl type ("PORTNAME", "direction", VhdlType) or generic name and vhdl type ("GENERICNAME", VhdlType)
         :param out_port: list of output signals
-        :param outport_info: list of tuples describing port name,
-            direction and vhdl type("PORTNAME", "direction", VhdlType)
+        :param outport_info: list of tuples describing port name, direction and vhdl type("PORTNAME", "direction", VhdlType)
+
         """
         self.prev = prev if prev is not None else []
         self.in_port = in_port if in_port is not None else []
@@ -131,11 +130,11 @@ class VhdlNode(VhdlBaseNode):
         raise NotImplementedError()
 
 
-class VhdlSymbolCollection(collections.MutableSequence, VhdlSignal):
+class VhdlSignalCollection(collections.MutableSequence, VhdlSignal):
     """Base class for signal collections."""
 
     def __init__(self, *args):
-        super(VhdlSymbolCollection, self).__init__("", None)
+        super(VhdlSignalCollection, self).__init__("", None)
         #
         self.list = list()
         for arg in args:
@@ -168,7 +167,7 @@ class VhdlSymbolCollection(collections.MutableSequence, VhdlSignal):
         return str(self.list)
 
 
-class VhdlAnd(VhdlSymbolCollection):
+class VhdlAnd(VhdlSignalCollection):
     """Bool signal connection AND."""
 
     def __init__(self, *args):
@@ -187,6 +186,9 @@ class VhdlAnd(VhdlSymbolCollection):
 
 
 class VhdlAssignment(VhdlBaseNode):
+
+    """Node class representing an signal assignment."""
+
     def __init__(self, target_signal, source_signal):
         super(VhdlAssignment, self).__init__()
         self.target = target_signal
@@ -236,10 +238,9 @@ class VhdlModule(VhdlNode):
 
         :param name: str containing name of module
         :param libraries: list containing library objects
-        :param entity: list containing VhdlSource nodes, describing kernel
-            parameter_process_params
-        :param architecture: list containing vhdl nodes, describing body of
-            architecture
+        :param entity: list containing VhdlSource nodes, describing kernel parameter_process_params
+        :param architecture: list containing vhdl nodes, describing body of architecture
+
         """
         if inport_slice:
             # check if input slice is slice object
@@ -288,6 +289,7 @@ class VhdlBinaryOp(VhdlNode):
         :param out_port: list of output signals
 
         :raises TransformationError: raised if type of op is not supported
+
         """
         in_port_info = [PortInfo("LEFT", "in", VhdlType.VhdlStdLogicVector(8)),
                         PortInfo("RIGHT", "in", VhdlType.VhdlStdLogicVector(8))]
@@ -325,8 +327,8 @@ class VhdlReturn(VhdlNode):
         :param in_port: list of input signals
         :param out_port: list of output signals
 
-        :raises TransformationError: raised if len(in_port)
-            and/or len(out_port) != 1
+        :raises TransformationError: raised if len(in_port) and/or len(out_port) != 1
+
         """
         if len(in_port) != 1 or len(out_port) != 1:
             error_msg = "VhdlReturn node supports only 1 in- and output"
@@ -353,18 +355,15 @@ class VhdlComponent(VhdlNode):
         """Initialize VhdlComponent node.
 
         :param prev: list of previous nodes in DAG
-        :param generic_slice: slice object to slice in_port into
-            generic ports and ordinary input ports
+        :param generic_slice: slice object to slice in_port into generic ports and ordinary input ports
         :param delay: int describing delay of node in clock cycles
         :param in_port: list of input signals
-        :param inport_info: list of tuples describing port name and
-            direction ("PORTNAME", "direction") or
-            generic name and vhdl type ("GENERICNAME", VhdlType)
+        :param inport_info: list of tuples describing port name and direction ("PORTNAME", "direction") or generic name and vhdl type ("GENERICNAME", VhdlType)
         :param out_port: list of output signals
-        :param outport_info: list of tuples describing port name and
-            direction -> [("PORTNAME", "direction"), ...]
+        :param outport_info: list of tuples describing port name and direction -> [("PORTNAME", "direction"), ...]
 
         :raises TransformationError: raised if delay is not >= 0
+
         """
         self.name = name if name is not None else ""
         self.generic_slice = generic_slice
@@ -408,9 +407,9 @@ class VhdlDReg(VhdlNode):
         :param in_port: list of input signals
         :param out_port: list of output signals
 
-        :raises TransformationError: raised if len(in_port)
-            and/or len(out_port) != 1
+        :raises TransformationError: raised if len(in_port) and/or len(out_port) != 1
         :raises TransformationError: raised if delay is not >= 0
+
         """
         inport_info = [PortInfo("DREG_IN", "in", in_port[0].vhdl_type)]
         outport_info = [PortInfo("DREG_OUT", "out", in_port[0].vhdl_type)]
@@ -494,14 +493,21 @@ class VhdlFile(VhdlBaseNode, File):
 
     @classmethod
     def from_prebuilt(cls, name="prebuilt", path=""):
-        """Generate Vhdl File from prebuilt source file."""
+        """Generate Vhdl File from prebuilt source file.
+
+        Generate VhdlFile instance and change _compile method to write
+        VHDL description into new file in cache directory.
+        """
         vhdlfile = VhdlFile(name, body=[], path="")
         vhdlfile.file_path = path
-
         #
         def _compile(self, program_text):
-            _ = program_text
-            return self.file_path
+            vhdl_src_file = os.path.join(self.path, self.get_filename())
+            with open(vhdl_src_file, 'w') as cache_file, open(self.file_path, 'r') as vhdl_file:
+                cache_file.write(vhdl_file.read())
+            logger.info("file for generated VHDL: %s", vhdl_src_file)
+            logger.info("generated VHDL program: (((\n%s\n)))", program_text)
+            return vhdl_src_file
 
         vhdlfile._compile = new.instancemethod(_compile, vhdlfile, None)
         #
@@ -541,7 +547,8 @@ class VhdlProject(Project):
             self.files.append(self._generate_wrapper())
 
         for f in self.files:
-            submodule = f._compile(f.codegen(self.indent))
+            f_src = f.codegen(self.indent)
+            submodule = f._compile(f_src)
             if submodule:
                 self._module._link_in(submodule)
         return self._module
