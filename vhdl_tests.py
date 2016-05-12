@@ -96,7 +96,7 @@ class BasicTranslator(VhdlLazySpecializedFunction):
             hw_file_path = os.path.dirname(__file__) + "/src/hw/"
             prebuilt_files = []
             for fn in glob.glob(hw_file_path + "*"):
-                fname = fn.lstrip(hw_file_path).rstrip(".vhd").lower()
+                fname = os.path.basename(os.path.splitext(fn)[0])
                 prebuilt_files.append(VhdlFile.from_prebuilt(name=fname, path=fn))
             #
             return [wrapper_file, accel_file] + prebuilt_files
@@ -125,20 +125,7 @@ class BasicFunction(ConcreteSpecializedFunction):
 
 def specialize(func):
     # generated lazy specialized function
-    specialized_function = BasicTranslator.from_function(func)
-
-    def specializer(*args, **kwargs):
-        try:
-            # try to generate concrete specialized function
-            return specialized_function(*args, **kwargs)
-        except TransformationError:
-            print "specializer failed"
-            return func(*args, **kwargs)
-        else:
-            print "specializer succeded"
-        finally:
-            print traceback.format_exc()
-    return specializer
+    return BasicTranslator.from_function(func)
 
 
 
@@ -202,7 +189,7 @@ def bb_limitTo(valid, x):
 
 @specialize
 def test_func(img):
-    return bb_add(img + 3)
+    return bb_add(img, 3)
 
 # @specialize
 # def test_func(img):
