@@ -4,7 +4,7 @@ import logging
 from collections import namedtuple, defaultdict
 from itertools import izip_longest
 
-from .nodes import VhdlBinaryOp, VhdlConstant, VhdlModule
+from .nodes import VhdlConstant, VhdlModule
 from .nodes import VhdlLibrary, VhdlAnd, PortInfo, Port
 from .nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal
 from .nodes import VhdlSink, VhdlDReg
@@ -242,8 +242,7 @@ class VhdlIRTransformer(ast.NodeTransformer):
             self.symbols[left.name] = vhdl_node
             self.assignments.add(left.name)
         else:
-            vhdl_node = VhdlBinaryOp(prev=[left, right], in_port=[self._connect(left), self._connect(right)],
-                                     op=node.op, out_port=[])
+            raise TransformationError("Unknown Binary Operation")
         return vhdl_node
 
     def visit_SymbolRef(self, node):
