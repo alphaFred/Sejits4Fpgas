@@ -58,6 +58,7 @@ class VhdlCodegen(ast.NodeVisitor):
         return " " * self.indent
 
     def visit_VhdlModule(self, node):
+        """Visit VhdlModule node and generate code."""
         self.src_code += self._generate_libs(node) + "\n\n"
         #
         port_src = self._port_block((node.in_port, node.out_port))
