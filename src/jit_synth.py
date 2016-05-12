@@ -153,18 +153,36 @@ class VhdlSynthModule(object):
 class VhdlLazySpecializedFunction(LazySpecializedFunction):
 
     def __init__(self, py_ast=None, sub_dir=None, backend_name="default", py_func=None):
+        """Extend existing LazySpecializedFunction with error handling.
+
+        Extends CTree's LazySpecializedFunction with error handling and default execution. Herefore the by py_func is
+        added as a new parameter besides its AST representation, passed as py_ast.
+
+        :param py_ast: Python AST representation of py_func
+        :param sub_dir: sub directory
+        :param backend_name: Unused in VHDL Back-End
+        :type backend_name: str
+        :param py_func: Python function which is also passed in its AST representation as py_ast
+        :type py_func: function
+
+        """
         self.py_func = py_func
         super(VhdlLazySpecializedFunction, self).__init__(py_ast, sub_dir, backend_name)
 
     def __call__(self, *args, **kwargs):
-        """ Call superclass's call method with error handling.
+        """ Added error-handling with Python fall-back around super.__call__.
 
-        ..todo:: refine cache cleaning in error case
+        If calling the __call__ method of the super-class raises and TransformationError exeption, the passed Python
+        function will be called instead of an specialized version. In case of an TransformationError, the cache is
+        cleared.
+
+        .. todo:: refine cache cleaning in error case
         """
         ret = None
         try:
             ret = super(VhdlLazySpecializedFunction, self).__call__(*args, **kwargs)
         except TransformationError:
+            print "Calling Python function ..."
             subprocess.call(["ctree", "-cc"])
             ret = self.py_func(*args, **kwargs)
         finally:
