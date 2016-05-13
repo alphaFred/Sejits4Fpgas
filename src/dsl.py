@@ -117,6 +117,22 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
                              library="work.Convolve")
         return defn
 
+    def convert(self, node):
+        method = "get_func_def_" + self.backend
+        try:
+            func_def_getter = getattr(self, method)
+        except AttributeError:
+            error_msg = "No function definition provided for %s backend" \
+                        % self.backend
+            raise TransformationError(error_msg)
+
+        func_def = func_def_getter(**self.kwargs)
+        func_def.delay = (2*node.args[2].n) + 11
+        # add function definition to class variable lifted_functions
+        BasicBlockBaseTransformer.lifted_functions.append(LF_Data(node.lineno, func_def))
+        # return C node FunctionCall
+        return FunctionCall(SymbolRef(func_def.name), node.args)
+
 
 class AddTransformer(BasicBlockBaseTransformer):
     func_name = "bb_add"
