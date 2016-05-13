@@ -180,16 +180,16 @@ def bb_limitTo(valid, x):
 #     a = img * 12
 #     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
 
-# @specialize
-# def test_func(img):
-#     c = bb_add(3, img)
-#     b = bb_add(4, img)
-#     a = bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 64, 64, b)
-#     return bb_add(c, a)
-
 @specialize
 def test_func(img):
-    return bb_add(img, 3)
+    c = bb_add(3, img)
+    b = bb_add(4, img)
+    a = bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 64, 64, b)
+    return bb_add(c, a)
+
+# @specialize
+# def test_func(img):
+#     return bb_add(img, 3)
 
 # @specialize
 # def test_func(img):
