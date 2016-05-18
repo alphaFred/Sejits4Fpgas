@@ -51,6 +51,10 @@ class BasicTranslator(VhdlLazySpecializedFunction):
             return {'arg_type': get_dsl_type(args, 32)}
 
     def transform(self, tree, program_config):
+        from src.vhdl_ctree.visual.dot_manager import DotManager
+        # ----
+        DotManager().dot_ast_to_file(tree, file_name=img_path + orig_tree)
+        # ----
         if not VHDL:
             tree = DSLTransformer(backend="C").visit(tree)
             tree = PyBasicConversions().visit(tree)
@@ -64,10 +68,24 @@ class BasicTranslator(VhdlLazySpecializedFunction):
             c_translator = CFile("generated", [lifted_functions, tree])
             return [c_translator]
         else:
+            # ----
+            DotManager().dot_ast_to_file(tree, file_name=img_path + pre_dsl_trans_tree)
+            # ----
+
             tree = DSLTransformer(backend="VHDL").visit(tree)
+
+            # ----
+            DotManager().dot_ast_to_file(tree, file_name=img_path + post_dsl_trans_tree)
+            # ----
+
             tree = PyBasicConversions().visit(tree)
             l_funcs = DSLTransformer.lifted_functions()
             tree = VhdlBaseTransformer(program_config.args_subconfig['arg_type'], l_funcs).visit(tree)
+
+            # ----
+            DotManager().dot_ast_to_file(tree, file_name=img_path + posttrans_tree)
+            # ----
+
             # Generate accelerator file
             accel_file = VhdlFile("generated", body=[tree])
 
@@ -203,6 +221,7 @@ image = data.camera()
 # io.imshow(res)
 # io.show()
 
+# # print res
 print test_func(image)
 print test_func(image)
 print test_func(image)
