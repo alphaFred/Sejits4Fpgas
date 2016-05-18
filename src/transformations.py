@@ -52,8 +52,10 @@ class VhdlBaseTransformer(object):
     def visit(self, tree):
         """Process tree with all transformers sequentially.
 
+        :param tree: CTree IR ast
+
         .. note::
-            Each transformer class that should be applied to the tree must be called within this method
+            Each transformer that should be applied to the tree must be called within this method
         """
         from src.vhdl_ctree.visual.dot_manager import DotManager
         img_path = "/home/philipp/University/M4/Masterthesis/src/VhdlSejits/vhdl_sejits/images/"
@@ -108,64 +110,17 @@ class VhdlIRTransformer(ast.NodeTransformer):
 
         This transformer class is responsible for translating certain CTree nodes into VHDL IR nodes
         and changing the line-by-line AST structure of the input into an data flow DAG representation.
-
-        The currently supported CTree node classes are:
-            - MultiNode
-            - FunctionDecl
-            - FunctionCall
-            - BinaryOp
-            - SymbolRef
-            - Array
-            - Tuple
-            - Constant
-            - Return
-
-        The transformation into the DAG structure is achieved by caching visited SymbolRefs and inserting the
-        cached values at future occurences in the tree.
-
-        :Example:
-
-        >>> def kernel(img):
-        >>>     a = bb_add(img, 3)
-        >>>     return bb_add(img, a)
-
-        Is transformed by CTree to:
-
-        .. graphviz::
-
-            digraph mytree {
-                n140493261637008 [label="MultiNode\\n"];
-                n140493261637008 -> n140493262198608 [label="body[0]"];
-                n140493262198608 [label="FunctionDecl\\nvoid apply(...)"];
-                n140493262198608 -> n140493262197840 [label="params[0]"];
-                n140493262197840 [label="SymbolRef\\nimg"];
-                n140493262198608 -> n140493262198032 [label="defn[0]"];
-                n140493262198032 [label="BinaryOp\\nAssign"];
-                n140493262198032 -> n140493258647568 [label="left"];
-                n140493258647568 [label="SymbolRef\\na"];
-                n140493262198032 -> n140493258648208 [label="right"];
-                n140493258648208 [label="FunctionCall"];
-                n140493258648208 -> n140493258648144 [label="func"];
-                n140493258648144 [label="SymbolRef\\nbb_add"];
-                n140493258648208 -> n140493258648528 [label="args[0]"];
-                n140493258648528 [label="SymbolRef\\nimg"];
-                n140493258648208 -> n140493258648592 [label="args[1]"];
-                n140493258648592 [label="Constant\\n3"];
-                n140493262198608 -> n140493262198352 [label="defn[1]"];
-                n140493262198352 [label="Return"];
-                n140493262198352 -> n140493258648464 [label="value"];
-                n140493258648464 [label="FunctionCall"];
-                n140493258648464 -> n140493258648400 [label="func"];
-                n140493258648400 [label="SymbolRef\\nbb_add"];
-                n140493258648464 -> n140493258647696 [label="args[0]"];
-                n140493258647696 [label="SymbolRef\\nimg"];
-                n140493258648464 -> n140493258648656 [label="args[1]"];
-                n140493258648656 [label="SymbolRef\\na"];
-            }
-
     """
 
     def __init__(self, ipt_param_types, lifted_functions, axi_stream_width=32):
+        """
+        :param ipt_param_types: type info for all kernel parameters
+        :type ipt_param_types: list of VhdlType objects
+        :param lifted_functions: function call specialized by DSL specializer transformer
+        :type lifted_functions: list of VhdlComponent objects
+        :param axi_stream_width: width of hardware accelerator interface in bits
+        :type axi_stream_width: int
+        """
         self.symbols = {}
         self.assignments = set()
         self.n_con_signals = defaultdict(int)
@@ -179,11 +134,11 @@ class VhdlIRTransformer(ast.NodeTransformer):
     def _process_params(self, params):
         pparams = []
         #
-        if len(self.ipt_param_types) > len(params):
-            raise TransformationError("Too many input parameter types: {0} expected, got {1}".
-                                      format(len(params), len(self.ipt_param_types)))
+        if len(self.ipt_param_types) != len(params):
+            raise TransformationError("Number of input parameter typesdoes not match parameters: {0} expected, got {1}"
+                                      .format(len(params), len(self.ipt_param_types)))
         #
-        for param, p_type in izip_longest(params, self.ipt_param_types):
+        for param, p_type in zip(params, self.ipt_param_types):
             self.symbols[param.name] = VhdlSource(param.name, p_type if p_type is not None else param.vhdl_type)
             pparams.append(self.symbols[param.name])
         return pparams
