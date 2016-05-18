@@ -223,5 +223,3 @@ image = data.camera()
 
 # # print res
 print test_func(image)
-print test_func(image)
-print test_func(image)
