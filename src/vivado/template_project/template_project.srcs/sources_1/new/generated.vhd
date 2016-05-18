@@ -14,22 +14,22 @@ entity apply is
          READY_OUT : out std_logic;
          MODULE_OUT : out std_logic_vector(31 downto 0));                end apply;
 
-architecture BEHAVE of apply is                              signal BB_ADD_READY_OUT_0 : std_logic;
-    signal BB_ADD_VALID_OUT_0 : std_logic;
-    signal BB_ADD_OUT_0 : std_logic_vector(31 downto 0);
+architecture BEHAVE of apply is                              signal BB_MUL_READY_OUT_0 : std_logic;
+    signal BB_MUL_VALID_OUT_0 : std_logic;
+    signal BB_MUL_OUT_0 : std_logic_vector(31 downto 0);
     signal BB_CONVOLVE_READY_OUT_0 : std_logic;
     signal BB_CONVOLVE_VALID_OUT_0 : std_logic;
     signal BB_CONVOLVE_OUT_0 : std_logic_vector(31 downto 0);                      begin                          
-VhdlComponent : entity work.AddBB                       
+VhdlComponent : entity work.MulBB                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VALID_IN,
              READY_IN => READY_IN,
              LEFT => img,
-             RIGHT => std_logic_vector(to_signed(3, 32)),
-             READY_OUT => BB_ADD_READY_OUT_0,
-             VALID_OUT => BB_ADD_VALID_OUT_0,
-             ADD_OUT => BB_ADD_OUT_0); 
+             RIGHT => std_logic_vector(to_signed(2, 32)),
+             READY_OUT => BB_MUL_READY_OUT_0,
+             VALID_OUT => BB_MUL_VALID_OUT_0,
+             MUL_OUT => BB_MUL_OUT_0); 
 
 VhdlComponent_1 : entity work.Convolve                       
     generic map(FILTERMATRIX => (1, 2, 1, 2, 4, 2, 1, 2, 1),
@@ -38,9 +38,9 @@ VhdlComponent_1 : entity work.Convolve
                 IMG_HEIGHT => 480)                       
     port map(CLK => CLK,
              RST => RST,
-             VALID_IN => BB_ADD_VALID_OUT_0,
-             READY_IN => BB_ADD_READY_OUT_0,
-             DATA_IN => BB_ADD_OUT_0,
+             VALID_IN => BB_MUL_VALID_OUT_0,
+             READY_IN => BB_MUL_READY_OUT_0,
+             DATA_IN => BB_MUL_OUT_0,
              READY_OUT => BB_CONVOLVE_READY_OUT_0,
              VALID_OUT => BB_CONVOLVE_VALID_OUT_0,
              DATA_OUT => BB_CONVOLVE_OUT_0); 
