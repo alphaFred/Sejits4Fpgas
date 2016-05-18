@@ -30,14 +30,11 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-VhdlSyntData = namedtuple("VhdlSyntData", ["main_file", "file_paths"])
-
-
 class VhdlSynthModule(object):
-    """Manages synthetisation of generated AST."""
+
+    """ Manages synthetisation of all VhdlFiles in VhdlProject."""
 
     def __init__(self):
-        """Initialize VhdlSynthModule instance."""
         self._linked_files = []
         # vivado project folder
         self.v_proj_fol = os.path.dirname(__file__) + CONFIG.get("vivado", "PROJ_FOLDER_PATH")
@@ -65,6 +62,11 @@ class VhdlSynthModule(object):
             return "Concrete Specialized Function called on x86"
 
     def _link_in(self, submodule):
+        """Add submodule to list of linked files.
+
+        :param submodule: path to VHDL file
+        :type submodule: str
+        """
         self._linked_files.append(submodule)
 
     def get_callable(self, entry_point_name, entry_point_typesig):
@@ -74,7 +76,7 @@ class VhdlSynthModule(object):
         return self
 
     def _link_to_vivado_project(self):
-        """Link all files to vivado template project."""
+        """Link all files to Vivado template project."""
         # vivado src folder
         v_src_fol = self.v_proj_fol + "template_project.srcs/sources_1/new/"
 
@@ -137,12 +139,7 @@ class VhdlSynthModule(object):
                     new_tcl.write(line)
 
     def _activate(self):
-        """Activate synthesis subprocess."""
-        # copy template project to synthesis directory
-        # copy all vhdl files to template project ip folder
-        # integrate vhdl files into templare project
-        #   multiply process pipeline according to input width and data width
-        #   integrate and connect pipelines into axi stream ip
+        """Initialize Vivado synthesis subprocess."""
         if os.uname()[-1] == "armv7l":
             libHwIntfc = c.cdll.LoadLibrary('/home/linaro/libHwIntfc.so')
             libHwIntfc.process1d_img.argtypes = [ctl.ndpointer(np.uint32, ndim=1, flags='C'), c.c_uint]
@@ -150,13 +147,13 @@ class VhdlSynthModule(object):
         else:
             pass
 
+
 class VhdlLazySpecializedFunction(LazySpecializedFunction):
 
     def __init__(self, py_ast=None, sub_dir=None, backend_name="default", py_func=None):
-        """Extend existing LazySpecializedFunction with error handling.
+        """Extend existing LazySpecializedFunction with error handling and default execution.
 
-        Extends CTree's LazySpecializedFunction with error handling and default execution. Herefore the by py_func is
-        added as a new parameter besides its AST representation, passed as py_ast.
+        Herefore the parameter py_func is added  in order to also pass the Python function of the AST passed to py_ast.
 
         :param py_ast: Python AST representation of py_func
         :param sub_dir: sub directory
@@ -172,7 +169,7 @@ class VhdlLazySpecializedFunction(LazySpecializedFunction):
     def __call__(self, *args, **kwargs):
         """ Added error-handling with Python fall-back around super.__call__.
 
-        If calling the __call__ method of the super-class raises and TransformationError exeption, the passed Python
+        If calling the __call__ method of the super-class raises an TransformationError exeption, the passed Python
         function will be called instead of an specialized version. In case of an TransformationError, the cache is
         cleared.
 
