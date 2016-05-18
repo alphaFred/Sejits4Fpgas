@@ -100,6 +100,11 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
             data_width = kwargs["DataWidth"]
         else:
             data_width = 32
+
+        if "delay" in kwargs:
+            delay = kwargs["delay"]
+        else:
+            delay = -1
         #
         inport_info = [GenericInfo("FILTERMATRIX",
                                    VhdlType.VhdlArray(9, VhdlType.VhdlInteger, -20, 20, type_def="filtMASK")),
@@ -111,7 +116,7 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
         outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         defn = VhdlComponent(name=self.func_name,
                              generic_slice=slice(0, 4),
-                             delay=10,
+                             delay=delay,
                              inport_info=inport_info,
                              outport_info=outport_info,
                              library="work.Convolve")
@@ -126,8 +131,7 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
                         % self.backend
             raise TransformationError(error_msg)
 
-        func_def = func_def_getter(**self.kwargs)
-        func_def.delay = (2*node.args[2].n) + 11
+        func_def = func_def_getter(delay=(2*node.args[2].n) + 11, **self.kwargs)
         # add function definition to class variable lifted_functions
         BasicBlockBaseTransformer.lifted_functions.append(LF_Data(node.lineno, func_def))
         # return C node FunctionCall
