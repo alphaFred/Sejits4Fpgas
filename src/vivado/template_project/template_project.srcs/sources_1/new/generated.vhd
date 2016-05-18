@@ -61,8 +61,8 @@ VhdlDReg_1 : entity work.DReg
 VhdlComponent : entity work.Convolve                       
     generic map(FILTERMATRIX => (-1, 0, 1, -2, 0, 2, -1, 0, 1),
                 FILTER_SCALE => 16,
-                IMG_WIDTH => 64,
-                IMG_HEIGHT => 64)                       
+                IMG_WIDTH => 640,
+                IMG_HEIGHT => 480)                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VALID_IN,
