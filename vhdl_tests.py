@@ -200,7 +200,7 @@ def bb_limitTo(valid, x):
 
 @specialize
 def test_func(img):
-    return bb_add(img, 3)
+    return bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 640, 480, bb_add(img, 3))
 
 # @specialize
 # def test_func(img):
