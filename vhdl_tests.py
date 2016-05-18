@@ -198,14 +198,14 @@ def bb_limitTo(valid, x):
 #     c = bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 640, 480, b)
 #     return bb_add(img, c)
 
-# @specialize
-# def test_func(img):
-#     return bb_add(img, 3)
-
 @specialize
 def test_func(img):
-    a = bb_add(img, 3)
-    return bb_add(img, a)
+    return bb_add(img, 3)
+
+# @specialize
+# def test_func(img):
+#     a = bb_add(img, 3)
+#     return bb_add(img, a)
 
 
 # transformed_func = BasicTranslator.from_function(test_func)
