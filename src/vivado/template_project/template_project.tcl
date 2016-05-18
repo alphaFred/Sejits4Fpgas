@@ -34,7 +34,7 @@
 #*****************************************************************************************
 
 # Set the reference directory for source file relative paths (by default the value is script directory path)
-set origin_dir "/home/philipp/Thesis/src/VhdlSejits/vhdl_sejits/src/vivado/template_project"
+set origin_dir "/home/philipp/University/M4/Masterthesis/src/VhdlSejits/vhdl_sejits/src/vivado/template_project"
 # Set the directory path for the original project from where this script was exported
 set orig_proj_dir "[file normalize "$origin_dir/"]"
 

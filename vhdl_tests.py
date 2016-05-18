@@ -6,6 +6,8 @@ import glob
 import traceback
 
 from skimage import data
+from scipy import ndimage
+import numpy as np
 
 from src.vhdl_ctree.types import get_ctype
 from src.vhdl_ctree.nodes import Project
@@ -49,10 +51,6 @@ class BasicTranslator(VhdlLazySpecializedFunction):
             return {'arg_type': get_dsl_type(args, 32)}
 
     def transform(self, tree, program_config):
-        from src.vhdl_ctree.visual.dot_manager import DotManager
-        # ----
-        DotManager().dot_ast_to_file(tree, file_name=img_path + orig_tree)
-        # ----
         if not VHDL:
             tree = DSLTransformer(backend="C").visit(tree)
             tree = PyBasicConversions().visit(tree)
@@ -66,24 +64,10 @@ class BasicTranslator(VhdlLazySpecializedFunction):
             c_translator = CFile("generated", [lifted_functions, tree])
             return [c_translator]
         else:
-            # ----
-            DotManager().dot_ast_to_file(tree, file_name=img_path + pre_dsl_trans_tree)
-            # ----
-
             tree = DSLTransformer(backend="VHDL").visit(tree)
-
-            # ----
-            DotManager().dot_ast_to_file(tree, file_name=img_path + post_dsl_trans_tree)
-            # ----
-
             tree = PyBasicConversions().visit(tree)
             l_funcs = DSLTransformer.lifted_functions()
             tree = VhdlBaseTransformer(program_config.args_subconfig['arg_type'], l_funcs).visit(tree)
-
-            # ----
-            DotManager().dot_ast_to_file(tree, file_name=img_path + posttrans_tree)
-            # ----
-
             # Generate accelerator file
             accel_file = VhdlFile("generated", body=[tree])
 
@@ -127,10 +111,18 @@ def specialize(func):
     # generated lazy specialized function
     return BasicTranslator.from_function(func)
 
+import time
 
 
 def bb_convolve(mask, divisor, width, height, img):
-    return img * 2
+    k = np.array([[mask[0],mask[1],mask[2]],[mask[3],mask[4],mask[5]],[mask[6],mask[7],mask[8]]])
+    k = k.astype(np.float)
+    k = k/divisor
+    st = time.time()
+    res = ndimage.convolve(img, k, mode='constant', cval=0.0)
+    et = time.time()
+    print "took {}sec".format(et-st)
+    return res
 
 def bb_split(i, n):
     return n[i]
@@ -180,12 +172,13 @@ def bb_limitTo(valid, x):
 #     a = img * 12
 #     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
 
+# from skimage import io
 @specialize
 def test_func(img):
-    c = bb_add(3, img)
-    b = bb_add(4, img)
-    a = bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 64, 64, b)
-    return bb_add(c, a)
+    a = bb_convolve((-1, 0, 1, -2, 0, 2, -1, 0, 1), 16, 64, 64, img)
+    b = bb_sub(img, a)
+    c = bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 640, 480, b)
+    return bb_add(img, c)
 
 # @specialize
 # def test_func(img):
@@ -199,10 +192,17 @@ def test_func(img):
 
 # transformed_func = BasicTranslator.from_function(test_func)
 
-image = data.coins()
+image = data.camera()
 
-res = test_func(image)
-print res
+# print image, image.shape
+
+# res = test_func(image)
+
+# print res
+
+# io.imshow(res)
+# io.show()
+
 print test_func(image)
 print test_func(image)
 print test_func(image)
