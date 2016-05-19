@@ -18,6 +18,8 @@ from nodes import VhdlNode
 from nodes import VhdlSignal
 from nodes import VhdlSink
 from nodes import VhdlDReg
+from nodes import VhdlSignalSplit
+from nodes import VhdlConcatenation
 from types import VhdlType
 from utils import CONFIG
 from utils import TransformationError
@@ -70,15 +72,15 @@ class VhdlBaseTransformer(object):
         from src.vhdl_ctree.visual.dot_manager import DotManager
         img_path = "/home/philipp/University/M4/Masterthesis/src/VhdlSejits/vhdl_sejits/images/"
         # ----
-        DotManager().dot_ast_to_file(tree, file_name=img_path + "raw_tree")
+        # DotManager().dot_ast_to_file(tree, file_name=img_path + "raw_tree")
         tree = VhdlKwdTransformer().visit(tree)
         # DotManager().dot_ast_to_file(tree, file_name=img_path + "kwd_trans_tree")
         tree = VhdlIRTransformer(self.ipt_params, self.lifted_functions).visit(tree)
         # DotManager().dot_ast_to_file(tree, file_name=img_path + "ir_trans_tree")
         tree = VhdlGraphTransformer().visit(tree)
-        # DotManager().dot_ast_to_file(tree, file_name=img_path + "graph_trans_tree")
+        DotManager().dot_ast_to_file(tree, file_name=img_path + "graph_trans_tree")
         tree = VhdlPortTransformer().visit(tree)
-        # DotManager().dot_ast_to_file(tree, file_name=img_path + "port_trans_tree")
+        DotManager().dot_ast_to_file(tree, file_name=img_path + "port_trans_tree")
         return tree
 
 
@@ -333,20 +335,63 @@ class VhdlGraphTransformer(ast.NodeTransformer):
         :type norm_prev_d: int
         :param sync_ds: list of synchronization delays, in essence the minimum buffer width necessary
         :type sync_ds: list of int
+
+        .. todo:: Add handling of VhdlSyncNode delay, especially passing a varaiable delay to the orignal next node
+
+        .. todo:: Consider default dict for connection edge id counter
+
         """
         sync_node = VhdlSyncNode(prev=None, sync_d=max(sync_ds))
+        sync_node_new_in_ports = []
+        overall_in_ports = []
+        overall_prev = []
         # retime and synchronize each edge to match maximum delay
         for idx, prev, edge, d in zip(range(len(node.prev)), node.prev, node.in_port, norm_prev_d):
-            if d > 0 and type(edge) is not VhdlConstant:
-                # generate unique connection signal name
-                c_id = self.con_edge_id
-                self.con_edge_id += 1
-                #
-                con_edge = VhdlSignal(name=edge.name + "_DREG_" + str(c_id), vhdl_type=edge.vhdl_type)
-                dreg = VhdlDReg(prev=[prev], delay=d, in_port=[edge], out_port=[con_edge])
-                node.prev[idx] = dreg
-                node.in_port[idx] = con_edge
+            if type(edge) is not VhdlConstant:
+                if d > 0:
+                    # generate unique connection signal name
+                    c_id = self.con_edge_id
+                    self.con_edge_id += 1
+                    #
+                    con_edge = VhdlSignal(name=edge.name + "_DREG_" + str(c_id), vhdl_type=edge.vhdl_type)
+                    dreg = VhdlDReg(prev=[prev], delay=d, in_port=[edge], out_port=[con_edge])
+                    sync_node.prev.append(dreg)
+                    sync_node_new_in_ports.append(con_edge)
+                else:
+                    sync_node.prev.append(prev)
+                    sync_node_new_in_ports.append(edge)
+                overall_in_ports.append(None)
+                overall_prev.append(None)
+            else:
+                overall_prev.append(prev)
+                overall_in_ports.append(edge)
+        # append inports to sync node
+        sync_node.in_port.append(VhdlConcatenation(sync_node_new_in_ports))
+
+        # create sync_node output
+        c_id = self.con_edge_id
+        self.con_edge_id += 1
+        con_size = sum([ce.vhdl_type.size for ce in sync_node.in_port])
+        sync_output_edge = VhdlSignal(name="SYNC_NODE_OUT_" + str(c_id),
+                                      vhdl_type=VhdlType.VhdlStdLogicVector(size=con_size))
+        sync_node.out_port.append(sync_output_edge)
+
+        # connect sync_node with active node
+        sig_sync_idx = 0
+        sig_width_cnt = 0
+        for idx, port in enumerate(overall_in_ports):
+            if port is None:
+                s_min = sig_width_cnt
+                s_max = sig_width_cnt + sync_node_new_in_ports[sig_sync_idx].vhdl_type.size
+                node.in_port[idx] = VhdlSignalSplit(sync_output_edge, slice(s_min, s_max))
+                sig_width_cnt += sync_node_new_in_ports[sig_sync_idx].vhdl_type.size
+                sig_sync_idx += 1
+            else:
+                node.in_port[idx] = port
+
         node.dprev = max_d
+        overall_prev = [prev for prev in overall_prev if prev is not None]
+        node.prev = [sync_node] + overall_prev
 
     def retime(self, node):
         need_sync = False
@@ -365,7 +410,7 @@ class VhdlGraphTransformer(ast.NodeTransformer):
         norm_prev_d = [max_d - d for d in prev_d]
         #
         if need_sync:
-            pass
+            self._retime_synced(node, max_d, norm_prev_d, sync_ds)
         else:
             self._retime_unsynced(node, max_d, norm_prev_d)
 
@@ -431,6 +476,11 @@ class VhdlPortTransformer(ast.NodeVisitor):
         return node
 
     def visit_VhdlDReg(self, node):
+        map(self.visit, node.prev)
+        self.finalize_ports(node)
+        return node
+
+    def visit_VhdlSyncNode(self, node):
         map(self.visit, node.prev)
         self.finalize_ports(node)
         return node
