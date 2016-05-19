@@ -28,5 +28,7 @@
 /src/vivado/template_project/template_project.sav
 /src/vivado/template_project/template_project.xpr
 /src/vivado/template_project/template_project_backup.xpr
+/src/vivado/template_project/accel_test_behav.wcfg
+/src/vivado/template_project/template_project.srcs/sim_1/*
 /images/*
 /compiled/*
