@@ -26,8 +26,8 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity DReg is
     Generic (
-        WIDTH   : positive;
-        LENGTH  : positive
+        WIDTH   : positive :=32;
+        LENGTH  : positive :=4
     );
     Port (
         CLK : in STD_LOGIC;
@@ -47,7 +47,7 @@ architecture Behavioral of DReg is
     TYPE iBus_VALID is array(LENGTH-1 downto 0) of std_logic;
     --
     signal sRegBus : iBus;
-    signal ValidsRegBus : iBus_VALID;
+    signal ValidsRegBus : iBus_VALID := (others => '0');
 
     COMPONENT vector_dff_block
         Generic (
@@ -69,51 +69,102 @@ architecture Behavioral of DReg is
             Q   : out STD_LOGIC
         );
     END COMPONENT;
-begin
-        shiftReg: for i in 1 to LENGTH generate
-        begin
-            dffLeft: if i = 1 generate
-            begin
-                dff: component vector_dff_block
-                    generic map (
-                        WIDTH => WIDTH
-                    )
-                    port map (
-                        D => DREG_IN,
-                        CLK => CLK,
-                        RST => RST,
-                        Q => sRegBus(i)
-                    );
-            end generate dffLeft;
-            --
-            dffOthers: if (i > 1 AND i < LENGTH) generate
-            begin
-                dff: component vector_dff_block
-                    generic map (
-                        WIDTH => WIDTH)
-                    port map (
-                        D => sRegBus(i-1),
-                        CLK => CLK,
-                        RST => RST,
-                        Q => sRegBus(i)
-                    );
-            end generate dffOthers;
-            --
-            dffRight: if i = LENGTH generate
-            begin
-                dff: component vector_dff_block
-                    generic map (
-                        WIDTH => WIDTH)
-                    port map (
-                        D => sRegBus(i-1),
-                        CLK => CLK,
-                        RST => RST,
-                        Q => DREG_OUT
-                    );
-            end generate dffRight;
-        end generate shiftReg;
 
-        validReg: for i in 1 to LENGTH generate
+    constant depth_select_bits : positive := 2; -- specify depth
+
+    signal srl_select : std_logic_vector(LENGTH-1 downto 0); -- Dynamic select input to SRL
+    signal srl_out : std_logic_vector(WIDTH-1 downto 0); -- intermediate signal between srl and register
+
+    type array_slv is array (WIDTH-1 downto 0) of std_logic_vector(LENGTH-1 downto 0);
+    signal shift_reg : array_slv;
+begin
+    -- Add the below after begin keyword in architecture
+    process (CLK)
+    begin
+       if CLK'event and CLK='1' then
+          if VALID_IN = '1' then
+           for i in 0 to WIDTH-1 loop
+               shift_reg(i) <= shift_reg(i)(LENGTH-2 downto 0) & DREG_IN(i);
+           end loop;
+          end if;
+       end if;
+    end process;
+
+    process(shift_reg,srl_select)
+    begin
+       for i in 0 to WIDTH-1 loop
+          srl_out(i) <= shift_reg(i)(LENGTH-3);
+       end loop;
+    end process;
+
+    process(CLK)
+    begin
+      if CLK'event and CLK='1' then
+         if VALID_IN = '1' then
+           DREG_OUT <= srl_out;
+         end if;
+      end if;
+    end process;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    --    shiftReg: for i in 1 to LENGTH generate
+    --    begin
+    --        dffLeft: if i = 1 generate
+    --        begin
+    --            dff: component vector_dff_block
+    --                generic map (
+    --                    WIDTH => WIDTH
+    --                )
+    --                port map (
+    --                    D => DREG_IN,
+    --                    CLK => CLK,
+    --                    RST => RST,
+    --                    Q => sRegBus(i)
+    --                );
+    --        end generate dffLeft;
+    --        --
+    --        dffOthers: if (i > 1 AND i < LENGTH) generate
+    --        begin
+    --            dff: component vector_dff_block
+    --                generic map (
+    --                    WIDTH => WIDTH)
+    --                port map (
+    --                    D => sRegBus(i-1),
+    --                    CLK => CLK,
+    --                    RST => RST,
+    --                    Q => sRegBus(i)
+    --                );
+    --        end generate dffOthers;
+    --        --
+    --        dffRight: if i = LENGTH generate
+    --        begin
+    --            dff: component vector_dff_block
+    --                generic map (
+    --                    WIDTH => WIDTH)
+    --                port map (
+    --                    D => sRegBus(i-1),
+    --                    CLK => CLK,
+    --                    RST => RST,
+    --                    Q => DREG_OUT
+    --                );
+    --        end generate dffRight;
+    --    end generate shiftReg;
+
+        validReg: for i in 1 to LENGTH-1 generate
         begin
             validdffLeft: if i = 1 generate
             begin
@@ -137,7 +188,7 @@ begin
                     );
             end generate dffOthers;
             --
-            dffRight: if i = LENGTH generate
+            dffRight: if i = LENGTH-1 generate
             begin
                 valid_dff: component logic_dff_block
                     port map (
