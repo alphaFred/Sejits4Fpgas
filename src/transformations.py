@@ -1,17 +1,27 @@
 """Transformations."""
 import ast
 import logging
-from collections import namedtuple, defaultdict
+from collections import namedtuple
+from collections import defaultdict
 from itertools import izip_longest
 
-from .nodes import VhdlConstant, VhdlModule
-from .nodes import VhdlLibrary, VhdlAnd, PortInfo, Port
-from .nodes import VhdlReturn, VhdlSource, VhdlNode, VhdlSignal
-from .nodes import VhdlSink, VhdlDReg
-from .vhdl_ctree.c.nodes import Op
-from .types import VhdlType
-from .utils import CONFIG
-from .utils import TransformationError
+from nodes import VhdlSyncNode
+from nodes import VhdlConstant
+from nodes import VhdlModule
+from nodes import VhdlLibrary
+from nodes import VhdlAnd
+from nodes import PortInfo
+from nodes import Port
+from nodes import VhdlReturn
+from nodes import VhdlSource
+from nodes import VhdlNode
+from nodes import VhdlSignal
+from nodes import VhdlSink
+from nodes import VhdlDReg
+from types import VhdlType
+from utils import CONFIG
+from utils import TransformationError
+from vhdl_ctree.c.nodes import Op
 
 
 logger = logging.getLogger(__name__)
@@ -289,14 +299,18 @@ class VhdlGraphTransformer(ast.NodeTransformer):
         self.retime(node)
         return node
 
-    def retime(self, node):
-        prev_d = [prev.d + prev.dprev for prev in node.prev]
-        max_d = max(prev_d)
-        norm_prev_d = [max_d - d for d in prev_d]
+    def _retime_unsynced(self, node, max_d, norm_prev_d):
+        """ Retime node without adding synchronization.
 
-        # retime every edge to match maximum delay
-        for idx, prev, edge, d in zip(range(len(node.prev)), node.prev,
-                                      node.in_port, norm_prev_d):
+        :param node: active node
+        :type node: VhdlNode subclass
+        :param max_d: maximum edge delay
+        :type max_d: int
+        :param norm_prev_d: normalized delay to be added to each edge
+        :type norm_prev_d: int
+        """
+        # retime each edge to match maximum delay
+        for idx, prev, edge, d in zip(range(len(node.prev)), node.prev, node.in_port, norm_prev_d):
             if d > 0 and type(edge) is not VhdlConstant:
                 # generate unique connection signal name
                 c_id = self.con_edge_id
@@ -307,6 +321,56 @@ class VhdlGraphTransformer(ast.NodeTransformer):
                 node.prev[idx] = dreg
                 node.in_port[idx] = con_edge
         node.dprev = max_d
+
+    def _retime_synced(self, node, max_d, norm_prev_d, sync_ds):
+        """Retime node with synchronization
+
+        :param node: active node
+        :type node: VhdlNode subclass
+        :param max_d: maximum edge delay
+        :type max_d: int
+        :param norm_prev_d: normalized delay to be added to each edge
+        :type norm_prev_d: int
+        :param sync_ds: list of synchronization delays, in essence the minimum buffer width necessary
+        :type sync_ds: list of int
+        """
+        sync_node = VhdlSyncNode(prev=None, sync_d=max(sync_ds))
+        # retime and synchronize each edge to match maximum delay
+        for idx, prev, edge, d in zip(range(len(node.prev)), node.prev, node.in_port, norm_prev_d):
+            if d > 0 and type(edge) is not VhdlConstant:
+                # generate unique connection signal name
+                c_id = self.con_edge_id
+                self.con_edge_id += 1
+                #
+                con_edge = VhdlSignal(name=edge.name + "_DREG_" + str(c_id), vhdl_type=edge.vhdl_type)
+                dreg = VhdlDReg(prev=[prev], delay=d, in_port=[edge], out_port=[con_edge])
+                node.prev[idx] = dreg
+                node.in_port[idx] = con_edge
+        node.dprev = max_d
+
+    def retime(self, node):
+        need_sync = False
+        sync_ds = []
+        prev_d = []
+        for prev in node.prev:
+            try:
+                prev_d.append(prev.d + prev.dprev)
+            except TypeError:
+                """ Detected node with variable delay"""
+                prev_d.append(prev.d[0] + prev.dprev)
+                need_sync = True
+                sync_ds.append(prev.d[1] - prev.d[0])
+        max_d = max(prev_d)
+        # normalize delay by calculating difference to maximum edge delay
+        norm_prev_d = [max_d - d for d in prev_d]
+        #
+        if need_sync:
+            pass
+        else:
+            self._retime_unsynced(node, max_d, norm_prev_d)
+
+
+
 
 
 class VhdlPortTransformer(ast.NodeVisitor):
