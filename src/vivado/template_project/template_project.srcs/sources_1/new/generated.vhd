@@ -16,19 +16,25 @@ entity apply is
 
 architecture BEHAVE of apply is                              signal VhdlDReg_READY_OUT_1 : std_logic;
     signal VhdlDReg_VALID_OUT_1 : std_logic;
-    signal img_DREG_1 : std_logic_vector(31 downto 0);
+    signal img_DREG_2 : std_logic_vector(31 downto 0);
     signal VhdlDReg_READY_OUT_0 : std_logic;
     signal VhdlDReg_VALID_OUT_0 : std_logic;
     signal img_DREG_0 : std_logic_vector(31 downto 0);
     signal BB_CONVOLVE_READY_OUT_0 : std_logic;
     signal BB_CONVOLVE_VALID_OUT_0 : std_logic;
     signal a : std_logic_vector(31 downto 0);
+    signal VhdlSyncNode_READY_OUT_0 : std_logic;
+    signal VhdlSyncNode_VALID_OUT_0 : std_logic;
+    signal SYNC_NODE_OUT_1 : std_logic_vector(63 downto 0);
     signal BB_SUB_READY_OUT_0 : std_logic;
     signal BB_SUB_VALID_OUT_0 : std_logic;
     signal b : std_logic_vector(31 downto 0);
     signal BB_CONVOLVE_READY_OUT_1 : std_logic;
     signal BB_CONVOLVE_VALID_OUT_1 : std_logic;
     signal c : std_logic_vector(31 downto 0);
+    signal VhdlSyncNode_READY_OUT_1 : std_logic;
+    signal VhdlSyncNode_VALID_OUT_1 : std_logic;
+    signal SYNC_NODE_OUT_3 : std_logic_vector(63 downto 0);
     signal BB_ADD_READY_OUT_0 : std_logic;
     signal BB_ADD_VALID_OUT_0 : std_logic;
     signal BB_ADD_OUT_0 : std_logic_vector(31 downto 0);                      begin                          
@@ -43,7 +49,7 @@ VhdlDReg : entity work.DReg
              DREG_IN => img,
              READY_OUT => VhdlDReg_READY_OUT_1,
              VALID_OUT => VhdlDReg_VALID_OUT_1,
-             DREG_OUT => img_DREG_1); 
+             DREG_OUT => img_DREG_2); 
 
 
 VhdlDReg_1 : entity work.DReg                       
@@ -72,13 +78,23 @@ VhdlComponent : entity work.Convolve
              VALID_OUT => BB_CONVOLVE_VALID_OUT_0,
              DATA_OUT => a); 
 
-VhdlComponent_1 : entity work.SubBB                       
+VhdlSyncNode : entity work.SyncNode                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VhdlDReg_VALID_OUT_0 AND BB_CONVOLVE_VALID_OUT_0,
              READY_IN => VhdlDReg_READY_OUT_0 AND BB_CONVOLVE_READY_OUT_0,
-             LEFT => img_DREG_0,
-             RIGHT => a,
+             SYNC_IN => (img_DREG_0 & a),
+             READY_OUT => VhdlSyncNode_READY_OUT_0,
+             VALID_OUT => VhdlSyncNode_VALID_OUT_0,
+             SYNC_OUT => SYNC_NODE_OUT_1); 
+
+VhdlComponent_1 : entity work.SubBB                       
+    port map(CLK => CLK,
+             RST => RST,
+             VALID_IN => VhdlSyncNode_VALID_OUT_0,
+             READY_IN => VhdlSyncNode_READY_OUT_0,
+             LEFT => SYNC_NODE_OUT_1(31 downto 0),
+             RIGHT => SYNC_NODE_OUT_1(63 downto 32),
              READY_OUT => BB_SUB_READY_OUT_0,
              VALID_OUT => BB_SUB_VALID_OUT_0,
              SUB_OUT => b); 
@@ -97,13 +113,23 @@ VhdlComponent_2 : entity work.Convolve
              VALID_OUT => BB_CONVOLVE_VALID_OUT_1,
              DATA_OUT => c); 
 
-VhdlComponent_3 : entity work.AddBB                       
+VhdlSyncNode_1 : entity work.SyncNode                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VhdlDReg_VALID_OUT_1 AND BB_CONVOLVE_VALID_OUT_1,
              READY_IN => VhdlDReg_READY_OUT_1 AND BB_CONVOLVE_READY_OUT_1,
-             LEFT => img_DREG_1,
-             RIGHT => c,
+             SYNC_IN => (img_DREG_2 & c),
+             READY_OUT => VhdlSyncNode_READY_OUT_1,
+             VALID_OUT => VhdlSyncNode_VALID_OUT_1,
+             SYNC_OUT => SYNC_NODE_OUT_3); 
+
+VhdlComponent_3 : entity work.AddBB                       
+    port map(CLK => CLK,
+             RST => RST,
+             VALID_IN => VhdlSyncNode_VALID_OUT_1,
+             READY_IN => VhdlSyncNode_READY_OUT_1,
+             LEFT => SYNC_NODE_OUT_3(31 downto 0),
+             RIGHT => SYNC_NODE_OUT_3(63 downto 32),
              READY_OUT => BB_ADD_READY_OUT_0,
              VALID_OUT => BB_ADD_VALID_OUT_0,
              ADD_OUT => BB_ADD_OUT_0); 

@@ -134,7 +134,7 @@ class VhdlSignalCollection(collections.MutableSequence, VhdlSignal):
     """Base class for signal collections."""
 
     def __init__(self, *args):
-        super(VhdlSignalCollection, self).__init__("", None)
+        super(VhdlSignalCollection, self).__init__(name="", vhdl_type=None)
         #
         self.list = list()
         for arg in args:
@@ -183,6 +183,49 @@ class VhdlAnd(VhdlSignalCollection):
 
     def __str__(self):
         return " AND ".join([str(i) for i in self])
+
+
+class VhdlConcatenation(VhdlSignalCollection):
+    def __init__(self, *args):
+        self._vhdl_type = None
+        super(VhdlConcatenation, self).__init__(*args)
+
+    def check(self, v):
+        if self._vhdl_type is None:
+            self._vhdl_type = v.vhdl_type
+        else:
+            if type(self._vhdl_type) is not type(v.vhdl_type):
+                error_msg = "All types of Array must be equal"
+                raise TransformationError(error_msg)
+
+    @property
+    def vhdl_type(self):
+        return VhdlType.VhdlStdLogicVector(len(self) * self._vhdl_type.size)
+
+    @vhdl_type.setter
+    def vhdl_type(self, value):
+        self._vhdl_type = value
+
+    @vhdl_type.getter
+    def vhdl_type(self):
+        return VhdlType.VhdlStdLogicVector(len(self) * self._vhdl_type.size)
+
+    def __str__(self):
+        return "(" + " & ".join([str(i) for i in self]) + ")"
+
+
+class VhdlSignalSplit(VhdlSignal):
+    def __init__(self, sig, sig_slice):
+        self.sig = sig
+        self.sig_slice = sig_slice
+        if hasattr(sig.vhdl_type, "size"):
+            self.vhdl_type = sig.vhdl_type.__class__(sig_slice.stop - sig_slice.start)
+        else:
+            raise TransformationError()
+
+
+    def __str__(self):
+        return self.sig.name + "(" + str(self.sig_slice.stop - 1) + " downto " + str(self.sig_slice.start) + ")"
 
 
 class VhdlAssignment(VhdlBaseNode):
@@ -523,3 +566,33 @@ class VhdlProject(Project):
         if self._module:
             return self._module
         return self.codegen()
+
+
+class VhdlSyncNode(VhdlNode):
+    """Vhdl node responsible for synchronizing multiple signals."""
+
+    _fields = ["prev"]
+
+    def __init__(self, prev=None, sync_d=-1, in_port=None, out_port=None):
+        """Initialize VhdlSyncNode node.
+
+        :param prev: list of previous nodes in DAG
+        :param in_port: list of input signals
+        :param out_port: list of output signals
+
+        :raises TransformationError: raised if sync_d not >= 0
+        """
+        super(VhdlSyncNode, self).__init__(prev, in_port, None, out_port, None)
+        self.d = 0
+        self.library = "work.SyncNode"
+        if sync_d >= 0:
+            self.sync_d = sync_d
+        else:
+            raise TransformationError("sync_d must be >= 0")
+
+    def finalize_ports(self):
+        self.inport_info = [PortInfo("SYNC_IN", "in", i.vhdl_type) for i in self.in_port]
+        self.outport_info = [PortInfo("SYNC_OUT", "out", self.out_port[0].vhdl_type)]
+        #
+        self.in_port = [Port(*i, value=g) for i, g in zip(self.inport_info, self.in_port)]
+        self.out_port = [Port(*i, value=g) for i, g in zip(self.outport_info, self.out_port)]

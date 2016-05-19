@@ -18,13 +18,13 @@ from nodes import VhdlSink
 from nodes import VhdlSource
 from types import VhdlType
 from utils import TransformationError, CONFIG
-from .vhdl_ctree.c.nodes import BinaryOp
-from .vhdl_ctree.c.nodes import Constant
-from .vhdl_ctree.c.nodes import FunctionCall
-from .vhdl_ctree.c.nodes import FunctionDecl
-from .vhdl_ctree.c.nodes import Op
-from .vhdl_ctree.c.nodes import Return
-from .vhdl_ctree.c.nodes import SymbolRef
+from vhdl_ctree.c.nodes import BinaryOp
+from vhdl_ctree.c.nodes import Constant
+from vhdl_ctree.c.nodes import FunctionCall
+from vhdl_ctree.c.nodes import FunctionDecl
+from vhdl_ctree.c.nodes import Op
+from vhdl_ctree.c.nodes import Return
+from vhdl_ctree.c.nodes import SymbolRef
 
 # set up module-level logger
 logger = logging.getLogger(__name__)
@@ -102,7 +102,7 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
             data_width = 32
 
         if "delay" in kwargs:
-            delay = kwargs["delay"]
+            delay = (kwargs["delay"], kwargs["delay"] +3)
         else:
             delay = -1
         #
@@ -159,7 +159,7 @@ class AddTransformer(BasicBlockBaseTransformer):
         outport_info = [PortInfo("ADD_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         #
         defn = VhdlComponent(name=self.func_name,
-                             delay=10,
+                             delay=4,
                              inport_info=inport_info,
                              outport_info=outport_info,
                              library="work.AddBB")
@@ -188,7 +188,7 @@ class SubTransformer(BasicBlockBaseTransformer):
         outport_info = [PortInfo("SUB_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         #
         defn = VhdlComponent(name=self.func_name,
-                             delay=10,
+                             delay=4,
                              inport_info=inport_info,
                              outport_info=outport_info,
                              library="work.SubBB")
