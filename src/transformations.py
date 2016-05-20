@@ -365,13 +365,17 @@ class VhdlGraphTransformer(ast.NodeTransformer):
             else:
                 overall_prev.append(prev)
                 overall_in_ports.append(edge)
+        # append data for generics WIDTH and N_IO
+        generic_data = [len(sync_node_new_in_ports[0].vhdl_type), len(sync_node_new_in_ports)]
+        generic_data = [VhdlConstant("", VhdlType.VhdlPositive(), gd) for gd in generic_data]
+        sync_node.in_port.extend(generic_data)
         # append inports to sync node
         sync_node.in_port.append(VhdlConcatenation(sync_node_new_in_ports))
 
         # create sync_node output
         c_id = self.con_edge_id
         self.con_edge_id += 1
-        con_size = sum([ce.vhdl_type.size for ce in sync_node.in_port])
+        con_size = sync_node.in_port[-1].vhdl_type.size
         sync_output_edge = VhdlSignal(name="SYNC_NODE_OUT_" + str(c_id),
                                       vhdl_type=VhdlType.VhdlStdLogicVector(size=con_size))
         sync_node.out_port.append(sync_output_edge)
@@ -413,9 +417,6 @@ class VhdlGraphTransformer(ast.NodeTransformer):
             self._retime_synced(node, max_d, norm_prev_d, sync_ds)
         else:
             self._retime_unsynced(node, max_d, norm_prev_d)
-
-
-
 
 
 class VhdlPortTransformer(ast.NodeVisitor):
@@ -483,6 +484,22 @@ class VhdlPortTransformer(ast.NodeVisitor):
     def visit_VhdlSyncNode(self, node):
         map(self.visit, node.prev)
         self.finalize_ports(node)
+        # add concacenation of valid in signals to ports
+        valid_in = None
+        for p in node.in_port:
+            if p.name == "VALID_IN":
+                valid_in = p
+            else:
+                pass
+
+        valid_con_sig = VhdlConcatenation(valid_in.value.list)
+        valid_con_sig.reverse()
+        # Port = namedtuple("Port", ["name", "direction", "vhdl_type", "value"])
+        valid_con_port = Port(name="VALID_IN_PORT", direction="in",
+                              vhdl_type=VhdlType.VhdlStdLogicVector(size=len(valid_con_sig)),
+                              value=valid_con_sig)
+        node.in_port.append(valid_con_port)
+        #
         return node
 
     def finalize_ports(self, node):
