@@ -14,7 +14,8 @@ use UNISIM.vcomponents.all;
 entity SyncNode is
     generic (
         WIDTH    : positive := 32;
-        N_IO     : positive := 1
+        N_IO     : positive := 1;
+        DELAY    : positive := 1
     )
     port (
         CLK       : in std_logic;
@@ -35,28 +36,31 @@ begin
 
     SyncRE <= VALID_IN AND READY_IN;
 
-    FIFO_SYNC_MACRO_inst : FIFO_SYNC_MACRO
-    generic map (
-        DEVICE => "7SERIES",            -- Target Device: "VIRTEX5, "VIRTEX6", "7SERIES"
-        ALMOST_FULL_OFFSET => X"0080",  -- Sets almost full threshold
-        ALMOST_EMPTY_OFFSET => X"0080", -- Sets the almost empty threshold
-        DATA_WIDTH => 0,   -- Valid values are 1-72 (37-72 only valid when FIFO_SIZE="36Kb")
-        FIFO_SIZE => "18Kb")            -- Target BRAM, "18Kb" or "36Kb"
-    port map (
-        ALMOSTEMPTY => ALMOSTEMPTY,   -- 1-bit output almost empty
-        ALMOSTFULL => ALMOSTFULL,     -- 1-bit output almost full
-        DO => DO,                     -- Output data, width defined by DATA_WIDTH parameter
-        EMPTY => EMPTY,               -- 1-bit output empty
-        FULL => FULL,                 -- 1-bit output full
-        RDCOUNT => RDCOUNT,           -- Output read count, width determined by FIFO depth
-        RDERR => RDERR,               -- 1-bit output read error
-        WRCOUNT => WRCOUNT,           -- Output write count, width determined by FIFO depth
-        WRERR => WRERR,               -- 1-bit output write error
-        CLK => CLK,                   -- 1-bit input clock
-        DI => DI,                     -- Input data, width defined by DATA_WIDTH parameter
-        RDEN => RDEN,                 -- 1-bit input read enable
-        RST => RST,                   -- 1-bit input reset
-        WREN => WREN                  -- 1-bit input write enable
-    );
 
+    fifos: for i in 1 to N_IO generate
+    begin
+        FIFO_SYNC_MACRO_inst : FIFO_SYNC_MACRO
+        generic map (
+            DEVICE => "7SERIES",            -- Target Device: "VIRTEX5, "VIRTEX6", "7SERIES"
+            ALMOST_FULL_OFFSET => X"0080",  -- Sets almost full threshold
+            ALMOST_EMPTY_OFFSET => X"0080", -- Sets the almost empty threshold
+            DATA_WIDTH => WIDTH,                -- Valid values are 1-72 (37-72 only valid when FIFO_SIZE="36Kb")
+            FIFO_SIZE => "18Kb")            -- Target BRAM, "18Kb" or "36Kb"
+        port map (
+            ALMOSTEMPTY => ALMOSTEMPTY,   -- 1-bit output almost empty
+            ALMOSTFULL => ALMOSTFULL,     -- 1-bit output almost full
+            DO => DO,                     -- Output data, width defined by DATA_WIDTH parameter
+            EMPTY => EMPTY,               -- 1-bit output empty
+            FULL => FULL,                 -- 1-bit output full
+            RDCOUNT => RDCOUNT,           -- Output read count, width determined by FIFO depth
+            RDERR => RDERR,               -- 1-bit output read error
+            WRCOUNT => WRCOUNT,           -- Output write count, width determined by FIFO depth
+            WRERR => WRERR,               -- 1-bit output write error
+            CLK => CLK,                   -- 1-bit input clock
+            DI => DI,                     -- Input data, width defined by DATA_WIDTH parameter
+            RDEN => RDEN,                 -- 1-bit input read enable
+            RST => RST,                   -- 1-bit input reset
+            WREN => WREN                  -- 1-bit input write enable
+        );
+    end generate fifos;
 end architecture ; -- arch
