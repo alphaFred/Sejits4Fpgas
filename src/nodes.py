@@ -577,21 +577,14 @@ class VhdlSyncNode(VhdlNode):
 
     _fields = ["prev"]
 
-    def __init__(self, prev=None, sync_d=-1, in_port=None, out_port=None):
+    def __init__(self, prev=None, in_port=None, out_port=None):
         """Initialize VhdlSyncNode node.
 
         :param prev: list of previous nodes in DAG
         :param in_port: list of input signals
         :param out_port: list of output signals
-
-        :raises TransformationError: raised if sync_d not >= 0
         """
-        if sync_d >= 0:
-            self.sync_d = sync_d
-        else:
-            raise TransformationError("sync_d must be >= 0")
-
-        self.generic_slice = slice(0, 2)
+        self.generic_slice = slice(0, 3)
 
         super(VhdlSyncNode, self).__init__(prev, in_port, None, out_port, None)
 
@@ -605,7 +598,8 @@ class VhdlSyncNode(VhdlNode):
         self.in_port = self.in_port[self.generic_slice.stop:]
 
         self.generic_info = [GenericInfo("WIDTH", VhdlType.VhdlPositive()),
-                             GenericInfo("N_IO", VhdlType.VhdlPositive())]
+                             GenericInfo("N_IO", VhdlType.VhdlPositive()),
+                             GenericInfo("DELAY", VhdlType.VhdlPositive())]
         self.inport_info = [PortInfo("SYNC_IN", "in", self.in_port[0].vhdl_type)]
         self.outport_info = [PortInfo("SYNC_OUT", "out", self.out_port[0].vhdl_type)]
         #

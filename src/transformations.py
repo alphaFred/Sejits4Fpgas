@@ -341,7 +341,7 @@ class VhdlGraphTransformer(ast.NodeTransformer):
         .. todo:: Consider default dict for connection edge id counter
 
         """
-        sync_node = VhdlSyncNode(prev=None, sync_d=max(sync_ds))
+        sync_node = VhdlSyncNode(prev=None)
         sync_node_new_in_ports = []
         overall_in_ports = []
         overall_prev = []
@@ -366,7 +366,7 @@ class VhdlGraphTransformer(ast.NodeTransformer):
                 overall_prev.append(prev)
                 overall_in_ports.append(edge)
         # append data for generics WIDTH and N_IO
-        generic_data = [len(sync_node_new_in_ports[0].vhdl_type), len(sync_node_new_in_ports)]
+        generic_data = [len(sync_node_new_in_ports[0].vhdl_type), len(sync_node_new_in_ports), max(sync_ds)]
         generic_data = [VhdlConstant("", VhdlType.VhdlPositive(), gd) for gd in generic_data]
         sync_node.in_port.extend(generic_data)
         # append inports to sync node
