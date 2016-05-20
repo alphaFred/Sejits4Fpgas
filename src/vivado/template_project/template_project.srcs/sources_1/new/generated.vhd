@@ -23,8 +23,8 @@ architecture BEHAVE of apply is                              signal VhdlDReg_RE
     signal BB_CONVOLVE_READY_OUT_0 : std_logic;
     signal BB_CONVOLVE_VALID_OUT_0 : std_logic;
     signal a : std_logic_vector(31 downto 0);
-    signal VhdlSyncNode_READY_OUT_0 : std_logic;
-    signal VhdlSyncNode_VALID_OUT_0 : std_logic;
+    signal VHDLSYNCNODE_READY_OUT_0 : std_logic;
+    signal VHDLSYNCNODE_VALID_OUT_0 : std_logic;
     signal SYNC_NODE_OUT_1 : std_logic_vector(63 downto 0);
     signal BB_SUB_READY_OUT_0 : std_logic;
     signal BB_SUB_VALID_OUT_0 : std_logic;
@@ -32,8 +32,8 @@ architecture BEHAVE of apply is                              signal VhdlDReg_RE
     signal BB_CONVOLVE_READY_OUT_1 : std_logic;
     signal BB_CONVOLVE_VALID_OUT_1 : std_logic;
     signal c : std_logic_vector(31 downto 0);
-    signal VhdlSyncNode_READY_OUT_1 : std_logic;
-    signal VhdlSyncNode_VALID_OUT_1 : std_logic;
+    signal VHDLSYNCNODE_READY_OUT_1 : std_logic;
+    signal VHDLSYNCNODE_VALID_OUT_1 : std_logic;
     signal SYNC_NODE_OUT_3 : std_logic_vector(63 downto 0);
     signal BB_ADD_READY_OUT_0 : std_logic;
     signal BB_ADD_VALID_OUT_0 : std_logic;
@@ -79,20 +79,23 @@ VhdlComponent : entity work.Convolve
              DATA_OUT => a); 
 
 VhdlSyncNode : entity work.SyncNode                       
+    generic map(WIDTH => 32,
+                N_IO => 2)                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VhdlDReg_VALID_OUT_0 AND BB_CONVOLVE_VALID_OUT_0,
              READY_IN => VhdlDReg_READY_OUT_0 AND BB_CONVOLVE_READY_OUT_0,
              SYNC_IN => (img_DREG_0 & a),
-             READY_OUT => VhdlSyncNode_READY_OUT_0,
-             VALID_OUT => VhdlSyncNode_VALID_OUT_0,
+             VALID_IN_PORT => (BB_CONVOLVE_VALID_OUT_0 & VhdlDReg_VALID_OUT_0),
+             READY_OUT => VHDLSYNCNODE_READY_OUT_0,
+             VALID_OUT => VHDLSYNCNODE_VALID_OUT_0,
              SYNC_OUT => SYNC_NODE_OUT_1); 
 
 VhdlComponent_1 : entity work.SubBB                       
     port map(CLK => CLK,
              RST => RST,
-             VALID_IN => VhdlSyncNode_VALID_OUT_0,
-             READY_IN => VhdlSyncNode_READY_OUT_0,
+             VALID_IN => VHDLSYNCNODE_VALID_OUT_0,
+             READY_IN => VHDLSYNCNODE_READY_OUT_0,
              LEFT => SYNC_NODE_OUT_1(31 downto 0),
              RIGHT => SYNC_NODE_OUT_1(63 downto 32),
              READY_OUT => BB_SUB_READY_OUT_0,
@@ -114,20 +117,23 @@ VhdlComponent_2 : entity work.Convolve
              DATA_OUT => c); 
 
 VhdlSyncNode_1 : entity work.SyncNode                       
+    generic map(WIDTH => 32,
+                N_IO => 2)                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VhdlDReg_VALID_OUT_1 AND BB_CONVOLVE_VALID_OUT_1,
              READY_IN => VhdlDReg_READY_OUT_1 AND BB_CONVOLVE_READY_OUT_1,
              SYNC_IN => (img_DREG_2 & c),
-             READY_OUT => VhdlSyncNode_READY_OUT_1,
-             VALID_OUT => VhdlSyncNode_VALID_OUT_1,
+             VALID_IN_PORT => (BB_CONVOLVE_VALID_OUT_1 & VhdlDReg_VALID_OUT_1),
+             READY_OUT => VHDLSYNCNODE_READY_OUT_1,
+             VALID_OUT => VHDLSYNCNODE_VALID_OUT_1,
              SYNC_OUT => SYNC_NODE_OUT_3); 
 
 VhdlComponent_3 : entity work.AddBB                       
     port map(CLK => CLK,
              RST => RST,
-             VALID_IN => VhdlSyncNode_VALID_OUT_1,
-             READY_IN => VhdlSyncNode_READY_OUT_1,
+             VALID_IN => VHDLSYNCNODE_VALID_OUT_1,
+             READY_IN => VHDLSYNCNODE_READY_OUT_1,
              LEFT => SYNC_NODE_OUT_3(31 downto 0),
              RIGHT => SYNC_NODE_OUT_3(63 downto 32),
              READY_OUT => BB_ADD_READY_OUT_0,

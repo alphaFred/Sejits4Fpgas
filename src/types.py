@@ -42,6 +42,7 @@ class VhdlType(object):
 
     class VhdlPositive(_VhdlType):
         def __init__(self):
+            # TODO: added length etc. which is normally necessary to declare positive
             pass
 
         vhdl_type = "positive"

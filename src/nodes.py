@@ -208,7 +208,11 @@ class VhdlConcatenation(VhdlSignalCollection):
 
     @vhdl_type.getter
     def vhdl_type(self):
-        return VhdlType.VhdlStdLogicVector(len(self) * self._vhdl_type.size)
+        try:
+            return VhdlType.VhdlStdLogicVector(len(self) * self._vhdl_type.size)
+        except AttributeError:
+            # if self._vhdl_type is StdLogic
+            return VhdlType.VhdlStdLogicVector(len(self))
 
     def __str__(self):
         return "(" + " & ".join([str(i) for i in self]) + ")"
@@ -582,17 +586,29 @@ class VhdlSyncNode(VhdlNode):
 
         :raises TransformationError: raised if sync_d not >= 0
         """
-        super(VhdlSyncNode, self).__init__(prev, in_port, None, out_port, None)
-        self.d = 0
-        self.library = "work.SyncNode"
         if sync_d >= 0:
             self.sync_d = sync_d
         else:
             raise TransformationError("sync_d must be >= 0")
 
+        self.generic_slice = slice(0, 2)
+
+        super(VhdlSyncNode, self).__init__(prev, in_port, None, out_port, None)
+
+        self.d = 0
+        self.name = "VhdlSyncNode"
+        self.library = "work.SyncNode"
+        self.ports_finalized = False
+
     def finalize_ports(self):
-        self.inport_info = [PortInfo("SYNC_IN", "in", i.vhdl_type) for i in self.in_port]
+        self.generic = self.in_port[self.generic_slice]
+        self.in_port = self.in_port[self.generic_slice.stop:]
+
+        self.generic_info = [GenericInfo("WIDTH", VhdlType.VhdlPositive()),
+                             GenericInfo("N_IO", VhdlType.VhdlPositive())]
+        self.inport_info = [PortInfo("SYNC_IN", "in", self.in_port[0].vhdl_type)]
         self.outport_info = [PortInfo("SYNC_OUT", "out", self.out_port[0].vhdl_type)]
         #
+        self.generic = [Generic(*i, value=g) for i, g in zip(self.generic_info, self.generic)]
         self.in_port = [Port(*i, value=g) for i, g in zip(self.inport_info, self.in_port)]
         self.out_port = [Port(*i, value=g) for i, g in zip(self.outport_info, self.out_port)]
