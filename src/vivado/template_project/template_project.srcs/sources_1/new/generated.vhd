@@ -80,7 +80,8 @@ VhdlComponent : entity work.Convolve
 
 VhdlSyncNode : entity work.SyncNode                       
     generic map(WIDTH => 32,
-                N_IO => 2)                       
+                N_IO => 2,
+                DELAY => 3)                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VhdlDReg_VALID_OUT_0 AND BB_CONVOLVE_VALID_OUT_0,
@@ -118,7 +119,8 @@ VhdlComponent_2 : entity work.Convolve
 
 VhdlSyncNode_1 : entity work.SyncNode                       
     generic map(WIDTH => 32,
-                N_IO => 2)                       
+                N_IO => 2,
+                DELAY => 3)                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VhdlDReg_VALID_OUT_1 AND BB_CONVOLVE_VALID_OUT_1,
