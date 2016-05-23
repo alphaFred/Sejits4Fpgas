@@ -1,6 +1,7 @@
 *.pyc
 *.log
 *.out
+*.wcfg
 *__init__.py
 /.idea/*
 /src/docs/*
