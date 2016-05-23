@@ -193,9 +193,9 @@ def bb_limitTo(valid, x):
 # from skimage import io
 @specialize
 def test_func(img):
-    a = bb_convolve((0, 0, 0, 0, 1, 0, 0, 0, 0), 1, 64, 64, img)
+    a = bb_convolve((0, 0, 0, 0, 1, 0, 0, 0, 0), 1, 640, 480, img)
     b = bb_sub(img, a)
-    c = bb_convolve((0, 0, 0, 0, 1, 0, 0, 0, 0), 1, 64, 64, b)
+    c = bb_convolve((0, 0, 0, 0, 1, 0, 0, 0, 0), 1, 640, 480, b)
     return bb_add(img, c)
 
 # @specialize

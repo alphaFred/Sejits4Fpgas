@@ -32,12 +32,7 @@ end SyncNode;
 
 architecture arch of SyncNode is
     signal SyncRE   : std_logic := '0';
-    -- Width of RDCOUNT/WRCOUNT is not generic to input!!
-    signal RDCOUNT  : std_logic_vector(17 downto 0);
-    signal WRCOUNT  : std_logic_vector(17 downto 0);
     --
-    signal ALMOSTEMPTY_log : std_logic_vector(N_IO-1 downto 0);
-    signal ALMOSTFULL_log : std_logic_vector(N_IO-1 downto 0);
     signal EMPTY_log    : std_logic_vector(N_IO-1 downto 0);
     signal FULL_log     : std_logic_vector(N_IO-1 downto 0);
     --
@@ -59,15 +54,18 @@ architecture arch of SyncNode is
         empty : OUT STD_LOGIC
         );
     end component;
+
+    function or_reduct(slv : in std_logic_vector) return std_logic is
+        variable res_v : std_logic := '0';  -- Null slv vector will also return '1'
+    begin
+        for i in slv'range loop
+            res_v := res_v or slv(i);
+        end loop;
+        return res_v;
+    end function;    
 begin
 
     -- SyncRE <= VALID_IN AND READY_IN;
-
-    data_in(0) <= SYNC_IN(31 downto 0);
-    data_in(1) <= SYNC_IN(63 downto 32);
-
-    SYNC_OUT(31 downto 0) <= data_out(0);
-    SYNC_OUT(63 downto 32) <= data_out(1);
 
     fifos: for i in 0 to N_IO-1 generate
     begin
@@ -84,15 +82,14 @@ begin
         );
     end generate fifos;
 
-    re_delay : process(CLK)
-    begin
-        if CLK'event and CLK='1' then
-            SyncRE <= read_delay(1);
-            read_delay(1) <= read_delay(0);
-            read_delay(0) <= VALID_IN AND READY_IN;
-        end if;
-    end process;
+    data_in(0) <= SYNC_IN(31 downto 0);
+    data_in(1) <= SYNC_IN(63 downto 32);
+   
+    SyncRE <= NOT or_reduct(EMPTY_log);
 
+    SYNC_OUT(31 downto 0) <= data_out(0);
+    SYNC_OUT(63 downto 32) <= data_out(1);
+    --    
     READY_OUT <= READY_IN;
-    VALID_OUT <= SyncRE;
+    VALID_OUT <= SyncRE; 
 end architecture ; -- arch
