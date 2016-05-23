@@ -5,7 +5,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity vector_dff_block is
     Generic (
-        WIDTH : positive
+        WIDTH : positive := 8
     );
     Port (
         D : in STD_LOGIC_VECTOR (WIDTH-1 downto 0);
