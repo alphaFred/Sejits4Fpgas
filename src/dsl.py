@@ -102,7 +102,7 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
             data_width = 32
 
         if "delay" in kwargs:
-            delay = (kwargs["delay"], kwargs["delay"] +3)
+            delay = (kwargs["delay"], kwargs["delay"] + 3)
         else:
             delay = -1
         #
@@ -131,7 +131,7 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
                         % self.backend
             raise TransformationError(error_msg)
 
-        func_def = func_def_getter(delay=(2*node.args[2].n) + 11, **self.kwargs)
+        func_def = func_def_getter(delay=(2*node.args[2].n) + 12, **self.kwargs)
         # add function definition to class variable lifted_functions
         BasicBlockBaseTransformer.lifted_functions.append(LF_Data(node.lineno, func_def))
         # return C node FunctionCall
