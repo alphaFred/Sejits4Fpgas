@@ -65,6 +65,7 @@ set files [list \
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/accel_wrapper.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/generated.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/LimitTo.vhd"]"\
+ "[file normalize "$origin_dir/template_project.srcs/sources_1/new/SyncNode.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/vector_dff.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/DReg.vhd"]"\
  "[file normalize "$origin_dir/template_project.srcs/sources_1/new/bram_fifo.vhd"]"\

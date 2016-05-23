@@ -65,8 +65,8 @@ VhdlDReg_1 : entity work.DReg
              DREG_OUT => img_DREG_0); 
 
 VhdlComponent : entity work.Convolve                       
-    generic map(FILTERMATRIX => (-1, 0, 1, -2, 0, 2, -1, 0, 1),
-                FILTER_SCALE => 16,
+    generic map(FILTERMATRIX => (0, 0, 0, 0, 1, 0, 0, 0, 0),
+                FILTER_SCALE => 1,
                 IMG_WIDTH => 64,
                 IMG_HEIGHT => 64)                       
     port map(CLK => CLK,
@@ -87,7 +87,7 @@ VhdlSyncNode : entity work.SyncNode
              VALID_IN => VhdlDReg_VALID_OUT_0 AND BB_CONVOLVE_VALID_OUT_0,
              READY_IN => VhdlDReg_READY_OUT_0 AND BB_CONVOLVE_READY_OUT_0,
              SYNC_IN => (img_DREG_0 & a),
-             VALID_IN_PORT => (BB_CONVOLVE_VALID_OUT_0 & VhdlDReg_VALID_OUT_0),
+             VALID_IN_PORT => (VhdlDReg_VALID_OUT_0 & BB_CONVOLVE_VALID_OUT_0),
              READY_OUT => VHDLSYNCNODE_READY_OUT_0,
              VALID_OUT => VHDLSYNCNODE_VALID_OUT_0,
              SYNC_OUT => SYNC_NODE_OUT_1); 
@@ -104,8 +104,8 @@ VhdlComponent_1 : entity work.SubBB
              SUB_OUT => b); 
 
 VhdlComponent_2 : entity work.Convolve                       
-    generic map(FILTERMATRIX => (1, 2, 1, 2, 4, 2, 1, 2, 1),
-                FILTER_SCALE => 16,
+    generic map(FILTERMATRIX => (0, 0, 0, 0, 1, 0, 0, 0, 0),
+                FILTER_SCALE => 1,
                 IMG_WIDTH => 64,
                 IMG_HEIGHT => 64)                       
     port map(CLK => CLK,
@@ -126,7 +126,7 @@ VhdlSyncNode_1 : entity work.SyncNode
              VALID_IN => VhdlDReg_VALID_OUT_1 AND BB_CONVOLVE_VALID_OUT_1,
              READY_IN => VhdlDReg_READY_OUT_1 AND BB_CONVOLVE_READY_OUT_1,
              SYNC_IN => (img_DREG_2 & c),
-             VALID_IN_PORT => (BB_CONVOLVE_VALID_OUT_1 & VhdlDReg_VALID_OUT_1),
+             VALID_IN_PORT => (VhdlDReg_VALID_OUT_1 & BB_CONVOLVE_VALID_OUT_1),
              READY_OUT => VHDLSYNCNODE_READY_OUT_1,
              VALID_OUT => VHDLSYNCNODE_VALID_OUT_1,
              SYNC_OUT => SYNC_NODE_OUT_3); 
