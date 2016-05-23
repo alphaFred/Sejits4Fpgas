@@ -493,7 +493,6 @@ class VhdlPortTransformer(ast.NodeVisitor):
                 pass
 
         valid_con_sig = VhdlConcatenation(valid_in.value.list)
-        valid_con_sig.reverse()
         # Port = namedtuple("Port", ["name", "direction", "vhdl_type", "value"])
         valid_con_port = Port(name="VALID_IN_PORT", direction="in",
                               vhdl_type=VhdlType.VhdlStdLogicVector(size=len(valid_con_sig)),
