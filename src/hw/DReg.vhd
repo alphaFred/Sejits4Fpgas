@@ -82,11 +82,9 @@ begin
     process (CLK)
     begin
        if CLK'event and CLK='1' then
-          if VALID_IN = '1' then
            for i in 0 to WIDTH-1 loop
                shift_reg(i) <= shift_reg(i)(LENGTH-2 downto 0) & DREG_IN(i);
            end loop;
-          end if;
        end if;
     end process;
 
@@ -100,70 +98,10 @@ begin
     process(CLK)
     begin
       if CLK'event and CLK='1' then
-         if VALID_IN = '1' then
            DREG_OUT <= srl_out;
-         end if;
       end if;
     end process;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    --    shiftReg: for i in 1 to LENGTH generate
-    --    begin
-    --        dffLeft: if i = 1 generate
-    --        begin
-    --            dff: component vector_dff_block
-    --                generic map (
-    --                    WIDTH => WIDTH
-    --                )
-    --                port map (
-    --                    D => DREG_IN,
-    --                    CLK => CLK,
-    --                    RST => RST,
-    --                    Q => sRegBus(i)
-    --                );
-    --        end generate dffLeft;
-    --        --
-    --        dffOthers: if (i > 1 AND i < LENGTH) generate
-    --        begin
-    --            dff: component vector_dff_block
-    --                generic map (
-    --                    WIDTH => WIDTH)
-    --                port map (
-    --                    D => sRegBus(i-1),
-    --                    CLK => CLK,
-    --                    RST => RST,
-    --                    Q => sRegBus(i)
-    --                );
-    --        end generate dffOthers;
-    --        --
-    --        dffRight: if i = LENGTH generate
-    --        begin
-    --            dff: component vector_dff_block
-    --                generic map (
-    --                    WIDTH => WIDTH)
-    --                port map (
-    --                    D => sRegBus(i-1),
-    --                    CLK => CLK,
-    --                    RST => RST,
-    --                    Q => DREG_OUT
-    --                );
-    --        end generate dffRight;
-    --    end generate shiftReg;
-
+    
         validReg: for i in 1 to LENGTH-1 generate
         begin
             validdffLeft: if i = 1 generate
