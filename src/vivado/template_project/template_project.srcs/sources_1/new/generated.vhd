@@ -41,7 +41,7 @@ architecture BEHAVE of apply is                              signal VhdlDReg_RE
 
 VhdlDReg : entity work.DReg                       
     generic map(WIDTH => 32,
-                LENGTH => 282)                       
+                LENGTH => 284)                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VALID_IN,
@@ -54,7 +54,7 @@ VhdlDReg : entity work.DReg
 
 VhdlDReg_1 : entity work.DReg                       
     generic map(WIDTH => 32,
-                LENGTH => 139)                       
+                LENGTH => 140)                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VALID_IN,
