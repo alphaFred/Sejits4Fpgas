@@ -191,12 +191,12 @@ def bb_limitTo(valid, x):
 #     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
 
 # from skimage import io
-@specialize
-def test_func(img):
-    a = bb_convolve((0, 0, 0, 0, 1, 0, 0, 0, 0), 1, 640, 480, img)
-    b = bb_sub(img, a)
-    c = bb_convolve((0, 0, 0, 0, 1, 0, 0, 0, 0), 1, 640, 480, b)
-    return bb_add(img, c)
+# @specialize
+# def test_func(img):
+#     a = bb_convolve((0, 0, 0, 0, 1, 0, 0, 0, 0), 1, 640, 480, img)
+#     b = bb_sub(img, a)
+#     c = bb_convolve((0, 0, 0, 0, 1, 0, 0, 0, 0), 1, 640, 480, b)
+#     return bb_add(img, c)
 
 # @specialize
 # def test_func(img):
@@ -206,6 +206,12 @@ def test_func(img):
 # def test_func(img):
 #     a = bb_sub(255, img)
 #     return bb_add(img, a)
+
+@specialize
+def func(a):
+    b = bb_add(a, 5)
+    return bb_sub(b, 3)
+
 
 # transformed_func = BasicTranslator.from_function(test_func)
 
@@ -221,4 +227,4 @@ image = data.camera()
 # io.show()
 
 # # print res
-print test_func(image)
+print func(image)

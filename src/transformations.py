@@ -160,8 +160,7 @@ class VhdlIRTransformer(ast.NodeTransformer):
         return module[0]
 
     def visit_FunctionDecl(self, node):
-        params = map(self.visit, node.params)
-        params = self._process_params(params)
+        params = self._process_params(node.params)
         #
         body = map(self.visit, node.defn)
         # add return signal

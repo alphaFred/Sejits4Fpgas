@@ -24,7 +24,7 @@ VhdlComponent : entity work.apply
              RST => RST,
              VALID_IN => VALID_IN,
              READY_IN => READY_IN,
-             img => m_axis_mm2s_tdata,
+             a => m_axis_mm2s_tdata,
              READY_OUT => GENERATED_READY_OUT_0,
              VALID_OUT => GENERATED_VALID_OUT_0,
              MODULE_OUT => ret_tdata); 

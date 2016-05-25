@@ -85,11 +85,11 @@ begin
     data_in(0) <= SYNC_IN(31 downto 0);
     data_in(1) <= SYNC_IN(63 downto 32);
    
-    SyncRE <= NOT or_reduct(EMPTY_log);
+    SyncRE <= (NOT or_reduct(EMPTY_log)) AND READY_IN;
 
     SYNC_OUT(31 downto 0) <= data_out(0);
     SYNC_OUT(63 downto 32) <= data_out(1);
     --    
-    READY_OUT <= READY_IN;
+    READY_OUT <= READY_IN AND (NOT or_reduct(FULL_log));
     VALID_OUT <= SyncRE; 
 end architecture ; -- arch
