@@ -16,33 +16,19 @@ entity apply is
 
 architecture BEHAVE of apply is                              signal BB_ADD_READY_OUT_0 : std_logic;
     signal BB_ADD_VALID_OUT_0 : std_logic;
-    signal b : std_logic_vector(31 downto 0);
-    signal BB_SUB_READY_OUT_0 : std_logic;
-    signal BB_SUB_VALID_OUT_0 : std_logic;
-    signal BB_SUB_OUT_0 : std_logic_vector(31 downto 0);                      begin                          
+    signal BB_ADD_OUT_0 : std_logic_vector(31 downto 0);                      begin                          
 VhdlComponent : entity work.AddBB                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VALID_IN,
              READY_IN => READY_IN,
              LEFT => a,
-             RIGHT => std_logic_vector(to_signed(5, 32)),
+             RIGHT => std_logic_vector(to_signed(10, 32)),
              READY_OUT => BB_ADD_READY_OUT_0,
              VALID_OUT => BB_ADD_VALID_OUT_0,
-             ADD_OUT => b); 
-
-VhdlComponent_1 : entity work.SubBB                       
-    port map(CLK => CLK,
-             RST => RST,
-             VALID_IN => BB_ADD_VALID_OUT_0,
-             READY_IN => BB_ADD_READY_OUT_0,
-             LEFT => b,
-             RIGHT => std_logic_vector(to_signed(3, 32)),
-             READY_OUT => BB_SUB_READY_OUT_0,
-             VALID_OUT => BB_SUB_VALID_OUT_0,
-             SUB_OUT => BB_SUB_OUT_0); 
+             ADD_OUT => BB_ADD_OUT_0); 
 
 -- RETURN
-VALID_OUT <= BB_SUB_VALID_OUT_0;
-READY_OUT <= BB_SUB_READY_OUT_0;
-MODULE_OUT <= BB_SUB_OUT_0;                      end BEHAVE;
+VALID_OUT <= BB_ADD_VALID_OUT_0;
+READY_OUT <= BB_ADD_READY_OUT_0;
+MODULE_OUT <= BB_ADD_OUT_0;                      end BEHAVE;

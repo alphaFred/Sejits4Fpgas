@@ -209,8 +209,7 @@ def bb_limitTo(valid, x):
 
 @specialize
 def func(a):
-    b = bb_add(a, 5)
-    return bb_sub(b, 3)
+    return bb_add(a, 10)
 
 
 # transformed_func = BasicTranslator.from_function(test_func)
