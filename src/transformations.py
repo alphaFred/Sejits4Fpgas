@@ -406,7 +406,10 @@ class VhdlGraphTransformer(ast.NodeTransformer):
             except TypeError:
                 """ Detected node with variable delay"""
                 prev_d.append(prev.d[0] + prev.dprev)
-                need_sync = True
+                if len(node.prev) > 1:
+                    need_sync = True
+                else:
+                    need_sync = False
                 sync_ds.append(prev.d[1] - prev.d[0])
         max_d = max(prev_d)
         # normalize delay by calculating difference to maximum edge delay
