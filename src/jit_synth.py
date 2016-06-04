@@ -141,9 +141,7 @@ class VhdlSynthModule(object):
     def _activate(self):
         """Initialize Vivado synthesis subprocess."""
         if os.uname()[-1] == "armv7l":
-            libHwIntfc = c.cdll.LoadLibrary('/home/linaro/libHwIntfc.so')
-            libHwIntfc.process1d_img.argtypes = [ctl.ndpointer(np.uint32, ndim=1, flags='C'), c.c_uint]
-            self.hw_interface = libHwIntfc.process1d_img
+            print "Execute synthesis script"
         else:
             pass
 
