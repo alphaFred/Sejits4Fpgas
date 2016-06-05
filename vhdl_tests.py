@@ -209,7 +209,7 @@ def bb_limitTo(valid, x):
 
 @specialize
 def func(a):
-    return bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 640, 480, a)
+    return bb_mul(a, 10)
 
 
 # transformed_func = BasicTranslator.from_function(test_func)
