@@ -31,17 +31,17 @@ begin
 
     slice_1: if INDEX = 1 generate
     begin
-        DATA_OUT <= (31 downto 16 => '0') & DATA_IN(15 downto 8) & (7 downto 0 => '0');
+        DATA_OUT <= (31 downto 8 => '0') & DATA_IN(15 downto 8);
     end generate slice_1;
 
     slice_2: if INDEX = 2 generate
     begin
-        DATA_OUT <= (31 downto 24 => '0') & DATA_IN(23 downto 16) & (15 downto 0 => '0');
+        DATA_OUT <= (31 downto 8 => '0') & DATA_IN(23 downto 16);
     end generate slice_2;
 
     slice_3: if INDEX = 3 generate
     begin
-        DATA_OUT <= DATA_IN(31 downto 24) & (23 downto 0 => '0');
+        DATA_OUT <= (31 downto 8 => '0') & DATA_IN(31 downto 24);
     end generate slice_3;
 
     VALID_OUT <= VALID_IN;
