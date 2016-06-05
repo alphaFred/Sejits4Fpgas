@@ -174,15 +174,14 @@ class VhdlLazySpecializedFunction(LazySpecializedFunction):
         .. todo:: refine cache cleaning in error case
         """
         ret = None
-        ret = super(VhdlLazySpecializedFunction, self).__call__(*args, **kwargs)
-        # try:
-        #     ret = super(VhdlLazySpecializedFunction, self).__call__(*args, **kwargs)
-        # except TransformationError:
-        #     print "Calling Python function ..."
-        #     subprocess.call(["ctree", "-cc"])
-        #     ret = self.py_func(*args, **kwargs)
-        # finally:
-        #     return ret
+        try:
+            ret = super(VhdlLazySpecializedFunction, self).__call__(*args, **kwargs)
+        except TransformationError:
+            print "Calling Python function ..."
+            subprocess.call(["ctree", "-cc"])
+            ret = self.py_func(*args, **kwargs)
+        finally:
+            return ret
 
     @classmethod
     def from_function(cls, func, folder_name=''):
