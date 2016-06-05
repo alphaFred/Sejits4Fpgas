@@ -14,21 +14,21 @@ entity apply is
          READY_OUT : out std_logic;
          MODULE_OUT : out std_logic_vector(31 downto 0));                end apply;
 
-architecture BEHAVE of apply is                              signal BB_MUL_READY_OUT_0 : std_logic;
-    signal BB_MUL_VALID_OUT_0 : std_logic;
-    signal BB_MUL_OUT_0 : std_logic_vector(31 downto 0);                      begin                          
-VhdlComponent : entity work.MulBB                       
+architecture BEHAVE of apply is                              signal BB_SUB_READY_OUT_0 : std_logic;
+    signal BB_SUB_VALID_OUT_0 : std_logic;
+    signal BB_SUB_OUT_0 : std_logic_vector(31 downto 0);                      begin                          
+VhdlComponent : entity work.SubBB                       
     port map(CLK => CLK,
              RST => RST,
              VALID_IN => VALID_IN,
              READY_IN => READY_IN,
              LEFT => a,
              RIGHT => std_logic_vector(to_signed(10, 32)),
-             READY_OUT => BB_MUL_READY_OUT_0,
-             VALID_OUT => BB_MUL_VALID_OUT_0,
-             MUL_OUT => BB_MUL_OUT_0); 
+             READY_OUT => BB_SUB_READY_OUT_0,
+             VALID_OUT => BB_SUB_VALID_OUT_0,
+             SUB_OUT => BB_SUB_OUT_0); 
 
 -- RETURN
-VALID_OUT <= BB_MUL_VALID_OUT_0;
-READY_OUT <= BB_MUL_READY_OUT_0;
-MODULE_OUT <= BB_MUL_OUT_0;                      end BEHAVE;
+VALID_OUT <= BB_SUB_VALID_OUT_0;
+READY_OUT <= BB_SUB_READY_OUT_0;
+MODULE_OUT <= BB_SUB_OUT_0;                      end BEHAVE;
