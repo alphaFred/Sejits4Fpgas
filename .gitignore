@@ -37,3 +37,5 @@
 tests/test_data/test1_generated.vhd
 misc/driver
 tools/bin2img.py
+.cache/v
+.idea/encodings.xml .idea/inspectionProfiles .idea/misc.xml .idea/modules.xml .idea/vcs.xml .idea/VhdlSEJITS.iml .idea/workspace.xml
