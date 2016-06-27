@@ -34,8 +34,8 @@
 /sejits4fpgas/src/vivado/template_project/template_project.srcs/sim_1/*
 /sejits4fpgas/images/*
 /sejits4fpgas/compiled/*
-tests/test_data/test1_generated.vhd
-misc/driver
-tools/bin2img.py
-.cache/v
-.idea/encodings.xml .idea/inspectionProfiles .idea/misc.xml .idea/modules.xml .idea/vcs.xml .idea/VhdlSEJITS.iml .idea/workspace.xml
+tests/test_data/*
+misc/*
+tools/*
+.cache/*
+.idea/*
