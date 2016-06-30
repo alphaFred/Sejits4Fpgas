@@ -1,8 +1,8 @@
 """ DOT generator for VHDL constructs. """
 
 import ast
-from .vhdl_ctree.util import enumerate_flatten
-from .vhdl_ctree.dotgen import DotGenLabeller
+from sejits4fpgas.src.vhdl_ctree.util import enumerate_flatten
+from sejits4fpgas.src.vhdl_ctree.dotgen import DotGenLabeller
 
 
 class VhdlDotGenVisitor(ast.NodeVisitor):

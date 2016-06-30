@@ -4,10 +4,10 @@ import logging
 
 from .nodes import VhdlConstant
 from utils import TransformationError
-from utils import CONFIG
+from sejits4fpgas.src.config import config
 
 logger = logging.getLogger(__name__)
-logger.disabled = CONFIG.getboolean("logging", "DISABLE_LOGGING")
+logger.disabled = config.getboolean("Logging", "disable_logging")
 logger.setLevel(logging.DEBUG)
 # create console handler and set level to debug
 ch = logging.StreamHandler()

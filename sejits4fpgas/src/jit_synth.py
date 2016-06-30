@@ -13,11 +13,11 @@ from .vhdl_ctree.jit import LazySpecializedFunction
 from .utils import TransformationError
 from collections import namedtuple
 #
-from utils import CONFIG
+from sejits4fpgas.src.config import config
 
 
 logger = logging.getLogger(__name__)
-logger.disabled = CONFIG.getboolean("logging", "DISABLE_LOGGING")
+logger.disabled = config.getboolean("Logging", "disable_logging")
 logger.setLevel(logging.DEBUG)
 # create console handler and set level to debug
 ch = logging.StreamHandler()
@@ -37,7 +37,7 @@ class VhdlSynthModule(object):
     def __init__(self):
         self._linked_files = []
         # vivado project folder
-        self.v_proj_fol = os.path.dirname(__file__) + CONFIG.get("vivado", "PROJ_FOLDER_PATH")
+        self.v_proj_fol = os.path.dirname(__file__) + config.get("Paths", "vivado_proj_path")
         if os.path.isdir(self.v_proj_fol):
             logger.info("Found Vivado Project at: %s" % self.v_proj_fol)
         else:

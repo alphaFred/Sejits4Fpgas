@@ -7,7 +7,7 @@ from collections import namedtuple
 
 from dotgen import VhdlDotGenVisitor
 from types import VhdlType
-from utils import CONFIG
+from sejits4fpgas.src.config import config
 from utils import TransformationError
 from .vhdl_ctree.nodes import CtreeNode
 from .vhdl_ctree.nodes import Project
@@ -16,7 +16,7 @@ from .vhdl_ctree.c.nodes import Op
 
 # set up module-level logger
 logger = logging.getLogger(__name__)
-logger.disabled = CONFIG.getboolean("logging", "DISABLE_LOGGING")
+logger.disabled = config.getboolean("Logging", "disable_logging")
 logger.setLevel(logging.DEBUG)
 # create console handler and set level to debug
 ch = logging.StreamHandler()

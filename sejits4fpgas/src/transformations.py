@@ -21,13 +21,13 @@ from nodes import VhdlDReg
 from nodes import VhdlSignalSplit
 from nodes import VhdlConcatenation
 from types import VhdlType
-from utils import CONFIG
+from sejits4fpgas.src.config import config
 from utils import TransformationError
 from vhdl_ctree.c.nodes import Op
 
 
 logger = logging.getLogger(__name__)
-logger.disabled = CONFIG.getboolean("logging", "DISABLE_LOGGING")
+logger.disabled = config.getboolean("Logging", "disable_logging")
 logger.setLevel(logging.DEBUG)
 # create console handler and set level to debug
 ch = logging.StreamHandler()

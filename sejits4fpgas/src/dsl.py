@@ -17,7 +17,8 @@ from nodes import VhdlSignal
 from nodes import VhdlSink
 from nodes import VhdlSource
 from types import VhdlType
-from utils import TransformationError, CONFIG
+from utils import TransformationError
+from sejits4fpgas.src.config import config
 from vhdl_ctree.c.nodes import BinaryOp
 from vhdl_ctree.c.nodes import Constant
 from vhdl_ctree.c.nodes import FunctionCall
@@ -28,7 +29,7 @@ from vhdl_ctree.c.nodes import SymbolRef
 
 # set up module-level logger
 logger = logging.getLogger(__name__)
-logger.disabled = CONFIG.getboolean("logging", "DISABLE_LOGGING")
+logger.disabled = config.getboolean("Logging", "disable_logging")
 logger.setLevel(logging.DEBUG)
 # create console handler and set level to debug
 ch = logging.StreamHandler()
