@@ -2,7 +2,6 @@
 *.log
 *.out
 *.wcfg
-*__init__.py
 /sejits4fpgas/.idea/*
 /sejits4fpgas/src/docs/*
 /sejits4fpgas/vhdl_sejits.sublime-project
