@@ -30,3 +30,13 @@
 /src/vivado/template_project/template_project_backup.xpr
 /images/*
 /compiled/*
+sejits4fpgas/hw/vivado/MINIMAL_DMA_1.0/*
+sejits4fpgas/hw/vivado/MINIMAL_DMA_CONTROL_1.0/*
+sejits4fpgas/hw/vivado/template_project/template_project.cache/*
+sejits4fpgas/hw/vivado/template_project/template_project.hw/*
+sejits4fpgas/hw/vivado/template_project/template_project.runs/*
+sejits4fpgas/hw/vivado/template_project/template_project.sdk/*
+sejits4fpgas/hw/vivado/template_project/template_project.sim/*
+sejits4fpgas/hw/vivado/template_project/template_project.srcs/*
+sejits4fpgas/hw/vivado/template_project/template_project.tmp/*
+sejits4fpgas/hw/vivado/template_project/template_project.xpr.BACKUP*
