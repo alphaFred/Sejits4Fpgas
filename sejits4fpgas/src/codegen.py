@@ -3,7 +3,7 @@ import ast
 import logging
 
 from .nodes import VhdlConstant
-from utils import TransformationError
+from errors import TransformationError
 from sejits4fpgas.src.config import config
 
 logger = logging.getLogger(__name__)

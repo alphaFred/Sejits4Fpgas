@@ -17,7 +17,7 @@ from nodes import VhdlSignal
 from nodes import VhdlSink
 from nodes import VhdlSource
 from types import VhdlType
-from utils import TransformationError
+from errors import TransformationError
 from sejits4fpgas.src.config import config
 from vhdl_ctree.c.nodes import BinaryOp
 from vhdl_ctree.c.nodes import Constant

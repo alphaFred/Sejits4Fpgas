@@ -22,7 +22,7 @@ from nodes import VhdlSignalSplit
 from nodes import VhdlConcatenation
 from types import VhdlType
 from sejits4fpgas.src.config import config
-from utils import TransformationError
+from errors import TransformationError
 from vhdl_ctree.c.nodes import Op
 
 

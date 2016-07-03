@@ -10,7 +10,7 @@ import numpy.ctypeslib as ctl
 from .vhdl_ctree.frontend import get_ast
 from .vhdl_ctree.c.nodes import MultiNode
 from .vhdl_ctree.jit import LazySpecializedFunction
-from .utils import TransformationError
+from errors import TransformationError
 from collections import namedtuple
 #
 from sejits4fpgas.src.config import config

@@ -1,4 +1,4 @@
-from utils import TransformationError
+from errors import TransformationError
 
 
 class VhdlType(object):

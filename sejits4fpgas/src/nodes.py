@@ -8,7 +8,7 @@ from collections import namedtuple
 from dotgen import VhdlDotGenVisitor
 from types import VhdlType
 from sejits4fpgas.src.config import config
-from utils import TransformationError
+from errors import TransformationError
 from .vhdl_ctree.nodes import CtreeNode
 from .vhdl_ctree.nodes import Project
 from .vhdl_ctree.nodes import File
