@@ -69,18 +69,10 @@ class VhdlBaseTransformer(object):
         .. note::
             Each transformer that should be applied to the tree must be called within this method
         """
-        from src.vhdl_ctree.visual.dot_manager import DotManager
-        img_path = "/home/philipp/University/M4/Masterthesis/src/VhdlSejits/vhdl_sejits/images/"
-        # ----
-        # DotManager().dot_ast_to_file(tree, file_name=img_path + "raw_tree")
         tree = VhdlKwdTransformer().visit(tree)
-        # DotManager().dot_ast_to_file(tree, file_name=img_path + "kwd_trans_tree")
         tree = VhdlIRTransformer(self.ipt_params, self.lifted_functions).visit(tree)
-        # DotManager().dot_ast_to_file(tree, file_name=img_path + "ir_trans_tree")
         tree = VhdlGraphTransformer().visit(tree)
-        DotManager().dot_ast_to_file(tree, file_name=img_path + "graph_trans_tree")
         tree = VhdlPortTransformer().visit(tree)
-        DotManager().dot_ast_to_file(tree, file_name=img_path + "port_trans_tree")
         return tree
 
 
