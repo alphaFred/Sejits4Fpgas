@@ -13,5 +13,5 @@ setup(
     author='Philipp Ebensberger',
     author_email='contact@3bricks-software.de',
     description='',
-    requires=['numpy', 'pyserial', 'scikit-image']
+    requires=['numpy', 'scikit-image']
 )
