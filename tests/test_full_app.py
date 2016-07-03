@@ -1,8 +1,8 @@
 import context
 
 from skimage import data
-from scipy import ndimage
-import numpy as np
+
+from tests.utils.basic_blocks import *
 
 from sejits4fpgas.src.dsl import DSLTransformer
 from sejits4fpgas.src.dsl import get_dsl_type
@@ -60,25 +60,6 @@ def bb_convolve(mask, divisor, width, height, img):
     k = k.astype(np.float)
     k = k/divisor
     return ndimage.convolve(img, k, mode='constant', cval=0.0)
-
-def bb_split(i, n):
-    return n[i]
-
-def bb_merge(n_3, n_2, n_1, n_0):
-    return [n_3, n_2, n_1, n_0]
-
-def bb_add(x, y):
-    return x + y
-
-def bb_sub(x, y):
-    return x - y
-
-def bb_mul(x, y):
-    return x * y
-
-def bb_limitTo(valid, x):
-    return x
-
 
 test_img = []
 
