@@ -10,8 +10,9 @@ from sejits4fpgas.src.dsl import gen_dsl_wrapper
 from sejits4fpgas.src.nodes import VhdlFile
 from sejits4fpgas.src.nodes import VhdlProject
 from sejits4fpgas.src.utils import get_basic_blocks
-from sejits4fpgas.src.transformations import VhdlIRTransformer
 from sejits4fpgas.src.transformations import VhdlBaseTransformer
+from sejits4fpgas.src.jit_synth import VhdlLazySpecializedFunction
+from sejits4fpgas.src.vhdl_ctree.jit import ConcreteSpecializedFunction
 from sejits4fpgas.src.vhdl_ctree.transformations import PyBasicConversions
 
 
@@ -21,7 +22,7 @@ def specialize(func):
     return TestLazyTranslator.from_function(func)
 
 
-class TestLazyTranslator(VhdlIRTransformer):
+class TestLazyTranslator(VhdlLazySpecializedFunction):
 
     def args_to_subconfig(selfself, args):
         return {'arg_type': get_dsl_type(args, 32)}
@@ -46,7 +47,7 @@ class TestLazyTranslator(VhdlIRTransformer):
         return TestFunction("apply", proj, None)
 
 
-class TestFunction(VhdlBaseTransformer):
+class TestFunction(ConcreteSpecializedFunction):
     def __init__(self, entry_name, project_node, entry_typesig):
         self._ll_function = self._compile(entry_name, project_node, entry_typesig)
 
