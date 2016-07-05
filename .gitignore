@@ -53,3 +53,4 @@ sejits4fpgas/hw/vivado/template_project/template_project.tmp/*
 sejits4fpgas/hw/vivado/template_project/template_project.xpr.BACKUP*
 sejits4fpgas/parsetab.py
 *.egg-info
+*.tcl
