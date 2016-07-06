@@ -1,12 +1,15 @@
 import context
+import logging
 
 from skimage import data
 
 from tests.utils.basic_blocks import *
+from pkg_resources import resource_filename
 
 from sejits4fpgas.src.dsl import DSLTransformer
 from sejits4fpgas.src.dsl import get_dsl_type
 from sejits4fpgas.src.dsl import gen_dsl_wrapper
+from sejits4fpgas.src.config import config
 from sejits4fpgas.src.nodes import VhdlFile
 from sejits4fpgas.src.nodes import VhdlProject
 from sejits4fpgas.src.utils import get_basic_blocks
@@ -15,6 +18,11 @@ from sejits4fpgas.src.jit_synth import VhdlLazySpecializedFunction
 from sejits4fpgas.src.vhdl_ctree.jit import ConcreteSpecializedFunction
 from sejits4fpgas.src.vhdl_ctree.transformations import PyBasicConversions
 
+#
+logging.basicConfig(filename=resource_filename("sejits4fpgas",
+                                               config.get("Paths", "logging_path") + "test_full_app.log"),
+                    level=logging.INFO)
+#
 
 
 def specialize(func):
@@ -98,3 +106,55 @@ def test_bb_limitTo():
     img = data.camera()
     test_func(img)
 
+"""
+def test_func(a):
+    return bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 512, 512, a)
+
+# def test_func(a):
+#     filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)  # Gauss
+#     # filtMASK_Sobel_y = (-1, 0, 1, -2, 0, 2, -1, 0, 1)  # Sobel_y
+#     #
+#     c = 255 - a
+#     #
+#     return bb_convolve(filtMASK_Gauss, 16, 315, 300, 8, 8, bb_convolve(filtMASK_Gauss, 16, 315, 300, 8, 8, c))
+
+# def test_func(img):
+#     filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)  # Gauss
+#     # filtMASK_Sobel_y = (-1, 0, 1, -2, 0, 2, -1, 0, 1)  # Sobel_y
+#     #
+#     r = bb_split(img, 0)
+#     g = bb_split(img, 1)
+#     b = bb_split(img, 2)
+#     #
+#     p_r = bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, r))
+#     p_g = bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, g))
+#     p_b = bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, b))
+#     #
+#     p_img = bb_merge(p_r, p_g, p_b)
+#     return p_img
+
+# def test_func(img):
+#     filtMASK_Gauss = (1, 2, 1, 2, 4, 2, 1, 2, 1)  # Gauss
+#     # filtMASK_Sobel_y = (-1, 0, 1, -2, 0, 2, -1, 0, 1)  # Sobel_y
+#     #
+#     a = img * 12
+#     return bb_convolve(filtMASK_Gauss, 16, 640, 480, 8, 8, a)
+
+# from skimage import io
+# @specialize
+# def test_func(img):
+#     a = bb_convolve((0, 0, 0, 0, 1, 0, 0, 0, 0), 1, 640, 480, img)
+#     b = bb_sub(img, a)
+#     c = bb_convolve((0, 0, 0, 0, 1, 0, 0, 0, 0), 1, 640, 480, b)
+#     return bb_add(img, c)
+
+# @specialize
+# def test_func(img):
+#     return bb_convolve((1, 2, 1, 2, 4, 2, 1, 2, 1), 16, 640, 480, bb_mul(img, 2))
+
+# @specialize
+# def test_func(img):
+#     a = bb_sub(255, img)
+#     return bb_add(img, a)
+
+"""
