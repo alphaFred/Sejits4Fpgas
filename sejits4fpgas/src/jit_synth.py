@@ -7,6 +7,7 @@ import subprocess
 import ctypes as c
 import numpy as np
 import numpy.ctypeslib as ctl
+from pkg_resources import resource_filename
 from .vhdl_ctree.frontend import get_ast
 from .vhdl_ctree.c.nodes import MultiNode
 from .vhdl_ctree.jit import LazySpecializedFunction
@@ -37,7 +38,7 @@ class VhdlSynthModule(object):
     def __init__(self):
         self._linked_files = []
         # vivado project folder
-        self.v_proj_fol = os.path.dirname(__file__) + config.get("Paths", "vivado_proj_path")
+        self.v_proj_fol = resource_filename("sejits4fpgas", config.get("Paths", "vivado_proj_path"))
         if os.path.isdir(self.v_proj_fol):
             logger.info("Found Vivado Project at: %s" % self.v_proj_fol)
         else:
@@ -141,7 +142,7 @@ class VhdlSynthModule(object):
     def _activate(self):
         """Initialize Vivado synthesis subprocess."""
         if os.uname()[-1] == "armv7l":
-            print "Execute synthesis script"
+            logger.log(level=logging.INFO, msg="Execute synthesis script")
         else:
             pass
 
@@ -177,7 +178,8 @@ class VhdlLazySpecializedFunction(LazySpecializedFunction):
         try:
             ret = super(VhdlLazySpecializedFunction, self).__call__(*args, **kwargs)
         except TransformationError:
-            print "Calling Python function ..."
+            logger.exception(msg="Calling Python function ...")
+            # clear cache of ctree framework
             subprocess.call(["ctree", "-cc"])
             ret = self.py_func(*args, **kwargs)
         finally:
