@@ -5,14 +5,14 @@ import new
 import os
 from collections import namedtuple
 
-from dotgen import VhdlDotGenVisitor
-from types import VhdlType
+from sejits4fpgas.src.dotgen import VhdlDotGenVisitor
+from sejits4fpgas.src.types import VhdlType
 from sejits4fpgas.src.config import config
-from errors import TransformationError
-from .vhdl_ctree.nodes import CtreeNode
-from .vhdl_ctree.nodes import Project
-from .vhdl_ctree.nodes import File
-from .vhdl_ctree.c.nodes import Op
+from sejits4fpgas.src.errors import TransformationError
+from sejits4fpgas.src.vhdl_ctree.nodes import CtreeNode
+from sejits4fpgas.src.vhdl_ctree.nodes import Project
+from sejits4fpgas.src.vhdl_ctree.nodes import File
+from sejits4fpgas.src.vhdl_ctree.c.nodes import Op
 
 # set up module-level logger
 logger = logging.getLogger(__name__)

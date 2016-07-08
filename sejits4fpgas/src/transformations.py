@@ -5,25 +5,25 @@ from collections import namedtuple
 from collections import defaultdict
 from itertools import izip_longest
 
-from nodes import VhdlSyncNode
-from nodes import VhdlConstant
-from nodes import VhdlModule
-from nodes import VhdlLibrary
-from nodes import VhdlAnd
-from nodes import PortInfo
-from nodes import Port
-from nodes import VhdlReturn
-from nodes import VhdlSource
-from nodes import VhdlNode
-from nodes import VhdlSignal
-from nodes import VhdlSink
-from nodes import VhdlDReg
-from nodes import VhdlSignalSplit
-from nodes import VhdlConcatenation
-from types import VhdlType
+from sejits4fpgas.src.nodes import VhdlSyncNode
+from sejits4fpgas.src.nodes import VhdlConstant
+from sejits4fpgas.src.nodes import VhdlModule
+from sejits4fpgas.src.nodes import VhdlLibrary
+from sejits4fpgas.src.nodes import VhdlAnd
+from sejits4fpgas.src.nodes import PortInfo
+from sejits4fpgas.src.nodes import Port
+from sejits4fpgas.src.nodes import VhdlReturn
+from sejits4fpgas.src.nodes import VhdlSource
+from sejits4fpgas.src.nodes import VhdlNode
+from sejits4fpgas.src.nodes import VhdlSignal
+from sejits4fpgas.src.nodes import VhdlSink
+from sejits4fpgas.src.nodes import VhdlDReg
+from sejits4fpgas.src.nodes import VhdlSignalSplit
+from sejits4fpgas.src.nodes import VhdlConcatenation
+from sejits4fpgas.src.types import VhdlType
 from sejits4fpgas.src.config import config
-from errors import TransformationError
-from vhdl_ctree.c.nodes import Op
+from sejits4fpgas.src.errors import TransformationError
+from sejits4fpgas.src.vhdl_ctree.c.nodes import Op
 
 
 logger = logging.getLogger(__name__)

@@ -1,4 +1,4 @@
-from errors import TransformationError
+from sejits4fpgas.src.errors import TransformationError
 
 
 class VhdlType(object):

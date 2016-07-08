@@ -4,28 +4,28 @@ import logging
 from collections import namedtuple
 
 import numpy as np
-import transformations
-from nodes import GenericInfo
-from nodes import PortInfo
-from nodes import VhdlAssignment
-from nodes import VhdlComponent
-from nodes import VhdlFile
-from nodes import VhdlLibrary
-from nodes import VhdlModule
-from nodes import VhdlReturn
-from nodes import VhdlSignal
-from nodes import VhdlSink
-from nodes import VhdlSource
-from types import VhdlType
-from errors import TransformationError
+import sejits4fpgas.src.transformations as transformations
+from sejits4fpgas.src.nodes import GenericInfo
+from sejits4fpgas.src.nodes import PortInfo
+from sejits4fpgas.src.nodes import VhdlAssignment
+from sejits4fpgas.src.nodes import VhdlComponent
+from sejits4fpgas.src.nodes import VhdlFile
+from sejits4fpgas.src.nodes import VhdlLibrary
+from sejits4fpgas.src.nodes import VhdlModule
+from sejits4fpgas.src.nodes import VhdlReturn
+from sejits4fpgas.src.nodes import VhdlSignal
+from sejits4fpgas.src.nodes import VhdlSink
+from sejits4fpgas.src.nodes import VhdlSource
+from sejits4fpgas.src.types import VhdlType
+from sejits4fpgas.src.errors import TransformationError
 from sejits4fpgas.src.config import config
-from vhdl_ctree.c.nodes import BinaryOp
-from vhdl_ctree.c.nodes import Constant
-from vhdl_ctree.c.nodes import FunctionCall
-from vhdl_ctree.c.nodes import FunctionDecl
-from vhdl_ctree.c.nodes import Op
-from vhdl_ctree.c.nodes import Return
-from vhdl_ctree.c.nodes import SymbolRef
+from sejits4fpgas.src.vhdl_ctree.c.nodes import BinaryOp
+from sejits4fpgas.src.vhdl_ctree.c.nodes import Constant
+from sejits4fpgas.src.vhdl_ctree.c.nodes import FunctionCall
+from sejits4fpgas.src.vhdl_ctree.c.nodes import FunctionDecl
+from sejits4fpgas.src.vhdl_ctree.c.nodes import Op
+from sejits4fpgas.src.vhdl_ctree.c.nodes import Return
+from sejits4fpgas.src.vhdl_ctree.c.nodes import SymbolRef
 
 # set up module-level logger
 logger = logging.getLogger(__name__)

@@ -1,9 +1,8 @@
 import glob
 import os
 from sejits4fpgas.src.config import config
-from pkg_resources import resource_filename
-
 from sejits4fpgas.src.nodes import VhdlFile
+from pkg_resources import resource_filename
 
 # ---------------------------------------------------------------------------
 STDLIBS = ["ieee", "ieee.std_logic_1164.all"]

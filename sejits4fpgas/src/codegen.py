@@ -2,8 +2,8 @@
 import ast
 import logging
 
-from .nodes import VhdlConstant
-from errors import TransformationError
+from sejits4fpgas.src.nodes import VhdlConstant
+from sejits4fpgas.src.errors import TransformationError
 from sejits4fpgas.src.config import config
 
 logger = logging.getLogger(__name__)
