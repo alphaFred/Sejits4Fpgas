@@ -1,5 +1,5 @@
 import os
-from setuptools import setup
+from setuptools import setup, Extension
 
 def package_files(directory):
     paths = []
@@ -25,5 +25,8 @@ setup(
     author='Philipp Ebensberger',
     author_email='contact@3bricks-software.de',
     description='',
+    ext_modules=[Extension('hwintfc',
+                 extra_compile_args = ["-fPIC", "-O2", ],
+                 sources = ['sejits4fpgas/hw/hw_intfc/hwintfc.cpp'])],
     install_requires=["numpy", "scikit-image", "scipy", "pytest"],
 )
