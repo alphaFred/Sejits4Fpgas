@@ -16,19 +16,8 @@ from collections import namedtuple
 #
 from sejits4fpgas.src.config import config
 
-
 logger = logging.getLogger(__name__)
 logger.disabled = config.getboolean("Logging", "disable_logging")
-logger.setLevel(logging.DEBUG)
-# create console handler and set level to debug
-ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
-# create formatter
-formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-# add formatter to ch
-ch.setFormatter(formatter)
-# add ch to logger
-logger.addHandler(ch)
 
 
 class VhdlSynthModule(object):
@@ -36,29 +25,33 @@ class VhdlSynthModule(object):
     """ Manages synthetisation of all VhdlFiles in VhdlProject."""
 
     def __init__(self):
+        # ---------------------------------------------------------------------
+        logger.info("Initialized new {} instance".format(self.__class__.__name__))
+        # ---------------------------------------------------------------------
+
         self._linked_files = []
-        # vivado project folder
+
+        # Get and check vivado project folder path
         self.v_proj_fol = resource_filename("sejits4fpgas", config.get("Paths", "vivado_proj_path"))
-        if os.path.isdir(self.v_proj_fol):
-            logger.info("Found Vivado Project at: %s" % self.v_proj_fol)
-        else:
-            log_txt = "Could not find Vivado Project at: %s" % self.v_proj_fol
-            logger.warning(log_txt)
-        # ---------------------------------------------------------------------
-        # LOGGING
-        # ---------------------------------------------------------------------
-        logger.info("Initialized VhdlSynthModule")
-        # ---------------------------------------------------------------------
+        if not os.path.isdir(self.v_proj_fol):
+            logger.warning("Could not find Vivado Project at: {}".format(self.v_proj_fol))
+            raise TransformationError("Could not find Vivado Project")
+
+        # Get and check hw interface path and module name
         hw_intfc_path = config.get("HwInterface", "hw_intfc_path")
         hw_intfc_name = config.get("HwInterface", "hw_intfc_module")
-        resource_filename("sejits4fpgas", hw_intfc_path + hw_intfc_name)
 
-        libHwIntfc = c.cdll.LoadLibrary('/home/linaro/libHwIntfc.so')
+        hw_intfc_filepath = resource_filename("sejits4fpgas", hw_intfc_path + hw_intfc_name)
 
-        libHwIntfc.process1d.argtypes = [ctl.ndpointer(np.uint32, ndim=1, flags='C'), c.c_uint]
-        libHwIntfc.process1d_img.argtypes = [ctl.ndpointer(np.uint32, ndim=1, flags='C'), c.c_uint]
+        if not os.path.isfile(hw_intfc_filepath):
+            logger.warning("Could not find HW interface module: {}".format(hw_intfc_filepath))
+            raise TransformationError("Could not find HW interface module")
 
-        self.hw_interface = libHwIntfc.process1d_img
+        if os.uname()[-1] == "armv7l":
+            # Load hw interface and define argument types
+            libHwIntfc = c.cdll.LoadLibrary(hw_intfc_filepath)
+            libHwIntfc.process_img.argtypes = [ctl.ndpointer(np.uint32, ndim=1, flags='C'), c.c_uint, c.c_uint, c.c_uint]
+            self.hw_interface = libHwIntfc.process_img
 
     def __call__(self, *args, **kwargs):
         """Redirect call to python or vhdl kernel."""
@@ -66,9 +59,11 @@ class VhdlSynthModule(object):
             if len(args) > 1:
                 raise TransformationError("Multiple input data currently not supported by the hardware")
             mod_arg = args[0].astype(np.uint32)
+            img_w = mod_arg.shape[0]
             orig_arg_shape = mod_arg.shape
             #
-            self.hw_interface(mod_arg, len(mod_arg))
+            mod_arg = mod_arg.flatten()
+            self.hw_interface(mod_arg, np.uint(len(mod_arg)), img_w, config.getint("Dma", "dma_chunk_size"))
             #
             out_img = mod_arg.astype(np.uint8)
             out_img = out_img.reshape(orig_arg_shape)
@@ -83,15 +78,16 @@ class VhdlSynthModule(object):
         :param submodule: path to VHDL file
         :type submodule: str
         """
+        logger.debug("Added new submodule:{} to {}".format(submodule, self.__class__.__name__))
         self._linked_files.append(submodule)
 
     def get_callable(self, entry_point_name, entry_point_typesig):
         """Return a python callable that redirects to hardware."""
-        self._link_to_vivado_project()
-        self._activate()
+        self._update_vivado_proj()
+        self._synthesize_vivado_proj()
         return self
 
-    def _link_to_vivado_project(self):
+    def _update_vivado_proj(self):
         """Link all files to Vivado template project."""
         # vivado src folder
         v_src_fol = self.v_proj_fol + "template_project.srcs/sources_1/new/"
@@ -101,19 +97,20 @@ class VhdlSynthModule(object):
             if os.path.basename(proj_file) != "top.vhd":
                 os.remove(proj_file)
 
-        # Copy all files to top folder and save file names
+        # Copy all files to vivado template src folder and save file names
         file_names = []
         for file_path in self._linked_files:
             os.system("cp " + file_path + " " + v_src_fol)
             file_names.append(os.path.basename(file_path))
 
-        # Add update source files in TCL script
-        saved_tcl_file_path = self.v_proj_fol + "template_project.sav"
+        # Include source files names in vivado projects TCL script
+        tcl_file_path = self.v_proj_fol + "template_project.sav"
         mod_tcl_file_path = self.v_proj_fol + "template_project.tcl"
-        if not os.path.exists(saved_tcl_file_path):
-            os.system("cp " + mod_tcl_file_path + " " + saved_tcl_file_path)
+        # If saved tcl script does not exist copy existing tcl to new .sav file
+        if not os.path.exists(tcl_file_path):
+            os.system("cp " + mod_tcl_file_path + " " + tcl_file_path)
 
-        with open(saved_tcl_file_path, "r") as old_tcl, open(mod_tcl_file_path, "w") as new_tcl:
+        with open(tcl_file_path, "r") as old_tcl, open(mod_tcl_file_path, "w") as new_tcl:
                 line = old_tcl.readline()
 
                 # TODO: find better way than with while loops
@@ -154,7 +151,7 @@ class VhdlSynthModule(object):
                 for line in old_tcl.readlines():
                     new_tcl.write(line)
 
-    def _activate(self):
+    def _synthesize_vivado_proj(self):
         """Initialize Vivado synthesis subprocess."""
         if os.uname()[-1] == "armv7l":
             logger.log(level=logging.INFO, msg="Execute synthesis script")
@@ -194,12 +191,13 @@ class VhdlLazySpecializedFunction(LazySpecializedFunction):
         try:
             ret = super(VhdlLazySpecializedFunction, self).__call__(*args, **kwargs)
         except TransformationError:
-            logger.exception(msg="Calling Python function ...")
+            logger.exception(msg="TransformationError raised, calling python implementation instead...")
             # clear cache of ctree framework
             subprocess.call(["ctree", "-cc"])
             ret = self.py_func(*args, **kwargs)
-        finally:
-            return ret
+        #
+        return ret
+
 
     @classmethod
     def from_function(cls, func, folder_name=''):
