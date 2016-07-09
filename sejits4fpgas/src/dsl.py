@@ -45,14 +45,13 @@ LF_Data = namedtuple("LF_Data", ["lineno", "func"])
 
 
 class BasicBlockBaseTransformer(object):
-    lifted_functions = []
     func_count = 0
 
     def __init__(self, backend="C", **kwargs):
         self.backend = backend.lower()
         self.kwargs = kwargs
 
-    def convert(self, node):
+    def convert(self, node, lifted_functions):
         method = "get_func_def_" + self.backend
         try:
             func_def_getter = getattr(self, method)
@@ -63,7 +62,7 @@ class BasicBlockBaseTransformer(object):
 
         func_def = func_def_getter(**self.kwargs)
         # add function definition to class variable lifted_functions
-        BasicBlockBaseTransformer.lifted_functions.append(LF_Data(node.lineno, func_def))
+        lifted_functions.append(LF_Data(node.lineno, func_def))
         # return C node FunctionCall
         return FunctionCall(SymbolRef(func_def.name), node.args)
 
@@ -330,6 +329,7 @@ class DSLTransformer(ast.NodeTransformer):
         """Initialize transformation target backend."""
         self.backend = backend
         self.kwargs = kwargs
+        self.lifted_functions = []
         #
         self.transformer_func = {t.func_name: t for t in self.transformers}
 
@@ -339,17 +339,15 @@ class DSLTransformer(ast.NodeTransformer):
             return node
         else:
             transformer = self.transformer_func[getattr(node.func, "id", None)]
-            return transformer(self.backend, **self.kwargs).convert(node)
+            return transformer(self.backend, **self.kwargs).convert(node, self.lifted_functions)
 
-    @staticmethod
-    def lifted_functions():
+    def get_lifted_functions(self):
         """Return all basic block transformer functions."""
-        lifted_functions = BasicBlockBaseTransformer.lifted_functions
         # group and reverse
         line_dict = {}
         line_nbrs = []
         #
-        for lf in lifted_functions:
+        for lf in self.lifted_functions:
             if lf.lineno in line_dict:
                 line_dict[lf.lineno].append(lf.func)
             else:

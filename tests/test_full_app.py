@@ -21,7 +21,7 @@ from sejits4fpgas.src.vhdl_ctree.transformations import PyBasicConversions
 #
 logging.basicConfig(filename=resource_filename("sejits4fpgas",
                                                config.get("Paths", "logging_path") + "test_full_app.log"),
-                    level=logging.INFO)
+                    level=logging.DEBUG)
 #
 
 
@@ -36,9 +36,10 @@ class TestLazyTranslator(VhdlLazySpecializedFunction):
         return {'arg_type': get_dsl_type(args, 32)}
 
     def transform(self, tree, program_config):
-        tree = DSLTransformer(backend="VHDL").visit(tree)
+        dslTransformer = DSLTransformer(backend="VHDL")
+        tree = dslTransformer.visit(tree)
         tree = PyBasicConversions().visit(tree)
-        l_funcs = DSLTransformer.lifted_functions()
+        l_funcs = dslTransformer.get_lifted_functions()
         tree = VhdlBaseTransformer(program_config.args_subconfig['arg_type'], l_funcs).visit(tree)
         accel_file = VhdlFile("generated", body=[tree])
         # Generate wrapper file
@@ -73,38 +74,39 @@ test_img = []
 
 
 def test_bb_add():
-    @specialize
-    def test_func(a):
+
+    def test_func_add(a):
         return bb_add(a, 10)
 
     img = data.camera()
-    test_func(img)
+    spec_func_add = TestLazyTranslator.from_function(test_func_add)
+    spec_func_add(img)
 
 
 def test_bb_sub():
-    @specialize
-    def test_func(a):
+    def test_func_sub(a):
         return bb_sub(a, 10)
 
     img = data.camera()
-    test_func(img)
+    spec_func_sub = TestLazyTranslator.from_function(test_func_sub)
+    spec_func_sub(img)
 
 def test_bb_mul():
-    @specialize
-    def test_func(a):
+    def test_func_mul(a):
         return bb_mul(a, 2)
 
     img = data.camera()
-    test_func(img)
+    spec_func_mul = TestLazyTranslator.from_function(test_func_mul)
+    spec_func_mul(img)
 
 
 def test_bb_limitTo():
-    @specialize
-    def test_func(a):
+    def test_func_limitTo(a):
         return bb_limitTo(42, a)
 
     img = data.camera()
-    test_func(img)
+    spec_func_limitTo = TestLazyTranslator.from_function(test_func_limitTo)
+    spec_func_limitTo(img)
 
 """
 def test_func(a):
