@@ -8,10 +8,10 @@ import ctypes as c
 import numpy as np
 import numpy.ctypeslib as ctl
 from pkg_resources import resource_filename
-from .vhdl_ctree.frontend import get_ast
-from .vhdl_ctree.c.nodes import MultiNode
-from .vhdl_ctree.jit import LazySpecializedFunction
-from errors import TransformationError
+from sejits4fpgas.src.vhdl_ctree.frontend import get_ast
+from sejits4fpgas.src.vhdl_ctree.c.nodes import MultiNode
+from sejits4fpgas.src.vhdl_ctree.jit import LazySpecializedFunction
+from sejits4fpgas.src.errors import TransformationError
 from collections import namedtuple
 #
 from sejits4fpgas.src.config import config
@@ -49,7 +49,16 @@ class VhdlSynthModule(object):
         # ---------------------------------------------------------------------
         logger.info("Initialized VhdlSynthModule")
         # ---------------------------------------------------------------------
-        self.hw_interface = None
+        hw_intfc_path = config.get("HwInterface", "hw_intfc_path")
+        hw_intfc_name = config.get("HwInterface", "hw_intfc_module")
+        resource_filename("sejits4fpgas", hw_intfc_path + hw_intfc_name)
+
+        libHwIntfc = c.cdll.LoadLibrary('/home/linaro/libHwIntfc.so')
+
+        libHwIntfc.process1d.argtypes = [ctl.ndpointer(np.uint32, ndim=1, flags='C'), c.c_uint]
+        libHwIntfc.process1d_img.argtypes = [ctl.ndpointer(np.uint32, ndim=1, flags='C'), c.c_uint]
+
+        self.hw_interface = libHwIntfc.process1d_img
 
     def __call__(self, *args, **kwargs):
         """Redirect call to python or vhdl kernel."""
@@ -57,8 +66,14 @@ class VhdlSynthModule(object):
             if len(args) > 1:
                 raise TransformationError("Multiple input data currently not supported by the hardware")
             mod_arg = args[0].astype(np.uint32)
+            orig_arg_shape = mod_arg.shape
+            #
             self.hw_interface(mod_arg, len(mod_arg))
-            return mod_arg
+            #
+            out_img = mod_arg.astype(np.uint8)
+            out_img = out_img.reshape(orig_arg_shape)
+            #
+            return out_img
         else:
             return "Concrete Specialized Function called on x86"
 
@@ -143,6 +158,7 @@ class VhdlSynthModule(object):
         """Initialize Vivado synthesis subprocess."""
         if os.uname()[-1] == "armv7l":
             logger.log(level=logging.INFO, msg="Execute synthesis script")
+            # TODO: Implement generation of async subprocess, calling synthesis script on remote
         else:
             pass
 
