@@ -156,6 +156,26 @@ class VhdlSynthModule(object):
         if os.uname()[-1] == "armv7l":
             logger.log(level=logging.INFO, msg="Execute synthesis script")
             # TODO: Implement generation of async subprocess, calling synthesis script on remote
+            connection_str = config.get("Automation", "user") + "@" + config.get("Automation", "host") + ":"
+            # move vhdl files to remote host
+            host_proj_folder = config.get("Automation", "host_v_proj_path")
+
+            logger.log("Copy .vhd files to " + connection_str + host_proj_folder + "template_project.srcs/sources_1/new/")
+            for file in glob.glob(host_proj_folder + "*"):
+                subprocess.call(["scp", "-i", ".ssh/zedboard_autoconnect", file,
+                                 connection_str + host_proj_folder + "template_project.srcs/sources_1/new/"])
+
+            # move tcl script to remote host
+            logger.log("Copy .tcl script to " + connection_str + host_proj_folder)
+            tcl_file_path = self.v_proj_fol + "template_project.tcl"
+            subprocess.call(["scp", "-i", ".ssh/zedboard_autoconnect", tcl_file_path,
+                             connection_str + host_proj_folder])
+
+            # execute synthesis script
+            script_path = config.get("Automation", "script_path")
+            remote_cmd = "vivado -mode batch -nojournal -nolog -notrace -source " + script_path
+            subprocess.call(["ssh", "-i", ".ssh/zedboard_autoconnect", "philipp@philipp-thinkpad-x250",
+                             "'" + remote_cmd + "'"])
         else:
             pass
 
