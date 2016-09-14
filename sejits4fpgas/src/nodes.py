@@ -3,6 +3,7 @@ import collections
 import logging
 import new
 import os
+import hashlib
 from collections import namedtuple
 
 from sejits4fpgas.src.dotgen import VhdlDotGenVisitor
@@ -86,6 +87,8 @@ class VhdlBaseNode(VhdlTreeNode):
 
 
 class VhdlSignal(object):
+    _fields = ["name", "vhdl_type"]
+
     def __init__(self, name, vhdl_type=None):
         self.name = name
         self.vhdl_type = vhdl_type
@@ -464,6 +467,7 @@ class VhdlFile(VhdlBaseNode, File):
     def __init__(self, name="generated", body=None, path=""):
         """Initialize Vhdl File."""
         self._filepath = None
+        self.vhdl_file_hash = None
         #
         VhdlBaseNode.__init__(self)
         File.__init__(self, name, body, path)
@@ -493,8 +497,7 @@ class VhdlFile(VhdlBaseNode, File):
         vhdl_src_file = os.path.join(self.path, self.get_filename())
         with open(vhdl_src_file, 'w') as vhdl_file:
             vhdl_file.write(program_text)
-        logger.info("file for generated VHDL: %s", vhdl_src_file)
-        logger.info("generated VHDL program: (((\n%s\n)))", program_text)
+        self.vhdl_file_hash = hashlib.sha512(program_text.strip().encode()).hexdigest()
         return vhdl_src_file
 
     def codegen(self, indent=4):
@@ -516,8 +519,6 @@ class VhdlFile(VhdlBaseNode, File):
             vhdl_src_file = os.path.join(self.path, self.get_filename())
             with open(vhdl_src_file, 'w') as cache_file, open(self.file_path, 'r') as vhdl_file:
                 cache_file.write(vhdl_file.read())
-            logger.info("file for generated VHDL: %s", vhdl_src_file)
-            logger.info("generated VHDL program: (((\n%s\n)))", program_text)
             return vhdl_src_file
 
         vhdlfile._compile = new.instancemethod(_compile, vhdlfile, None)
@@ -544,6 +545,7 @@ class VhdlProject(Project):
         self.synthesis_dir = synthesis_dir
         self.indent = indent
         self.gen_wrapper = gen_wrapper  # generate wrapper
+        self.projecthash = None
         #
         self._module = None
         #
@@ -557,11 +559,21 @@ class VhdlProject(Project):
         if self.gen_wrapper is True:
             self.files.append(self._generate_wrapper())
 
+        #   Project Hash sources
+        ph_sources = []
+        #
         for f in self.files:
             f_src = f.codegen(self.indent)
+            #
+            ph_sources.append(f_src)
+            #
             submodule = f._compile(f_src)
             if submodule:
                 self._module._link_in(submodule)
+        # Generate Project Hash
+        self.projecthash = hashlib.sha512("\n".join(ph_sources)).hexdigest()
+        self._module.set_project_hash(self.projecthash)
+        #
         return self._module
 
     @property

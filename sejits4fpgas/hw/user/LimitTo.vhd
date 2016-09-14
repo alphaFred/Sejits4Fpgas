@@ -8,7 +8,7 @@ use UNISIM.VComponents.all;
 
 entity LimitTo is
     Generic(
-        VALID_BITS      : positive
+        VALID_BITS      : positive := 255
         );
     Port (
         CLK             : in  std_logic;
@@ -24,16 +24,33 @@ end LimitTo;
 
 architecture limit_to_behave of LimitTo is
 begin
-    slice_full: if VALID_BITS >= 32 generate
-    begin
-        DATA_OUT <= DATA_IN;
-    end generate slice_full;
 
-    slice_limit: if VALID_BITS < 32 generate
+    Compare :process(CLK)
     begin
-        DATA_OUT <= (31 downto VALID_BITS => '0') & DATA_IN(VALID_BITS-1 downto 0);
-    end generate slice_limit;
+        if RST = '1' then
+            DATA_OUT <= (31 downto 0 => '0');
+            VALID_OUT <= '0';
+            READY_OUT <= '0';
+        elsif(rising_edge(CLK)) then
+            if VALID_BITS < signed(DATA_IN) then
+                DATA_OUT <= std_logic_vector(to_unsigned(VALID_BITS, DATA_OUT'length));
+            elsif signed(DATA_IN) < 0 then
+                DATA_OUT <= (DATA_OUT'length-1 downto 0 => '0');
+            else
+                DATA_OUT <= DATA_IN;
+            end if;
+            VALID_OUT <= VALID_IN;
+            READY_OUT <= READY_IN;
+        end if;
+     end process;
 
-    VALID_OUT <= VALID_IN;
-    READY_OUT <= READY_IN;
+--    slice_full: if VALID_BITS >= 32 generate
+--    begin
+--        DATA_OUT <= DATA_IN;
+--    end generate slice_full;
+
+--    slice_limit: if VALID_BITS < 32 generate
+--    begin
+--        DATA_OUT <= (31 downto VALID_BITS => '0') & DATA_IN(VALID_BITS-1 downto 0);
+--    end generate slice_limit;
 end limit_to_behave;

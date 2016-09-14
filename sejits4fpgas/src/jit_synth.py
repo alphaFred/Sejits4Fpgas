@@ -8,6 +8,7 @@ import ctypes as c
 import numpy as np
 import numpy.ctypeslib as ctl
 from pkg_resources import resource_filename
+from sejits4fpgas.src.utils import BITCACHE
 from sejits4fpgas.src.vhdl_ctree.frontend import get_ast
 from sejits4fpgas.src.vhdl_ctree.c.nodes import MultiNode
 from sejits4fpgas.src.vhdl_ctree.jit import LazySpecializedFunction
@@ -18,6 +19,16 @@ from sejits4fpgas.src.config import config
 
 logger = logging.getLogger(__name__)
 logger.disabled = config.getboolean("Logging", "disable_logging")
+logger.setLevel(logging.DEBUG)
+# create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+# create formatter
+formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+# add formatter to ch
+ch.setFormatter(formatter)
+# add ch to logger
+logger.addHandler(ch)
 
 
 class VhdlSynthModule(object):
@@ -30,6 +41,7 @@ class VhdlSynthModule(object):
         # ---------------------------------------------------------------------
 
         self._linked_files = []
+        self.project_hash = None
 
         # Get and check vivado project folder path
         self.v_proj_fol = resource_filename("sejits4fpgas", config.get("Paths", "vivado_proj_path"))
@@ -50,27 +62,45 @@ class VhdlSynthModule(object):
         if os.uname()[-1] == "armv7l":
             # Load hw interface and define argument types
             libHwIntfc = c.cdll.LoadLibrary(hw_intfc_filepath)
-            libHwIntfc.process_img.argtypes = [ctl.ndpointer(np.uint32, ndim=1, flags='C'), c.c_uint, c.c_uint, c.c_uint]
-            self.hw_interface = libHwIntfc.process_img
+            libHwIntfc.process1d_img.argtypes = [ctl.ndpointer(np.uint32, ndim=1, flags='C'), c.c_uint]
+            libHwIntfc.process3d_img.argtypes = [c.c_void_p, c.c_uint, c.c_uint]
+            libHwIntfc.process_img.argtypes = [c.c_void_p, c.c_uint, c.c_uint, c.c_uint]
+            self.hw_interface = libHwIntfc
+
+    def set_project_hash(self, project_hash):
+        self.project_hash = project_hash
 
     def __call__(self, *args, **kwargs):
         """Redirect call to python or vhdl kernel."""
         if os.uname()[-1] == "armv7l":
             if len(args) > 1:
                 raise TransformationError("Multiple input data currently not supported by the hardware")
-            mod_arg = args[0].astype(np.uint32)
-            img_w = mod_arg.shape[0]
-            orig_arg_shape = mod_arg.shape
             #
-            mod_arg = mod_arg.flatten()
-            self.hw_interface(mod_arg, np.uint(len(mod_arg)), img_w, config.getint("Dma", "dma_chunk_size"))
+            self._program_bitfile(self.project_hash)
+            #
+            if len(args[0].shape) <= 2:
+                mod_arg = args[0].astype(np.uint32)
+                orig_arg_shape = mod_arg.shape
+                #
+                mod_arg = mod_arg.flatten()
+                #self.hw_interface.process1d_img(mod_arg, np.uint(len(mod_arg)))
+                self.hw_interface.process_img(c.c_void_p(mod_arg.ctypes.data), np.uint(len(mod_arg)), orig_arg_shape[0],
+                                              orig_arg_shape if orig_arg_shape < 1024 else 1024)
+            else:
+                orig_arg_shape = args[0].shape
+                #
+                mod_arg = args[0].flatten()
+                # self.hw_interface.process3d_img(c.c_void_p(mod_arg.ctypes.data), len(mod_arg), 1)
+                self.hw_interface.process_img(c.c_void_p(mod_arg.ctypes.data), np.uint(len(mod_arg))/4, orig_arg_shape[0],
+                                              orig_arg_shape if orig_arg_shape < 1024 else 1024)
             #
             out_img = mod_arg.astype(np.uint8)
             out_img = out_img.reshape(orig_arg_shape)
             #
             return out_img
         else:
-            return "Concrete Specialized Function called on x86"
+            #raise TransformationError("Call to HW only on ARM")
+            return args[0]
 
     def _link_in(self, submodule):
         """Add submodule to list of linked files.
@@ -84,7 +114,18 @@ class VhdlSynthModule(object):
     def get_callable(self, entry_point_name, entry_point_typesig):
         """Return a python callable that redirects to hardware."""
         self._update_vivado_proj()
-        self._synthesize_vivado_proj()
+        #
+        if os.uname()[-1] == "armv7l":
+            if self.project_hash not in BITCACHE:
+                #
+                logger.log(level=logging.INFO, msg="Cache miss for bitstream file")
+                #
+                self._synthesize_vivado_proj()
+                self._store_bitfile(self.project_hash)
+                # add new bitstream file to cache folder
+                BITCACHE[self.project_hash] = resource_filename("sejits4fpgas", config.get("Paths", "bitfile_path")) + self.project_hash + ".bit"
+            else:
+                logger.log(level=logging.INFO, msg="Cache hit for bitstream file")
         return self
 
     def _update_vivado_proj(self):
@@ -156,28 +197,64 @@ class VhdlSynthModule(object):
         if os.uname()[-1] == "armv7l":
             logger.log(level=logging.INFO, msg="Execute synthesis script")
             # TODO: Implement generation of async subprocess, calling synthesis script on remote
+
             connection_str = config.get("Automation", "user") + "@" + config.get("Automation", "host") + ":"
-            # move vhdl files to remote host
             host_proj_folder = config.get("Automation", "host_v_proj_path")
 
-            logger.log("Copy .vhd files to " + connection_str + host_proj_folder + "template_project.srcs/sources_1/new/")
-            for file in glob.glob(host_proj_folder + "*"):
-                subprocess.call(["scp", "-i", ".ssh/zedboard_autoconnect", file,
-                                 connection_str + host_proj_folder + "template_project.srcs/sources_1/new/"])
+            logger.log(level=logging.INFO, msg="Copy .vhd files to " + connection_str + host_proj_folder + "template_project.srcs/sources_1/new/")
 
-            # move tcl script to remote host
-            logger.log("Copy .tcl script to " + connection_str + host_proj_folder)
-            tcl_file_path = self.v_proj_fol + "template_project.tcl"
-            subprocess.call(["scp", "-i", ".ssh/zedboard_autoconnect", tcl_file_path,
-                             connection_str + host_proj_folder])
+            try:
+                for file in glob.glob(self.v_proj_fol + "template_project.srcs/sources_1/new/*"):
+                    logger.log(level=logging.DEBUG, msg="Copying {0} to remote host".format(file))
+                    subprocess.check_call(["scp", "-i", "/home/linaro/.ssh/zedboard_autoconnect", file,
+                                     connection_str + host_proj_folder + "template_project.srcs/sources_1/new/"])
 
-            # execute synthesis script
-            script_path = config.get("Automation", "script_path")
-            remote_cmd = "vivado -mode batch -nojournal -nolog -notrace -source " + script_path
-            subprocess.call(["ssh", "-i", ".ssh/zedboard_autoconnect", "philipp@philipp-thinkpad-x250",
-                             "'" + remote_cmd + "'"])
+                # move tcl script to remote host
+                logger.log(level=logging.INFO, msg="Copy .tcl script to " + connection_str + host_proj_folder)
+                tcl_file_path = self.v_proj_fol + "template_project.tcl"
+                subprocess.check_call(["scp", "-i", "/home/linaro/.ssh/zedboard_autoconnect", tcl_file_path,
+                                 connection_str + host_proj_folder])
+
+                # execute synthesis script
+                script_path = config.get("Automation", "script_path")
+                subprocess.check_call(["ssh", "-i", "/home/linaro/.ssh/zedboard_autoconnect",
+                                       connection_str + "./vivado_automation.sh"])
+            except subprocess.CalledProcessError:
+                logger.log(level=logging.ERROR, msg="Error while synthesizing FPGA")
+                raise TransformationError(msg="Error while synthesizing FPGA")
+            else:
+                logger.log(level=logging.INFO, msg="Successfully synthesized FPGA")
         else:
+            logger.log(level=logging.INFO, msg="Can not start syntehtisation on: {}".format(os.uname()[-1]))
             pass
+
+    def _store_bitfile(self, bitfile_hash):
+        connection_str = config.get("Automation", "user") + "@" + config.get("Automation", "host") + ":"
+
+        host_proj_folder = config.get("Automation", "host_v_proj_path")
+        bitfile_folder_path = resource_filename("sejits4fpgas", config.get("Paths", "bitfile_path"))
+
+        try:
+            # copy generated bit file to client
+            subprocess.check_call(["scp", "-i", "/home/linaro/.ssh/zedboard_autoconnect",
+                             connection_str + host_proj_folder + "template_project.runs/impl_1/top.bit",
+                             bitfile_folder_path + str(bitfile_hash) + ".bit"])
+        except subprocess.CalledProcessError:
+            logger.log(level=logging.ERROR, msg="Error while storing FPGA-bitfile")
+            raise TransformationError(msg="Error while storing FPGA-bitfile")
+        else:
+            logger.log(level=logging.INFO, msg="Successfully stored FPGA-bitfile")
+
+    def _program_bitfile(self, bitfile_name):
+        try:
+            subprocess.check_call("cat " +
+                                  resource_filename("sejits4fpgas", config.get("Paths", "bitfile_path")) +
+                                  bitfile_name + ".bit > /dev/xdevcfg", shell=True)
+        except subprocess.CalledProcessError:
+            logger.log(level=logging.ERROR, msg="Error while programming FPGA")
+            raise TransformationError(msg="Error while programming FPGA")
+        else:
+            logger.log(level=logging.INFO, msg="Successfully programmed FPGA")
 
 
 class VhdlLazySpecializedFunction(LazySpecializedFunction):
@@ -207,13 +284,12 @@ class VhdlLazySpecializedFunction(LazySpecializedFunction):
 
         .. todo:: refine cache cleaning in error case
         """
-        ret = None
         try:
             ret = super(VhdlLazySpecializedFunction, self).__call__(*args, **kwargs)
         except TransformationError:
             logger.exception(msg="TransformationError raised, calling python implementation instead...")
             # clear cache of ctree framework
-            subprocess.call(["ctree", "-cc"])
+            # subprocess.call(["ctree", "-cc"])
             ret = self.py_func(*args, **kwargs)
         #
         return ret

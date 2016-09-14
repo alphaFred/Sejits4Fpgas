@@ -8,6 +8,13 @@ from pkg_resources import resource_filename
 STDLIBS = ["ieee", "ieee.std_logic_1164.all"]
 # ---------------------------------------------------------------------------
 
+BITCACHE = {}
+
+# load bitfile cache
+for bitfile in glob.glob(resource_filename("sejits4fpgas", config.get("Paths", "bitfile_path")) + "*.bit"):
+    fname, ext = os.path.splitext(os.path.basename(bitfile))
+    BITCACHE[fname] = bitfile
+
 
 def get_basic_blocks():
     prebuilt_files = []

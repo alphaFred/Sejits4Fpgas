@@ -122,7 +122,7 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
                              library="work.Convolve")
         return defn
 
-    def convert(self, node):
+    def convert(self, node, lifted_functions):
         method = "get_func_def_" + self.backend
         try:
             func_def_getter = getattr(self, method)
@@ -133,7 +133,7 @@ class ConvolveTransformer(BasicBlockBaseTransformer):
 
         func_def = func_def_getter(delay=(2*node.args[2].n) + 12, **self.kwargs)
         # add function definition to class variable lifted_functions
-        BasicBlockBaseTransformer.lifted_functions.append(LF_Data(node.lineno, func_def))
+        lifted_functions.append(LF_Data(node.lineno, func_def))
         # return C node FunctionCall
         return FunctionCall(SymbolRef(func_def.name), node.args)
 
@@ -310,11 +310,93 @@ class LimitToTransformer(BasicBlockBaseTransformer):
         outport_info = [PortInfo("DATA_OUT", "out", VhdlType.VhdlStdLogicVector(data_width))]
         defn = VhdlComponent(name=self.func_name,
                              generic_slice=slice(0, 1),
-                             delay=0,
+                             delay=1,
                              inport_info=inport_info,
                              outport_info=outport_info,
                              library="work.LimitTo")
         return defn
+
+class RgbConvolve(BasicBlockBaseTransformer):
+    func_name = "bb_rgbconvolve"
+
+    def get_func_def_c(self, *args, **kwargs):
+        """Return C interpretation of the BasicBlock."""
+        params = [SymbolRef("inpt", ctypes.c_long())]
+        return_type = ctypes.c_long()
+        defn = [Return(BinaryOp(SymbolRef("inpt"), Op.Mul(), Constant(2)))]
+        return FunctionDecl(return_type, self.func_name, params, defn)
+
+    def get_func_def_vhdl(self, node, lifted_functions, **kwargs):
+        #
+        nodeArgs = {n:i for n,i in zip(["mask","divisor","width","height","pixel"],range(0,5))}
+        #
+        split_func_r = FunctionCall(SplitTransformer(backend="VHDL").get_func_def_vhdl(),
+                                    args=[Constant(0), node.args[nodeArgs["pixel"]]])
+        split_func_g = FunctionCall(SplitTransformer(backend="VHDL").get_func_def_vhdl(),
+                                    args=[Constant(1), node.args[nodeArgs["pixel"]]])
+        split_func_b = FunctionCall(SplitTransformer(backend="VHDL").get_func_def_vhdl(),
+                                    args=[Constant(2), node.args[nodeArgs["pixel"]]])
+        split_func_a = FunctionCall(SplitTransformer(backend="VHDL").get_func_def_vhdl(),
+                                    args=[Constant(3), node.args[nodeArgs["pixel"]]])
+
+        convolve_func_a = FunctionCall(ConvolveTransformer(backend="VHDL").get_func_def_vhdl(delay=(2*node.args[2].n) + 12),
+                                       args=[node.args[nodeArgs["mask"]],
+                                             node.args[nodeArgs["divisor"]],
+                                             node.args[nodeArgs["width"]],
+                                             node.args[nodeArgs["height"]],
+                                             split_func_a])
+        convolve_func_b = FunctionCall(ConvolveTransformer(backend="VHDL").get_func_def_vhdl(delay=(2*node.args[2].n) + 12),
+                                       args=[node.args[nodeArgs["mask"]],
+                                             node.args[nodeArgs["divisor"]],
+                                             node.args[nodeArgs["width"]],
+                                             node.args[nodeArgs["height"]],
+                                             split_func_b])
+        convolve_func_g = FunctionCall(ConvolveTransformer(backend="VHDL").get_func_def_vhdl(delay=(2*node.args[2].n) + 12),
+                                       args=[node.args[nodeArgs["mask"]],
+                                             node.args[nodeArgs["divisor"]],
+                                             node.args[nodeArgs["width"]],
+                                             node.args[nodeArgs["height"]],
+                                             split_func_g])
+        convolve_func_r = FunctionCall(ConvolveTransformer(backend="VHDL").get_func_def_vhdl(delay=(2*node.args[2].n) + 12),
+                                       args=[node.args[nodeArgs["mask"]],
+                                             node.args[nodeArgs["divisor"]],
+                                             node.args[nodeArgs["width"]],
+                                             node.args[nodeArgs["height"]],
+                                             split_func_r])
+        #
+        limited_r = FunctionCall(LimitToTransformer(backend="VHDL").get_func_def_vhdl(), args=[Constant(255), convolve_func_r])
+        limited_g = FunctionCall(LimitToTransformer(backend="VHDL").get_func_def_vhdl(), args=[Constant(255), convolve_func_g])
+        limited_b = FunctionCall(LimitToTransformer(backend="VHDL").get_func_def_vhdl(), args=[Constant(255), convolve_func_b])
+        limited_a = FunctionCall(LimitToTransformer(backend="VHDL").get_func_def_vhdl(), args=[Constant(255), convolve_func_a])
+
+        ret = FunctionCall(MergeTransformer(backend="VHDL").get_func_def_vhdl(),args=[limited_a, limited_b, limited_g, limited_r])
+        #
+        addCustomBlockToLiftedFunctions(ret, node.lineno, lifted_functions)
+        return ret
+
+
+    def convert(self, node, lifted_functions):
+        method = "get_func_def_" + self.backend
+        try:
+            func_def_getter = getattr(self, method)
+        except AttributeError:
+            error_msg = "No function definition provided for %s backend" \
+                        % self.backend
+            raise TransformationError(error_msg)
+
+        func_def = func_def_getter(node, lifted_functions, **self.kwargs)
+        # return C node FunctionCall
+        return func_def
+
+
+
+def addCustomBlockToLiftedFunctions(funcCall, lineno, liftedFunctions):
+    if hasattr(funcCall, "args"):
+        [addCustomBlockToLiftedFunctions(i, lineno, liftedFunctions) for i in funcCall.args]
+        liftedFunctions.append(LF_Data(lineno, funcCall.func))
+    else:
+        return
+
 
 
 class DSLTransformer(ast.NodeTransformer):
@@ -323,7 +405,7 @@ class DSLTransformer(ast.NodeTransformer):
     transformers = [ConvolveTransformer, AddTransformer,
                     SubTransformer, MulTransformer,
                     SplitTransformer, MergeTransformer,
-                    LimitToTransformer]
+                    LimitToTransformer, RgbConvolve]
 
     def __init__(self, backend="C", **kwargs):
         """Initialize transformation target backend."""
